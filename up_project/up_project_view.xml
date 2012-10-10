@@ -1,0 +1,21 @@
+<?xml encoding="utf-8" version="1.0"?>
+<openerp>
+	<data>
+		<record id="view_up_project_form" model="ir.ui.view">
+			<field name="name">up.project.project.form</field>
+			<field name="model">up.project.project</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Project">
+					<group col="6" colspan="4">
+						<field name="name" select="1" />
+						<field name="fuzeren" select="1" />
+						<field name="guimo" string="规模" />
+						<field name="state" widget="statusbar"/>
+					</group>
+
+				</form>
+			</field>
+		</record>
+	</data>
+</openerp>
