@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<openerp>
+	<data>
+		<record id="group_up_project_user" model="res.groups">
+			<field name="name">User</field>
+			<field name="category_id" ref="base.module_category_up_project_management"></field>
+		</record>
+		<record id="group_up_project_manager" model="res.groups">
+			<field name="name">Manager</field>
+			<field name="category_id" ref="base.module_category_up_project_management"></field>
+        	<field name="implied_ids" eval="[(4, ref('group_up_project_user'))]"/>
+		</record>
+	</data>
+</openerp>
