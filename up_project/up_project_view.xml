@@ -1,6 +1,24 @@
-<?xml encoding="utf-8" version="1.0"?>
+<?xml version="1.0"?>
 <openerp>
 	<data>
+		<menuitem
+			icon="terp-project" id="base.menu_main_up_pm"
+			name="Project Management" sequence="10"
+			web_icon="images/up.png"
+			web_icon_hover="images/up-hover.png"/>
+		<record id="view_up_project_tree" model="ir.ui.view">
+			<field name="name">up.project.project.tree</field>
+			<field name="model">up.project.project</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Project" colors="blue:state == 'cehua';black:state in ('shuru','pingshen');gray:state == 'fuwu'">
+					<field name="name" />
+					<field name="fuzeren" />
+					<field name="guimo" string="规模" />
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
 		<record id="view_up_project_form" model="ir.ui.view">
 			<field name="name">up.project.project.form</field>
 			<field name="model">up.project.project</field>
@@ -10,12 +28,36 @@
 					<group col="6" colspan="4">
 						<field name="name" select="1" />
 						<field name="fuzeren" select="1" />
-						<field name="guimo" string="规模" />
-						<field name="state" widget="statusbar"/>
+						<field name="guimo" string="规模" />						
+		                <button name="project_suozhangshenpi" string="提交所长审批" states="tianshenqingdan" icon="gtk-go-forward"/>						
+		                <button name="project_suozhangshenpi_reject" string="打回" states="suozhangshenpi" icon="gtk-cancel"/>				
+		                <button name="project_zhidingbumen" string="提交经营室" states="suozhangshenpi" icon="gtk-go-forward"/>						
+		                <button name="project_zhidingbumen_reject" string="打回" states="zhidingbumen" icon="gtk-cancel"/>	
+		                <button name="project_zhidingfuzeren" string="提交总师室" states="zhidingbumen" icon="gtk-go-forward"/>						
+		                <button name="project_zhidingfuzeren_reject" string="打回" states="zhidingfuzeren" icon="gtk-cancel"/>
+		                <button name="project_suozhangqianzi" string="提交所长签字" states="zhidingfuzeren" icon="gtk-go-forward"/>						
+		                <button name="project_suozhangqianzi_reject" string="打回" states="suozhangqianzi" icon="gtk-cancel"/>
+		                <button name="project_fuzerenqidong" string="启动项目" states="suozhangqianzi" icon="gtk-go-forward"/>						
+		                <button name="project_fuzerenqidong_reject" string="打回" states="fuzerenqidong" icon="gtk-cancel"/>
+						<field name="state" widget="statusbar" colspan="6"/>
+						<newline/>
 					</group>
-
 				</form>
 			</field>
+		</record>
+		<record id="action_up_project_project_open" model="ir.actions.act_window">
+			<field name="name">Open Projects</field>
+			<field name="res_model">up.project.project</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		<menuitem action="action_up_project_project_open"
+			id="menu_up_project" parent="base.menu_main_up_pm" name="Projects" sequence="1" />
+		<record id="action_up_project_project_open_val" model="ir.values">
+			<field name="key2" eval="'tree_but_open'" />
+			<field name="model" eval="'up.project.project'" />
+			<field name="name">Projects Tree Button Open</field>
+			<field name="value" eval="'ir.actions.act_window,'+str(action_up_project_project_open)" />
 		</record>
 	</data>
 </openerp>

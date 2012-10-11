@@ -5,6 +5,7 @@ Created on 2012-10-10
 @author: Zhou Guangwen
 '''
 from osv import osv,fields
+import time
 
 class project_category(osv.osv):	
 	def name_get(self, cr, uid, ids, context=None):
@@ -26,7 +27,7 @@ class project_category(osv.osv):
 	_columns = {
 	"name":fields.char("Category",size=64,required=True),
 	"complete_name":fields.function(_cate_name_get_fnc,type="char",string="Name"),
-	'summary':fields.text("Summary")
+	'summary':fields.text("Summary"),
 	'parent_id':fields.many2one('up.project.project_category',"Parent Category", ondelete='set null',select=True),
 	'child_ids':fields.one2many('up.project.project_category','parent_id','Child Categories'),
 
@@ -50,18 +51,34 @@ class project(osv.osv):
 		"guimo":fields.char("Guimo",size=64),
 		"date_start":fields.datetime("Start Date"),
 		"state":fields.selection([
-			("cehua","策划"),
-			("shuru","输入"),
-			("pingshen","评审"),
-			("yanzheng","验证"),
-			("queren","确认"),
-			("shuchu","输出"),
-			("genggai","更改"),
-			("fuwu","服务"),
-		])
+			("tianshenqingdan","任意人员填写申请单"),
+			("suozhangshenpi","所长审批"),
+			("zhidingbumen","经营室指定部门"),
+			("zhidingfuzeren","总师室指定负责人"),
+			("suozhangqianzi","所长签字"),
+			("fuzerenqidong","启动项目"),
+		],"State",readonly=True,help='When project is created, the state is \'tianshenqingdan\'')
 	}
 	_defaults = {
 		"date_start":lambda *a: time.strftime('%Y-%m-%d %H:%M:%S'),
-        'state': lambda *a: 'cehua',
+		'state': lambda *a: 'tianshenqingdan',
 	}
+	def project_tianshenqingdan(self, cr, uid, ids):
+		self.write(cr, uid, ids, { 'state': 'tianshenqingdan' })
+		return True
+	def project_suozhangshenpi(self, cr, uid, ids):
+		self.write(cr, uid, ids, { 'state': 'suozhangshenpi' })
+		return True
+	def project_zhidingbumen(self, cr, uid, ids):
+		self.write(cr, uid, ids, { 'state': 'zhidingbumen' })
+		return True
+	def project_zhidingfuzeren(self, cr, uid, ids):
+		self.write(cr, uid, ids, { 'state': 'zhidingfuzeren' })
+		return True
+	def project_suozhangqianzi(self, cr, uid, ids):
+		self.write(cr, uid, ids, { 'state': 'suozhangqianzi' })
+		return True
+	def project_fuzerenqidong(self, cr, uid, ids):
+		self.write(cr, uid, ids, { 'state': 'fuzerenqidong' })
+		return True
 project()

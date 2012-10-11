@@ -27,7 +27,7 @@
 						<field name="date_start" string="Start Date" select="1"/>
 						<field name="date_end" string="End Date" />
 						<field name="sequence" select="1" />
-						<field colspan="4" name="attendees" nolabel="1">
+						<field colspan="6" name="attendees" nolabel="1">
 							<tree string="Attendees">
 								<field name="role_id"/>
 								<field name="member_id"/>
@@ -46,7 +46,7 @@
 			<field name="arch" type="xml">
 				<tree editable="top" string="Agenda">
 					<field name="tom" />
-					<field name="date_start" />
+					<field name="date_start" string="Start Date" />
 					<field name="sequence" />
 					<field name="state" />
 				</tree>
