@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<openerp>
+	<data>
+		<menuitem
+			icon="terp-project" id="base.menu_main_tm"
+			name="Toast Master" sequence="20"
+			web_icon="images/tm.png"
+			web_icon_hover="images/tm-hover.png"/>
+		<record id="open_agenda" model="ir.actions.act_window">
+			<field name="name">Agendas</field>
+			<field name="res_model">tm.agenda</field>
+			<field name="view_type">form</field>
+			<field name="view_id" ref="edit_agenda" />
+			<field name="view_mode">tree,form,calendar</field>
+		</record>
+		<menuitem action="open_agenda"
+			id="menu_tm_agenda" parent="base.menu_main_tm" name="Agenda" sequence="1" />
+		<record id="edit_agenda" model="ir.ui.view">
+			<field name="name">tm.agenda.form</field>
+			<field name="model">tm.agenda</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Agenda">
+					<group colspan="6" col="6" attrs="{'readonly':[('state','in',['done','outdated'])]}">
+						<field name="tom" />
+						<field name="sequence" string="Sequence" />
+						<field name="date_start" string="Start Date" select="1"/>
+						<field name="date_end" string="End Date" />
+						<field name="sequence" select="1" />
+						<field colspan="4" name="attendees" nolabel="1">
+							<tree string="Attendees">
+								<field name="role_id"/>
+								<field name="member_id"/>
+							</tree>
+						</field>
+						
+                        <field name="state" widget="statusbar" statusbar_visible="draft,open,done" statusbar_colors='{"pending":"blue"}' select="1"/>
+					</group>
+				</form>
+			</field>
+		</record>
+		<record id="view_agenda_tree" model="ir.ui.view">
+			<field name="name">tm.agenda.tree</field>
+			<field name="model">tm.agenda</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree editable="top" string="Agenda">
+					<field name="tom" />
+					<field name="date_start" />
+					<field name="sequence" />
+					<field name="state" />
+				</tree>
+			</field>
+		</record>
+	</data>
+</openerp>
