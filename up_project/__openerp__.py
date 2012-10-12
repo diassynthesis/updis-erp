@@ -8,11 +8,15 @@
 UPDIS Project Module.""",
     'author': 'Shrek Zhou',
     'website': 'http://openerp.com',
-    'depends': ['base','mail','resource'],
-    'init_xml': [],
+    'depends': ['base','mail','resource','hr'],
+    'init_xml': [
+        'data/up_project_data.xml',
+    ],
     'update_xml': [
         'up_project_view.xml',
         'workflow/up_project_workflow_shenqingdan.xml',
+        'security/up_project_security.xml',
+        'security/ir.model.access.csv',
     ],
     'demo_xml': [],
     'test':[],

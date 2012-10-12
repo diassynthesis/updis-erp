@@ -13,7 +13,7 @@
 			<field name="arch" type="xml">
 				<tree string="Project" colors="blue:state == 'cehua';black:state in ('shuru','pingshen');gray:state == 'fuwu'">
 					<field name="name" />
-					<field name="fuzeren" />
+					<field name="fuzeren_id" />
 					<field name="guimo" string="规模" />
 					<field name="state"/>
 				</tree>
@@ -27,7 +27,7 @@
 				<form string="Project">
 					<group col="6" colspan="4">
 						<field name="name" select="1" />
-						<field name="fuzeren" select="1" />
+						<field name="fuzeren_id" select="1" />
 						<field name="guimo" string="规模" />
 					</group>						
 					<notebook colspan="4">
@@ -54,7 +54,6 @@
 		                </page>
 		                <page string="项目负责人启动项目">
 		                </page>
-					</group>
 					</notebook>
 				</form>
 			</field>

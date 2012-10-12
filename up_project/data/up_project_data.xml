@@ -1,0 +1,38 @@
+<?xml encoding="utf8" version="1.0"?>
+<openerp>
+	<data>
+		<record id="cat1" model="up.project.project_category">
+			<field name="name">区域\城镇体系\总体规划</field>
+		</record>
+		<record id="cat1" model="up.project.project_category">
+			<field name="name">专项规划(研究)</field>
+		</record>
+		<record id="cat1" model="up.project.project_category">
+			<field name="name">分区规划</field>
+		</record>
+		<record id="cat1" model="up.project.project_category">
+			<field name="name">法定图则</field>
+		</record>
+		<record id="cat1" model="up.project.project_category">
+			<field name="name">控规</field>
+		</record>
+		<record id="cat1" model="up.project.project_category">
+			<field name="name">修规(详细蓝图)</field>
+		</record>
+		<record id="cat1" model="up.project.project_category">
+			<field name="name">旧改项目</field>
+		</record>
+		<record id="cat1" model="up.project.project_category">
+			<field name="name">城市设计</field>
+		</record>
+		<record id="cat1" model="up.project.project_category">
+			<field name="name">工程项目</field>
+		</record>
+		<record id="cat1" model="up.project.project_category">
+			<field name="name">市政专题</field>
+		</record>
+		<record id="cat1" model="up.project.project_category">
+			<field name="name">其它</field>
+		</record>
+	</data>
+</openerp>
