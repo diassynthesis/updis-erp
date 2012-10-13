@@ -1,37 +1,47 @@
-<?xml encoding="utf8" version="1.0"?>
+<?xml version="1.0"?>
 <openerp>
 	<data>
+		<record id="sequence_code_xiangmubianhao" model="ir.sequence.code">
+			<field name="name">项目编号</field>
+			<field name="code">up.project.project</field>
+		</record>
+		<record id="sequence_xiangmubianhao" model="ir.sequence">
+			<field name="name">项目编号</field>
+			<field name="code">up.project.project</field>
+			<field name="prefix">%(year)s</field>
+			<field name="padding">2</field>
+		</record>
 		<record id="cat1" model="up.project.project_category">
 			<field name="name">区域\城镇体系\总体规划</field>
 		</record>
-		<record id="cat1" model="up.project.project_category">
+		<record id="cat2" model="up.project.project_category">
 			<field name="name">专项规划(研究)</field>
 		</record>
-		<record id="cat1" model="up.project.project_category">
+		<record id="cat3" model="up.project.project_category">
 			<field name="name">分区规划</field>
 		</record>
-		<record id="cat1" model="up.project.project_category">
+		<record id="cat4" model="up.project.project_category">
 			<field name="name">法定图则</field>
 		</record>
-		<record id="cat1" model="up.project.project_category">
+		<record id="cat5" model="up.project.project_category">
 			<field name="name">控规</field>
 		</record>
-		<record id="cat1" model="up.project.project_category">
+		<record id="cat6" model="up.project.project_category">
 			<field name="name">修规(详细蓝图)</field>
 		</record>
-		<record id="cat1" model="up.project.project_category">
+		<record id="cat7" model="up.project.project_category">
 			<field name="name">旧改项目</field>
 		</record>
-		<record id="cat1" model="up.project.project_category">
+		<record id="cat8" model="up.project.project_category">
 			<field name="name">城市设计</field>
 		</record>
-		<record id="cat1" model="up.project.project_category">
+		<record id="cat9" model="up.project.project_category">
 			<field name="name">工程项目</field>
 		</record>
-		<record id="cat1" model="up.project.project_category">
+		<record id="cat10" model="up.project.project_category">
 			<field name="name">市政专题</field>
 		</record>
-		<record id="cat1" model="up.project.project_category">
+		<record id="cat11" model="up.project.project_category">
 			<field name="name">其它</field>
 		</record>
 	</data>

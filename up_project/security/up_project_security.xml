@@ -3,31 +3,31 @@
 	<data>
 		<record id="group_up_project_user" model="res.groups">
 			<field name="name">任意人员</field>
-			<field name="category_id" ref="base.module_category_up_project_management"></field>
+			<field name="category_id" ref="base.module_category_project_management"></field>
 		</record>
 		<record id="group_up_project_zongshishi" model="res.groups">
 			<field name="name">总师室人员</field>
-			<field name="category_id" ref="base.module_category_up_project_management"></field>
+			<field name="category_id" ref="base.module_category_project_management"></field>
         	<field name="implied_ids" eval="[(4, ref('group_up_project_user'))]"/>
 		</record>
 		<record id="group_up_project_jingyingshi" model="res.groups">
 			<field name="name">经营室人员</field>
-			<field name="category_id" ref="base.module_category_up_project_management"></field>
+			<field name="category_id" ref="base.module_category_project_management"></field>
         	<field name="implied_ids" eval="[(4, ref('group_up_project_user'))]"/>
 		</record>
 		<record id="group_up_project_suozhang" model="res.groups">
 			<field name="name">所长</field>
-			<field name="category_id" ref="base.module_category_up_project_management"></field>
+			<field name="category_id" ref="base.module_category_project_management"></field>
         	<field name="implied_ids" eval="[(4, ref('group_up_project_user'))]"/>
 		</record>
 		<record id="group_up_project_manager" model="res.groups">
 			<field name="name">项目负责人</field>
-			<field name="category_id" ref="base.module_category_up_project_management"></field>
+			<field name="category_id" ref="base.module_category_project_management"></field>
         	<field name="implied_ids" eval="[(4, ref('group_up_project_user'))]"/>
 		</record>
 		<record id="group_up_project_admin" model="res.groups">
 			<field name="name">管理员</field>
-			<field name="category_id" ref="base.module_category_up_project_management"></field>
+			<field name="category_id" ref="base.module_category_project_management"></field>
         	<field name="implied_ids" eval="[(4, ref('group_up_project_user'))]"/>
 		</record>
 		<record id="rule_delete_project" model="ir.rule">
