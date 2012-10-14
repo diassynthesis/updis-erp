@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <openerp>
 	<data>
-		<record id="sequence_code_xiangmubianhao" model="ir.sequence.code">
+		<record id="sequence_code_xiangmubianhao" model="ir.sequence.type">
 			<field name="name">项目编号</field>
 			<field name="code">up.project.project</field>
 		</record>

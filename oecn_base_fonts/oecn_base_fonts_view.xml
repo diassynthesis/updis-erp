@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- __author__ = jeff@openerp.cn -->
+<openerp>
+    <data>
+        <!-- configartion view -->
+
+        <record id="view_config_fonts_map" model="ir.ui.view">
+            <field name="name">Configure Fonts Mapping for pdf reports</field>
+            <field name="model">oecn_base_fonts.config</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="base.res_config_view_base"/>
+            <field name="arch" type="xml">
+              <data>
+                <form position="attributes">
+                  <attribute name="string">Fonts Mapping Configuration</attribute>
+                </form>
+                <separator string="title" position="attributes">
+                <attribute name="string">pdf font support for your language</attribute>
+                  </separator>
+                  <xpath expr="//label[@string='description']" position="attributes">
+                    <attribute name="string">Fonts used in the default report may not support the characters in your lanuage. Use the setting here to replace the Original font with the font you choose</attribute>
+                  </xpath>
+                <xpath expr='//separator[@string="vsep"]' position='attributes'>
+                      <attribute name='rowspan'>15</attribute>
+                      <attribute name='string'></attribute>
+                  </xpath>
+                <group string="res_config_contents" position="replace">
+                  <field name="wrap"/>
+                  <newline/>
+                  <newline/>
+                  <field name="map_ids" nolabel="1" colspan="4">
+                    <tree string="Font replace" editable='top'>
+                      <field name = 'pdf_font'/>
+                      <field name = 'new_font' on_change="onchange_new_font(new_font)"/>
+                      <field name = 'name'/>
+                    </tree>
+                  </field>
+                </group>
+                <xpath expr='//button[@name="action_skip"]' position='replace'/>
+              </data>
+            </field>
+        </record>
+
+        <record id="action_config_fonts_map" model="ir.actions.act_window">
+            <field name="name">Configure Fonts Mapping for pdf reports</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">oecn_base_fonts.config</field>
+            <field name="view_id" ref="view_config_fonts_map"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- register configuration wizard -->
+        <record id="config_wizard_step_fonts_map" model="ir.actions.todo">
+            <field name="action_id" ref="action_config_fonts_map"/>
+            <field name="restart">always</field>
+        </record>
+
+    </data>
+</openerp>
