@@ -1,11 +1,12 @@
 <!--  @@@ web_cms custom XML @@@ 
 look at web/static/src/xml/base.xml for basic QWeb templates
 -->
-
-<!-- uncomment the following lines to override the login template -->
 <template>
-
-<t t-name="Login">
+<!-- uncomment the following lines to override the login template -->
+<t t-name="Mendu">
+  fdasd
+</t>
+<t t-name="MyLogin">
   <div class="login">
     <div class="bottom"> </div>
     <div class="login_error_message">Invalid username or password</div>

@@ -21,8 +21,8 @@
     'js': [
         'static/js/web_cms.js',
     ],
-    'xml': [
-        'static/xml/web_cms.xml',
+    'qweb': [
+        'static/xml/*.xml',
     ],
 }
 

@@ -2,7 +2,7 @@
 use Firefox's Firebug extension or Chrome's Inspector to find out other CSS ref
 */
 
-.openerp {
+.openerp, .openerp textarea, .openerp input, .openerp select, .openerp option, .openerp button, .openerp .ui-widget {
 	font-family: "Microsoft YaHei",arial;
 }
 

@@ -4,8 +4,8 @@
 		<menuitem
 			icon="terp-project" id="base.menu_main_up_pm"
 			name="Project Management" sequence="10"
-			web_icon="images/up.png"
-			web_icon_hover="images/up-hover.png"/>
+			web_icon="images/up_project.png"
+			web_icon_hover="images/up_project-hover.png"/>
 		<record id="view_up_project_tree" model="ir.ui.view">
 			<field name="name">up.project.project.tree</field>
 			<field name="model">up.project.project</field>
