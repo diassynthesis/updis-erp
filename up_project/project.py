@@ -105,22 +105,22 @@ class project(osv.osv):
 		'state': lambda *a: 'tianshenqingdan',
 		'xiangmubianhao':lambda self, cr, uid, c=None: self.pool.get('ir.sequence').next_by_code(cr, uid, 'up.project.project', context=c)
 	}
-	def project_tianshenqingdan(self, cr, uid, ids):
+	def project_tianshenqingdan(self, cr, uid, ids, context=None):
 		self.write(cr, uid, ids, { 'state': 'tianshenqingdan' })
 		return True
-	def project_suozhangshenpi(self, cr, uid, ids):
+	def project_suozhangshenpi(self, cr, uid, ids, context=None):
 		self.write(cr, uid, ids, { 'state': 'suozhangshenpi' })
 		return True
-	def project_zhidingbumen(self, cr, uid, ids):
+	def project_zhidingbumen(self, cr, uid, ids, context=None):
 		self.write(cr, uid, ids, { 'state': 'zhidingbumen' })
 		return True
-	def project_zhidingfuzeren(self, cr, uid, ids):
+	def project_zhidingfuzeren(self, cr, uid, ids, context=None):
 		self.write(cr, uid, ids, { 'state': 'zhidingfuzeren' })
 		return True
-	def project_suozhangqianzi(self, cr, uid, ids):
+	def project_suozhangqianzi(self, cr, uid, ids, context=None):
 		self.write(cr, uid, ids, { 'state': 'suozhangqianzi' })
 		return True
-	def project_fuzerenqidong(self, cr, uid, ids):
+	def project_fuzerenqidong(self, cr, uid, ids, context=None):
 		self.write(cr, uid, ids, { 'state': 'fuzerenqidong' })
 		return True
 project()
