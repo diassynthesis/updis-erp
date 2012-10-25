@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+	<data>
+		<record id="view_employee_form_inherit" model="ir.ui.view">
+			<field name="name">hr.employee.form.inherit</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//group[@string='Contact Information']" position="after">
+					<group string="Education">
+						<field name="degree" />
+						<field name="diploma" />
+						<field name="academy" />
+						<field name="major" />
+					</group>
+				</xpath>
+				<xpath expr="//group[@string='Citizenship &amp; Other Info']" position="inside">
+					<field name="folk" />
+				</xpath>
+			</field>
+		</record>
+	</data>
+</openerp>
