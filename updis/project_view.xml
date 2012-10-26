@@ -1,13 +1,82 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
 	<data>
-		<!-- <record id="edit_project_inherit" model="ir.ui.view">
-            <field name="name">project.project.form.inherit</field>
-            <field name="model">project.project</field>
-            <field name="inherit_id" ref="project.edit_project" />
-            <field name="arch" type="xml">
-            	
-            </field>
-        </record> -->
+		<record id="edit_project_inherit" model="ir.ui.view">
+			<field name="name">project.project.form.inherit</field>
+			<field name="model">project.project</field>
+			<field name="inherit_id" ref="project.edit_project" />
+			<field name="arch" type="xml">
+				<xpath expr="//header" position="replace">
+					<header>
+						<button name="project_suozhangshenpi" string="提交所长审批" states="tianshenqingdan" icon="gtk-go-forward" />						
+						<button name="project_suozhangshenpi_reject" string="打回" states="suozhangshenpi" icon="gtk-cancel" />				
+						<button name="project_zhidingbumen" string="提交经营室" states="suozhangshenpi" icon="gtk-go-forward" />						
+						<button name="project_zhidingbumen_reject" string="打回" states="zhidingbumen" icon="gtk-cancel" />	
+						<button name="project_zhidingfuzeren" string="提交总师室" states="zhidingbumen" icon="gtk-go-forward" />						
+						<button name="project_zhidingfuzeren_reject" string="打回" states="zhidingfuzeren" icon="gtk-cancel" />
+						<button name="project_suozhangqianzi" string="提交所长签字" states="zhidingfuzeren" icon="gtk-go-forward" />						
+						<button name="project_suozhangqianzi_reject" string="打回" states="suozhangqianzi" icon="gtk-cancel" />
+						<button name="project_fuzerenqidong" string="启动项目" states="suozhangqianzi" icon="gtk-go-forward" />						
+						<button name="project_fuzerenqidong_reject" string="打回" states="fuzerenqidong" icon="gtk-cancel" />
+						<field name="state" widget="statusbar" statusbar_colors='{"fuzerenqidong":"blue"}' readonly="1"/>
+					</header>
+				</xpath>
+				<xpath expr="//field[@name='user_id']" position="after">
+					<field name="xiangmubianhao" readonly="1" />
+				</xpath>
+				<xpath expr="//page[last()]" position="after">	
+					<page string="Project Category">
+						<field name="category_id"/>					
+					</page>
+				</xpath>
+				<xpath expr="//page[@name='team']" position="after">
+					<page string="Project Info" name="project_info">
+						<group>
+							<group string="基本信息">
+								<field name="guimo"/>
+								<field name="jianyishejibumen_id"/>
+								<field name="jianyixiangmufuzeren_id"/>
+								<field name="jiafang_id"/>	
+								<field name="waibao"/>
+								<field name="shizhenpeitao"/>
+								<field name="duofanghetong"/>
+							</group>
+							
+							<group string="所长审批内容">
+								<!-- 所长审批内容 -->
+								<field name="yaoqiuxingchengwenjian"/>	
+								<field name="yinhanyaoqiu"/>	
+								<field name="difangfagui"/>		
+								<field name="fujiayaoqiu"/>		
+								<field name="hetongyizhi"/>	
+								<field name="ziyuan"/>		
+								<field name="shebei"/>		
+								<field name="gongqi"/>		
+								<field name="shejifei"/>
+							</group>
+							<group string="明示要求">
+								<!-- 明示要求 -->
+								<field name="zhaobiaoshu" />		
+								<field name="weituoshu" />	
+								<field name="xieyicaoan" />		
+								<field name="koutouyaoqiujilu" />
+							</group>
+							<group string="经营室指定设计部门">
+								<field name="pingshenfangshi"/>	
+								<field name="yinfacuoshi"/>	
+								<field name="renwuyaoqiu"/>	
+								<field name="chenjiebumen_id"/>
+							</group>
+							<group string="总师室指定项目负责人">
+								<field name="toubiaoleibie"/>
+								<field name="guanlijibie"/>
+								<field name="chenjiefuzeren_id"/>
+								<field name="zhuguanzongshi_id"/>
+							</group>
+						</group>
+					</page>
+				</xpath>
+			</field>
+		</record>
 	</data>
 </openerp>

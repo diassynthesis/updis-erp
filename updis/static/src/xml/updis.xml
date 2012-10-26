@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+	<t t-name="WebClient">
+		<div class="openerp openerp_webclient_container">
+		<table class="oe_webclient">
+			<tr>
+				<td colspan="2" class="oe_topbar">
+					<div class="oe_menu_placeholder"/>
+					<div class="oe_user_menu_placeholder"/>
+					<div class="oe_systray"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="oe_leftbar" valign="top">
+					<a class="oe_logo" href="#"><img t-att-src='_s + "/web/static/src/img/logo.png"'/></a>
+					<div class="oe_secondary_menus_container"/>
+					<div class="oe_footer">
+						Powered by <a href="http://www.upr.cn" target="_blank"><span>深圳城市规划设计研究院有限公司</span></a>
+					</div>
+				</td>
+				<td class="oe_application">
+				</td>
+			</tr>
+		</table>
+		</div>
+	</t>
+</template>
