@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html style="height: 100%"> 
+    <head> 
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" /> 
+        <style type="text/css">
+        body {
+            font-family: sans-serif;
+        }
+        pre.run {
+            border: 1px solid black; margin:0;padding:8px;
+        }
+        .result {
+            border: 1px solid black; margin:0;padding:8px;
+        }
+        </style>
+        <title>OpenERP web_api example</title> 
+        <script type="text/javascript" src="/web/webclient/js"></script> 
+        <script type="text/javascript">
+        $(function() {
+            var instance = openerp.init(["web"]); // get a new instance
+            instance.session.session_bind(); // bind it to the right hostname
+            instance.session.session_authenticate("demo", "admin", "admin", false).then(function() {                
+                var ds = new instance.web.DataSetSearch(null, "document.page");
+                ds.read_slice(['name','display_content'],{}).then(function(models){
+                    _.each(models,function(m,i){
+                        $("#result").append("<li>" + m.name + " (" + m.display_content + ") </li>");
+                    });
+                });
+            });
+        });
+        </script> 
+    </head> 
+    <body>
+        <h1>OpenERP web_api test</h1>
+        <h2>Example: Load the content of ir.name <button>Run it !</button></h2>
+        
+        <h3>Result:</h3>
+        <pre id="result" class="result">
+        </pre>
+    </body> 
+</html> 

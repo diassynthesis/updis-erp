@@ -8,7 +8,8 @@
 UPDIS Implementation Guide.""",
     'author': 'Shrek Zhou',
     'website': 'http://openerp.com',
-    'depends': ['base','hr','account_voucher','project'],
+    'depends': ['base','hr','account_voucher','project','document_page'],
+    # 'depends': ['base',],
     'init_xml': [],
     'update_xml': [
         'hr_department_view.xml',
@@ -26,8 +27,9 @@ UPDIS Implementation Guide.""",
     ],
     'demo_xml': [],
     'test':[],
+    'post_load': 'wsgi_postload',
     'installable': True,
-    'auto_install': False,
+    'auto_install': True,
     'application': True,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
