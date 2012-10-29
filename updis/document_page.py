@@ -5,4 +5,5 @@ class document_page(osv.osv):
 	_columns = {
 		'display_name':fields.boolean("Dsplay Name?",help="Check this if you don't want to display your name"),
 		'read_times': fields.integer("Read times"),
+		'department_id':fields.many2one("Department","hr.department"),
 	}

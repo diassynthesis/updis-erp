@@ -15,13 +15,146 @@
 					<a class="oe_logo" href="#"><img t-att-src='_s + "/web/static/src/img/logo.png"'/></a>
 					<div class="oe_secondary_menus_container"/>
 					<div class="oe_footer">
-						Powered by <a href="http://www.upr.cn" target="_blank"><span>深圳城市规划设计研究院有限公司</span></a>
+						Powered by<a href="http://www.upr.cn" target="_blank"><span>深圳城市规划设计研究院有限公司</span></a>
 					</div>
 				</td>
 				<td class="oe_application">
 				</td>
 			</tr>
 		</table>
+		</div>
+	</t>
+	<t t-name="InternalHome">
+		<div class="openerp-internal">
+		</div>
+	</t>
+	<t t-name="InternalHome.head">
+		<div id="head">
+			<a href="index.html" class="logo"><img src="/updis/static/src/img/logo.gif" alt="规划研究所"/><span>规划研究所</span></a>
+		
+			<div class="top">
+				  <ul class="login">
+					  <li><a href="#" class="kd">总院</a><a href="#">上海分院</a><a href="#">重庆分院</a></li>
+					  <li><span>邮箱登录</span>账号：<input name="" type="text"/>密码：<input name="" type="password"/></li>
+					  <li><a href="#" class="kd">登录</a></li>
+				  </ul>
+				  
+				  <ul class="guild">
+					  <li><a href="#">盛鸣</a>|<a href="#">注销</a></li>
+					  <li><a href="#">工作空间</a>|<a href="#">联系管理员</a></li>
+				  </ul>
+			 </div>
+			
+			 <div class="nav">
+				  <ul>
+					  <li class="current">办事指南<br/><strong>Space by org</strong></li>
+					  <li><a href="#">资源库<br/><strong>Resource center</strong></a></li>
+					  <li><a href="#">规章制度<br/><strong>Rules  regulations</strong></a></li>
+					  <li><a href="#">人员档案<br/><strong>Staff information</strong></a></li>
+					  <li><a href="#">项目管理<br/><strong>Project management</strong></a></li>
+				  </ul>
+			 </div>
+		</div>
+	</t>
+	<t t-name="InternalHome.banner">
+		<div id="banner">
+		     <div class="picBox">
+			      <ul id="show_pic" style="left:0;">
+		    	      <li><a href="#"><img src="/updis/static/src/img/banner_1.jpg" alt="" title="" /></a></li>
+		              <li><a href="#"><img src="/updis/static/src/img/banner_2.jpg" alt="" title="" /></a></li>
+		              <li><a href="#"><img src="/updis/static/src/img/banner_3.jpg" alt="" title="" /></a></li>
+		              <li><a href="#"><img src="/updis/static/src/img/banner_4.jpg" alt="" title="" /></a></li>
+		              <li><a href="#"><img src="/updis/static/src/img/banner_5.jpg" alt="" title="" /></a></li>
+		         </ul>		         
+		     </div>
+		     
+		     <div class="moving"><a href="#">规划师大讲堂第四讲：王缉慈教授谈工业发展及其空间问题</a></div>
+		</div>
+	</t>
+	<t t-name="InternalHome.service">
+		<div id="service">
+			 <div class="sign">
+				  <h1><span>XXX</span>你好！欢迎回来！</h1>
+				  <a href="#">个人中心</a><a href="#">基本信息修改</a><a href="#">密码修改</a><a href="#">退出登录</a>
+			 </div>
+			 
+			 <div class="msg">
+				  <a href="#">观察评论</a>|<a href="#">规划要问</a>|<a href="#">市局信息</a>|<a href="#">城市热点</a>
+				  <a href="#">最新发表</a>|<a href="#">本院快讯</a>|<a href="#">共享资源</a>|<a href="#">业余生活</a>
+			 </div>
+			 
+			 <div class="search">
+				  <form method="get" action="#"><input name="" type="text" /><input name="" type="submit" value=" " class="button" /></form>
+				  <div class="opt">热门搜索：<a href="#">城市规划</a><a href="#">规划设计</a><a href="#">规划发展</a><a href="#">城市设计</a></div>
+			 </div>
+		</div>
+	</t>
+	<t t-name="InternalHome.news">
+		<div id="news">
+			<ul>
+				<h2>本院快讯<span>NEWS</span></h2>
+				<t t-if="widget.kuanxun_news">
+					<t t-foreach="widget.kuanxun_news" t-as="news">
+						<li><a href="#"><t t-esc="news.name" /></a><p><t t-esc="widget.format(news.write_date,{'type':'date'},'-')"/> 总师室</p></li>
+					</t>
+				</t>
+			</ul>
+			 
+			<ul>
+				<h2>通知<span>NOTICE</span></h2>
+				<li><a href="#">关于召开“2012年度院质量管理工作会议”的通知</a><p>2个月前 总师室</p></li>
+				<li><a href="#">关于召开“2012年度院质量管理工作会议”的通知</a><p>2个月前 总师室</p></li>
+				<li><a href="#">关于召开“2012年度院质量管理工作会议”的通知</a><p>2个月前 总师室</p></li>
+				<li><a href="#">关于召开“2012年度院质量管理工作会议”的通知</a><p>2个月前 总师室</p></li>
+			</ul>
+			 
+			<ul>
+				<h2>招投标信息<span>BIDDING INFORMATION</span></h2>
+				<li><a href="#">关于召开“2012年度院质量管理工作会议”的通知</a><p>2个月前 总师室</p></li>
+				<li><a href="#">关于召开“2012年度院质量管理工作会议”的通知</a><p>2个月前 总师室</p></li>
+				<li><a href="#">关于召开“2012年度院质量管理工作会议”的通知</a><p>2个月前 总师室</p></li>
+				<li><a href="#">关于召开“2012年度院质量管理工作会议”的通知</a><p>2个月前 总师室</p></li>
+			</ul>
+		</div>
+	</t>
+	<t t-name="InternalHome.foot">
+		<div id="foot">
+		     <div class="material">
+		          <ul>
+		              <h4>办事指南</h4>
+		              <li><a href="#">办事指南一</a></li>
+		              <li><a href="#">办事指南二</a></li>
+		          </ul>
+		          
+		          <ul>
+		              <h4>资源库</h4>
+		              <li><a href="#">资源库一</a></li>
+		              <li><a href="#">资源库二</a></li>
+		              <li><a href="#">资源库三</a></li>
+		          </ul>
+		          
+		          <ul>
+		              <h4>规章制度</h4>
+		              <li><a href="#">规章制度一</a></li>
+		              <li><a href="#">规章制度二</a></li>
+		              <li><a href="#">规章制度三</a></li>
+		          </ul>
+		          
+		          <ul>
+		              <h4>人员档案</h4>
+		              <li><a href="#">人员档案一</a></li>
+		              <li><a href="#">人员档案二</a></li>
+		              <li><a href="#">人员档案三</a></li>
+		              <li><a href="#">人员档案四</a></li>
+		          </ul>
+		          
+		          <ul>
+		              <h4>项目管理</h4>
+		              <li><a href="#">项目管理一</a></li>
+		              <li><a href="#">项目管理二</a></li>
+		              <li><a href="#">项目管理三</a></li>
+		          </ul>
+		     </div>
 		</div>
 	</t>
 </template>

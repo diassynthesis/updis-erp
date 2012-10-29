@@ -19,8 +19,15 @@ UPDIS Implementation Guide.""",
         'security/updis_security.xml',
         'data/updis_data.xml',
     ],
+    'js': [
+        'static/src/js/updis.js',
+        # 'static/src/js/banner.js',
+        # 'static/src/js/tab.js',
+        # 'static/src/js/DD_belatedPNG.js', //we abandoned IE support.
+    ],
     'css': [
         'static/src/css/updis.css',
+        # 'static/src/css/common.css',
     ],
     'qweb': [
         'static/src/xml/*.xml',
