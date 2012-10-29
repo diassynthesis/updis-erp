@@ -20,14 +20,28 @@ openerp.updis = function(openerp) {
 		},
 		start:function(){
 			var self = this;
-			var categories = new openerp.web.Model("document.page");
-			categories.query(["name","write_date"]).filter([['parent_id','=','本院快讯']]).all().then(function(res){
-				// _.each(res,function(itm,idx){
-				// 	itm['write_date_relative'] = $.timeago(itm.write_date);
-				// });
-				self.kuanxun_news=res;
-				self.renderElement();
+			
+			var pagies = new openerp.web.Model("document.page");
+			pagies.query(["name","write_date"]).filter([['parent_id','=','本院快讯']]).all().then(function(res){				
+				self.kuanxun_news=res;	
+				self.on_loaded();			
 			});
+			pagies.query(["name","write_date"]).filter([['parent_id','=','通知']]).all().then(function(res){				
+				self.tongzhi_news=res;
+				self.on_loaded();
+			});
+			pagies.query(["name","write_date"]).filter([['parent_id','=','招投标信息']]).all().then(function(res){				
+				self.toubiao_news=res;
+				self.on_loaded();
+			});
+		},
+		on_loaded:function(){	
+			var self = this;
+			self.renderElement();		
+			self.$el.on("click","a",function(evt){
+				evt.preventDefault();
+				alert($(this).data('id'));
+			});	
 		}
 	});
 	openerp.web.Banner = openerp.web.Widget.extend({
@@ -47,6 +61,7 @@ openerp.updis = function(openerp) {
 	        		self.show_service();
 	        		self.show_news();
 	        		self.show_foot();
+						        	
         		});
         	});			
 		},

@@ -60,11 +60,11 @@
 		<div id="banner">
 		     <div class="picBox">
 			      <ul id="show_pic" style="left:0;">
-		    	      <li><a href="#"><img src="/updis/static/src/img/banner_1.jpg" alt="" title="" /></a></li>
-		              <li><a href="#"><img src="/updis/static/src/img/banner_2.jpg" alt="" title="" /></a></li>
-		              <li><a href="#"><img src="/updis/static/src/img/banner_3.jpg" alt="" title="" /></a></li>
-		              <li><a href="#"><img src="/updis/static/src/img/banner_4.jpg" alt="" title="" /></a></li>
-		              <li><a href="#"><img src="/updis/static/src/img/banner_5.jpg" alt="" title="" /></a></li>
+		    	      <li></li>
+		              <li></li>
+		              <li></li>
+		              <li></li>
+		              <li></li>
 		         </ul>		         
 		     </div>
 		     
@@ -89,31 +89,36 @@
 			 </div>
 		</div>
 	</t>
+	<t t-name="InternalHome.news.item">
+		<li><a href="#" class="message-item" t-att-data-id="news.id"><t t-esc="news.name" /></a><p><t t-esc="widget.format(news.write_date,{'type':'date'},'-')"/> 总师室</p></li>
+	</t>
 	<t t-name="InternalHome.news">
 		<div id="news">
 			<ul>
 				<h2>本院快讯<span>NEWS</span></h2>
 				<t t-if="widget.kuanxun_news">
 					<t t-foreach="widget.kuanxun_news" t-as="news">
-						<li><a href="#"><t t-esc="news.name" /></a><p><t t-esc="widget.format(news.write_date,{'type':'date'},'-')"/> 总师室</p></li>
+						<t t-call="InternalHome.news.item"/>
 					</t>
 				</t>
 			</ul>
 			 
 			<ul>
 				<h2>通知<span>NOTICE</span></h2>
-				<li><a href="#">关于召开“2012年度院质量管理工作会议”的通知</a><p>2个月前 总师室</p></li>
-				<li><a href="#">关于召开“2012年度院质量管理工作会议”的通知</a><p>2个月前 总师室</p></li>
-				<li><a href="#">关于召开“2012年度院质量管理工作会议”的通知</a><p>2个月前 总师室</p></li>
-				<li><a href="#">关于召开“2012年度院质量管理工作会议”的通知</a><p>2个月前 总师室</p></li>
+				<t t-if="widget.tongzhi_news">
+					<t t-foreach="widget.tongzhi_news" t-as="news">
+						<t t-call="InternalHome.news.item"/>
+					</t>
+				</t>
 			</ul>
 			 
 			<ul>
 				<h2>招投标信息<span>BIDDING INFORMATION</span></h2>
-				<li><a href="#">关于召开“2012年度院质量管理工作会议”的通知</a><p>2个月前 总师室</p></li>
-				<li><a href="#">关于召开“2012年度院质量管理工作会议”的通知</a><p>2个月前 总师室</p></li>
-				<li><a href="#">关于召开“2012年度院质量管理工作会议”的通知</a><p>2个月前 总师室</p></li>
-				<li><a href="#">关于召开“2012年度院质量管理工作会议”的通知</a><p>2个月前 总师室</p></li>
+				<t t-if="widget.toubiao_news">
+					<t t-foreach="widget.toubiao_news" t-as="news">
+						<t t-call="InternalHome.news.item"/>
+					</t>
+				</t>
 			</ul>
 		</div>
 	</t>
