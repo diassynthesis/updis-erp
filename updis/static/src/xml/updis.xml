@@ -55,22 +55,7 @@
 				  </ul>
 			 </div>
 		</div>
-	</t>
-	<t t-name="InternalHome.banner">
-		<div id="banner">
-		     <div class="picBox">
-			      <ul id="show_pic" style="left:0;">
-		    	      <li></li>
-		              <li></li>
-		              <li></li>
-		              <li></li>
-		              <li></li>
-		         </ul>		         
-		     </div>
-		     
-		     <div class="moving"><a href="#">规划师大讲堂第四讲：王缉慈教授谈工业发展及其空间问题</a></div>
-		</div>
-	</t>
+	</t>	
 	<t t-name="InternalHome.service">
 		<div id="service">
 			 <div class="sign">
@@ -121,6 +106,13 @@
 				</t>
 			</ul>
 		</div>
+	</t>
+	<t t-name="InternalHome.newsitem">
+		<h1>
+			<t t-if="widget.newsitem">
+				<t t-esc="widget.newsitem.name"/>
+			</t>
+		</h1>
 	</t>
 	<t t-name="InternalHome.foot">
 		<div id="foot">
