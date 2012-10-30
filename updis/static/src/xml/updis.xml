@@ -25,86 +25,121 @@
 		</div>
 	</t>
 	<t t-name="InternalHome">
-		<div class="openerp-internal">
+		<div id="wrapper" class="openerp-internal">
+			<div id="header">
+			</div>
+			<div id="main">
+				<div class="main-area home-main-area">
+					<div class="main-holder home-holder">
+						<div id="content" class="content_full_width">
+							
+						</div>
+					</div>
+				</div>	
+				<div id="footer">
+					<div class="footer-area">
+						<div class="footer-wrapper">
+							<div class="footer-holder">	
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</t>
 	<t t-name="InternalHome.head">
-		<div id="head">
-			<a href="index.html" class="logo"><img src="/updis/static/src/img/logo.gif" alt="规划研究所"/><span>规划研究所</span></a>
-		
-			<div class="top">
-				  <ul class="login">
-					  <li><a href="#" class="kd">总院</a><a href="#">上海分院</a><a href="#">重庆分院</a></li>
-					  <li><span>邮箱登录</span>账号：<input name="" type="text"/>密码：<input name="" type="password"/></li>
-					  <li><a href="#" class="kd">登录</a></li>
-				  </ul>
-				  
-				  <ul class="guild">
-					  <li><a href="#">盛鸣</a>|<a href="#">注销</a></li>
-					  <li><a href="#">工作空间</a>|<a href="#">联系管理员</a></li>
-				  </ul>
-			 </div>
-			
-			 <div class="nav">
-				  <ul>
-					  <li class="current">办事指南<br/><strong>Space by org</strong></li>
-					  <li><a href="#">资源库<br/><strong>Resource center</strong></a></li>
-					  <li><a href="#">规章制度<br/><strong>Rules  regulations</strong></a></li>
-					  <li><a href="#">人员档案<br/><strong>Staff information</strong></a></li>
-					  <li><a href="#">项目管理<br/><strong>Project management</strong></a></li>
-				  </ul>
-			 </div>
+		<div class="top-block">
+			<div class="top-holder">
+				<!-- ***************** - Top Toolbar Left Side - ***************** -->
+				<div class="sub-nav">
+					 <ul>
+						 <li><a href="index-jquery-1.html">总院</a></li>
+						 <li><a href="template-sitemap.html">上海分院</a></li>
+						 <li><a href="template-contact-iphone.html">重庆分院</a></li>
+					 </ul>
+				</div>
+				 <!-- ***************** - END Top Toolbar Left Side - ***************** -->
+				 <!-- ***************** - Top Toolbar Right Side - ***************** -->
+				<div class="sub-nav2">
+					<ul>
+					<li><a href="http://www.truethemes.net">盛鸣</a></li>
+					<li><a href="http://www.twitter.com/truethemes">联系管理员</a></li>
+					</ul>
+				</div><!-- end sub-nav2 -->
+			</div>		 
 		</div>
+		<div class="header-holder">
+			<div class="rays">
+				<div class="header-area">
+					<!-- ***************** - LOGO - ***************** -->
+					<a href="index-jquery-1.html" class="logo"><img src="/updis/static/src/img/logo.gif" alt="UPDIS" /> </a>
+					<!-- ***************** - END LOGO - ***************** -->
+
+					<ul id="menu-main-nav">
+						<li><a href="#"><span><strong>办事指南</strong></span><span class="navi-description">Space by org</span></a></li>
+						<li><a href="#"><span><strong>资源库</strong></span><span class="navi-description">Resource Center</span></a></li>
+						<li><a href="#"><span><strong>规章制度</strong></span><span class="navi-description">Rules &amp; Regulations</span></a></li>
+						<li><a href="#"><span><strong>人员档案</strong></span><span class="navi-description">Staff Information</span></a></li>
+						<li><a href="#"><span><strong>项目管理</strong></span><span class="navi-description">Project Management</span></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>		
 	</t>	
 	<t t-name="InternalHome.service">
-		<div id="service">
-			 <div class="sign">
-				  <h1><span>XXX</span>你好！欢迎回来！</h1>
-				  <a href="#">个人中心</a><a href="#">基本信息修改</a><a href="#">密码修改</a><a href="#">退出登录</a>
-			 </div>
-			 
-			 <div class="msg">
-				  <a href="#">观察评论</a>|<a href="#">规划要问</a>|<a href="#">市局信息</a>|<a href="#">城市热点</a>
-				  <a href="#">最新发表</a>|<a href="#">本院快讯</a>|<a href="#">共享资源</a>|<a href="#">业余生活</a>
-			 </div>
-			 
-			 <div class="search">
-				  <form method="get" action="#"><input name="" type="text" /><input name="" type="submit" value=" " class="button" /></form>
-				  <div class="opt">热门搜索：<a href="#">城市规划</a><a href="#">规划设计</a><a href="#">规划发展</a><a href="#">城市设计</a></div>
-			 </div>
-		</div>
+		 <div class="sign one_third">
+			  <h4><span>XXX</span>你好！欢迎回来！</h4>
+			  <a href="#">个人中心</a><a href="#">基本信息修改</a><a href="#">密码修改</a><a href="#">退出登录</a>
+		 </div>
+		 
+		 <div class="msg one_third">
+			  <a href="#">观察评论</a>|<a href="#">规划要问</a>|<a href="#">市局信息</a>|<a href="#">城市热点</a>
+			  <a href="#">最新发表</a>|<a href="#">本院快讯</a>|<a href="#">共享资源</a>|<a href="#">业余生活</a>
+		 </div>
+		 
+		 <div class="search one_third_last">
+			  <form method="get" action="#"><input name="" type="text" /><input name="" type="submit" value=" " class="button" /></form>
+			  <div class="opt">热门搜索：<a href="#">城市规划</a><a href="#">规划设计</a><a href="#">规划发展</a><a href="#">城市设计</a></div>
+		 </div>
+		 <br class="clear" />
 	</t>
 	<t t-name="InternalHome.news.item">
 		<li><a href="#" class="message-item" t-att-data-id="news.id"><t t-esc="news.name" /></a><p><t t-esc="widget.format(news.write_date,{'type':'date'},'-')"/> 总师室</p></li>
 	</t>
 	<t t-name="InternalHome.news">
 		<div id="news">
-			<ul>
-				<h2>本院快讯<span>NEWS</span></h2>
-				<t t-if="widget.kuanxun_news">
-					<t t-foreach="widget.kuanxun_news" t-as="news">
-						<t t-call="InternalHome.news.item"/>
+			<div class="one_third">
+				<ul>
+					<h2>本院快讯<span>NEWS</span></h2>
+					<t t-if="widget.kuanxun_news">
+						<t t-foreach="widget.kuanxun_news" t-as="news">
+							<t t-call="InternalHome.news.item"/>
+						</t>
 					</t>
-				</t>
-			</ul>
-			 
-			<ul>
-				<h2>通知<span>NOTICE</span></h2>
-				<t t-if="widget.tongzhi_news">
-					<t t-foreach="widget.tongzhi_news" t-as="news">
-						<t t-call="InternalHome.news.item"/>
+				</ul>
+			</div>
+			 <div class="one_third">
+				<ul>
+					<h2>通知<span>NOTICE</span></h2>
+					<t t-if="widget.tongzhi_news">
+						<t t-foreach="widget.tongzhi_news" t-as="news">
+							<t t-call="InternalHome.news.item"/>
+						</t>
 					</t>
-				</t>
-			</ul>
-			 
-			<ul>
-				<h2>招投标信息<span>BIDDING INFORMATION</span></h2>
-				<t t-if="widget.toubiao_news">
-					<t t-foreach="widget.toubiao_news" t-as="news">
-						<t t-call="InternalHome.news.item"/>
+				</ul>
+			</div>
+			 <div class="one_third_last">
+				<ul>
+					<h2>招投标信息<span>BIDDING INFORMATION</span></h2>
+					<t t-if="widget.toubiao_news">
+						<t t-foreach="widget.toubiao_news" t-as="news">
+							<t t-call="InternalHome.news.item"/>
+						</t>
 					</t>
-				</t>
-			</ul>
+				</ul>
+			</div>
+			<br class="clear" />
 		</div>
 	</t>
 	<t t-name="InternalHome.newsitem">
@@ -115,43 +150,46 @@
 		</h1>
 	</t>
 	<t t-name="InternalHome.foot">
-		<div id="foot">
-		     <div class="material">
-		          <ul>
-		              <h4>办事指南</h4>
-		              <li><a href="#">办事指南一</a></li>
-		              <li><a href="#">办事指南二</a></li>
-		          </ul>
-		          
-		          <ul>
-		              <h4>资源库</h4>
-		              <li><a href="#">资源库一</a></li>
-		              <li><a href="#">资源库二</a></li>
-		              <li><a href="#">资源库三</a></li>
-		          </ul>
-		          
-		          <ul>
-		              <h4>规章制度</h4>
-		              <li><a href="#">规章制度一</a></li>
-		              <li><a href="#">规章制度二</a></li>
-		              <li><a href="#">规章制度三</a></li>
-		          </ul>
-		          
-		          <ul>
-		              <h4>人员档案</h4>
-		              <li><a href="#">人员档案一</a></li>
-		              <li><a href="#">人员档案二</a></li>
-		              <li><a href="#">人员档案三</a></li>
-		              <li><a href="#">人员档案四</a></li>
-		          </ul>
-		          
-		          <ul>
-		              <h4>项目管理</h4>
-		              <li><a href="#">项目管理一</a></li>
-		              <li><a href="#">项目管理二</a></li>
-		              <li><a href="#">项目管理三</a></li>
-		          </ul>
-		     </div>
+		 <div class="one_fifth">
+			  <ul>
+				  <h3>办事指南</h3>
+				  <li><a href="#">办事指南一</a></li>
+				  <li><a href="#">办事指南二</a></li>
+			  </ul>
 		</div>
+		<div class="one_fifth">
+			  <ul>
+				  <h3>资源库</h3>
+				  <li><a href="#">资源库一</a></li>
+				  <li><a href="#">资源库二</a></li>
+				  <li><a href="#">资源库三</a></li>
+			  </ul>
+		</div>
+		<div class="one_fifth">	  
+			  <ul>
+				  <h3>规章制度</h3>
+				  <li><a href="#">规章制度一</a></li>
+				  <li><a href="#">规章制度二</a></li>
+				  <li><a href="#">规章制度三</a></li>
+			  </ul>
+		</div>
+		<div class="one_fifth">	  
+			  <ul>
+				  <h3>人员档案</h3>
+				  <li><a href="#">人员档案一</a></li>
+				  <li><a href="#">人员档案二</a></li>
+				  <li><a href="#">人员档案三</a></li>
+				  <li><a href="#">人员档案四</a></li>
+			  </ul>
+		</div>
+		<div class="one_fifth_last">	  
+			  <ul>
+				  <h3>项目管理</h3>
+				  <li><a href="#">项目管理一</a></li>
+				  <li><a href="#">项目管理二</a></li>
+				  <li><a href="#">项目管理三</a></li>
+			  </ul>
+		 </div>
+		 <br class="clear" />
 	</t>
 </template>

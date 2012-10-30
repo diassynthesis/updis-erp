@@ -93,17 +93,17 @@ openerp.updis = function(openerp) {
 		show_head:function(){
 			var self= this;	
 			self.head = new openerp.web.Head(self);
-			self.head.appendTo(self.$el);
+			self.head.appendTo(self.$("#header"));
 		},
 		show_service:function(){
 			var self= this;	
 			self.service = new openerp.web.Service(self);
-			self.service.appendTo(self.$el);			
+			self.service.appendTo(self.$("#content"));			
 		},
 		show_news:function(){
 			var self= this;	
 			self.news = new openerp.web.News(self);
-			self.news.appendTo(self.$el);		
+			self.news.appendTo(self.$("#content"));		
 			self.news.on("read_news_item",self,self.on_read_news_item);	
 		},
 		// show_banner:function(){
@@ -114,7 +114,7 @@ openerp.updis = function(openerp) {
 		show_foot:function(){
 			var self= this;	
 			self.foot = new openerp.web.Foot(self);
-			self.foot.appendTo(self.$el);			
+			self.foot.appendTo(self.$(".footer-holder"));			
 		},
 		on_read_news_item:function(nid){
 			var self = this;

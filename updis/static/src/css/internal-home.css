@@ -1,4 +1,7 @@
 
+.openerp-internal{
+	font-family: "Microsoft YaHei";
+}
 .openerp-internal .oe_loading {
 	display: none;
 	z-index: 100;
@@ -15,4 +18,12 @@
 	-moz-border-radius-bottomleft: 8px;
 	border-bottom-right-radius: 8px;
 	border-bottom-left-radius: 8px;
+}
+#main h2 {
+	font-weight: bold;
+	font-size: 1.2em;
+}
+#news {
+	background: url('../img/news_bj.jpg') no-repeat center top;
+	min-height: 261px;
 }

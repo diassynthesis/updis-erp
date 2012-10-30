@@ -13,11 +13,14 @@ class InternalHome(openerp.addons.web.http.Controller):
 	def app(self,req,**kw):
 		js = "\n        ".join('<script type="text/javascript" src="%s"></script>' % i for i in manifest_list(req, None, 'js'))
 		js += '\n <script type="text/javascript" src="/updis/static/src/js/updis.js"></script>'
-		js += '\n <script type="text/javascript" src="/updis/static/src/js/bootstrap.js"></script>'
+		# js += '\n <script type="text/javascript" src="/updis/static/src/js/bootstrap.js"></script>'
 		css = "\n        ".join('<link rel="stylesheet" href="%s">' % i for i in manifest_list(req, None, 'css'))
-		css += '\n <link rel="stylesheet" href="/updis/static/src/css/bootstrap.css">'
-		css += '\n <link rel="stylesheet" href="/updis/static/src/css/common.css">'
-		css += '\n <link rel="stylesheet" href="/updis/static/src/css/bootstrap-responsive.css">'
+		css += '\n <link rel="stylesheet" href="/updis/static/src/css/style.css">'
+		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/common.css">'
+		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/ie8.css">'
+		css += '\n <link rel="stylesheet" href="/updis/static/src/css/karma-teal-grey.css">'
+		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/secondary-teal-grey.css">'
+		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/bootstrap-responsive.css">'
 		css += '\n <link rel="stylesheet" href="/updis/static/src/css/internal-home.css">'
 		# cookie = req.httprequest.cookies.get("instance0|session_id")
 		# session_id = cookie.replace("%22","")
