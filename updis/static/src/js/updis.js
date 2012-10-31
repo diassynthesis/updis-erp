@@ -9,8 +9,8 @@ openerp.updis = function(openerp) {
 			this._super.apply(this, arguments);
 		}
 	});
-	openerp.web.Service = openerp.web.Widget.extend({
-		template:"InternalHome.service"
+	openerp.web.Shortcuts = openerp.web.Widget.extend({
+		template:"InternalHome.shortcuts"
 	});
 	openerp.web.News = openerp.web.Widget.extend({
 		template:"InternalHome.news",
@@ -46,6 +46,15 @@ openerp.updis = function(openerp) {
 			});
 		}
 	});
+	openerp.web.Content = openerp.web.Widget.extend({
+		template:'InternalHome.content',
+		init:function(parent){
+			this._super(parent);
+		},
+		start:function(){
+
+		}
+	});
 	openerp.web.NewsItem = openerp.web.Widget.extend({
 		template:'InternalHome.newsitem',
 		init:function(parent,news_id){
@@ -64,11 +73,12 @@ openerp.updis = function(openerp) {
 			self.newsitem=item;
 			self.renderElement();
 			self.trigger("news_item_loaded");
+			self.$el.on("click","a#back",function(ev){
+				ev.preventDefault();
+				self.trigger("load_list_page");
+			});
 		}
 	});
-	// openerp.web.Banner = openerp.web.Widget.extend({
-	// 	template:"InternalHome.banner"
-	// });
 	openerp.web.Foot = openerp.web.Widget.extend({
 		template:"InternalHome.foot"
 	});
@@ -82,9 +92,9 @@ openerp.updis = function(openerp) {
         	return $.when(this._super()).pipe(function() {
         		self.session.session_authenticate('demo', 'admin', 'admin').pipe(function(){
 	        		self.show_head();
-	        		// self.show_banner();
-	        		self.show_service();
+	        		self.show_shortcuts();
 	        		self.show_news();
+	        		self.show_content();
 	        		self.show_foot();
 						        	
         		});
@@ -95,10 +105,10 @@ openerp.updis = function(openerp) {
 			self.head = new openerp.web.Head(self);
 			self.head.appendTo(self.$("#header"));
 		},
-		show_service:function(){
+		show_shortcuts:function(){
 			var self= this;	
-			self.service = new openerp.web.Service(self);
-			self.service.appendTo(self.$("#content"));			
+			self.shortcuts = new openerp.web.Shortcuts(self);
+			self.shortcuts.appendTo(self.$("#shortcuts"));			
 		},
 		show_news:function(){
 			var self= this;	
@@ -106,11 +116,11 @@ openerp.updis = function(openerp) {
 			self.news.appendTo(self.$("#content"));		
 			self.news.on("read_news_item",self,self.on_read_news_item);	
 		},
-		// show_banner:function(){
-		// 	var self= this;	
-		// 	self.banner = new openerp.web.Banner(self);
-		// 	self.banner.appendTo(self.$el);			
-		// },
+		show_content:function(){
+			var self=this;
+			self.content = new openerp.web.Content();
+			self.content.appendTo(self.$("#content"));
+		},
 		show_foot:function(){
 			var self= this;	
 			self.foot = new openerp.web.Foot(self);
@@ -120,13 +130,19 @@ openerp.updis = function(openerp) {
 			var self = this;
 			self.news_item = new openerp.web.NewsItem(self,nid);
 			self.news_item.on("news_item_loaded",this,this.on_news_item_loaded);
-			self.news_item.insertAfter(this.$("#head"));		
+			self.news_item.on("load_list_page",this,this.on_load_list_page);			
+			self.news_item.insertAfter(this.$("#shortcuts"));		
 		},
 		on_news_item_loaded:function(){
 			var self=this;
 			self.news.destroy();
-			self.banner.destroy();
-			self.service.destroy();
+			self.content.destroy();
+		},
+		on_load_list_page:function(){
+			var self=this;
+			self.news_item.destroy();
+			self.show_news();
+			self.show_content();
 		}
 	})
 }

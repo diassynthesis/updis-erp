@@ -32,7 +32,8 @@
 				<div class="main-area home-main-area">
 					<div class="main-holder home-holder">
 						<div id="content" class="content_full_width">
-							
+							<div id="shortcuts" />
+
 						</div>
 					</div>
 				</div>	
@@ -87,24 +88,30 @@
 			</div>
 		</div>		
 	</t>	
-	<t t-name="InternalHome.service">
-		 <div class="sign one_third">
-			  <h4><span>XXX</span>你好！欢迎回来！</h4>
+	<t t-name="InternalHome.shortcuts">
+		 <div class="one_third">
+		 	<div class="sign">
+			  <strong style="display:block"><span>XXX</span>你好！欢迎回来！</strong>
 			  <a href="#">个人中心</a><a href="#">基本信息修改</a><a href="#">密码修改</a><a href="#">退出登录</a>
+			  <br class="clear"/>
+			</div>
 		 </div>
 		 
-		 <div class="msg one_third">
+		 <div class="one_third">
+		 	<div class="msg">
 			  <a href="#">观察评论</a>|<a href="#">规划要问</a>|<a href="#">市局信息</a>|<a href="#">城市热点</a>
 			  <a href="#">最新发表</a>|<a href="#">本院快讯</a>|<a href="#">共享资源</a>|<a href="#">业余生活</a>
+			</div>
 		 </div>
 		 
-		 <div class="search one_third_last">
+		 <div class="one_third_last">
+		 	<div class="search">
 			  <form method="get" action="#"><input name="" type="text" /><input name="" type="submit" value=" " class="button" /></form>
-			  <div class="opt">热门搜索：<a href="#">城市规划</a><a href="#">规划设计</a><a href="#">规划发展</a><a href="#">城市设计</a></div>
+			  <div class="opt">热门搜索：<a href="#">城市规划</a><a href="#">规划设计</a><a href="#">规划发展</a><a href="#">城市设计</a></div></div>
 		 </div>
 		 <br class="clear" />
 	</t>
-	<t t-name="InternalHome.news.item">
+	<t t-name="InternalHome.news.item.private">
 		<li><a href="#" class="message-item" t-att-data-id="news.id"><t t-esc="news.name" /></a><p><t t-esc="widget.format(news.write_date,{'type':'date'},'-')"/> 总师室</p></li>
 	</t>
 	<t t-name="InternalHome.news">
@@ -114,7 +121,7 @@
 					<h2>本院快讯<span>NEWS</span></h2>
 					<t t-if="widget.kuanxun_news">
 						<t t-foreach="widget.kuanxun_news" t-as="news">
-							<t t-call="InternalHome.news.item"/>
+							<t t-call="InternalHome.news.item.private"/>
 						</t>
 					</t>
 				</ul>
@@ -124,7 +131,7 @@
 					<h2>通知<span>NOTICE</span></h2>
 					<t t-if="widget.tongzhi_news">
 						<t t-foreach="widget.tongzhi_news" t-as="news">
-							<t t-call="InternalHome.news.item"/>
+							<t t-call="InternalHome.news.item.private"/>
 						</t>
 					</t>
 				</ul>
@@ -134,7 +141,7 @@
 					<h2>招投标信息<span>BIDDING INFORMATION</span></h2>
 					<t t-if="widget.toubiao_news">
 						<t t-foreach="widget.toubiao_news" t-as="news">
-							<t t-call="InternalHome.news.item"/>
+							<t t-call="InternalHome.news.item.private"/>
 						</t>
 					</t>
 				</ul>
@@ -142,12 +149,47 @@
 			<br class="clear" />
 		</div>
 	</t>
+	<t t-name="InternalHome.content.tabContent">
+		<li class="tab_con" style="display:none;">
+			<dl class="short">
+				<dt><a href="#"><img src="/updis/static/src/img/tab_1.jpg"></img></a></dt>
+				<dd>
+                  <a href="#">[社会]揭开“美国衰落”的真相1</a>
+                  <p>2个月前 信息中心</p>
+                  <span>这种自我矛盾贯穿全书。假如美国并未处在衰落之中，那么人们为何要关注这个问题？另一方面，如果美国正主动促成自身的衰落...</span>
+              </dd>
+			</dl>
+		</li>
+	</t>
+	<t t-name="InternalHome.content">
+		<div id="news_categories">			
+			<div class="one_half">
+				<div class="tabbox">
+					<ul class="tabs">
+						<li class="thistab"><a href="#">观察评论</a></li>
+						<li class=""><a href="#">观察评论</a></li>
+					</ul>
+					<ul class="tab_conbox" id="tab_conbox">
+						<t t-call="InternalHome.content.tabContent" />	
+						<t t-call="InternalHome.content.tabContent" />						
+		            </ul>
+				</div>
+			</div>
+			<div class="one_half_last">fd
+			</div>
+			<br class="clear"/>
+		</div>
+	</t>
 	<t t-name="InternalHome.newsitem">
-		<h1>
+		<div>			
+			<a href="#" id="back"> List </a>
 			<t t-if="widget.newsitem">
-				<t t-esc="widget.newsitem.name"/>
+				<h1>
+					<t t-esc="widget.newsitem.name"/>				
+				</h1>
+				<t t-raw="widget.newsitem.display_content"/>
 			</t>
-		</h1>
+		</div>
 	</t>
 	<t t-name="InternalHome.foot">
 		 <div class="one_fifth">

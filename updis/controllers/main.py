@@ -18,10 +18,10 @@ class InternalHome(openerp.addons.web.http.Controller):
 		css += '\n <link rel="stylesheet" href="/updis/static/src/css/style.css">'
 		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/common.css">'
 		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/ie8.css">'
+		css += '\n <link rel="stylesheet" href="/updis/static/src/css/internal-home.css">'
 		css += '\n <link rel="stylesheet" href="/updis/static/src/css/karma-teal-grey.css">'
 		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/secondary-teal-grey.css">'
 		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/bootstrap-responsive.css">'
-		css += '\n <link rel="stylesheet" href="/updis/static/src/css/internal-home.css">'
 		# cookie = req.httprequest.cookies.get("instance0|session_id")
 		# session_id = cookie.replace("%22","")
 		# template = html_template.replace('<html','<html manifest="/pos/manifest?session_id=%s"'%session_id)
