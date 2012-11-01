@@ -44,7 +44,7 @@
     command: "inserthtml",
     popupName: "imageuploader",
     popupClass: "cleditorPrompt",
-    popupContent: "<div id='imageuploader' />",
+    popupContent: "<div id='imageuploader' /><div id='imagecontainer'/>",
     buttonClick: imageuploaderClick
   }; 
   // Add the button to the default controls before the bold button
@@ -61,9 +61,12 @@
       uploadButtonText: "上传图片",
       allowedExtensions: ['jpeg', 'jpg', 'png', 'gif','bmp'],
       sizeLimit: 3145728, //3M = 3*1024k*1024byte
+      disableDefaultDropzone:true,
       onComplete: function(id, imageName, responseJSON) {
-        var html = "<img src='" + responseJSON.url + "'/>";
+        var html = "<img id='target' src='" + responseJSON.url + "'/>";
         var editor = data.editor;
+        // $(html).appendTo($(data.popup).find('#imagecontainer'));
+        // $(data.popup).find('#target').Jcrop();
         editor.execCommand(data.command, html, null, data.button);
         editor.hidePopups();
         editor.focus();
