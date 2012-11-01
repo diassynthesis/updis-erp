@@ -10,7 +10,7 @@ from openerp.addons.web.controllers.main import manifest_list, module_boot,html_
 class InternalHome(openerp.addons.web.http.Controller):
 	_cp_path = "/cms"
 	@openerp.addons.web.http.httprequest
-	def app(self,req,**kw):
+	def index(self,req,**kw):
 		js = "\n        ".join('<script type="text/javascript" src="%s"></script>' % i for i in manifest_list(req, None, 'js'))
 		js += '\n <script type="text/javascript" src="/updis/static/src/js/updis.js"></script>'
 		# js += '\n <script type="text/javascript" src="/updis/static/src/js/bootstrap.js"></script>'
