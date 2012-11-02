@@ -6,17 +6,21 @@ openerp.updis = function(openerp) {
         	this._super.apply(this, arguments);
 		},
 		start:function(){
-			this._super.apply(this, arguments);
+			var self = this;
+			this._super.apply(this, arguments);			
+			self.$el.appendTo($("#header"));
 		}
 	});
+	openerp.web.client_actions.add("internal_home","openerp.web.Head");
+
 	openerp.web.Shortcuts = openerp.web.Widget.extend({
 		template:"InternalHome.shortcuts"
 	});
 	openerp.web.News = openerp.web.Widget.extend({
 		template:"InternalHome.news",
 		
-		init:function(){
-        	this._super.apply(this, arguments);
+		init:function(parent){
+        	this._super(parent);
 			this.format=openerp.web.format_value;
 		},
 		start:function(){
@@ -41,8 +45,20 @@ openerp.updis = function(openerp) {
 			self.renderElement();		
 			self.$el.on("click","a",function(evt){				
 				evt.preventDefault();
-				var news_id=$(this).data('id');		
-				self.trigger("read_news_item",news_id);
+				var news_id=$(this).data('id');
+				var options= {
+					type:'ir.actions.act_window',
+					res_model: 'document.page',
+					res_id: news_id,
+					views: [['view_wiki_form','form']],
+					target:'current',
+					// pager : false,
+					// search_view: false,
+					action_buttons: false
+					// sidebar:false
+				}
+				self.getParent().action_manager.do_action(options);
+				// self.trigger("read_news_item",news_id);
 			});
 		}
 	});
@@ -90,20 +106,14 @@ openerp.updis = function(openerp) {
 		start:function(){
 			var self = this;
         	return $.when(this._super()).pipe(function() {
-        		self.session.session_authenticate('demo', 'admin', 'admin').pipe(function(){
-	        		self.show_head();
+        		self.session.session_authenticate('demo', 'admin', 'admin').pipe(function(){	        		
+	        		self.action_manager.do_action("internal_home");
 	        		self.show_shortcuts();
 	        		self.show_news();
 	        		self.show_content();
 	        		self.show_foot();
-						        	
         		});
         	});			
-		},
-		show_head:function(){
-			var self= this;	
-			self.head = new openerp.web.Head(self);
-			self.head.appendTo(self.$("#header"));
 		},
 		show_shortcuts:function(){
 			var self= this;	
@@ -113,13 +123,13 @@ openerp.updis = function(openerp) {
 		show_news:function(){
 			var self= this;	
 			self.news = new openerp.web.News(self);
-			self.news.appendTo(self.$("#content"));		
+			self.news.appendTo(self.$("#bodyContent"));		
 			self.news.on("read_news_item",self,self.on_read_news_item);	
 		},
 		show_content:function(){
 			var self=this;
 			self.content = new openerp.web.Content();
-			self.content.appendTo(self.$("#content"));
+			self.content.appendTo(self.$("#bodyContent"));
 		},
 		show_foot:function(){
 			var self= this;	

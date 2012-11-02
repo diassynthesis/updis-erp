@@ -31,9 +31,9 @@
 			<div id="main">
 				<div class="main-area home-main-area">
 					<div class="main-holder home-holder">
-						<div id="content" class="content_full_width">
+						<div id="content" class="content_full_width openerp">
 							<div id="shortcuts" />
-
+							<div id="bodyContent" class="oe_application"/>
 						</div>
 					</div>
 				</div>	

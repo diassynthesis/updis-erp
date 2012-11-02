@@ -1,4 +1,7 @@
-
+.openerp {
+	font-family: "Microsoft YaHei", "Lucida Grande", Helvetica, Verdana, Arial, sans-serif;
+	font-size: 100%;
+}
 .openerp-internal{
 	font-family: "Microsoft YaHei";
 }
