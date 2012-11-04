@@ -48,12 +48,20 @@ openerp.updis = function(openerp) {
 				var options= {
 					type:'ir.actions.act_window',
 					res_model: 'document.page',
-					res_id: news_id,
-					views: [[false,'form']],
+					// res_id: news_id,
+					views: [[false,'list'],[false,'form']],
 					target:'current',
 					// pager : false,
 					// search_view: false,
-					action_buttons: false
+					action_buttons: false,
+					flags:{
+						// 'search_view':false
+						'action_buttons':false,
+						'display_title':true
+					},
+					context:{
+						'search_default_name':'acd'
+					}
 					// sidebar:false
 				}
 				self.do_action(options);
