@@ -2,13 +2,31 @@ openerp.updis = function(openerp) {
 	var QWeb = openerp.web.qweb;	
 	openerp.web.Head = openerp.web.Widget.extend({
 		template:"InternalHome.head",
-		init:function(){
-        	this._super.apply(this, arguments);
+		init:function(parent){
+        	this._super(parent);
 		},
 		start:function(){
 			var self = this;
 			this._super.apply(this, arguments);			
+			var pagies = new openerp.web.Model("document.page");
+			pagies.query(["name"]).filter([['display_position','=','menu'],['type','=','category']]).all().then(function(res){				
+				self.menu_categories=res;	
+				self.on_loaded();
+			});
+
 			// self.$el.appendTo($("#header"));
+		},
+		on_loaded:function(){
+			var self=this;
+			self.renderElement();
+			self.$el.on("click","a.menu-category",function(evt){				
+				evt.preventDefault();				
+				self.trigger("load_category");
+			});
+			self.$el.on("click","a#company-logo",function(ev){
+				ev.preventDefault();
+				self.getParent().action_manager.do_action("internal_home");
+			})
 		}
 	});
 
@@ -48,8 +66,8 @@ openerp.updis = function(openerp) {
 				var options= {
 					type:'ir.actions.act_window',
 					res_model: 'document.page',
-					// res_id: news_id,
-					views: [[false,'list'],[false,'form']],
+					res_id: news_id,
+					views: [[false,'form']],
 					target:'current',
 					// pager : false,
 					// search_view: false,
@@ -130,12 +148,33 @@ openerp.updis = function(openerp) {
 		show_head:function(){
 			var self= this;	
 			self.head = new openerp.web.Head(self);
+			self.head.on("load_category",this,this.on_load_category);
 			self.head.appendTo(self.$("#header"));			
 		},
 		show_foot:function(){
 			var self= this;	
 			self.foot = new openerp.web.Foot(self);
 			self.foot.appendTo(self.$(".footer-holder"));			
+		},
+		on_load_category:function(){	
+			var self = this;
+			var category_name=$(this).data('category_name');
+			var options= {
+				type:'ir.actions.act_window',
+				res_model: 'document.page',
+				views: [[false,'list'],[false,'form']],
+				target:'current',
+				// pager : false,
+				flags:{
+					// 'search_view':false
+					// 'action_buttons':false,
+					// 'display_title':true
+				},
+				context:{
+					'search_default_name':category_name
+				}
+			}
+			self.action_manager.do_action(options);
 		}
 	})
 }

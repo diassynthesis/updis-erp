@@ -74,15 +74,15 @@
 			<div class="rays">
 				<div class="header-area">
 					<!-- ***************** - LOGO - ***************** -->
-					<a href="index-jquery-1.html" class="logo"><img src="/updis/static/src/img/logo.gif" alt="UPDIS" /> </a>
+					<a href="#" class="logo" id="company-logo"><img src="/updis/static/src/img/logo.gif" alt="UPDIS" /> </a>
 					<!-- ***************** - END LOGO - ***************** -->
 
 					<ul id="menu-main-nav">
-						<li><a href="#"><span><strong>办事指南</strong></span><span class="navi-description">Space by org</span></a></li>
-						<li><a href="#"><span><strong>资源库</strong></span><span class="navi-description">Resource Center</span></a></li>
-						<li><a href="#"><span><strong>规章制度</strong></span><span class="navi-description">Rules &amp; Regulations</span></a></li>
-						<li><a href="#"><span><strong>人员档案</strong></span><span class="navi-description">Staff Information</span></a></li>
-						<li><a href="#"><span><strong>项目管理</strong></span><span class="navi-description">Project Management</span></a></li>
+						<t t-if="widget.menu_categories">
+							<t t-foreach="widget.menu_categories" t-as="category">
+								<li><a class="menu-category" href="#" t-att-data-category_name="category.name"><span><strong><t t-esc="category.name" /></strong></span><span class="navi-description"><t t-esc="category.name"/></span></a></li>
+							</t>
+						</t>
 					</ul>
 				</div>
 			</div>
@@ -112,7 +112,7 @@
 		 <br class="clear" />
 	</t>
 	<t t-name="InternalHome.news.item.private">
-		<li><a href="#" class="message-item" t-att-data-id="news.id"><t t-esc="news.name" /></a><p><t t-esc="widget.format(news.write_date,{'type':'date'},'-')"/> 总师室</p></li>
+		<li><a href="#" class="message-item" t-att-data-id="news.id"><t t-raw="news.name" /></a><p><t t-esc="widget.format(news.write_date,{'type':'date'},'-')"/> 总师室</p></li>
 	</t>
 	<t t-name="InternalHome.news">
 		<div id="news">
