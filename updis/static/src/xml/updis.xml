@@ -78,9 +78,9 @@
 					<!-- ***************** - END LOGO - ***************** -->
 
 					<ul id="menu-main-nav">
-						<t t-if="widget.menu_categories">
-							<t t-foreach="widget.menu_categories" t-as="category">
-								<li><a class="menu-category" href="#" t-att-data-category_name="category.name"><span><strong><t t-esc="category.name" /></strong></span><span class="navi-description"><t t-esc="category.name"/></span></a></li>
+						<t t-if="widget.top_menu_items">
+							<t t-foreach="widget.top_menu_items" t-as="menu_item">
+								<li><a class="top-menu" href="#" t-att-data-action="menu_item.action"><span><strong><t t-esc="menu_item.name" /></strong></span><span class="navi-description"><t t-esc="menu_item.name"/></span></a></li>
 							</t>
 						</t>
 					</ul>

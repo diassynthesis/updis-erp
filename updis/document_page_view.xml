@@ -7,9 +7,10 @@
             <field name="model">document.page</field>
             <field name="inherit_id" ref="document_page.view_wiki_form" />
             <field name="arch" type="xml">
-            	<xpath expr="//group[last()]" position="after">
+            	<xpath expr="//field[@name='parent_id']" position="after">
             		<field name="display_position" attrs="{'invisible':[('type','=','content')]}" />
             		<field name="sequence" class="oe_edit_only" attrs="{'invisible':[('type','=','content')]}" />
+                    <field name="department_id" attrs="{'invisible':[('type','=','category')]}" />
             	</xpath>
             </field>
         </record>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="action_client_internal_home" model="ir.actions.client">
+            <field name="name">Internal Home</field>
+            <field name="tag">internal_home</field>
+        </record>
+    	<record id="top_menu" model="internal.home.menu">
+    		<field name="name">Top menu</field>
+            <field name="action" ref="action_client_internal_home"></field>
+    	</record>
+    	<record id="sc_menu" model="internal.home.menu">
+    		<field name="name">Shortcut menu</field>
+            <field name="action" ref="action_client_internal_home"></field>
+    	</record>    	
+    	<record id="footer_menu" model="internal.home.menu">
+    		<field name="name">Footer Menu</field>
+            <field name="action" ref="action_client_internal_home"></field>
+    	</record>
+    </data>
+</openerp>

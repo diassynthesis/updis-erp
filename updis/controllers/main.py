@@ -5,8 +5,33 @@ import os
 import openerp
 import time
 
+from openerp.addons.web import nonliterals
 from openerp.addons.web.controllers.main import manifest_list, module_boot,html_template
 
+class InternalHomeMenu(openerp.addons.web.http.Controller):
+	_cp_path = "/internalhome"
+	@openerp.addons.web.http.jsonrequest
+	def add_to_home_menu(self, req, parent_menu_id, action_id, context_to_save, domain, view_type, view_mode, name=''):
+		to_eval = nonliterals.CompoundContext(context_to_save)
+		to_eval.session = req.session
+		ctx = dict((k, v) for k, v in to_eval.evaluate().iteritems()
+				   if not k.startswith('search_default_'))
+		domain = nonliterals.CompoundDomain(domain)
+		domain.session = req.session
+		domain = domain.evaluate()
+		act_window = req.session.model(view_type).copy(action_id,{
+			'domain':str(domain),
+			'context':str(ctx),
+			# 'view_mode':view_mode,
+			'name':name
+			})
+		menu_id = req.session.model("internal.home.menu").create({
+			'name':name,
+			'parent_id':parent_menu_id,
+			'icon': 'STOCK_DIALOG_QUESTION',
+			'action': 'ir.actions.act_window,'+ str(act_window),
+			})
+		return True
 class InternalHome(openerp.addons.web.http.Controller):
 	_cp_path = "/cms"
 	@openerp.addons.web.http.httprequest
@@ -29,7 +54,7 @@ class InternalHome(openerp.addons.web.http.Controller):
 		r = html_template % {
 			'js': js,
 			'css': css,
-            'modules': simplejson.dumps(module_boot(req)+['updis',]),
+			'modules': simplejson.dumps(module_boot(req)+['updis',]),
 			'init': 'var wc = new s.web.InternalHome();wc.appendTo($(document.body));'
 		}
 		return r

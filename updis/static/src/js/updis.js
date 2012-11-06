@@ -1,5 +1,69 @@
 openerp.updis = function(openerp) {
 	var QWeb = openerp.web.qweb;	
+	openerp.web.AddToInternalHome = openerp.web.search.Input.extend({
+		template: 'SearchView.addtointernalhome',
+		_in_drawer: true,
+		start:function(){
+			var self = this;
+			this.$el
+				.on("click",'h4',this.proxy('show_option'))
+				.on("submit","form",function(e){
+					e.preventDefault();
+					self.add_internalhome();
+				});
+			return this.load_data().then(this.proxy("render_data"));
+		},
+		add_internalhome:function(){
+			var self = this;
+			var getParent = this.getParent();
+			var view_parent = this.getParent().getParent();
+			if (! view_parent.action || ! this.$el.find("select").val()) {
+	            this.do_warn("Can't find dashboard action");
+	            return;
+	        }
+	        var data = getParent.build_search_data();
+	        var context = new openerp.web.CompoundContext(getParent.dataset.get_context() || []);
+	        var domain = new openerp.web.CompoundDomain(getParent.dataset.get_domain() || []);
+	        _.each(data.contexts, context.add, context);
+        	_.each(data.domains, domain.add, domain);
+        	this.rpc('/internalhome/add_to_home_menu',{
+        		parent_menu_id:this.$el.find('select').val(),
+        		action_id: view_parent.action.id,
+        		context_to_save:context,
+        		domain: domain,
+        		view_type: view_parent.action.type,
+        		view_mode: view_parent.active_view,
+        		name:this.$el.find("input").val()
+        	}).then(function(rs){
+        		if (r === false) {
+        			self.do_warn("Could not add to internal home menu");
+        		} else {
+        			self.$el.toggleClass('oe_opened');
+        			self.do_notify("Filter added to dashboard",'');
+        		}
+        	})
+		},
+		render_data:function(res){
+			var selection = QWeb.render("SearchView.addtointernalhome.selection",{
+				selections:res
+			});
+			this.$("input").before(selection);
+		},
+		load_data:function(){
+			var internalmenu = new openerp.web.Model("internal.home.menu");
+			return internalmenu.query(['name'])
+				.all();
+		},
+		show_option:function(){
+			this.$el.toggleClass('oe_opened');			
+		}
+	});
+	openerp.web.SearchView.include({
+		add_common_inputs:function(){
+			this._super();
+			(new openerp.web.AddToInternalHome(this));
+		}
+	});
 	openerp.web.Head = openerp.web.Widget.extend({
 		template:"InternalHome.head",
 		init:function(parent){
@@ -8,9 +72,9 @@ openerp.updis = function(openerp) {
 		start:function(){
 			var self = this;
 			this._super.apply(this, arguments);			
-			var pagies = new openerp.web.Model("document.page");
-			pagies.query(["name"]).filter([['display_position','=','menu'],['type','=','category']]).all().then(function(res){				
-				self.menu_categories=res;	
+			var pagies = new openerp.web.Model("internal.home.menu");
+			pagies.query(["name",'action']).filter([['parent_id','=','Top menu']]).all().then(function(res){				
+				self.top_menu_items=res;	
 				self.on_loaded();
 			});
 
@@ -19,9 +83,10 @@ openerp.updis = function(openerp) {
 		on_loaded:function(){
 			var self=this;
 			self.renderElement();
-			self.$el.on("click","a.menu-category",function(evt){				
+			self.$el.on("click","a.top-menu",function(evt){				
 				evt.preventDefault();				
-				self.trigger("load_category");
+				var action = $(this).data("action");
+				self.getParent().action_manager.do_action(action.split(',')[1]);
 			});
 			self.$el.on("click","a#company-logo",function(ev){
 				ev.preventDefault();
