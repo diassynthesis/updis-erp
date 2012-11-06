@@ -1,21 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-    <data>
-        <record id="action_client_internal_home" model="ir.actions.client">
-            <field name="name">Internal Home</field>
-            <field name="tag">internal_home</field>
+	<data>
+		<menuitem name="Internal Home Configuration" id="internal_home_configuration" parent="knowledge.menu_document" sequence="50" />
+		<record id="view_tree_internal_home_menu" model="ir.ui.view">
+			<field name="name">internal.home.menu.list</field>
+			<field name="model">internal.home.menu</field>
+			<field name="arch" type="xml">
+				<tree string="Menu">
+					<field name="sequence" />
+					<field icon="icon" name="complete_name" string="Menu" />
+				</tree>
+			</field>
+		</record>
+		<record id="edit_internal_home_menu_access" model="ir.ui.view">
+            <field name="model">internal.home.menu</field>
+            <field name="arch" type="xml">
+                <form string="Menu" version="7.0">
+                  <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="parent_id"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="complete_name"/>
+                            <field name="action"/>
+                            <field name="icon"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Groups">
+                            <field name="groups_id"/>
+                        </page>
+                        <page string="Submenus">
+                            <!-- Note: make sure you have 'ir.ui.menu.full_list'
+                                 in the context to see all submenus! -->
+                            <field name="child_id"
+                                    context="{'default_parent_id': active_id}">
+                                <tree string="Menu">
+                                    <field name="sequence"/>
+                                    <field icon="icon" name="name" string="Menu"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                   </sheet> 
+                </form>
+            </field>
         </record>
-    	<record id="top_menu" model="internal.home.menu">
-    		<field name="name">Top menu</field>
-            <field name="action" ref="action_client_internal_home"></field>
-    	</record>
-    	<record id="sc_menu" model="internal.home.menu">
-    		<field name="name">Shortcut menu</field>
-            <field name="action" ref="action_client_internal_home"></field>
-    	</record>    	
-    	<record id="footer_menu" model="internal.home.menu">
-    		<field name="name">Footer Menu</field>
-            <field name="action" ref="action_client_internal_home"></field>
-    	</record>
-    </data>
+        <record id="edit_internal_home_menu_access_search" model="ir.ui.view">
+            <field name="name">internal.home.menu.search</field>
+            <field name="model">internal.home.menu</field>
+            <field name="arch" type="xml">
+                <search string="Menu">
+                    <field name="name" string="Menu"/>
+                    <field name="parent_id"/>
+                </search>
+            </field>
+        </record>
+        <record id="grant_internal_home_menu_access" model="ir.actions.act_window">
+            <field name="name">Internal Home Menu Items</field>
+            <field name="res_model">internal.home.menu</field>
+            <field name="view_type">form</field>
+            <!-- <field name="view_id" ref="edit_internal_home_menu_access"/> -->
+            <field name="context">{'internal.home.menu.full_list':True}</field>
+            <field name="search_view_id" ref="edit_internal_home_menu_access_search"/>
+            <field name="help">Manage and customize the items available and displayed in Internal Home Page. You can delete an item by clicking on the box at the beginning of each line and then delete it through the button that appeared. Items can be assigned to specific groups in order to make them accessible to some users within the system.</field>
+        </record>
+        <menuitem action="grant_internal_home_menu_access" id="menu_grant_internal_home_menu_access" parent="internal_home_configuration" sequence="1"/>
+
+		<record id="action_client_internal_home" model="ir.actions.client">
+			<field name="name">Internal Home</field>
+			<field name="tag">internal_home</field>
+		</record>
+		<record id="top_menu" model="internal.home.menu">
+			<field name="name">Top menu</field>
+			<field name="action" ref="action_client_internal_home"></field>
+		</record>
+		<record id="sc_menu" model="internal.home.menu">
+			<field name="name">Shortcut menu</field>
+			<field name="action" ref="action_client_internal_home"></field>
+		</record>    	
+		<record id="footer_menu" model="internal.home.menu">
+			<field name="name">Footer Menu</field>
+			<field name="action" ref="action_client_internal_home"></field>
+		</record>
+		<record id="internal_home_footer_1" model="internal.home.menu">
+			<field name="name">办事指南</field>
+			<field name="sequence">1</field>
+			<field name="parent_id" ref="footer_menu"></field>
+		</record>
+		<record id="internal_home_footer_2" model="internal.home.menu">
+			<field name="name">资源库</field>
+			<field name="sequence">2</field>
+			<field name="parent_id" ref="footer_menu"></field>
+		</record>
+		<record id="internal_home_footer_3" model="internal.home.menu">
+			<field name="name">规章制度</field>
+			<field name="sequence">3</field>
+			<field name="parent_id" ref="footer_menu"></field>
+		</record>
+		<record id="internal_home_footer_4" model="internal.home.menu">
+			<field name="name">人员档案</field>
+			<field name="sequence">4</field>
+			<field name="parent_id" ref="footer_menu"></field>
+		</record>
+		<record id="internal_home_footer_5" model="internal.home.menu">
+			<field name="name">项目管理</field>
+			<field name="sequence">4</field>
+			<field name="parent_id" ref="footer_menu"></field>
+		</record>
+	</data>
 </openerp>
