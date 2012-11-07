@@ -63,37 +63,7 @@ openerp.updis = function(openerp) {
 			this._super();
 			(new openerp.web.AddToInternalHome(this));
 		}
-	});
-	openerp.web.InternalHomeMenu = openerp.web.Widget.extend({
-		template:'InternalHomeMenu',
-		init:function(){
-			this._super.apply(this,arguments);
-			this.has_been_loaded = $.Deferred();
-			this.data={data:{children:[]}};			
-		},
-		start:function(){
-			this._super.apply(this,arguments);
-			return this.do_reload();			
-		},
-		do_reload:function(){
-			var self = this;
-			return this.rpc("/internalhome/load_menu",{}).then(function(r){
-				self.menu_loaded(r);
-			});
-		},
-		menu_loaded:function(data){
-			var self = this;
-			this.data = data;
-			var top_menu_item = data.data.children[0];
-			var top_menu = QWeb.render("InternalHomeMenu.head",{rootmenu:top_menu_item});
-			$("#menu-main-nav").append(top_menu);
-			var footer_menu = data.data.children[2];
-			var footer_menu_html = QWeb.render("InternalHomeMenu.footer",{rootmenu:footer_menu});
-			$(".footer-holder").html(footer_menu_html);
-        	this.trigger('internalhomemenu_loaded', data);
-        	this.has_been_loaded.resolve();			
-		}
-	});
+	});	
 	openerp.web.Head = openerp.web.Widget.extend({
 		template:"InternalHome.head",
 		init:function(parent){
@@ -128,6 +98,75 @@ openerp.updis = function(openerp) {
 	openerp.web.Shortcuts = openerp.web.Widget.extend({
 		template:"InternalHome.shortcuts"
 	});
+
+	openerp.web.InternalHomeMenu = openerp.web.Widget.extend({
+		template:'InternalHomeMenu',
+		init:function(){
+			this._super.apply(this,arguments);
+			this.has_been_loaded = $.Deferred();
+			this.data={data:{children:[]}};			
+		},
+		start:function(){
+			this._super.apply(this,arguments);
+			return this.do_reload();			
+		},
+		do_reload:function(){
+			var self = this;
+			return this.rpc("/internalhome/load_menu",{}).then(function(r){
+				self.menu_loaded(r);
+			});
+		},
+		menu_loaded:function(data){
+			var self = this;
+			this.data = data;
+			var top_menu_item = data.data.children[0];
+			var top_menu = QWeb.render("InternalHomeMenu.head",{rootmenu:top_menu_item});
+			$("#menu-main-nav").append(top_menu);
+
+			var mainNav=$('#menu-main-nav');
+		    var lis=mainNav.find('li');
+		    var shownav=$("#menu-main-nav");
+		    lis.children('ul').wrap('<div class="c" / >');
+		    var cElems=$('.c');
+		    cElems.wrap('<div class="drop" / >');
+		    cElems.before('<div class="t"></div>');
+		    cElems.after('<div class="b"></div>');
+		    $(shownav).find(".sub-menu").css({display:"block"});
+		    initNav();
+
+			var footer_menu = data.data.children[2];
+			var footer_menu_html = QWeb.render("InternalHomeMenu.footer",{rootmenu:footer_menu});
+			$(".footer-holder").html(footer_menu_html);
+        	this.trigger('internalhomemenu_loaded', data);
+
+        	$('a[data-menu]').click(this.on_menu_click);
+
+        	this.has_been_loaded.resolve();			
+		},
+		menu_click:function(id,needaction){
+			if (!id) { return; }
+
+	        // find back the menuitem in dom to get the action
+	        var $item = $('a[data-menu=' + id + ']');
+	        
+	        var action_id = $item.data('action-id');	        
+	        if (action_id) {
+	            this.trigger('menu_click', {
+	                action_id: action_id,
+	                needaction: needaction,
+	                id: id,
+	                previous_menu_id: this.current_menu // Here we don't know if action will fail (in which case we have to revert menu)
+	            }, $item);
+	        }
+	        // this.open_menu(id);
+		},
+		on_menu_click:function(ev){
+			ev.preventDefault();
+			var needaction = $(ev.target).is('div.oe_menu_counter');
+        	this.menu_click($(ev.currentTarget).data('menu'), needaction);
+		}
+	});
+
 	openerp.web.News = openerp.web.Widget.extend({
 		template:"InternalHome.news",
 		
@@ -245,11 +284,11 @@ openerp.updis = function(openerp) {
 			var self = this;
 			self.menu = new openerp.web.InternalHomeMenu(self);
 			self.menu.appendTo(self.$('#header'));
+        	self.menu.on('menu_click', this, this.on_menu_action);
 		},
 		show_head:function(){
 			var self= this;	
 			self.head = new openerp.web.Head(self);
-			self.head.on("load_category",this,this.on_load_category);
 			self.head.appendTo(self.$("#header"));			
 		},
 		show_foot:function(){
@@ -257,25 +296,21 @@ openerp.updis = function(openerp) {
 			self.foot = new openerp.web.Foot(self);
 			self.foot.appendTo(self.$(".footer-holder"));			
 		},
-		on_load_category:function(){	
-			var self = this;
-			var category_name=$(this).data('category_name');
-			var options= {
-				type:'ir.actions.act_window',
-				res_model: 'document.page',
-				views: [[false,'list'],[false,'form']],
-				target:'current',
-				// pager : false,
-				flags:{
-					// 'search_view':false
-					// 'action_buttons':false,
-					// 'display_title':true
-				},
-				context:{
-					'search_default_name':category_name
-				}
-			}
-			self.action_manager.do_action(options);
-		}
+		on_menu_action: function(options) {
+	        var self = this;
+	        return this.rpc("/web/action/load", { action_id: options.action_id })
+	            .pipe(function (result) {
+	                var action = result;
+	                if (options.needaction) {
+	                    action.context.search_default_message_unread = true;
+	                }
+	                return $.when(self.action_manager.do_action(action, {
+	                    clear_breadcrumbs: true,
+	                    action_menu_id: self.menu.current_menu,
+	                })).fail(function() {
+	                    self.menu.open_menu(options.previous_menu_id);
+	                });
+	            });
+	    }
 	})
 }

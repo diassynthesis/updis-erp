@@ -3,8 +3,15 @@
     <t t-name="InternalHomeMenu">
     </t>
 <t t-name="InternalHomeMenu.head">
-	<li t-foreach="rootmenu.children" t-as="menu">
+	<li t-foreach="rootmenu.children" t-as="menu" t-att-class="menu.children.length>0? 'parent' :''">
 		<t t-call="InternalHomeMenu.link"/>
+        <t t-if="menu.children.length>0" >
+            <ul class="sub-menu">
+                <li t-foreach="menu.children" t-as="menu">
+                    <t t-call="InternalHomeMenu.link"/>  
+                </li>
+            </ul>   
+        </t>        
 	</li>
 </t>
 <t t-name="InternalHomeMenu.footer">
@@ -28,7 +35,9 @@
         t-att-data-menu="menu.id"
         t-att-data-action-model="menu.action ? menu.action.split(',')[0] : ''"
         t-att-data-action-id="menu.action ? menu.action.split(',')[1] : ''">
-        <t t-esc="menu.name"/>
+        <span>
+            <strong><t t-esc="menu.name"/></strong>
+        </span>
         <t t-if="menu.needaction_enabled and menu.needaction_counter">
             <div class="oe_tag oe_tag_dark oe_menu_counter">
                 <t t-esc="menu.needaction_counter"/>
@@ -36,4 +45,5 @@
         </t>
     </a>
 </t>
+
 </template>

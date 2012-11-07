@@ -69,7 +69,9 @@ class InternalHome(openerp.addons.web.http.Controller):
 	@openerp.addons.web.http.httprequest
 	def index(self,req,**kw):
 		js = "\n        ".join('<script type="text/javascript" src="%s"></script>' % i for i in manifest_list(req, None, 'js'))
+
 		js += '\n <script type="text/javascript" src="/updis/static/src/js/updis.js"></script>'
+		js += '\n <script type="text/javascript" src="/updis/static/src/js/karma.js"></script>'
 		# js += '\n <script type="text/javascript" src="/updis/static/src/js/bootstrap.js"></script>'
 		css = "\n        ".join('<link rel="stylesheet" href="%s">' % i for i in manifest_list(req, None, 'css'))
 		css += '\n <link rel="stylesheet" href="/updis/static/src/css/style.css">'

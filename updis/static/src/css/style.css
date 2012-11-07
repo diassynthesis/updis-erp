@@ -557,7 +557,7 @@ body {margin:0;background:#f4f4f2;font:1.2em/19px "helvetica neue",Helvetica,Ari
 #menu-main-nav li strong {text-transform:uppercase;display:block;font-size:13px;letter-spacing: 0.6px;font-weight:800;}
 #menu-main-nav a {display:block;}
 #menu-main-nav a:hover {background-position:0 0;text-decoration:none;}
-#menu-main-nav .drop {width:236px;padding:0 1px 0 1px;position:absolute;left:-1px;top:52px;display:none;z-index:999;}
+#menu-main-nav .drop {width:236px;padding:0 1px 0 1px;position:absolute;left:-1px;top:32px;display:none;z-index:999;}
 #menu-main-nav .sub-menu {display: none;}
 #menu-main-nav .drop li.current-menu-item,
 #menu-main-nav .drop li.current_page_ancestor,
