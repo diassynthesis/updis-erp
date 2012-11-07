@@ -64,6 +64,36 @@ openerp.updis = function(openerp) {
 			(new openerp.web.AddToInternalHome(this));
 		}
 	});
+	openerp.web.InternalHomeMenu = openerp.web.Widget.extend({
+		template:'InternalHomeMenu',
+		init:function(){
+			this._super.apply(this,arguments);
+			this.has_been_loaded = $.Deferred();
+			this.data={data:{children:[]}};			
+		},
+		start:function(){
+			this._super.apply(this,arguments);
+			return this.do_reload();			
+		},
+		do_reload:function(){
+			var self = this;
+			return this.rpc("/internalhome/load_menu",{}).then(function(r){
+				self.menu_loaded(r);
+			});
+		},
+		menu_loaded:function(data){
+			var self = this;
+			this.data = data;
+			var top_menu_item = data.data.children[0];
+			var top_menu = QWeb.render("InternalHomeMenu.head",{rootmenu:top_menu_item});
+			$("#menu-main-nav").append(top_menu);
+			var footer_menu = data.data.children[2];
+			var footer_menu_html = QWeb.render("InternalHomeMenu.footer",{rootmenu:footer_menu});
+			$(".footer-holder").html(footer_menu_html);
+        	this.trigger('internalhomemenu_loaded', data);
+        	this.has_been_loaded.resolve();			
+		}
+	});
 	openerp.web.Head = openerp.web.Widget.extend({
 		template:"InternalHome.head",
 		init:function(parent){
@@ -198,17 +228,23 @@ openerp.updis = function(openerp) {
 	openerp.web.InternalHome = openerp.web.Client.extend({
 		_template:'InternalHome',	
 		init: function(){
-        	this._super.apply(this, arguments);
+        	this._super(parent);
 		},
 		start:function(){
 			var self = this;
         	return $.when(this._super()).pipe(function() {
         		self.session.session_authenticate('demo', 'admin', 'admin').pipe(function(){	        			        		
 	        		self.show_head();
+	        		self.show_internal_common();
 	        		self.action_manager.do_action("internal_home");
 	        		self.show_foot();
         		});
         	});			
+		},
+		show_internal_common:function(){
+			var self = this;
+			self.menu = new openerp.web.InternalHomeMenu(self);
+			self.menu.appendTo(self.$('#header'));
 		},
 		show_head:function(){
 			var self= this;	

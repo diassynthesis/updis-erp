@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template>
 	<div t-name="SearchView.addtointernalhome" class="oe_searchview_dashboard">
-    <h4>Add to internalhome</h4>
-    <form>
-        <p><input placeholder="Title of new internalhome item"/></p>
-        <button class="oe_apply" type="submit">Add</button>
-    </form>
-</div>
-<t t-name="SearchView.addtointernalhome.selection">
-    <select>
-        <option t-foreach="selections" t-as="element"
-                t-att-value="element.id ">
-            <t t-esc="element.name"/></option>
-    </select>
-</t>
+        <h4>Add to internalhome</h4>
+        <form>
+            <p><input placeholder="Title of new internalhome item"/></p>
+            <button class="oe_apply" type="submit">Add</button>
+        </form>
+    </div>
+    <t t-name="SearchView.addtointernalhome.selection">
+        <select>
+            <option t-foreach="selections" t-as="element"
+                    t-att-value="element.id ">
+                <t t-esc="element.name"/></option>
+        </select>
+    </t>
 </template>

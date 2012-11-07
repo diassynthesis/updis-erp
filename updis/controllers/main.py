@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
+import operator
 import simplejson
 import os
 import openerp
@@ -32,6 +33,37 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 			'action': 'ir.actions.act_window,'+ str(act_window),
 			})
 		return True
+	@openerp.addons.web.http.jsonrequest
+	def load_menu(self,req):
+		return {'data':self.do_load(req)}
+	def do_get_roots(self,req):
+		s = req.session
+		context = s.eval_context(req.context)
+		Menus = s.model("internal.home.menu")
+		return Menus.search([['parent_id','=',False]],0,False,False,context)
+
+	def do_load(self,req):
+		""""Loads all internal home menus and their sub menus"""
+		context = req.session.eval_context(req.context)
+		Menus = req.session.model("internal.home.menu")
+		menu_ids = Menus.search([],0,False,False,context)
+		menu_items = Menus.read(menu_ids, ['name', 'sequence', 'parent_id', 'action', 'needaction_enabled', 'needaction_counter'], context)
+		menu_roots = Menus.read(self.do_get_roots(req),['name', 'sequence', 'parent_id', 'action', 'needaction_enabled', 'needaction_counter'], context)
+		menu_root = {'id': False, 'name': 'root', 'parent_id': [-1, ''], 'children' : menu_roots}
+
+		menu_items.extend(menu_roots)
+		menu_items_map = dict((menu_item['id'],menu_item) for menu_item in menu_items)				
+		for menu_item in menu_items:
+			if menu_item['parent_id']:
+				parent = menu_item['parent_id'][0]
+			else:
+				parent = False
+			if parent in menu_items_map:
+				menu_items_map[parent].setdefault('children',[]).append(menu_item)
+		for menu_item in menu_items:
+			menu_item.setdefault('children',[]).sort(key=operator.itemgetter('sequence'))
+		return menu_root
+
 class InternalHome(openerp.addons.web.http.Controller):
 	_cp_path = "/cms"
 	@openerp.addons.web.http.httprequest
