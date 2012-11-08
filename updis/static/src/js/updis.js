@@ -277,6 +277,7 @@ openerp.updis = function(openerp) {
 	        		self.show_internal_common();
 	        		self.action_manager.do_action("internal_home");
 	        		self.show_foot();
+	        		self.set_title();
         		});
         	});			
 		},
@@ -296,6 +297,11 @@ openerp.updis = function(openerp) {
 			self.foot = new openerp.web.Foot(self);
 			self.foot.appendTo(self.$(".footer-holder"));			
 		},
+		set_title: function(title) {
+	        title = _.str.clean(title);
+	        var sep = _.isEmpty(title) ? '' : ' - ';
+	        document.title = title + sep + 'UPDIS';
+	    },
 		on_menu_action: function(options) {
 	        var self = this;
 	        return this.rpc("/web/action/load", { action_id: options.action_id })
