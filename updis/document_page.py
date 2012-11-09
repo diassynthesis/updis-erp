@@ -9,8 +9,9 @@ class document_page(osv.osv):
 		'read_times': fields.integer("Read Times"),
 		'department_id':fields.many2one("hr.department","Department"),
 		'display_position':fields.selection(
-			[('top','Top'),('top','Top'),("menu","Top menu"),("shortcut","Shortcuts"),("content_left","Content Left"),("content_right","Content Right")]
+			[("shortcut","Shortcuts"),("content_left","Content Left"),("content_right","Content Right")]
 			,"Display Position"),
+		'display_in_departments':fields.many2many("hr.department",string="Display in Departments"),
 		'sequence':fields.integer("Display Sequence"),
 	}
 	_defaults={

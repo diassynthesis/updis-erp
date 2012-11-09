@@ -15,6 +15,7 @@
 			<field name="name">hr.department.tree.inherit</field>
 			<field name="model">hr.department</field>
 			<field name="inherit_id" ref="hr.view_department_tree"/>
+			<field name="domain">[['deleted','=',False]]</field>
 			<field name="arch" type="xml">
 				<xpath expr="//tree" position="after">
 					<field name="deleted" />

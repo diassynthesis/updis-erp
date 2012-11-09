@@ -12,6 +12,9 @@
             		<field name="sequence" class="oe_edit_only" attrs="{'invisible':[('type','=','content')]}" />
                     <field name="department_id" attrs="{'invisible':[('type','=','category')]}" />
             	</xpath>
+                <xpath expr="//group" position="after">
+                    <field name="display_in_departments" domain="[['deleted','=',False]]" attrs="{'invisible':[('type','=','content')]}" string="Display in Departments"/>
+                </xpath>
             </field>
         </record>
     </data>
