@@ -175,19 +175,45 @@ openerp.updis = function(openerp) {
 			});
 		},
 		render_data:function(data){
-			this.categories = data;
-			self.shortcut_html = $(QWeb.render("InternalHome.homepage.categories.shortcut",{widget:this}));
-			self.shortcut_html.appendTo($("#bodyContent"));
-			self.content_html = $(QWeb.render("InternalHome.homepage.categories.content",{widget:this}));
-			self.content_html.appendTo($("#bodyContent"));	
+			this.data = data;
+			this.shortcut_html = $(QWeb.render("InternalHome.homepage.categories.shortcut",{widget:this}));
+			this.shortcut_html.appendTo($("#bodyContent"));
+			this.content_html = $(QWeb.render("InternalHome.homepage.categories.content",{widget:this}));
+			this.content_html.appendTo($("#bodyContent"));	
+			this.departments_html = $(QWeb.render("InternalHome.homepage.departments",{widget:this}));
+			this.departments_html.appendTo($("#bodyContent"));
 			
 			$.jqtab("#tabs","#tab_conbox","click");	
 			$.jqtab("#tabs2","#tab_conbox2","click");			
 			$.jqtab("#tabs3","#tab_conbox3","click");
+
+			$(".tabs-container .arrow").click(function(e){
+				e.preventDefault();
+				var content = $(".tabs-container .tabs");
+				var pos = content.position().left + 500;
+				if (pos>0) {
+					pos=0;
+				}
+				content.animate({ left: pos }, 1000);
+			});
+			$(".tabs-container .arrow_r").click(function(ev){
+				ev.preventDefault();
+				var width = 0;
+				$(".tabs-container ul.tabs > li").each(function(idx,itm){width += $(itm).width();});
+				var tab_window_width = $(".tabs-container").width();
+				var content = $(".tabs-container ul.tabs");				
+				var pos = content.position().left - 500;
+
+				if (width + pos < tab_window_width) {
+					pos = -width + tab_window_width;
+				}
+        		content.animate({ left: pos }, 1000);
+			});
 		},
 		destroy:function(){
-			shortcut_html.remove();
-			content_html.remove();
+			this.shortcut_html.remove();
+			this.content_html.remove();
+			this.departments_html.remove();
 		}
 	});
 	openerp.web.client_actions.add("internal_home","openerp.web.InternalHomePage");

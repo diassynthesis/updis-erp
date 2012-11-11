@@ -96,7 +96,7 @@
 	padding: 0;
 	list-style-type: none;
 	height: 24px;
-	width: 100%;
+	width: 20000px;
 }
 .tabs li {
 	height: 24px;
@@ -125,6 +125,9 @@
 .tab_con {
 	background-color: white;
 	padding: 20px 0 10px;
+}
+#content .tabs {
+	position: absolute;
 }
 #content .tabs .thistab, #content .tabs .thistab a,#content .tabs .thistab a:hover {
 	background: url('../img/tab_bj2.jpg') repeat-x center top;
@@ -171,4 +174,29 @@
 .tab_con dl.short dd span {
 	color: #828181;
 	line-height: 16px;
+}
+.tabs-container .arrow{
+	position: absolute;
+	display:block;
+	width:18px;
+	z-index: 10;
+	background: #fff;
+	height:30px;
+	left: 0px;
+}
+.tabs-container .arrow_r{
+	position: absolute;
+	display:block;
+	width:18px;
+	right: 0px;
+	z-index: 10;
+	background: #fff;
+	height:30px;
+}
+.department-container {
+	overflow:hidden;
+	position:relative;
+}
+.department-container .tabs {
+	margin-left: 18px;
 }

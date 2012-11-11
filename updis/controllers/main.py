@@ -15,12 +15,13 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 	def load_home_page_categories(self,req):
 		ret = {}
 		context = req.session.eval_context(req.context)
-		Page = req.session.model("document.page")
+		Page = req.session.model("document.page")	
 
 		# All categories to display on internal home page
-		categories_ids = Page.search([['type','=','category'],['display_position','!=',False]])
+		categories_ids = Page.search([['type','=','category'],['display_position','!=',False]])		
 		categories = Page.read(categories_ids,['name','display_position','sequence'])
 		categories_map = dict((category['id'],category) for category in categories)
+
 		# import pdb;pdb.set_trace()
 		for cat in categories:
 			ret.setdefault(cat['display_position'],[]).append(cat)
@@ -28,11 +29,12 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 			pagies_id = Page.search([['type','=','content'],['parent_id','=',cat_id]],limit=6)
 			pagies = Page.read(pagies_id,['name','write_date','write_uid','sequence'])
 			categories_map[cat_id]['children'] = pagies
-		import pdb;pdb.set_trace()
 		for k,v in ret.items():
 			v.sort(key=operator.itemgetter('sequence'))
 			for cat in v:
 				cat.setdefault('children',[]).sort(key=operator.itemgetter('sequence'))
+
+		ret.update(self.do_load_department_pagies(req))
 		return ret
 	@openerp.addons.web.http.jsonrequest
 	def add_to_home_menu(self, req, parent_menu_id, action_id, context_to_save, domain, view_type, view_mode, name=''):
@@ -58,7 +60,7 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 		return True
 	@openerp.addons.web.http.jsonrequest
 	def load_menu(self,req):
-		return {'data':self.do_load(req)}
+		return {'data':self.do_load_menu(req)}
 
 	def do_get_roots(self,req):
 		s = req.session
@@ -66,7 +68,7 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 		Menus = s.model("internal.home.menu")
 		return Menus.search([['parent_id','=',False]],0,False,False,context)
 
-	def do_load(self,req):
+	def do_load_menu(self,req):
 		""""Loads all internal home menus and their sub menus"""
 		context = req.session.eval_context(req.context)
 		Menus = req.session.model("internal.home.menu")
@@ -87,7 +89,44 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 		for menu_item in menu_items:
 			menu_item.setdefault('children',[]).sort(key=operator.itemgetter('sequence'))
 		return menu_root
-
+	def do_load_department_pagies(self,req):
+		'''
+		return {
+			departments:[
+				'name':XXX,
+				'sequence':X,
+				'categories':[
+					{
+						'name':XXX,
+						'sequence':X,
+						'pagies':[
+							{
+								'name':XXX,
+								'id':XX
+							}
+						]
+					}
+				]
+			]
+		}
+		'''
+		ret = {}
+		Department = req.session.model("hr.department")
+		Page = req.session.model("document.page") 
+		departments_ids = Department.search([('deleted','=',False)])
+		departments = Department.read(departments_ids,['name','sequence'])
+		ret['departments'] = departments
+		# import pdb;pdb.set_trace()
+		for dep in departments:
+			categories_ids = Page.search([('type','=','category'),('display_in_departments','=',dep['id'])])
+			categories = Page.read(categories_ids,['name','sequence'])
+			dep['categories'] = categories
+			for cat in categories:
+				pagies_id = Page.search([('type','=','content'),('parent_id','=',cat['id']),('department_id','=',dep['id'])],limit=6)
+				pagies = Page.read(pagies_id,['name','sequence'])
+				cat['pagies'] = pagies
+		return ret
+		
 class InternalHome(openerp.addons.web.http.Controller):
 	_cp_path = "/cms"
 	@openerp.addons.web.http.httprequest
