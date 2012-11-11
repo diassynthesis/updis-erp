@@ -12,6 +12,29 @@ from openerp.addons.web.controllers.main import manifest_list, module_boot,html_
 class InternalHomeMenu(openerp.addons.web.http.Controller):
 	_cp_path = "/internalhome"
 	@openerp.addons.web.http.jsonrequest
+	def load_home_page_categories(self,req):
+		ret = {}
+		context = req.session.eval_context(req.context)
+		Page = req.session.model("document.page")
+
+		# All categories to display on internal home page
+		categories_ids = Page.search([['type','=','category'],['display_position','!=',False]])
+		categories = Page.read(categories_ids,['name','display_position','sequence'])
+		categories_map = dict((category['id'],category) for category in categories)
+		# import pdb;pdb.set_trace()
+		for cat in categories:
+			ret.setdefault(cat['display_position'],[]).append(cat)
+			cat_id = cat['id']
+			pagies_id = Page.search([['type','=','content'],['parent_id','=',cat_id]],limit=6)
+			pagies = Page.read(pagies_id,['name','write_date','write_uid','sequence'])
+			categories_map[cat_id]['children'] = pagies
+		import pdb;pdb.set_trace()
+		for k,v in ret.items():
+			v.sort(key=operator.itemgetter('sequence'))
+			for cat in v:
+				cat.setdefault('children',[]).sort(key=operator.itemgetter('sequence'))
+		return ret
+	@openerp.addons.web.http.jsonrequest
 	def add_to_home_menu(self, req, parent_menu_id, action_id, context_to_save, domain, view_type, view_mode, name=''):
 		to_eval = nonliterals.CompoundContext(context_to_save)
 		to_eval.session = req.session
@@ -36,6 +59,7 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 	@openerp.addons.web.http.jsonrequest
 	def load_menu(self,req):
 		return {'data':self.do_load(req)}
+
 	def do_get_roots(self,req):
 		s = req.session
 		context = s.eval_context(req.context)
@@ -72,6 +96,7 @@ class InternalHome(openerp.addons.web.http.Controller):
 
 		js += '\n <script type="text/javascript" src="/updis/static/src/js/updis.js"></script>'
 		js += '\n <script type="text/javascript" src="/updis/static/src/js/karma.js"></script>'
+		js += '\n <script type="text/javascript" src="/updis/static/src/js/tab.js"></script>'
 		# js += '\n <script type="text/javascript" src="/updis/static/src/js/bootstrap.js"></script>'
 		css = "\n        ".join('<link rel="stylesheet" href="%s">' % i for i in manifest_list(req, None, 'css'))
 		css += '\n <link rel="stylesheet" href="/updis/static/src/css/style.css">'

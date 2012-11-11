@@ -17,3 +17,4 @@ class document_page(osv.osv):
 	_defaults={
 		'sequence':10,		
 	}
+	_order='sequence,id'

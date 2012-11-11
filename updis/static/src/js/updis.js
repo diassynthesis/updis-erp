@@ -77,8 +77,6 @@ openerp.updis = function(openerp) {
 				self.top_menu_items=res;	
 				self.on_loaded();
 			});
-
-			// self.$el.appendTo($("#header"));
 		},
 		on_loaded:function(){
 			var self=this;
@@ -95,13 +93,10 @@ openerp.updis = function(openerp) {
 		}
 	});
 
-	openerp.web.Shortcuts = openerp.web.Widget.extend({
-		template:"InternalHome.shortcuts"
-	});
-
 	openerp.web.InternalHomeMenu = openerp.web.Widget.extend({
 		template:'InternalHomeMenu',
 		init:function(){
+
 			this._super.apply(this,arguments);
 			this.has_been_loaded = $.Deferred();
 			this.data={data:{children:[]}};			
@@ -166,101 +161,33 @@ openerp.updis = function(openerp) {
         	this.menu_click($(ev.currentTarget).data('menu'), needaction);
 		}
 	});
-
-	openerp.web.News = openerp.web.Widget.extend({
-		template:"InternalHome.news",
-		
-		init:function(parent){
-        	this._super(parent);
-			this.format=openerp.web.format_value;
-		},
-		start:function(){
-			var self = this;
-			
-			var pagies = new openerp.web.Model("document.page");
-			pagies.query(["name","write_date"]).filter([['parent_id','=','本院快讯']]).all().then(function(res){				
-				self.kuanxun_news=res;	
-				self.on_loaded();			
-			});
-			pagies.query(["name","write_date"]).filter([['parent_id','=','通知'],['type','=','content']]).all().then(function(res){				
-				self.tongzhi_news=res;
-				self.on_loaded();
-			});
-			pagies.query(["name","write_date"]).filter([['parent_id','=','招投标信息']]).all().then(function(res){				
-				self.toubiao_news=res;
-				self.on_loaded();
-			});
-		},
-		on_loaded:function(){	
-			var self = this;
-			self.renderElement();		
-			self.$el.on("click","a",function(evt){				
-				evt.preventDefault();
-				var news_id=$(this).data('id');
-				var options= {
-					type:'ir.actions.act_window',
-					res_model: 'document.page',
-					res_id: news_id,
-					views: [[false,'form']],
-					target:'current',
-					// pager : false,
-					// search_view: false,
-					action_buttons: false,
-					flags:{
-						// 'search_view':false
-						'action_buttons':false,
-						'display_title':true
-					},
-					context:{
-						'search_default_name':'acd'
-					}
-					// sidebar:false
-				}
-				self.do_action(options);
-				// self.trigger("read_news_item",news_id);
-			});
-		}
-	});
-	openerp.web.Content = openerp.web.Widget.extend({
-		template:'InternalHome.content',
-		init:function(parent){
-			this._super(parent);
-		},
-		start:function(){
-
-		}
-	});
-	openerp.web.Foot = openerp.web.Widget.extend({
-		template:"InternalHome.foot"
-	});
-	openerp.web.InternalHomePage = openerp.web.Widget.extend({
+	openerp.web.InternalHomePage = openerp.web.Widget.extend({		
 		init:function(){
         	this._super.apply(this, arguments);
+        	this.data = {data:{children:[]}};
+        	this.format = openerp.web.format_value;
 		},
 		start:function(){
 			var self = this;
-			this._super.apply(this, arguments);			
-			// self.$el.appendTo($("#header"));
-			self.show_shortcuts();
-    		self.show_news();
-    		self.show_content();
-    		self.$el.appendTo($("#bodyContent"));
+			this._super.apply(this, arguments);
+    		return this.rpc("/internalhome/load_home_page_categories",{}).then(function(r){
+				self.render_data(r);
+			});
 		},
-		show_shortcuts:function(){
-			var self= this;	
-			self.shortcuts = new openerp.web.Shortcuts(self);
-			self.shortcuts.appendTo(self.$el);			
+		render_data:function(data){
+			this.categories = data;
+			self.shortcut_html = $(QWeb.render("InternalHome.homepage.categories.shortcut",{widget:this}));
+			self.shortcut_html.appendTo($("#bodyContent"));
+			self.content_html = $(QWeb.render("InternalHome.homepage.categories.content",{widget:this}));
+			self.content_html.appendTo($("#bodyContent"));	
+			
+			$.jqtab("#tabs","#tab_conbox","click");	
+			$.jqtab("#tabs2","#tab_conbox2","click");			
+			$.jqtab("#tabs3","#tab_conbox3","click");
 		},
-		show_news:function(){
-			var self= this;	
-			self.news = new openerp.web.News(self);
-			self.news.appendTo(self.$el);		
-			// self.news.on("read_news_item",self,self.on_read_news_item);	
-		},
-		show_content:function(){
-			var self=this;
-			self.content = new openerp.web.Content();
-			self.content.appendTo(self.$el);
+		destroy:function(){
+			shortcut_html.remove();
+			content_html.remove();
 		}
 	});
 	openerp.web.client_actions.add("internal_home","openerp.web.InternalHomePage");
@@ -271,12 +198,11 @@ openerp.updis = function(openerp) {
 		},
 		start:function(){
 			var self = this;
-        	return $.when(this._super()).pipe(function() {
-        		self.session.session_authenticate('demo', 'admin', 'admin').pipe(function(){	        			        		
+        	return $.when(this._super()).then(function() {
+        		self.session.session_authenticate('demo', 'admin', 'admin').then(function(){	        			        		
 	        		self.show_head();
 	        		self.show_internal_common();
 	        		self.action_manager.do_action("internal_home");
-	        		self.show_foot();
 	        		self.set_title();
         		});
         	});			
@@ -292,11 +218,6 @@ openerp.updis = function(openerp) {
 			self.head = new openerp.web.Head(self);
 			self.head.appendTo(self.$("#header"));			
 		},
-		show_foot:function(){
-			var self= this;	
-			self.foot = new openerp.web.Foot(self);
-			self.foot.appendTo(self.$(".footer-holder"));			
-		},
 		set_title: function(title) {
 	        title = _.str.clean(title);
 	        var sep = _.isEmpty(title) ? '' : ' - ';
@@ -305,7 +226,7 @@ openerp.updis = function(openerp) {
 		on_menu_action: function(options) {
 	        var self = this;
 	        return this.rpc("/web/action/load", { action_id: options.action_id })
-	            .pipe(function (result) {
+	            .then(function (result) {
 	                var action = result;
 	                if (options.needaction) {
 	                    action.context.search_default_message_unread = true;
