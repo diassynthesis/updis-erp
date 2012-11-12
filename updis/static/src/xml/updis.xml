@@ -139,7 +139,20 @@
 					</li>
 				</ul>
 				<ul class="tab_conbox" id="tab_conbox">
-					<li t-foreach="widget.data['content_left']" t-as="category" class="tab_con">		
+					<li t-foreach="widget.data['content_left']" t-as="category" class="tab_con">	
+						<dl class="short" t-if="category['photo_news']">
+							<dt>
+								<a href="#">
+									<img t-att-src="'data:image/png;base64,'+category['photo_news']['image_medium']"/>
+								</a>
+							</dt>
+							
+							<dd>
+								<a href="#"><t t-esc="category['photo_news']['name']"/></a>
+								<p><t t-esc="widget.format(category.photo_news.write_date,{'type':'date'},'-')"/><t t-esc="category['photo_news']['department_id']"/></p>
+								<span />
+							</dd>
+						</dl>
 						<div class="nr">
 							<t t-foreach="category.children" t-as="page">
 								<t t-call="InternalHome.news.item.section"/>

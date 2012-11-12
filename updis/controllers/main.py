@@ -27,13 +27,13 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 			ret.setdefault(cat['display_position'],[]).append(cat)
 			cat_id = cat['id']
 			pagies_id = Page.search([['type','=','content'],['parent_id','=',cat_id]],limit=6)
-			pagies = Page.read(pagies_id,['name','write_date','write_uid','sequence'])
+			pagies = Page.read(pagies_id,['name','write_date','write_uid','sequence','department_id'])
 			categories_map[cat_id]['children'] = pagies
+			categories_map[cat_id]['photo_news'] = self.do_load_first_photo_page(req,cat_id)
 		for k,v in ret.items():
 			v.sort(key=operator.itemgetter('sequence'))
 			for cat in v:
 				cat.setdefault('children',[]).sort(key=operator.itemgetter('sequence'))
-
 		ret.update(self.do_load_department_pagies(req))
 		return ret
 	@openerp.addons.web.http.jsonrequest
@@ -123,9 +123,24 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 			dep['categories'] = categories
 			for cat in categories:
 				pagies_id = Page.search([('type','=','content'),('parent_id','=',cat['id']),('department_id','=',dep['id'])],limit=6)
-				pagies = Page.read(pagies_id,['name','sequence'])
+				pagies = Page.read(pagies_id,['name','write_date','write_uid','sequence','department_id'])
 				cat['pagies'] = pagies
+				cat['photo_news'] = self.do_load_first_photo_page(req,cat['id'],dep['id'])
 		return ret
+	def do_load_first_photo_page(self,req,cat_id,department_id=False):
+		Page = req.session.model("document.page") 
+		options = [
+			('type','=','content'),
+			('parent_id','=',cat_id),
+			('photo_news','=',True),
+			('image_medium','!=',False),
+		]
+		if department_id:
+			options.append(('department_id','=',department_id))
+		pagies_id = Page.search(options,limit=1)
+		if pagies_id:
+			return Page.read(pagies_id,['name','write_date','write_uid','image_medium'])[0]
+
 		
 class InternalHome(openerp.addons.web.http.Controller):
 	_cp_path = "/cms"

@@ -58,12 +58,12 @@ openerp.updis = function(openerp) {
 			this.$el.toggleClass('oe_opened');			
 		}
 	});
-	openerp.web.SearchView.include({
-		add_common_inputs:function(){
-			this._super();
-			(new openerp.web.AddToInternalHome(this));
-		}
-	});	
+	// openerp.web.SearchView.include({
+	// 	add_common_inputs:function(){
+	// 		this._super();
+	// 		(new openerp.web.AddToInternalHome(this));
+	// 	}
+	// });	
 	openerp.web.Head = openerp.web.Widget.extend({
 		template:"InternalHome.head",
 		init:function(parent){

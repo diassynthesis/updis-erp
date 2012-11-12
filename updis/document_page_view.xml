@@ -11,6 +11,8 @@
             		<field name="display_position" attrs="{'invisible':[('type','=','content')]}" />
             		<field name="sequence" class="oe_edit_only" attrs="{'invisible':[('type','=','content')]}" />
                     <field name="department_id" attrs="{'invisible':[('type','=','category')]}" />
+                    <field name="image_medium" widget="image" class="oe_left oe_avatar" on_change="onchange_image(image_medium)"/>
+                    <field name="photo_news" on_change="onchange_photo_news(photo_news)" />
             	</xpath>
                 <xpath expr="//group" position="after">
                     <field name="display_in_departments" domain="[['deleted','=',False]]" attrs="{'invisible':[('type','=','content')]}" string="Display in Departments"/>
