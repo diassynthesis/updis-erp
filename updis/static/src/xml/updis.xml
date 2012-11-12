@@ -130,6 +130,21 @@
 			<br class="clear" />
 		</div>
 	</t>
+	<t t-name="InternalHome.homepage.categories.content.photo_page">
+		<dl class="short" t-if="category['photo_news']">
+			<dt>
+				<a href="#">
+					<img t-att-src="'data:image/png;base64,'+category['photo_news']['image_medium']"/>
+				</a>
+			</dt>
+			
+			<dd>
+				<a href="#"><t t-esc="category['photo_news']['name']"/></a>
+				<p><t t-esc="widget.format(category.photo_news.write_date,{'type':'date'},'-')"/><t t-esc="category['photo_news']['department_id']"/></p>
+				<span />
+			</dd>
+		</dl>
+	</t>
 	<t t-name="InternalHome.homepage.categories.content">		
 		<div id="tabbox" class="one_half">
 			<t t-if="widget.data['content_left']">
@@ -140,19 +155,7 @@
 				</ul>
 				<ul class="tab_conbox" id="tab_conbox">
 					<li t-foreach="widget.data['content_left']" t-as="category" class="tab_con">	
-						<dl class="short" t-if="category['photo_news']">
-							<dt>
-								<a href="#">
-									<img t-att-src="'data:image/png;base64,'+category['photo_news']['image_medium']"/>
-								</a>
-							</dt>
-							
-							<dd>
-								<a href="#"><t t-esc="category['photo_news']['name']"/></a>
-								<p><t t-esc="widget.format(category.photo_news.write_date,{'type':'date'},'-')"/><t t-esc="category['photo_news']['department_id']"/></p>
-								<span />
-							</dd>
-						</dl>
+						<t t-call="InternalHome.homepage.categories.content.photo_page"/>
 						<div class="nr">
 							<t t-foreach="category.children" t-as="page">
 								<t t-call="InternalHome.news.item.section"/>
@@ -171,6 +174,7 @@
 				</ul>
 				<ul class="tab_conbox" id="tab_conbox2">
 					<li t-foreach="widget.data['content_right']" t-as="category" class="tab_con">		
+						<t t-call="InternalHome.homepage.categories.content.photo_page"/>
 						<div class="nr">
 							<t t-foreach="category.children" t-as="page">
 								<t t-call="InternalHome.news.item.section"/>
@@ -195,7 +199,7 @@
 					<t t-foreach="widget.data['departments']" t-as="department">					
 						<li class="tab_con">
 							<div class="term">
-								<dl t-foreach="department['categories']" t-as="category">
+								<dl t-foreach="department['categories']" t-as="category" t-att-class="(category_index+1%3)==0 &amp;&amp; category_index>0? 'one_fourth_last':'one_fourth'">
 									<dt><t t-esc="category.name" /></dt>
 									<dd t-foreach="category['pagies']" t-as="page">
 										<t t-esc="page.name" />

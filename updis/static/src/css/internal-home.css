@@ -171,7 +171,7 @@
 	position: relative;
 	margin: 0 auto;
 	width: 100%;
-	height: 128px;
+	height: 148px;
 	border-bottom: 1px solid #E0E0E0;
 }
 .tab_con dl.short dt {
@@ -198,6 +198,54 @@
 .tab_con dl.short dd span {
 	color: #828181;
 	line-height: 16px;
+}
+.tab_con .term{
+	position:relative;
+	margin:0 auto;
+	width:100%;
+	overflow:hidden;
+}
+.tab_con .term dl{
+	/*float:left;*/
+	/*width:299px;*/
+	margin:0 auto;
+	padding-left:20px;
+	min-height:180px;
+	_height:expression((document.documentElement.clientHeight||document.body.clientHeight)>180?"180px":"");
+}
+.tab_con .term dl dt{
+	width:100%;
+	margin:0 auto;
+	height:28px;
+	font-size:15px;
+	font-family:"微软雅黑";
+	color:#000;
+	font-weight:bold;
+}
+.tab_con .term dl dt span{
+	 color:#ddd;
+	 font-size:16px;
+	 padding-left:4px;
+ }
+.tab_con .term dl dd{
+	margin:0 auto;
+	width:100%;
+	float:none;
+	overflow:hidden;
+	height:24px;
+	line-height:24px;
+	text-indent:8px;
+	background:url('/updis/static/src/img/icon_bj.gif') no-repeat left center;
+}
+.tab_con .term dl .tp{
+	display:block;
+	width:215px;
+	height:150px;
+	background:url('/updis/static/src/img/term_bj.gif') no-repeat center bottom;
+}
+.tab_con .term dl .tp img{
+	width:215px;
+	height:142px;
 }
 .tabs-container .arrow{
 	position: absolute;
