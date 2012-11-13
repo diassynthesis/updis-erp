@@ -1,6 +1,7 @@
 from osv import osv,fields
 import tools
 
+
 class document_page(osv.osv):
 	_inherit="document.page"
 	def _get_image(self, cr, uid, ids, name, args, context=None):
@@ -47,6 +48,8 @@ class document_page(osv.osv):
 			,"Display Position"),
 		'display_in_departments':fields.many2many("hr.department",string="Display in Departments"),
 		'sequence':fields.integer("Display Sequence"),
+		'fbbm':fields.char("Publisher",size=128,required=True,help="Pubsher, by default it's user's department."),
+		'display_source':fields.boolean("Display Publisher?",help="If checked, fbbm will be display in internal home page"),
 	}
 	_defaults={
 		'sequence':10,	
