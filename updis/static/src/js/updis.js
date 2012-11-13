@@ -88,7 +88,9 @@ openerp.updis = function(openerp) {
 			});
 			self.$el.on("click","a#company-logo",function(ev){
 				ev.preventDefault();
-				self.getParent().action_manager.do_action("internal_home");
+				self.getParent().action_manager.do_action("internal_home",{
+					clear_breadcrumbs:true
+				});
 			})
 		}
 	});
@@ -175,6 +177,7 @@ openerp.updis = function(openerp) {
 			});
 		},
 		render_data:function(data){
+			var self = this;
 			this.data = data;
 			this.shortcut_html = $(QWeb.render("InternalHome.homepage.categories.shortcut",{widget:this}));
 			this.shortcut_html.appendTo($("#bodyContent"));
@@ -209,6 +212,29 @@ openerp.updis = function(openerp) {
 				}
         		content.animate({ left: pos }, 1000);
 			});
+			$("a.page-item").click(function(ev){
+				ev.preventDefault();
+				// alert("OK");
+				// self.hide();
+				var page_id = $(this).data("id");
+				self.rpc("/web/action/load", { action_id: "document_page.action_page" }, function(result) {
+	                result.res_id = page_id;
+	                var tmp = result.views[0];
+	                result.views = [result.views[1]];
+	                // result.views[0] = result.views[1];
+	                // result.views[1] = tmp;
+	                // result.flags['action_buttons']=false;
+	                // result.flags['sidebar']=false;
+	                // result.flags['display_title']=false;
+	                // result.flags['search_view']=false;
+	                // result.flags['pager']=false;
+	                // result.flags['view_switcher']=false;
+	                self.getParent().do_action(result,{
+	                	clear_breadcrumbs:true	                	
+	                });
+	            });
+				// self.getParent().action_manager.do_action({action_id:'document_page.action_page'})
+			})
 		},
 		destroy:function(){
 			this.shortcut_html.remove();

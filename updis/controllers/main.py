@@ -19,7 +19,7 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 
 		# All categories to display on internal home page
 		categories_ids = Page.search([['type','=','category'],['display_position','!=',False]])		
-		categories = Page.read(categories_ids,['name','display_position','sequence'])
+		categories = Page.read(categories_ids,['name','display_position','sequence','display_source'])
 		categories_map = dict((category['id'],category) for category in categories)
 
 		# import pdb;pdb.set_trace()
@@ -27,7 +27,7 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 			ret.setdefault(cat['display_position'],[]).append(cat)
 			cat_id = cat['id']
 			pagies_id = Page.search([['type','=','content'],['parent_id','=',cat_id]],limit=6)
-			pagies = Page.read(pagies_id,['name','write_date','write_uid','sequence','department_id'])
+			pagies = Page.read(pagies_id,['name','write_date','write_uid','sequence','department_id','fbbm'])
 			categories_map[cat_id]['children'] = pagies
 			categories_map[cat_id]['photo_news'] = self.do_load_first_photo_page(req,cat_id)
 		for k,v in ret.items():
@@ -102,7 +102,9 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 						'pagies':[
 							{
 								'name':XXX,
-								'id':XX
+								'id':XX,
+								'fbbm',
+								'department_id'
 							}
 						]
 					}
@@ -119,11 +121,11 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 		# import pdb;pdb.set_trace()
 		for dep in departments:
 			categories_ids = Page.search([('type','=','category'),('display_in_departments','=',dep['id'])])
-			categories = Page.read(categories_ids,['name','sequence'])
+			categories = Page.read(categories_ids,['name','sequence','display_source'])
 			dep['categories'] = categories
 			for cat in categories:
 				pagies_id = Page.search([('type','=','content'),('parent_id','=',cat['id']),('department_id','=',dep['id'])],limit=6)
-				pagies = Page.read(pagies_id,['name','write_date','write_uid','sequence','department_id'])
+				pagies = Page.read(pagies_id,['name','write_date','write_uid','sequence','department_id','fbbm'])
 				cat['pagies'] = pagies
 				cat['photo_news'] = self.do_load_first_photo_page(req,cat['id'],dep['id'])
 		return ret

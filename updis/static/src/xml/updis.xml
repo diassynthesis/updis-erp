@@ -83,35 +83,15 @@
 				</div>
 			</div>
 		</div>		
-	</t>	
-	<t t-name="InternalHome.shortcuts">
-		 <div class="one_third">
-		 	<div class="sign">
-			  <strong style="display:block"><span>XXX</span>你好！欢迎回来！</strong>
-			  <a href="#">个人中心</a><a href="#">基本信息修改</a><a href="#">密码修改</a><a href="#">退出登录</a>
-			  <br class="clear"/>
-			</div>
-		 </div>
-		 
-		 <div class="one_third">
-		 	<div class="msg">
-			  <a href="#">观察评论</a>|<a href="#">规划要问</a>|<a href="#">市局信息</a>|<a href="#">城市热点</a>
-			  <a href="#">最新发表</a>|<a href="#">本院快讯</a>|<a href="#">共享资源</a>|<a href="#">业余生活</a>
-			</div>
-		 </div>
-		 
-		 <div class="one_third_last">
-		 	<div class="search">
-			  <form method="get" action="#"><input name="" type="text" /><input name="" type="submit" value=" " class="button" /></form>
-			  <div class="opt">热门搜索：<a href="#">城市规划</a><a href="#">规划设计</a><a href="#">规划发展</a><a href="#">城市设计</a></div></div>
-		 </div>
-		 <br class="clear" />
+	</t>		
+	<t t-name="InternalHome.news.item.shortcut">
+		<li><a href="#" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a><p class="page-meta"><t t-esc="widget.format(page.write_date,{'type':'date'},'-')"/> <t t-esc="page.fbbm" t-if="category.display_source"/></p></li>
 	</t>
-	<t t-name="InternalHome.news.item.private">
-		<li><a href="#" class="message-item" t-att-data-id="page.id"><t t-raw="page.name" /></a><p class="page-meta"><t t-esc="widget.format(page.write_date,{'type':'date'},'-')"/> 总师室</p></li>
+	<t t-name="InternalHome.news.item.content">
+		<p><a href="#" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a><span class="page-meta"><t t-esc="widget.format(page.write_date,{'type':'date'},'-')"/> <t t-esc="page.fbbm" t-if="category.display_source" /></span></p>
 	</t>
-	<t t-name="InternalHome.news.item.section">
-		<p><a href="#" class="message-item" t-att-data-id="page.id"><t t-raw="page.name" /></a><span class="page-meta"><t t-esc="widget.format(page.write_date,{'type':'date'},'-')"/> 总师室</span></p>
+	<t t-name="InternalHome.news.item.department">
+		<a href="#" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a>
 	</t>
 	<t t-name="InternalHome.homepage.categories.shortcut">
 		<div id="news">
@@ -121,7 +101,7 @@
 						<ul style="list-style:none;">
 							<h2><span><t t-esc="category.name" /></span></h2>
 							<t t-foreach="category.children" t-as="page">
-								<t t-call="InternalHome.news.item.private"/>
+								<t t-call="InternalHome.news.item.shortcut"/>
 							</t>
 						</ul>
 					</div>
@@ -158,7 +138,7 @@
 						<t t-call="InternalHome.homepage.categories.content.photo_page"/>
 						<div class="nr">
 							<t t-foreach="category.children" t-as="page">
-								<t t-call="InternalHome.news.item.section"/>
+								<t t-call="InternalHome.news.item.content"/>
 							</t>
 						</div>
 					</li>
@@ -177,7 +157,7 @@
 						<t t-call="InternalHome.homepage.categories.content.photo_page"/>
 						<div class="nr">
 							<t t-foreach="category.children" t-as="page">
-								<t t-call="InternalHome.news.item.section"/>
+								<t t-call="InternalHome.news.item.content"/>
 							</t>
 						</div>
 					</li>
@@ -202,7 +182,7 @@
 								<dl t-foreach="department['categories']" t-as="category" t-att-class="(category_index+1%3)==0 &amp;&amp; category_index>0? 'one_fourth_last':'one_fourth'">
 									<dt><t t-esc="category.name" /></dt>
 									<dd t-foreach="category['pagies']" t-as="page">
-										<t t-esc="page.name" />
+										<t t-call="InternalHome.news.item.department"/>
 									</dd>
 								</dl>
 							</div>

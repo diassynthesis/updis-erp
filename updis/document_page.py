@@ -17,7 +17,10 @@ class document_page(osv.osv):
 		user_ids = self.pool.get('hr.employee').search(cr,uid,[('user_id','=',uid)])
 		if user_ids:
 			return self.pool.get('hr.employee').browse(cr,uid,user_ids[0]).department_id.id
-
+	def _default_fbbm(self,cr,uid,context=None):
+		user_ids = self.pool.get('hr.employee').search(cr,uid,[('user_id','=',uid)])
+		if user_ids:
+			return self.pool.get('hr.employee').browse(cr,uid,user_ids[0]).department_id.name
 	_columns = {
 		# 'content': fields.html("Content"),
 		'photo_news':fields.boolean("Photo News?"),
@@ -39,10 +42,10 @@ class document_page(osv.osv):
 			help="Small-sized photo of the page. It is automatically "\
 				 "resized as a 64x64px image, with aspect ratio preserved. "\
 				 "Use this field anywhere a small image is required."),
-		'display_name':fields.boolean("Display Name?",help="Check this if you don't want to display your name"),
+		'anonymous':fields.boolean("Anonymous",help="Check this if you want to do anonymous publishing"),
 		'description':fields.text("Description",help="Description of the category",size=128),
 		'read_times': fields.integer("Read Times"),
-		'department_id':fields.many2one("hr.department","Department"),
+		'department_id':fields.many2one("hr.department","Department",domain=[('deleted','=',False)]),
 		'display_position':fields.selection(
 			[("shortcut","Shortcuts"),("content_left","Content Left"),("content_right","Content Right")]
 			,"Display Position"),
@@ -53,7 +56,11 @@ class document_page(osv.osv):
 	}
 	_defaults={
 		'sequence':10,	
-		'department_id':_default_department
+		'department_id':_default_department,
+		'display_source':True,
+		'fbbm':_default_fbbm,
+		'read_times':0,
+		'anonymous':False
 	}
 	_order='sequence,id'
 
@@ -64,6 +71,14 @@ class document_page(osv.osv):
 		res = {}
 		if image_medium:
 			res['value']={'photo_news':True}
+		return res
+	def onchange_department_id(self,cr,uid,ids,department_id,fbbm,context=None):
+		res = {}
+		if department_id and not fbbm:
+			department = self.pool.get("hr.department").browse(cr, uid, department_id, context=context)
+			res['value'] = {
+				'fbbm': department.name,
+			}
 		return res
 
 	
