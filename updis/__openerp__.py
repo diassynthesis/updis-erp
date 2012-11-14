@@ -10,8 +10,7 @@ UPDIS Implementation Guide.""",
     'website': 'http://openerp.com',
     'depends': ['base','hr','account_voucher','project','document_page'],
     # 'depends': ['base',],
-    'init_xml': [],
-    'update_xml': [
+    'data': [
         'internal_home_menu_view.xml',
         'document_page_view.xml',
         'hr_department_view.xml',
@@ -34,11 +33,9 @@ UPDIS Implementation Guide.""",
     'qweb': [
         'static/src/xml/*.xml',
     ],
-    'demo_xml': [],
-    'test':[],
+    'demo': [],
     'post_load': 'wsgi_postload',
     'installable': True,
-    'auto_install': True,
-    'application': True,
+    'auto_install': True
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
