@@ -221,17 +221,7 @@ openerp.updis = function(openerp) {
 	                result.res_id = page_id;
 	                var tmp = result.views[0];
 	                result.views = [result.views[1]];
-	                // result.views[0] = result.views[1];
-	                // result.views[1] = tmp;
-	                // result.flags['action_buttons']=false;
-	                // result.flags['sidebar']=false;
-	                // result.flags['display_title']=false;
-	                // result.flags['search_view']=false;
-	                // result.flags['pager']=false;
-	                // result.flags['view_switcher']=false;
-	                self.getParent().do_action(result,{
-	                	clear_breadcrumbs:true	                	
-	                });
+	                self.getParent().do_action(result);
 	            });
 				// self.getParent().action_manager.do_action({action_id:'document_page.action_page'})
 			})
