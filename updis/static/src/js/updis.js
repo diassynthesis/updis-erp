@@ -241,7 +241,7 @@ openerp.updis = function(openerp) {
 		start:function(){
 			var self = this;
         	return $.when(this._super()).then(function() {
-        		self.session.session_authenticate('demo', 'admin', 'admin').then(function(){	        			        		
+        		self.session.session_authenticate('demo', 'anonymous', 'anonymous').then(function(){	        			        		
 	        		self.show_head();
 	        		self.show_internal_common();
 	        		self.action_manager.do_action("internal_home");

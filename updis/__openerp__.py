@@ -36,6 +36,6 @@ UPDIS Implementation Guide.""",
     'demo': [],
     'post_load': 'wsgi_postload',
     'installable': True,
-    'auto_install': True
+    'application': True
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
