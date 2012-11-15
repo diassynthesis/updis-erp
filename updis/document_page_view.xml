@@ -1,28 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-    <data>
-    	<!-- wiki Form view  -->
-        <record id="view_wiki_form_inherit" model="ir.ui.view">
-            <field name="name">document.page.form.inherit</field>
-            <field name="model">document.page</field>
-            <field name="inherit_id" ref="document_page.view_wiki_form" />
-            <field name="arch" type="xml">
-            	<xpath expr="//field[@name='parent_id']" position="after">
-            		<field name="display_position" attrs="{'invisible':[('type','=','content')]}" />
-            		<field name="sequence" class="oe_edit_only" attrs="{'invisible':[('type','=','content')]}" />
-                    <field name="department_id" attrs="{'invisible':[('type','=','category')]}" on_change="onchange_department_id(department_id,fbbm)"/>
-                    <field name="image_medium" widget="image" class="oe_left oe_avatar" on_change="onchange_image(image_medium)" attrs="{'invisible':[('type','=','category')]}"/>
-                    <field name="photo_news" on_change="onchange_photo_news(photo_news)" attrs="{'invisible':[('type','=','category')]}"/>
-                    <field name="fbbm" attrs="{'invisible':[('type','=','category')]}"/>
-                    <field name="display_source" attrs="{'invisible':[('type','=','content')]}"/>
-            	</xpath>
-                <xpath expr="//group" position="after">
-                    <div class="oe_edit_only"  attrs="{'invisible':[('type','=','content')]}">
-                        <label for="display_in_departments" string="Display in Departments"/>
-                        <field name="display_in_departments" domain="[['deleted','=',False]]"/>
-                    </div>
-                </xpath>
-            </field>
-        </record>
-    </data>
+	<data>
+		<!-- wiki Form view  -->
+		<record id="view_wiki_form_inherit" model="ir.ui.view">
+			<field name="name">document.page.form.inherit</field>
+			<field name="model">document.page</field>
+			<field name="inherit_id" ref="document_page.view_wiki_form" />
+			<field name="arch" type="xml">
+				<field name="parent_id" position="replace">
+					<field name="parent_id" on_change="onchange_parent_id(parent_id,content,type)" string="Category"/>
+				</field>
+				<xpath expr="//field[@name='parent_id']" position="after">
+					<field name="display_position" attrs="{'invisible':[('type','=','content')]}"/>
+					<field name="sequence" class="oe_edit_only" attrs="{'invisible':[('type','=','content')]}"/>
+					<field name="department_id" attrs="{'invisible':[('type','=','category')]}" on_change="onchange_department_id(department_id,fbbm)"/>
+					<field name="image_medium" widget="image" class="oe_left oe_avatar" on_change="onchange_image(image_medium)" attrs="{'invisible':[('type','=','category')]}"/>
+					<field name="photo_news" on_change="onchange_photo_news(photo_news)" attrs="{'invisible':[('type','=','category')]}"/>
+					<field name="fbbm" attrs="{'invisible':[('type','=','category')]}"/>
+					<field name="display_source" attrs="{'invisible':[('type','=','content')]}"/>
+					<field name="allow_send_sms" on_change="onchange_allow_send_sms(allow_send_sms)" attrs="{'invisible':[('type','=','content')]}"/>
+					<field name="category_allow_send_sms" invisible="1" />
+					<field name="hide_sms_receivers"  invisible="1" />
+				</xpath>
+				<xpath expr="//group" position="after">
+					<notebook>
+						<page attrs="{'invisible':[('type','=','content')]}" string=" Display in Departments">
+							<field name="display_in_departments" domain="[['deleted','=',False]]"/>
+						</page>
+						<page string="SMS Receivers" attrs="{'invisible':[('hide_sms_receivers','=',True)]}">
+							<field name="sms_receivers" domain="[['active','=',True]]"/>
+						</page>
+					</notebook>
+				</xpath>
+			</field>
+		</record>
+	</data>
 </openerp>

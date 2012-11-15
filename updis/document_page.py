@@ -10,7 +10,7 @@ class document_page(osv.osv):
 			result[obj.id] = tools.image_get_resized_images(obj.image)
 		return result
 	
-	def _set_image(self, cr, uid, id, name, value, args, context=None):
+	def _set_image(self, cr, uid, id, field_name, value, args, context=None):
 		return self.write(cr, uid, [id], {'image': tools.image_resize_image_big(value)}, context=context)
 
 	def _default_department(self,cr,uid,context=None):
@@ -21,6 +21,23 @@ class document_page(osv.osv):
 		user_ids = self.pool.get('hr.employee').search(cr,uid,[('user_id','=',uid)])
 		if user_ids:
 			return self.pool.get('hr.employee').browse(cr,uid,user_ids[0]).department_id.name
+	def _category_allow_send_sms(self, cr, uid, ids, field_name, args, context=None):
+		result = dict.fromkeys(ids, False)
+		for obj in self.browse(cr, uid, ids, context=context):
+			result[obj.id] = obj.parent_id.allow_send_sms
+		return result
+	def _hide_sms_receivers(self,cr,uid,ids,field_name,args,context=None):
+		result = dict.fromkeys(ids, False)
+		for obj in self.browse(cr, uid, ids, context=context):
+			if obj.type=='content' and not obj.parent_id:
+				result[obj.id]=True
+			elif obj.type=='content' and obj.category_allow_send_sms:
+				result[obj.id]=False
+			elif obj.type=="category" and obj.allow_send_sms:
+				result[obj.id]=False
+			else:
+				result[obj.id]=True			
+		return result
 	_columns = {
 		# 'content': fields.html("Content"),
 		'photo_news':fields.boolean("Photo News?"),
@@ -51,10 +68,12 @@ class document_page(osv.osv):
 			,"Display Position"),
 		'display_in_departments':fields.many2many("hr.department",string="Display in Departments"),
 		'sequence':fields.integer("Display Sequence"),
-		'fbbm':fields.char("Publisher",size=128,required=True,help="Pubsher, by default it's user's department."),
+		'fbbm':fields.char("Publisher",size=128,help="Pubsher, by default it's user's department."),
 		'display_source':fields.boolean("Display Publisher?",help="If checked, fbbm will be display in internal home page"),
 		'allow_send_sms':fields.boolean("Allow Send SMS?",help="If checked, user can choose to send sms for a page"),
-		
+		'sms_receivers':fields.many2many("hr.employee","document_page_user_rel","page_id","user_id","SMS Receiver"),
+		'category_allow_send_sms':fields.function(_category_allow_send_sms,type='boolean',string="Category Allow Send SMS?"),
+		'hide_sms_receivers':fields.function(_hide_sms_receivers,type="boolean"),
 	}
 	_defaults={
 		'sequence':10,	
@@ -62,7 +81,8 @@ class document_page(osv.osv):
 		'display_source':True,
 		'fbbm':_default_fbbm,
 		'read_times':0,
-		'anonymous':False
+		'anonymous':False,
+		'hide_sms_receivers':True
 	}
 	_order='sequence,id'
 
@@ -82,5 +102,15 @@ class document_page(osv.osv):
 				'fbbm': department.name,
 			}
 		return res
-
-	
+	def onchange_parent_id(self, cr, uid, ids, parent_id, content, p_type, context=None):
+		res = super(document_page,self).onchange_parent_id(cr,uid,ids,parent_id,content,context)
+		category = self.pool.get('document.page').browse(cr,uid,parent_id)
+		if p_type=='content':
+			res.setdefault('value',{})['hide_sms_receivers'] = not category.allow_send_sms
+		return res
+	def onchange_allow_send_sms(self,cr,uid,ids,allow_send_sms,context=None):
+		return {
+			'value':{
+				'hide_sms_receivers':not allow_send_sms,
+			}
+		}
