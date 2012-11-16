@@ -82,30 +82,5 @@
 			<field name="name">Footer Menu</field>
             <field name="sequence">30</field>
 		</record>
-		<record id="internal_home_footer_1" model="internal.home.menu">
-			<field name="name">办事指南</field>
-			<field name="sequence">1</field>
-			<field name="parent_id" ref="footer_menu"></field>
-		</record>
-		<record id="internal_home_footer_2" model="internal.home.menu">
-			<field name="name">资源库</field>
-			<field name="sequence">2</field>
-			<field name="parent_id" ref="footer_menu"></field>
-		</record>
-		<record id="internal_home_footer_3" model="internal.home.menu">
-			<field name="name">规章制度</field>
-			<field name="sequence">3</field>
-			<field name="parent_id" ref="footer_menu"></field>
-		</record>
-		<record id="internal_home_footer_4" model="internal.home.menu">
-			<field name="name">人员档案</field>
-			<field name="sequence">4</field>
-			<field name="parent_id" ref="footer_menu"></field>
-		</record>
-		<record id="internal_home_footer_5" model="internal.home.menu">
-			<field name="name">项目管理</field>
-			<field name="sequence">5</field>
-			<field name="parent_id" ref="footer_menu"></field>
-		</record>
 	</data>
 </openerp>

@@ -28,6 +28,7 @@
 							<field name="display_in_departments" domain="[['deleted','=',False]]"/>
 						</page>
 						<page string="SMS Receivers" attrs="{'invisible':[('hide_sms_receivers','=',True)]}">
+							<field name="sms_content" attrs="{'invisible':[('type','=','category')]}"/>
 							<field name="sms_receivers" domain="[['active','=',True]]"/>
 						</page>
 					</notebook>

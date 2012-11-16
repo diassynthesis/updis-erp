@@ -74,6 +74,7 @@ class document_page(osv.osv):
 		'sms_receivers':fields.many2many("hr.employee","document_page_user_rel","page_id","user_id","SMS Receiver"),
 		'category_allow_send_sms':fields.function(_category_allow_send_sms,type='boolean',string="Category Allow Send SMS?"),
 		'hide_sms_receivers':fields.function(_hide_sms_receivers,type="boolean"),
+		'sms_content':fields.text("SMS Content",size=256),
 	}
 	_defaults={
 		'sequence':10,	
