@@ -9,6 +9,7 @@
     'depends': ['base','hr'],
     'auto_install': True,
     'data':[
-        'sms_view.xml'
+        'sms_view.xml',
+        'sms_workflow.xml'
     ]
 }
