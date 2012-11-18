@@ -105,9 +105,11 @@ class document_page(osv.osv):
 		return res
 	def onchange_parent_id(self, cr, uid, ids, parent_id, content, p_type, context=None):
 		res = super(document_page,self).onchange_parent_id(cr,uid,ids,parent_id,content,context)
-		category = self.pool.get('document.page').browse(cr,uid,parent_id)
+		category = self.pool.get('document.page').browse(cr,uid,parent_id)		
 		if p_type=='content':
-			res.setdefault('value',{})['hide_sms_receivers'] = not category.allow_send_sms
+			value = res.setdefault('value',{})
+			value['hide_sms_receivers'] = not category.allow_send_sms
+			value['sms_receivers'] = [u.id for u in category.sms_receivers]
 		return res
 	def onchange_allow_send_sms(self,cr,uid,ids,allow_send_sms,context=None):
 		return {

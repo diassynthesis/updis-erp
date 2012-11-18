@@ -13,7 +13,7 @@
 			<field name="server_id" ref="ir_actions_server_create_sms_for_page" />
 			<field name="col1" search="[('model','=','sms.sms'),('name','=','content')]"></field>
 			<field name="type">equation</field>
-			<field name="value">obj.name</field>
+			<field name="value">obj.sms_content and obj.sms_content or obj.name</field>
 		</record>
 		<record model="ir.server.object.lines" id="object_line_to">
 			<field name="server_id" ref="ir_actions_server_create_sms_for_page" />

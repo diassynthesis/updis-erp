@@ -30,7 +30,8 @@ class sms(osv.Model):
 			params['send_no'] = sms.to
 			params['msg'] = sms.content.encode('gbk')
 			resp = urlopen(self._sms_gateway+urlencode(params))
-			if resp.code=='200':
+			# import pdb;pdb.set_trace()
+			if resp.code==200:
 				sms_server_id = resp.read()
 				self.write(cr,uid,[sms.id],{
 						'sms_server_id':sms_server_id,
