@@ -3,7 +3,8 @@ import tools
 
 
 class document_page(osv.osv):
-	_inherit="document.page"
+	_inherit = ['document.page','mail.thread', 'ir.needaction_mixin']
+	_name="document.page"
 	def _get_image(self, cr, uid, ids, name, args, context=None):
 		result = dict.fromkeys(ids, False)
 		for obj in self.browse(cr, uid, ids, context=context):

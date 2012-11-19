@@ -7,6 +7,9 @@
 			<field name="model">document.page</field>
 			<field name="inherit_id" ref="document_page.view_wiki_form" />
 			<field name="arch" type="xml">
+				<field name="content" position="replace">					
+					<field name="content" placeholder="e.g. Once upon a time..." class="oe_edit_only" widget="html"/>
+				</field>
 				<field name="parent_id" position="replace">
 					<field name="parent_id" on_change="onchange_parent_id(parent_id,content,type)" string="Category"/>
 				</field>
@@ -21,7 +24,7 @@
 					<field name="allow_send_sms" on_change="onchange_allow_send_sms(allow_send_sms)" attrs="{'invisible':[('type','=','content')]}"/>
 					<field name="category_allow_send_sms" invisible="1"/>
 					<field name="hide_sms_receivers" invisible="1"/>
-                                        <field name="sms_content" attrs="{'invisible':['|',('type','=','category'),('hide_sms_receivers','=',True)]}" string="SMS Content"/>
+										<field name="sms_content" attrs="{'invisible':['|',('type','=','category'),('hide_sms_receivers','=',True)]}" string="SMS Content"/>
 				</xpath>
 				<xpath expr="//group" position="after">
 					<notebook>
@@ -29,10 +32,17 @@
 							<field name="display_in_departments" domain="[['deleted','=',False]]"/>
 						</page>
 						<page string="SMS Receivers" attrs="{'invisible':[('hide_sms_receivers','=',True)]}">
-							<field name="sms_receivers" domain="[['active','=',True]]" />
+							<field name="sms_receivers" domain="[['active','=',True]]"/>
 						</page>
 					</notebook>
 				</xpath>
+				<xpath expr="div[@class='oe_document_page']" position="after">
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" help="Follow this project to automatically follow all related update and comments."/>
+						<field name="message_ids" widget="mail_thread"/>
+					</div>
+				</xpath>
+
 			</field>
 		</record>
 	</data>

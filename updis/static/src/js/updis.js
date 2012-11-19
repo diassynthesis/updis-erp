@@ -77,7 +77,6 @@ openerp.updis = function(openerp) {
 				self.top_menu_items=res;	
 				self.on_loaded();
 			});
-
 		},
 		on_loaded:function(){
 			var self=this;
@@ -92,7 +91,7 @@ openerp.updis = function(openerp) {
 				self.getParent().action_manager.do_action("internal_home",{
 					clear_breadcrumbs:true
 				});
-			})
+			});
 		}
 	});
 
@@ -181,11 +180,11 @@ openerp.updis = function(openerp) {
 			var self = this;
 			this.data = data;
 			this.shortcut_html = $(QWeb.render("InternalHome.homepage.categories.shortcut",{widget:this}));
-			this.shortcut_html.appendTo($("#bodyContent"));
+			this.shortcut_html.appendTo(self.$el);
 			this.content_html = $(QWeb.render("InternalHome.homepage.categories.content",{widget:this}));
-			this.content_html.appendTo($("#bodyContent"));	
+			this.content_html.appendTo(self.$el);	
 			this.departments_html = $(QWeb.render("InternalHome.homepage.departments",{widget:this}));
-			this.departments_html.appendTo($("#bodyContent"));
+			this.departments_html.appendTo(self.$el);
 			
 			$.jqtab("#tabs","#tab_conbox","click");	
 			$.jqtab("#tabs2","#tab_conbox2","click");			
@@ -218,14 +217,14 @@ openerp.updis = function(openerp) {
 				// alert("OK");
 				// self.hide();
 				var page_id = $(this).data("id");
-				self.rpc("/web/action/load", { action_id: "document_page.action_page" }, function(result) {
-	                result.res_id = page_id;
+				self.rpc("/web/action/load", { action_id: "document_page.action_page" }).done(function(result) {
+	                result.res_id = page_id;	                
 	                var tmp = result.views[0];
 	                result.views = [result.views[1]];
 	                self.getParent().do_action(result);
 	            });
-				// self.getParent().action_manager.do_action({action_id:'document_page.action_page'})
-			})
+				// self.getParent().do_action('document_page.action_page')
+			});
 		},
 		destroy:function(){
 			this.shortcut_html.remove();
@@ -249,6 +248,10 @@ openerp.updis = function(openerp) {
         	self.user_menu.do_update();
         	self.action_manager.do_action("internal_home");
         	self.set_title();
+
+			self.$el.find("#link_home").click(function(){				
+	            self.action_manager.do_action('home');
+			})
 		},
 		show_internal_common:function(){
 			var self = this;
@@ -265,32 +268,6 @@ openerp.updis = function(openerp) {
 	        title = _.str.clean(title);
 	        var sep = _.isEmpty(title) ? '' : ' - ';
 	        document.title = title + sep + 'UPDIS';
-	    },
-	    on_logout: function() {
-	        var self = this;
-	        if (!this.has_uncommitted_changes()) {
-	            this.session.session_logout().done(function () {
-	                $(window).unbind('hashchange', self.on_hashchange);
-	                self.do_push_state({});
-	                window.location.reload();
-	            });
-	        }
-	    },
-		on_menu_action: function(options) {
-	        var self = this;
-	        return this.rpc("/web/action/load", { action_id: options.action_id })
-	            .then(function (result) {
-	                var action = result;
-	                if (options.needaction) {
-	                    action.context.search_default_message_unread = true;
-	                }
-	                return $.when(self.action_manager.do_action(action, {
-	                    clear_breadcrumbs: true,
-	                    action_menu_id: self.menu.current_menu,
-	                })).fail(function() {
-	                    self.menu.open_menu(options.previous_menu_id);
-	                });
-	            });
 	    }
 	})
 }
