@@ -77,6 +77,7 @@ openerp.updis = function(openerp) {
 				self.top_menu_items=res;	
 				self.on_loaded();
 			});
+
 		},
 		on_loaded:function(){
 			var self=this;
@@ -233,37 +234,47 @@ openerp.updis = function(openerp) {
 		}
 	});
 	openerp.web.client_actions.add("internal_home","openerp.web.InternalHomePage");
-	openerp.web.InternalHome = openerp.web.Client.extend({
+	openerp.web.InternalHome = openerp.web.WebClient.extend({
 		_template:'InternalHome',	
 		init: function(){
         	this._super(parent);
 		},
-		start:function(){
+		show_application:function(){
 			var self = this;
-        	return $.when(this._super()).then(function() {
-        		self.session.session_authenticate('demo', 'anonymous', 'anonymous').then(function(){	        			        		
-	        		self.show_head();
-	        		self.show_internal_common();
-	        		self.action_manager.do_action("internal_home");
-	        		self.set_title();
-        		});
-        	});			
+			self.show_head();
+        	self.show_internal_common();
+        	self.user_menu = new openerp.web.UserMenu(self);
+        	self.user_menu.appendTo(this.$el.find('.sub-nav2'));
+        	self.user_menu.on('user_logout', self, self.on_logout);
+        	self.user_menu.do_update();
+        	self.action_manager.do_action("internal_home");
+        	self.set_title();
 		},
 		show_internal_common:function(){
 			var self = this;
 			self.menu = new openerp.web.InternalHomeMenu(self);
-			self.menu.appendTo(self.$('#header'));
+			self.menu.appendTo(self.$el.find('#header'));
         	self.menu.on('menu_click', this, this.on_menu_action);
 		},
 		show_head:function(){
 			var self= this;	
 			self.head = new openerp.web.Head(self);
-			self.head.appendTo(self.$("#header"));			
+			self.head.appendTo(self.$el.find("#header"));			
 		},
 		set_title: function(title) {
 	        title = _.str.clean(title);
 	        var sep = _.isEmpty(title) ? '' : ' - ';
 	        document.title = title + sep + 'UPDIS';
+	    },
+	    on_logout: function() {
+	        var self = this;
+	        if (!this.has_uncommitted_changes()) {
+	            this.session.session_logout().done(function () {
+	                $(window).unbind('hashchange', self.on_hashchange);
+	                self.do_push_state({});
+	                window.location.reload();
+	            });
+	        }
 	    },
 		on_menu_action: function(options) {
 	        var self = this;

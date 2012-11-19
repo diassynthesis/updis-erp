@@ -27,6 +27,23 @@
 	<t t-name="InternalHome">
 		<div id="wrapper" class="openerp-internal">
 			<div id="header">
+				<div class="top-block">
+					<div class="top-holder">
+						<!-- ***************** - Top Toolbar Left Side - ***************** -->
+						<div class="sub-nav">
+							 <ul>
+								 <li><a href="index-jquery-1.html">总院</a></li>
+								 <li><a href="template-sitemap.html">上海分院</a></li>
+								 <li><a href="template-contact-iphone.html">重庆分院</a></li>
+							 </ul>
+						</div>
+						 <!-- ***************** - END Top Toolbar Left Side - ***************** -->
+						 <!-- ***************** - Top Toolbar Right Side - ***************** -->
+						<div class="oe_topbar sub-nav2" style="background-image:none;background-color:#000;width:auto;">
+							
+						</div><!-- end sub-nav2 -->
+					</div>		 
+				</div>
 			</div>
 			<div id="main">
 				<div class="main-area home-main-area">
@@ -50,26 +67,7 @@
 		</div>
 	</t>
 	<t t-name="InternalHome.head">
-		<div class="top-block">
-			<div class="top-holder">
-				<!-- ***************** - Top Toolbar Left Side - ***************** -->
-				<div class="sub-nav">
-					 <ul>
-						 <li><a href="index-jquery-1.html">总院</a></li>
-						 <li><a href="template-sitemap.html">上海分院</a></li>
-						 <li><a href="template-contact-iphone.html">重庆分院</a></li>
-					 </ul>
-				</div>
-				 <!-- ***************** - END Top Toolbar Left Side - ***************** -->
-				 <!-- ***************** - Top Toolbar Right Side - ***************** -->
-				<div class="sub-nav2">
-					<ul>
-					<li><a href="http://www.truethemes.net">盛鸣</a></li>
-					<li><a href="http://www.twitter.com/truethemes">联系管理员</a></li>
-					</ul>
-				</div><!-- end sub-nav2 -->
-			</div>		 
-		</div>
+		
 		<div class="header-holder">
 			<div class="rays">
 				<div class="header-area">

@@ -70,15 +70,15 @@
         </record>
         <menuitem action="grant_internal_home_menu_access" id="menu_grant_internal_home_menu_access" parent="internal_home_configuration" sequence="1"/>
 
-		<record id="top_menu" model="internal.home.menu">
+		<record id="internal_top_menu" model="internal.home.menu">
 			<field name="name">Top menu</field>
             <field name="sequence">10</field>
 		</record>
-		<record id="sc_menu" model="internal.home.menu">
+		<record id="internal_sc_menu" model="internal.home.menu">
 			<field name="name">Shortcut menu</field>			
             <field name="sequence">20</field>
 		</record>    	
-		<record id="footer_menu" model="internal.home.menu">
+		<record id="internal_footer_menu" model="internal.home.menu">
 			<field name="name">Footer Menu</field>
             <field name="sequence">30</field>
 		</record>
