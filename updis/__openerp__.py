@@ -18,6 +18,7 @@ UPDIS Implementation Guide.""",
         'project_view.xml',        
         'project_workflow.xml',
         'security/updis_security.xml',
+        'security/ir.model.access.csv',
         'data/updis_data.xml',        
     ],
     'js': [
