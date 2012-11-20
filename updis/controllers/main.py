@@ -147,14 +147,14 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 class InternalHome(openerp.addons.web.http.Controller):
 	_cp_path = "/cms"
 	@openerp.addons.web.http.httprequest
-	def index(self,req,**kw):
-		js = "\n        ".join('<script type="text/javascript" src="%s"></script>' % i for i in manifest_list(req, None, 'js'))
+	def index(self, req, s_action=None, db=None, **kw):
+		js = "\n        ".join('<script type="text/javascript" src="%s"></script>' % i for i in manifest_list(req, 'js', db=db))
 
 		js += '\n <script type="text/javascript" src="/updis/static/src/js/updis.js"></script>'
 		js += '\n <script type="text/javascript" src="/updis/static/src/js/karma.js"></script>'
 		js += '\n <script type="text/javascript" src="/updis/static/src/js/tab.js"></script>'
 		# js += '\n <script type="text/javascript" src="/updis/static/src/js/bootstrap.js"></script>'
-		css = "\n        ".join('<link rel="stylesheet" href="%s">' % i for i in manifest_list(req, None, 'css'))
+		css = "\n        ".join('<link rel="stylesheet" href="%s">' % i for i in manifest_list(req, 'css', db=db))
 		css += '\n <link rel="stylesheet" href="/updis/static/src/css/style.css">'
 		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/common.css">'
 		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/ie8.css">'
