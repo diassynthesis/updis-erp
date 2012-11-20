@@ -212,19 +212,19 @@ openerp.updis = function(openerp) {
 				}
         		content.animate({ left: pos }, 1000);
 			});
-			$("a.page-item").click(function(ev){
-				ev.preventDefault();
-				// alert("OK");
-				// self.hide();
-				var page_id = $(this).data("id");
-				self.rpc("/web/action/load", { action_id: "document_page.action_page" }).done(function(result) {
-	                result.res_id = page_id;	                
-	                var tmp = result.views[0];
-	                result.views = [result.views[1]];
-	                self.getParent().do_action(result);
-	            });
-				// self.getParent().do_action('document_page.action_page')
-			});
+			// $("a.page-item").click(function(ev){
+			// 	ev.preventDefault();
+			// 	// alert("OK");
+			// 	// self.hide();
+			// 	var page_id = $(this).data("id");
+			// 	self.rpc("/web/action/load", { action_id: "document_page.action_page" }).done(function(result) {
+	  //               result.res_id = page_id;	                
+	  //               var tmp = result.views[0];
+	  //               result.views = [result.views[1]];
+	  //               self.getParent().do_action(result);
+	  //           });
+			// 	// self.getParent().do_action('document_page.action_page')
+			// });
 		},
 		destroy:function(){
 			this.shortcut_html.remove();
@@ -246,6 +246,7 @@ openerp.updis = function(openerp) {
         	self.user_menu.appendTo(this.$el.find('.sub-nav2'));
         	self.user_menu.on('user_logout', self, self.on_logout);
         	self.user_menu.do_update();
+        	self.bind_hashchange();
         	self.action_manager.do_action("internal_home");
         	self.set_title();
 
