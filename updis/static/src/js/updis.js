@@ -247,13 +247,24 @@ openerp.updis = function(openerp) {
         	self.user_menu.on('user_logout', self, self.on_logout);
         	self.user_menu.do_update();
         	self.bind_hashchange();
-        	self.action_manager.do_action("internal_home");
+        	// self.action_manager.do_action("internal_home");
         	self.set_title();
 
 			self.$el.find("#link_home").click(function(){				
 	            self.action_manager.do_action('home');
 			})
 		},
+		bind_hashchange: function() {
+	        var self = this;
+	        $(window).bind('hashchange', this.on_hashchange);
+
+	        var state = $.bbq.getState(true);
+	        if (_.isEmpty(state) || state.action == "login") {
+	            self.action_manager.do_action("internal_home");
+	        } else {
+	            $(window).trigger('hashchange');
+	        }
+	    },
 		show_internal_common:function(){
 			var self = this;
 			self.menu = new openerp.web.InternalHomeMenu(self);
