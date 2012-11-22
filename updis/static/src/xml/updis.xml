@@ -84,10 +84,10 @@
 		<li><a t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=document.page" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a><p class="page-meta"><t t-esc="widget.format(page.write_date,{'type':'date'},'-')"/> <t t-esc="page.fbbm" t-if="category.display_source"/></p></li>
 	</t>
 	<t t-name="InternalHome.news.item.content">
-		<p><a t-attf-href="#id=#{page.id}&amp;model=document.page" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a><span class="page-meta"><t t-esc="widget.format(page.write_date,{'type':'date'},'-')"/> <t t-esc="page.fbbm" t-if="category.display_source" /></span></p>
+		<p><a t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=document.page" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a><span class="page-meta"><t t-esc="widget.format(page.write_date,{'type':'date'},'-')"/> <t t-esc="page.fbbm" t-if="category.display_source" /></span></p>
 	</t>
 	<t t-name="InternalHome.news.item.department">
-		<a t-attf-href="#id=#{page.id}&amp;model=document.page" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a>
+		<a t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=document.page" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a>
 	</t>
 	<t t-name="InternalHome.homepage.categories.shortcut">
 		<div id="news">
