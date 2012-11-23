@@ -86,7 +86,7 @@ class document_page(osv.osv):
 		'anonymous':False,
 		'hide_sms_receivers':True
 	}
-	_order='sequence,id'
+	_order='sequence,write_date desc,id'
 
 	def onchange_photo_news(self,cr,uid,ids,photo_news):
 		res = {}		
