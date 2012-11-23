@@ -13,17 +13,7 @@
               <data>
                 <form position="attributes">
                   <attribute name="string">Fonts Mapping Configuration</attribute>
-                </form>
-                <separator string="title" position="attributes">
-                <attribute name="string">pdf font support for your language</attribute>
-                  </separator>
-                  <xpath expr="//label[@string='description']" position="attributes">
-                    <attribute name="string">Fonts used in the default report may not support the characters in your lanuage. Use the setting here to replace the Original font with the font you choose</attribute>
-                  </xpath>
-                <xpath expr='//separator[@string="vsep"]' position='attributes'>
-                      <attribute name='rowspan'>15</attribute>
-                      <attribute name='string'></attribute>
-                  </xpath>
+                </form>                
                 <group string="res_config_contents" position="replace">
                   <field name="wrap"/>
                   <newline/>

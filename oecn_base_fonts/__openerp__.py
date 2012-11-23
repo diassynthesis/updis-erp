@@ -44,7 +44,7 @@
     "demo_xml" : [],
     "update_xml" : ["oecn_base_fonts_view.xml"],
     "license": "GPL-3",
-    "active": True,
+    "active": False,
     "installable": True
 }
 

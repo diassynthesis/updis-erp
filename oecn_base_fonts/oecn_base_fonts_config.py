@@ -22,7 +22,8 @@ from reportlab.lib.fontfinder import FontFinder
 from reportlab import rl_config
 import re
 from tools.safe_eval import safe_eval as eval
-
+#patch for ReportLab
+import reportlab_patch
 RMLS = ['rml_header','rml_header2','rml_header3']
 OE_FONTS = ['Helvetica','DejaVuSans','Times','Times-Roman','Courier']
 
@@ -31,30 +32,19 @@ class oecn_base_fonts_map(osv.osv_memory):
 
     # try to get the font from the cache first (system_fonts)
     system_fonts = []
-    defualt_fonts = []
-    def __system_fonts_get(self, cr, uid, context=None):
+    def get_system_fonts(self, cr, uid, context=None):
         if self.system_fonts:
             return self.system_fonts
         else:
             return self._system_fonts_get(cr, uid)
-        
-    def _get_default_fonts(self, cr, uid, context=None):
-        if self.default_fonts:
-            return self.default_fonts
-        else:
-            return  self._system_fonts_get(cr, uid)
         
     def _system_fonts_get(self, cr, uid, context = None):
         ''' get fonts list on server '''
         # consider both windows and unix like systems
         # get all folders under fonts/ directory
         res = []
-        default_fonts = []
         ff = FontFinder( useCache = False )
-        fontdirs = rl_config.TTFSearchPath[:] + rl_config.T1SearchPath[:] + rl_config.CMapSearchPath[:]
-        # Need to fix,because bug from :http://two.pairlist.net/pipermail/reportlab-users/2012-January/010336.html
-        if  '/usr/share/fonts/X11/Type1' in fontdirs:
-            fontdirs.pop(fontdirs.index('/usr/share/fonts/X11/Type1'))
+        fontdirs = rl_config.TTFSearchPath[:] + rl_config.T1SearchPath[:] + rl_config.CMapSearchPath[:]        
         ff.addDirectories(set(fontdirs))
         ff.search()
         for familyName in ff.getFamilyNames():
@@ -64,13 +54,10 @@ class oecn_base_fonts_map(osv.osv_memory):
                         fileName = font.fileName.decode('utf-8')
                     except UnicodeDecodeError:
                         fileName = font.fileName.decode('gbk')#for Chinese file name(Windows OS)
-                    if font.name =='SimHei' or font.name == 'SimSun' or font.name == 'WenQuanYiZenHei':
-                        default_fonts.append((fileName, font.name))
                     res.append((fileName, font.name))
 
         #cache the font list in class variable
         oecn_base_fonts_map.system_fonts = res
-        oecn_base_fonts_map.default_fonts = default_fonts
         return res
 
     def _pdf_fonts_get(self, cr, uid, context = None):
@@ -85,7 +72,7 @@ class oecn_base_fonts_map(osv.osv_memory):
         'pdf_font':fields.selection(_pdf_fonts_get, 'Original Fonts', required=True),
         'name':fields.char('Font Alias', size=20, required=True, help='use this font alias \
                 in custom rml report template'),
-        'new_font':fields.selection(__system_fonts_get, 'Replaced With', required=True),
+        'new_font':fields.selection(get_system_fonts, 'Replaced With', required=True),
     }
 
     def onchange_new_font(self, cr, uid, ids, new_font):
@@ -117,8 +104,8 @@ class oecn_base_fonts_config(osv.osv_memory):
     def _get_map_ids(self, cr, uid, *args):
         oecn_map = self.pool.get('ir.config_parameter').get_param(cr, 1, 'fonts_map')
         oecn_map_obj = self.pool.get('oecn_base_fonts.map')
+        default_fonts = None, None
         ids = []
-        vals = []
         if oecn_map:
             oecn_maps = (eval(oecn_map)).get('maps', False)
             for m in oecn_maps:
@@ -130,16 +117,19 @@ class oecn_base_fonts_config(osv.osv_memory):
                 id = oecn_map_obj.create(cr, uid, val)
                 ids.append(id)
         elif not oecn_map:
-            default_fonts = oecn_map_obj._get_default_fonts(cr, uid)
-            if default_fonts:
-                for fonts in OE_FONTS:
-                    val = {
-                        'pdf_font':fonts,
-                        'name':default_fonts[0][1],
-                        'new_font':default_fonts[0][0],
-                    }
-                    id = oecn_map_obj.create(cr, uid, val)
-                    ids.append(id)                    
+            system_fonts = oecn_map_obj.get_system_fonts(cr, uid)
+            for font_path, name, in system_fonts: 
+                if name in ('SimHei', 'SimSun','WenQuanYiZenHei'):
+                    default_fonts = (font_path, name)
+                    break
+            for fonts in OE_FONTS:
+                val = {
+                    'pdf_font':fonts,
+                    'name': default_fonts[1] or system_fonts[0][1],
+                    'new_font':default_fonts[0] or system_fonts[0][0],
+                }
+                id = oecn_map_obj.create(cr, uid, val)
+                ids.append(id)                    
         return ids
 
     _defaults = {
