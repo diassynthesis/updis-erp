@@ -1,8 +1,5 @@
 <?xml version="1.0"?>
 <document filename="test.pdf">
-  <docinit>
-      <registerFont fontName="ab" fontFile="DejaVuSans.ttf" />
-  </docinit>
   <template pageSize="(595.0,842.0)" title="Test" author="Martin Simon" allowSplitting="20">
     <pageTemplate id="first">
       <frame id="first" x1="57.0" y1="57.0" width="481" height="728"/>
@@ -16,8 +13,8 @@
     <initialize>
       <paraStyle name="all" alignment="justify"/>
     </initialize>
-    <paraStyle name="P1" fontName="Helvetica" fontSize="16.0" leading="20" alignment="CENTER"/>
-    <paraStyle name="Standard" fontName="ab"/>
+    <paraStyle name="P1" fontName="Helvetica-Bold"/>
+    <paraStyle name="Standard" fontName="Helvetica"/>
     <paraStyle name="Heading" fontName="Helvetica" fontSize="14.0" leading="17" spaceBefore="12.0" spaceAfter="6.0"/>
     <paraStyle name="Text body" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
     <paraStyle name="List" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
@@ -26,7 +23,8 @@
     <images/>
   </stylesheet>
   <story>
-    <para style="Standard">中xx文</para>
+    <para style="P1">任务下达申请表</para>
+    <para style="P1">fdsafdsa</para>
   </story>
 </document>
 

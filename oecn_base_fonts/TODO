@@ -1,5 +1,0 @@
-1. replace the hardcoded SimHei fontname with font.name                   DONE
-2. allow user to specify font directory
-3. allow replace font for certain style
-4. allow register specific fonts for using in the later report development
-5. test code and 
