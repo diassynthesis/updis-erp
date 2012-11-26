@@ -31,7 +31,7 @@
 						<page attrs="{'invisible':[('type','=','content')]}" string=" Display in Departments">
 							<field name="display_in_departments" domain="[['deleted','=',False]]"/>
 						</page>
-						<page string="SMS Receivers" attrs="{'invisible':[('hide_sms_receivers','=',True)]}">
+						<page class="oe_edit_only" string="SMS Receivers" attrs="{'invisible':[('hide_sms_receivers','=',True)]}">
 							<field name="sms_receivers" domain="[['active','=',True]]"/>
 						</page>
 					</notebook>

@@ -98,7 +98,16 @@ class updis_project(osv.osv):
 		return True
 	def project_suozhangshenpi(self, cr, uid, ids, context=None):
 		self.write(cr, uid, ids, { 'state': 'suozhangshenpi' })
-		return True
+		return {
+			'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(False, 'form')],
+            'view_id': False,
+            'target': 'new',
+            'context': context,
+		}
 	def project_zhidingbumen(self, cr, uid, ids, context=None):
 		self.write(cr, uid, ids, { 'state': 'zhidingbumen' })
 		return True
