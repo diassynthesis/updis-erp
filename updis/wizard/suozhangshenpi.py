@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from osv import osv,fields
 
 class suozhangshenpi(osv.osv_memory):
@@ -21,5 +22,7 @@ class suozhangshenpi(osv.osv_memory):
 		"gongqi":fields.selection([(u'工期可接受','工期可接受'),(u'工期太紧',u'工期太紧')],u"工期"),#本院是否有能力满足规定要求
 		"shejifei":fields.selection([(u'设计费合理','设计费合理'),(u'设计费太低',u'设计费太低')],u'设计费'),#本院是否有能力满足规定要求
 
+		'send_email':fields.boolean(u"发送邮件通知"),
+		'send_sms':fields.boolean(u"发送短信通知"),
 	}
-	
+suozhangshenpi()

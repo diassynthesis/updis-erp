@@ -7,5 +7,6 @@ import internal_home_menu
 from . import http
 from . import controllers
 from . import report
+from . import wizard
 
 wsgi_postload = http.wsgi_postload
