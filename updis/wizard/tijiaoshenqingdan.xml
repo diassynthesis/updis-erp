@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<record id="tijiaoshenqingdan_form_view" model="ir.ui.view">
+			<field name="name">tijiaoshenqingdan.form.view</field>
+			<field name="model">project.tijiaoshenqingdan</field>
+			<field name="arch" type="xml">
+				<form string="tijiaoshenqingdan" version="7.0">
+					<group string="基本信息" col="4">
+						<field name="guimo"/>
+						<field name="jianyishejibumen_id"/>
+						<field name="jianyixiangmufuzeren_id"/>
+						<field name="jiafang_id"/>	
+						<field name="waibao"/>
+						<field name="shizhenpeitao"/>
+						<field name="duofanghetong"/>
+					</group>
+					<group string="通知设置">
+						<field name="send_email"/>	
+						<field name="send_sms"/>
+					</group>
+					<footer>
+						<button name="accept" string="提交" type="object" class="oe_highlight"/>
+						<button string="Cancel" class="oe_link" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+		<record id="tijiaoshenqingdan_act" model="ir.actions.act_window">
+			<field name="name">提交所长审批</field>
+			<field name="res_model">project.tijiaoshenqingdan</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="tijiaoshenqingdan_form_view" />
+			<field name="target">new</field>
+		</record>
+	</data>
+</openerp>

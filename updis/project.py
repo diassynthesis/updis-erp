@@ -81,6 +81,7 @@ class updis_project(osv.osv):
 		"zhuguanzongshi_id":fields.many2one("hr.employee",u"主管总师"),
 		
 		"state":fields.selection([
+			("draft",u"New project"),
 			("tianshenqingdan",u"任意人员填写申请单"),
 			("suozhangshenpi",u"所长审批"),
 			("zhidingbumen",u"经营室指定部门"),
@@ -90,7 +91,7 @@ class updis_project(osv.osv):
 		],"State",readonly=True,help='When project is created, the state is \'tianshenqingdan\'')
 	}
 	_defaults = {
-		'state': lambda *a: 'tianshenqingdan',
+		'state': lambda *a: 'draft',
 		'xiangmubianhao':lambda self, cr, uid, c=None: self.pool.get('ir.sequence').next_by_code(cr, uid, 'project.project', context=c)
 	}
 	def project_tianshenqingdan(self, cr, uid, ids, context=None):

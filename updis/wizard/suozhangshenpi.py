@@ -5,9 +5,10 @@ class suozhangshenpi(osv.osv_memory):
 	"""suozhangshenpi"""
 	_name="project.suozhangshenpi"
 	_description="suozhangshenpi"
+	_inherit=['project.review_abstract']
 	_columns = {
 		"yaoqiuxingchengwenjian":fields.selection([(u"已形成",u"已形成"),(u"未形成，但已确认",u"未形成，但已确认")],
-			u"顾客要求形成文件否"),		
+			u"顾客要求形成文件否"),	
 		"zhaobiaoshu":fields.boolean(u"有招标书"),# 明示要求
 		"weituoshu":fields.boolean(u"有委托书"),# 明示要求
 		"xieyicaoan":fields.boolean(u"有协议/合同草案"),# 明示要求
@@ -22,7 +23,5 @@ class suozhangshenpi(osv.osv_memory):
 		"gongqi":fields.selection([(u'工期可接受','工期可接受'),(u'工期太紧',u'工期太紧')],u"工期"),#本院是否有能力满足规定要求
 		"shejifei":fields.selection([(u'设计费合理','设计费合理'),(u'设计费太低',u'设计费太低')],u'设计费'),#本院是否有能力满足规定要求
 
-		'send_email':fields.boolean(u"发送邮件通知"),
-		'send_sms':fields.boolean(u"发送短信通知"),
 	}
 suozhangshenpi()
