@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from osv import osv,fields
 from . import common
+from openerp import SUPERUSER_ID
 
 class tijiaoshenqingdan(osv.osv_memory):
 	"""tijiaoshenqingdan"""
@@ -16,7 +17,16 @@ class tijiaoshenqingdan(osv.osv_memory):
 		"jianyixiangmufuzeren_id":fields.many2one("hr.employee",u"建议项目负责人"),
 		"jiafang_id":fields.many2one('res.partner', u"甲方"),
 
-		'send_email':fields.boolean(u"发送邮件通知"),
-		'send_sms':fields.boolean(u"发送短信通知"),
 	}
+	def accept(self,cr,uid,ids,context=None):
+		review_histories = self.pool.get("project.review.history")
+		import pdb;pdb.set_trace()
+		for data in self.read(cr,uid,ids,context):
+			history={
+				'fields':','.join(self._columns.keys()),
+				'result':'accepted',
+				'comment':data.comment,
+			}
+			review_histories.create(cr,SUPERUSER_ID,history,context=context)
+			pass
 tijiaoshenqingdan()

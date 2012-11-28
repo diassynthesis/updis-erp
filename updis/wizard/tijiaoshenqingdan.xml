@@ -19,6 +19,9 @@
 						<field name="send_email"/>	
 						<field name="send_sms"/>
 					</group>
+					<group string="Review Comment">
+						<field name="comment" nolabel="1"/>
+					</group>
 					<footer>
 						<button name="accept" string="提交" type="object" class="oe_highlight"/>
 						<button string="Cancel" class="oe_link" special="cancel"/>

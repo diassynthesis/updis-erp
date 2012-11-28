@@ -6,6 +6,7 @@ class review_abstract(osv.AbstractModel):
 	_columns = {	
 		'send_email':fields.boolean(u"发送邮件通知"),
 		'send_sms':fields.boolean(u"发送短信通知"),
+		'comment':fields.text(u"Review Comment"),
 	}
 	def accept(self,cr,uid,ids,context=None):
 		return True

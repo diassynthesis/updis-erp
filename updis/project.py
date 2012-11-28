@@ -122,3 +122,19 @@ class updis_project(osv.osv):
 		self.write(cr, uid, ids, { 'state': 'fuzerenqidong' })
 		return True
 
+class project_review_history(osv.Model):
+	_name="project.review.history"
+	_description="Keep every review of the project here."
+	_columns = {
+		'user_id': fields.many2one('res.users', 'Responsible', readonly=True,required=True),
+		'fields':fields.char("Fields reviewed", size=512, readonly=True,required=True),
+		'create_date': fields.datetime('Create Date', readonly=True,select=True),
+		'result':fields.selection([('accepted','Accepted'),('rejected','Rejected')],'Result'),
+		'comment':fields.text('Comment')
+	}
+	_defaults={
+		'user_id': lambda obj, cr, uid, context: uid,
+		'create_date': lambda *a: time.strftime('%Y-%m-%d %H:%M:%S')
+
+	}
+project_review_history()
