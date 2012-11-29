@@ -7,15 +7,16 @@
 			<field name="on_create">True</field>
 		</record>
 		<!-- Activities -->
-		<record id="act_draft" model="workflow.activity">
+		<!-- <record id="act_draft" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_up_project" />
 			<field name="flow_start">True</field>
 			<field name="name">draft</field>
 			<field name="kind">dummy</field>			
-		</record>
+		</record> -->
 		<record id="act_tianshenqingdan" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_up_project" />
 			<field name="name">tianshenqingdan</field>
+			<field name="flow_start">True</field>
 			<field name="kind">function</field>
 			<field name="action">project_tianshenqingdan()</field>
 		</record>

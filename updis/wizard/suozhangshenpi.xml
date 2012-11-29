@@ -22,8 +22,9 @@
 						<field name="send_email"/>
 						<field name="send_sms"/>
 					</group>
-					<group string="Review Comment">
-						<field name="comment" nolabel="1"/>
+					<group string="Review Comment">						
+						<field name="reviewer_id" domain="[('groups_id','=',%(group_up_project_jingyingshi)d)]" />
+						<field name="comment" />
 					</group>
 					<footer>
 						<button name="accept" string="提交" type="object" class="oe_highlight"/>

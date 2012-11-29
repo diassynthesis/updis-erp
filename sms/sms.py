@@ -1,5 +1,6 @@
 from osv import osv,fields
 import logging
+import time
 from urllib2 import urlopen
 from urllib import urlencode
 
@@ -17,7 +18,7 @@ class sms(osv.Model):
 		'state':fields.selection([('draft','Draft'),('error','Error'),('sent','Sent')],'State',required=True,size=64),
 	}
 	_defaults={
-		'state':'draft'
+		'state':'draft',		
 	}
 	def process_sms_queue(self, cr, uid, context=None):
 		params = {
@@ -35,11 +36,13 @@ class sms(osv.Model):
 				sms_server_id = resp.read()
 				self.write(cr,uid,[sms.id],{
 						'sms_server_id':sms_server_id,
-						'state':'sent'
+						'state':'sent',
+						'sent_date':time.strftime('%Y-%m-%d %H:%M:%S'),
 					})				
 			else:
 				logging.getLogger('sms.sms').warning("SENDING SMS!")
 				self.write(cr,uid,[sms.id],{
-						'state':'error'
+						'state':'error',
+						'sent_date':time.strftime('%Y-%m-%d %H:%M:%S'),
 					})
 		logging.getLogger('sms.sms').warning("SENDING SMS!")

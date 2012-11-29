@@ -43,7 +43,7 @@ class updis_project(osv.osv):
 		"shizhenpeitao":fields.boolean(u"市政配套"),
 		"duofanghetong":fields.boolean(u"多方合同"),
 		"jianyishejibumen_id":fields.many2one("hr.department",u"建议设计部门"),
-		"jianyixiangmufuzeren_id":fields.many2one("hr.employee",u"建议项目负责人"),
+		"jianyixiangmufuzeren_id":fields.many2one("res.users",u"建议项目负责人"),
 
 		"jiafang_id":fields.many2one('res.partner', u"甲方"),
 		
@@ -77,11 +77,11 @@ class updis_project(osv.osv):
 		"category_id":fields.many2many("project.project_category","up_project_category_rel","project_id","category_id",u"项目类别"),
 		"toubiaoleibie":fields.selection([(u'商务标',u'商务标'),(u'技术标',u'技术标'),(u'综合标',u'综合标')],u"投标类别"),
 		"guanlijibie":fields.selection([(u'院级',u'院级'),(u'所级',u'所级')],u'项目管理级别'),
-		"chenjiefuzeren_id":fields.many2one("hr.employee",u"承接项目负责人"),
-		"zhuguanzongshi_id":fields.many2one("hr.employee",u"主管总师"),
+		"chenjiefuzeren_id":fields.many2one("res.users",u"承接项目负责人"),
+		"zhuguanzongshi_id":fields.many2one("res.users",u"主管总师"),
 		
 		"state":fields.selection([
-			("draft",u"New project"),
+			# ("draft",u"New project"),
 			("tianshenqingdan",u"任意人员填写申请单"),
 			("suozhangshenpi",u"所长审批"),
 			("zhidingbumen",u"经营室指定部门"),
@@ -91,7 +91,7 @@ class updis_project(osv.osv):
 		],"State",readonly=True,help='When project is created, the state is \'tianshenqingdan\'')
 	}
 	_defaults = {
-		'state': lambda *a: 'draft',
+		'state': lambda *a: 'tianshenqingdan',
 		'xiangmubianhao':lambda self, cr, uid, c=None: self.pool.get('ir.sequence').next_by_code(cr, uid, 'project.project', context=c)
 	}
 	def project_tianshenqingdan(self, cr, uid, ids, context=None):
@@ -126,15 +126,10 @@ class project_review_history(osv.Model):
 	_name="project.review.history"
 	_description="Keep every review of the project here."
 	_columns = {
-		'user_id': fields.many2one('res.users', 'Responsible', readonly=True,required=True),
-		'fields':fields.char("Fields reviewed", size=512, readonly=True,required=True),
-		'create_date': fields.datetime('Create Date', readonly=True,select=True),
+		'name':fields.text('Name',size=512),
+		'reviewer_id': fields.many2one('res.users', 'Reviewer', readonly=True,required=True),
+		'fields':fields.char("Fields reviewed", size=512, readonly=True,required=True),		
 		'result':fields.selection([('accepted','Accepted'),('rejected','Rejected')],'Result'),
 		'comment':fields.text('Comment')
-	}
-	_defaults={
-		'user_id': lambda obj, cr, uid, context: uid,
-		'create_date': lambda *a: time.strftime('%Y-%m-%d %H:%M:%S')
-
 	}
 project_review_history()
