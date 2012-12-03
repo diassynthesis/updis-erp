@@ -17,7 +17,7 @@ class review_abstract(osv.AbstractModel):
 		'reviewer_id':fields.many2one("res.users","Reviewer",required=True),
 	}
 
-	def _get_last_submitter(self,cr,uid,context=context):
+	def _get_last_submitter(self,cr,uid,context=None):
 		"""
 		返回最近的提交人ID
 		"""

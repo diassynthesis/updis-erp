@@ -26,7 +26,7 @@
 				</form>
 			</field>
 		</record>
-		<record id="tijiaojingyingshi_act" model="ir.actions.act_window">
+		<record id="suozhangshenpi_act" model="ir.actions.act_window">
 			<field name="name">所长审批</field>
 			<field name="res_model">project.suozhangshenpi</field>
 			<field name="view_type">form</field>
@@ -60,8 +60,8 @@
 						<field name="comment" />
 					</group>
 					<footer>
-						<button name="accept" string="提交" type="object" class="oe_highlight"/>
-						<button name="reject" string="打回" type="object" class="oe_highlight"/>
+						<button name="submit" string="提交" type="object" class="oe_highlight"/>
+						Or
 						<button string="Cancel" class="oe_link" special="cancel"/>
 					</footer>
 				</form>

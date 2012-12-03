@@ -25,6 +25,7 @@
 					</group>
 					<footer>
 						<button name="submit" string="提交" type="object" class="oe_highlight"/>
+						Or
 						<button string="Cancel" class="oe_link" special="cancel"/>
 					</footer>
 				</form>

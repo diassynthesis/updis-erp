@@ -31,7 +31,7 @@ class tijiaoshenqingdan(osv.osv_memory):
 					'fields':','.join(self._columns.keys()),
 					'result':'submit',
 					'comment':data.comment,
-					'name':'填申请单提交所长审批',
+					'name':u'填申请单提交所长审批',
 					'submitter_id':submitter.id,
 				}
 				history_id = review_histories.create(cr,SUPERUSER_ID,history,context=context)

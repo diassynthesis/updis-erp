@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from osv import osv,fields
+from . import common
+from openerp import SUPERUSER_ID
 
 class suozhangshenpi(osv.osv_memory):
 	"""
@@ -18,8 +20,8 @@ class suozhangshenpi(osv.osv_memory):
 		"jiafang_id":fields.many2one('res.partner', u"甲方",readonly=True),
 	}
 
-	def accept(self,cr,udi,ids,context=context):
-		review_histories = `self.pool.get("project.review.history")
+	def accept(self,cr,uid,ids,context=None):
+		review_histories = self.pool.get("project.review.history")
 		project_project = self.pool.get("project.project")
 		sms_sms = self.pool.get("sms.sms")
 		mail_mail = self.pool.get('mail.mail')
@@ -32,7 +34,7 @@ class suozhangshenpi(osv.osv_memory):
 					'fields':','.join(self._columns.keys()),
 					'result':'accepted',
 					'comment':data.comment,
-					'name':'所长审批已经通过',
+					'name':u'所长审批已经通过',
 					'reviewer_id':data.reviewer_id.id,
 				}
 				history_id = review_histories.create(cr,SUPERUSER_ID,history,context=context)
@@ -63,13 +65,15 @@ class suozhangshenpi(osv.osv_memory):
 					'state':'suozhangshenpi',
 					},context=context)
 		return {'type': 'ir.actions.act_window_close'}
-	def reject(self,cr,udi,ids,context=context):
+	def reject(self,cr,uid,ids,context=None):
 		pass
 suozhangshenpi()
 class tijiaojingyingshi(osv.osv_memory):
-	"""所长提交经营室审批"""
+	"""
+	所长提交经营室审批
+	"""
 	_name="project.tijiaojingyingshi"
-	_description="所长提交经营室审批"
+	_description=u"所长提交经营室审批"
 	_inherit=['project.review_abstract']
 	_columns = {
 		"yaoqiuxingchengwenjian":fields.selection([(u"已形成",u"已形成"),(u"未形成，但已确认",u"未形成，但已确认")],
@@ -84,9 +88,9 @@ class tijiaojingyingshi(osv.osv_memory):
 		"hetongyizhi":fields.selection([(u"合同/协议要求表述不一致已解决",u"合同/协议要求表述不一致已解决"),
 			(u"没有出现不一致",u"没有出现不一致")],u"不一致是否解决"),	
 		"ziyuan":fields.selection([(u'人力资源满足',u'人力资源满足'),(u'人力资源不足',u'人力资源不足')],u'人力资源'),#本院是否有能力满足规定要求
-		"shebei":fields.selection([(u'设备满足','设备满足'),(u'设备不满足',u'设备不满足')],u"设备"),#本院是否有能力满足规定要求
-		"gongqi":fields.selection([(u'工期可接受','工期可接受'),(u'工期太紧',u'工期太紧')],u"工期"),#本院是否有能力满足规定要求
-		"shejifei":fields.selection([(u'设计费合理','设计费合理'),(u'设计费太低',u'设计费太低')],u'设计费'),#本院是否有能力满足规定要求
+		"shebei":fields.selection([(u'设备满足',u'设备满足'),(u'设备不满足',u'设备不满足')],u"设备"),#本院是否有能力满足规定要求
+		"gongqi":fields.selection([(u'工期可接受',u'工期可接受'),(u'工期太紧',u'工期太紧')],u"工期"),#本院是否有能力满足规定要求
+		"shejifei":fields.selection([(u'设计费合理',u'设计费合理'),(u'设计费太低',u'设计费太低')],u'设计费'),#本院是否有能力满足规定要求
 
 	}
 	def submit(self,cr,uid,ids,context=None):
@@ -103,7 +107,7 @@ class tijiaojingyingshi(osv.osv_memory):
 					'fields':'guimo,waibao,shizhenpeitao,duofanghetong,jianyishejibumen_id,jianyixiangmufuzeren_id,jiafang_id',
 					'result':'accepted',
 					'comment':data.comment,
-					'name':'填申请单提交所长审批',
+					'name':u'填申请单提交所长审批',
 					'reviewer_id':data.reviewer_id.id,
 				}
 				history_id = review_histories.create(cr,SUPERUSER_ID,history,context=context)
