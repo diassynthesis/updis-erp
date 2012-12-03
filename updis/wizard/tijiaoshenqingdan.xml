@@ -24,7 +24,7 @@
 						<field name="comment" />
 					</group>
 					<footer>
-						<button name="accept" string="提交" type="object" class="oe_highlight"/>
+						<button name="submit" string="提交" type="object" class="oe_highlight"/>
 						<button string="Cancel" class="oe_link" special="cancel"/>
 					</footer>
 				</form>

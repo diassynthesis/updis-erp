@@ -2,9 +2,74 @@
 from osv import osv,fields
 
 class suozhangshenpi(osv.osv_memory):
-	"""suozhangshenpi"""
+	"""
+	所长审批任意人员提交的申请单
+	"""
 	_name="project.suozhangshenpi"
-	_description="suozhangshenpi"
+	_description=u"所长审批任意人员提交的申请单"
+	_inherit=['project.review_abstract']
+	_columns={
+		"guimo":fields.char(u"规模",size=64,readonly=True),
+		"waibao":fields.boolean(u"是否外包",readonly=True),
+		"shizhenpeitao":fields.boolean(u"市政配套",readonly=True),
+		"duofanghetong":fields.boolean(u"多方合同",readonly=True),
+		"jianyishejibumen_id":fields.many2one("hr.department",u"建议设计部门",readonly=True),
+		"jianyixiangmufuzeren_id":fields.many2one("res.users",u"建议项目负责人",readonly=True),
+		"jiafang_id":fields.many2one('res.partner', u"甲方",readonly=True),
+	}
+
+	def accept(self,cr,udi,ids,context=context):
+		review_histories = `self.pool.get("project.review.history")
+		project_project = self.pool.get("project.project")
+		sms_sms = self.pool.get("sms.sms")
+		mail_mail = self.pool.get('mail.mail')
+		#Create review history.
+		for data in self.browse(cr,uid,ids,context=context):
+			for project in project_project.browse(cr,uid,context['active_ids'],context=context):
+				reviewer = self.pool.get('res.users').browse(cr,uid,uid,context=context)
+				submitter = self._get_last_submitter(cr,uid,context=context)
+				history={
+					'fields':','.join(self._columns.keys()),
+					'result':'accepted',
+					'comment':data.comment,
+					'name':'所长审批已经通过',
+					'reviewer_id':data.reviewer_id.id,
+				}
+				history_id = review_histories.create(cr,SUPERUSER_ID,history,context=context)
+				
+				if data.send_sms:			
+					sms_sms.create(cr,uid,{
+							'from':submitter.mobile,
+							'to':reviewer.mobile,
+							'content':data.comment,	
+							'model':'project.review.history',
+							'res_id':history_id,		
+						},context=context)
+				if data.send_email:
+					mail_id = mail_mail.create(cr, uid, {
+							'subject': u'请审批项目%s' % project.name,
+							'body_html': '%s' % data.comment,
+							'auto_delete': False,
+							}, context=context)
+					mail_mail.send(cr, uid, [mail_id], recipient_ids=[reviewer.id], context=context)
+				project_project.write(cr,uid,project.id,{
+					'guimo':data.guimo,
+					'waibao':data.waibao,
+					'shizhenpeitao':data.shizhenpeitao,
+					'duofanghetong':data.duofanghetong,
+					'jianyishejibumen_id':data.jianyishejibumen_id.id,
+					'jianyixiangmufuzeren_id':data.jianyixiangmufuzeren_id.id,
+					'jiafang_id':data.jiafang_id.id,
+					'state':'suozhangshenpi',
+					},context=context)
+		return {'type': 'ir.actions.act_window_close'}
+	def reject(self,cr,udi,ids,context=context):
+		pass
+suozhangshenpi()
+class tijiaojingyingshi(osv.osv_memory):
+	"""所长提交经营室审批"""
+	_name="project.tijiaojingyingshi"
+	_description="所长提交经营室审批"
 	_inherit=['project.review_abstract']
 	_columns = {
 		"yaoqiuxingchengwenjian":fields.selection([(u"已形成",u"已形成"),(u"未形成，但已确认",u"未形成，但已确认")],
@@ -24,4 +89,49 @@ class suozhangshenpi(osv.osv_memory):
 		"shejifei":fields.selection([(u'设计费合理','设计费合理'),(u'设计费太低',u'设计费太低')],u'设计费'),#本院是否有能力满足规定要求
 
 	}
-suozhangshenpi()
+	def submit(self,cr,uid,ids,context=None):
+		review_histories = self.pool.get("project.review.history")
+		project_project = self.pool.get("project.project")
+		sms_sms = self.pool.get("sms.sms")
+		mail_mail = self.pool.get('mail.mail')
+		#Create review history.
+		for data in self.browse(cr,uid,ids,context=context):
+			for project in project_project.browse(cr,uid,context['active_ids'],context=context):
+				reviewer = data.reviewer_id
+				submitter = self.pool.get('res.users').browse(cr,uid,uid,context=context)
+				history={
+					'fields':'guimo,waibao,shizhenpeitao,duofanghetong,jianyishejibumen_id,jianyixiangmufuzeren_id,jiafang_id',
+					'result':'accepted',
+					'comment':data.comment,
+					'name':'填申请单提交所长审批',
+					'reviewer_id':data.reviewer_id.id,
+				}
+				history_id = review_histories.create(cr,SUPERUSER_ID,history,context=context)
+				
+				if data.send_sms:			
+					sms_sms.create(cr,uid,{
+							'from':submitter.mobile,
+							'to':reviewer.mobile,
+							'content':data.comment,	
+							'model':'project.review.history',
+							'res_id':history_id,		
+						},context=context)
+				if data.send_email:
+					mail_id = mail_mail.create(cr, uid, {
+							'subject': u'请审批项目%s' % project.name,
+							'body_html': '%s' % data.comment,
+							'auto_delete': False,
+							}, context=context)
+					mail_mail.send(cr, uid, [mail_id], recipient_ids=[reviewer.id], context=context)
+				project_project.write(cr,uid,project.id,{
+					'guimo':data.guimo,
+					'waibao':data.waibao,
+					'shizhenpeitao':data.shizhenpeitao,
+					'duofanghetong':data.duofanghetong,
+					'jianyishejibumen_id':data.jianyishejibumen_id.id,
+					'jianyixiangmufuzeren_id':data.jianyixiangmufuzeren_id.id,
+					'jiafang_id':data.jiafang_id.id,
+					'state':'suozhangshenpi',
+					},context=context)
+		return {'type': 'ir.actions.act_window_close'}
+tijiaojingyingshi()

@@ -17,7 +17,7 @@ class tijiaoshenqingdan(osv.osv_memory):
 		"jianyixiangmufuzeren_id":fields.many2one("res.users",u"建议项目负责人"),
 		"jiafang_id":fields.many2one('res.partner', u"甲方"),
 	}
-	def accept(self,cr,uid,ids,context=None):
+	def submit(self,cr,uid,ids,context=None):
 		review_histories = self.pool.get("project.review.history")
 		project_project = self.pool.get("project.project")
 		sms_sms = self.pool.get("sms.sms")
@@ -25,14 +25,14 @@ class tijiaoshenqingdan(osv.osv_memory):
 		#Create review history.
 		for data in self.browse(cr,uid,ids,context=context):
 			for project in project_project.browse(cr,uid,context['active_ids'],context=context):
-				reviewer = data.reviewer_id
 				submitter = self.pool.get('res.users').browse(cr,uid,uid,context=context)
+				reviewer = data.reviewer_id
 				history={
 					'fields':','.join(self._columns.keys()),
-					'result':'accepted',
+					'result':'submit',
 					'comment':data.comment,
 					'name':'填申请单提交所长审批',
-					'reviewer_id':data.reviewer_id.id,
+					'submitter_id':submitter.id,
 				}
 				history_id = review_histories.create(cr,SUPERUSER_ID,history,context=context)
 				

@@ -2,7 +2,7 @@
 from osv import osv,fields
 import time
 
-class project_category(osv.osv):	
+class project_upcategory(osv.osv):	
 	def name_get(self, cr, uid, ids, context=None):
 		if not len(ids):
 				return []
@@ -17,14 +17,14 @@ class project_category(osv.osv):
 	def _cate_name_get_fnc(self, cr, uid, ids, prop, unknow_none, context=None):
 		res = self.name_get(cr,uid,ids,context=context)
 		return dict(res)
-	_name = "project.project_category"  
+	_name = "project.upcategory"  
 	_description = "Project Category"
 	_columns = {
 	"name":fields.char("Category",size=64,required=True),
 	"complete_name":fields.function(_cate_name_get_fnc,type="char",string="Name"),
 	'summary':fields.text("Summary"),
-	'parent_id':fields.many2one('project.project_category',"Parent Category", ondelete='set null',select=True),
-	'child_ids':fields.one2many('project.project_category','parent_id','Child Categories'),
+	'parent_id':fields.many2one('project.upcategory',"Parent Category", ondelete='set null',select=True),
+	'child_ids':fields.one2many('project.upcategory','parent_id','Child Categories'),
 
 	}
 	_sql_constraints = [
@@ -74,7 +74,7 @@ class updis_project(osv.osv):
 		"chenjiebumen_id":fields.many2one("hr.department",u"承接部门"),
 
 		# 总师室
-		"category_id":fields.many2many("project.project_category","up_project_category_rel","project_id","category_id",u"项目类别"),
+		"category_id":fields.many2many("project.upcategory","up_project_category_rel","project_id","category_id",u"项目类别"),
 		"toubiaoleibie":fields.selection([(u'商务标',u'商务标'),(u'技术标',u'技术标'),(u'综合标',u'综合标')],u"投标类别"),
 		"guanlijibie":fields.selection([(u'院级',u'院级'),(u'所级',u'所级')],u'项目管理级别'),
 		"chenjiefuzeren_id":fields.many2one("res.users",u"承接项目负责人"),
@@ -127,9 +127,15 @@ class project_review_history(osv.Model):
 	_description="Keep every review of the project here."
 	_columns = {
 		'name':fields.text('Name',size=512),
-		'reviewer_id': fields.many2one('res.users', 'Reviewer', readonly=True,required=True),
-		'fields':fields.char("Fields reviewed", size=512, readonly=True,required=True),		
-		'result':fields.selection([('accepted','Accepted'),('rejected','Rejected')],'Result'),
+		'submitter_id': fields.many2one('res.users', 'Submitter', readonly=True),
+		'reviewer_id': fields.many2one('res.users', 'Reviewer', readonly=True),
+		'fields':fields.char("Fields reviewed", size=512, readonly=True),		
+		'result':fields.selection([
+			('submit','Submit'),
+			('accepted','Accepted'),
+			('rejected','Rejected')],
+			'Result'),
 		'comment':fields.text('Comment')
 	}
+	_order="create_date desc,result"
 project_review_history()
