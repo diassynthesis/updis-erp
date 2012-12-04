@@ -14,7 +14,7 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 	@openerp.addons.web.http.jsonrequest
 	def load_home_page_categories(self,req):
 		ret = {}
-		context = req.session.eval_context(req.context)
+		context = req.context
 		Page = req.session.model("document.page")	
 
 		# All categories to display on internal home page
@@ -64,13 +64,13 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 
 	def do_get_roots(self,req):
 		s = req.session
-		context = s.eval_context(req.context)
+		context = req.context
 		Menus = s.model("internal.home.menu")
 		return Menus.search([['parent_id','=',False]],0,False,False,context)
 
 	def do_load_menu(self,req):
 		""""Loads all internal home menus and their sub menus"""
-		context = req.session.eval_context(req.context)
+		context = req.context
 		Menus = req.session.model("internal.home.menu")
 		menu_ids = Menus.search([],0,False,False,context)
 		menu_items = Menus.read(menu_ids, ['name', 'sequence', 'parent_id', 'action', 'needaction_enabled', 'needaction_counter'], context)

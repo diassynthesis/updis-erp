@@ -12,7 +12,7 @@ from openerp.addons.web.controllers.main import manifest_list, module_boot,html_
 class InternalHome(openerp.addons.web.http.Controller):
 	_cp_path = "/web/clupload"
 	def _create_attachment(self,req,qqfile,resize_image=False):
-		context = req.session.eval_context(req.context)
+		context = req.context
 		Model = req.session.model('ir.attachment')
 
 		datas = base64.encodestring(req.httprequest.data)
