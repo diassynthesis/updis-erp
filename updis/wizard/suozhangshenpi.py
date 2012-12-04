@@ -17,11 +17,19 @@ class suozhangshenpi_form(osv.Model):
 		"jianyixiangmufuzeren_id":fields.many2one("res.users",u"建议项目负责人"),
 		"jiafang_id":fields.many2one('res.partner', u"甲方"),		
 	}
+	def update_project_suozhangshenpi_form(self,cr,uid,ids,*args):
+		for f in self.browse(cr,uid,ids):
+			f.project_id.suozhangshenpi_form_id = f.id
+		return True
 class updis_project(osv.Model):
 	_inherit='project.project'	
 	_columns={
 		'suozhangshenpi_form_id':fields.many2one('project.review.suozhangshenpi_form',u'所长审批单'),
 	}
+	def test_suozhangform_submitted(self, cr, uid, ids, *args):
+		return all([suozhangshenpi_form_id.state=='submitted' for proj in self.browse(cr,uid,ids) if proj.suozhangshenpi_form_id])
+	def suozhangform_get(self, cr, uid, ids, *args):
+		return [suozhangshenpi_form_id.id for proj in self.browse(cr,uid,ids) if proj.suozhangshenpi_form_id]
 class suozhangshenpi(osv.Model):
 	"""
 	所长审批任意人员提交的申请单

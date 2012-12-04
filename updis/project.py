@@ -131,7 +131,7 @@ class updis_project(osv.osv):
 	def project_fuzerenqidong(self, cr, uid, ids, context=None):
 		self.write(cr, uid, ids, { 'state': 'fuzerenqidong' })
 		return True
-
+	
 class project_review_history(osv.Model):
 	_name="project.review.history"
 	_description="Keep every review of the project here."

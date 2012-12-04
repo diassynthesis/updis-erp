@@ -11,7 +11,8 @@
 			<field name="wkf_id" ref="wkf_project_review_suozhangshenpi_form" />
 			<field name="name">draft</field>
 			<field name="flow_start">True</field>
-			<field name="kind">dummy</field>
+			<field name="kind">function</field>
+			<field name="action">update_project_suozhangshenpi_form()</field>
 		</record>
 		<record id="act_accepted" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_project_review_suozhangshenpi_form" />
