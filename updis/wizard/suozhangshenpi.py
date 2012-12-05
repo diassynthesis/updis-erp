@@ -3,7 +3,26 @@ from osv import osv,fields
 from . import common
 from openerp import SUPERUSER_ID
 
-class suozhangshenpi(osv.osv_memory):
+class suozhangshenpi_form(osv.Model):
+	"""所长审批单"""
+	_name="project.review.suozhangshenpi_form"
+	_description=u"所长审批任意人员提交的申请单"
+	_inherit=['project.review_abstract']
+	_columns={
+		"guimo":fields.char(u"规模",size=64),
+		"waibao":fields.boolean(u"是否外包"),
+		"shizhenpeitao":fields.boolean(u"市政配套"),
+		"duofanghetong":fields.boolean(u"多方合同"),
+		"jianyishejibumen_id":fields.many2one("hr.department",u"建议设计部门"),
+		"jianyixiangmufuzeren_id":fields.many2one("res.users",u"建议项目负责人"),
+		"jiafang_id":fields.many2one('res.partner', u"甲方"),		
+	}
+class updis_project(osv.Model):
+	_inherit='project.project'	
+	_columns={
+		'suozhangshenpi_form_id':fields.many2one('project.review.suozhangshenpi_form',u'所长审批单'),
+	}
+class suozhangshenpi(osv.Model):
 	"""
 	所长审批任意人员提交的申请单
 	"""

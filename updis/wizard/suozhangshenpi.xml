@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
 	<data>
+		<record id="project_review_suozhangshenpi_form_form_view" model="ir.ui.view">			
+			<field name="name">project.review.suozhangshenpi_form.view</field>
+			<field name="model">project.review.suozhangshenpi_form</field>
+			<field name="arch" type="xml">
+				<form string="suozhangshenpi" version="7.0">
+					<group string="基本信息" col="4">
+						<field name="guimo"/>
+						<field name="jianyishejibumen_id"/>
+						<field name="jianyixiangmufuzeren_id"/>
+						<field name="jiafang_id"/>	
+						<field name="waibao"/>
+						<field name="shizhenpeitao"/>
+						<field name="duofanghetong"/>
+					</group>
+					<group string="Review Comment">
+						<field name="reviewer_id" domain="[('groups_id','=',%(group_up_project_suozhang)d)]" />
+						<field name="comment" />
+					</group>
+					<footer>
+						<button name="accept" string="提交" type="object" class="oe_highlight"/>
+						<button name="reject" string="打回" type="object" class="oe_highlight"/>
+						<button string="Cancel" class="oe_link" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
 		<record id="suozhangshenpi_form_view" model="ir.ui.view">			
 			<field name="name">suozhangshenpi.form.view</field>
 			<field name="model">project.suozhangshenpi</field>

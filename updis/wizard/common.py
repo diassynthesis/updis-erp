@@ -11,12 +11,29 @@ class review_abstract(osv.AbstractModel):
 	'''
 	_name = "project.review_abstract"	
 	_columns = {	
+		'project_id':fields.many2one('project.project','Project'),
 		'send_email':fields.boolean(u"发送邮件通知"),
 		'send_sms':fields.boolean(u"发送短信通知"),
 		'comment':fields.text(u"Review Comment"),
 		'reviewer_id':fields.many2one("res.users","Reviewer",required=True),
+		'submitter_id':fields.many2one("res.users","Submitter",required=True),
+		'state':fields.selection([
+			('draft','Draft'),
+			('submitted','Submitted'),
+			('accepted','Accepted'),
+			('rejected','Rejected'),
+			],"State",readonly=True)
 	}
-
+	_defaults = {
+		'state':lambda *a:'draft',
+		'submitter_id':lambda self, cr, uid, c=None:uid,
+	}
+	def reject(self,cr,uid,ids,context=None):
+		self.write(cr,uid,ids,{'state':'rejected'})
+		return True
+	def accept(self,cr,uid,ids,context=None):
+		self.write(cr,uid,ids,{'state':'accepted'})
+		return True
 	def _get_last_submitter(self,cr,uid,context=None):
 		"""
 		返回最近的提交人ID
