@@ -1,41 +1,110 @@
 <?xml version="1.0"?>
 <openerp>
 	<data>
+		<!-- 邮件 -->
+		<record id="suozhangshenpi_send_email" model="ir.actions.server">
+			<field name="name">发送所长审批提醒邮件</field>
+			<field name="condition">obj.send_email</field>
+			<field name="state">email</field>
+			<field name="model_id" ref="updis.model_project_review_suozhangshenpi_form"></field>
+			<field name="email">obj.reviewer_id.email</field>
+			<field name="subject">请审批[[obj.submitter_id.name]]提交的项目[[obj.project_id.name]]</field>
+			<field name="message"><![CDATA[
+尊敬的[[obj.reviewer_id.name]]所长:
+[[obj.submitter_id.name]]于[[obj.create_date]]提交了项目<strong>[[obj.project_id.name]]</strong>任务下达申请单，
+请审批[[obj.submitter_id.name]]提交的项目[[obj.project_id.name]]
+审批地址是：
+<a href="">现在去审批</a>
+				 ]]></field>
+		</record>
+		<!-- 短信 -->
+		<record id="suozhangshenpi_send_sms" model="ir.actions.server">
+			<field name="name">发送所长审批提醒短信</field>
+			<field name="condition">obj.send_sms</field>
+			<field name="state">object_create</field>
+			<field name="model_id" ref="updis.model_project_review_suozhangshenpi_form"></field>
+			<field name="srcmodel_id" ref="sms.model_sms_sms"></field>			
+		</record>
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_send_sms" />
+			<field name="col1" ref="sms.field_sms_sms_content" />
+			<field name="type">equation</field>
+			<field name="value">u"%s于%s提交了项目%s"%(obj.submitter_id.name,obj.create_date,obj.project_id.name)</field>
+		</record>
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_send_sms" />
+			<field name="col1" ref="sms.field_sms_sms_to" />
+			<field name="type">equation</field>
+			<field name="value">object.reviewer_id.mobile</field>
+		</record>
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_send_sms" />
+			<field name="col1" ref="sms.field_sms_sms_from" />
+			<field name="type">equation</field>
+			<field name="value">object.submitter_id.mobile</field>
+		</record>
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_send_sms" />
+			<field name="col1" ref="sms.field_sms_sms_res_id" />
+			<field name="type">equation</field>
+			<field name="value">obj.id</field>
+		</record>
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_send_sms" />
+			<field name="col1" ref="sms.field_sms_sms_model" />
+			<field name="type">value</field>
+			<field name="value">project.review.suozhangshenpi.form</field>
+		</record>
+
+		
 		<record model="workflow" id="wkf_project_review_suozhangshenpi_form">
-			<field name="name">workflow.project.review.suozhangshenpi_form</field>
-			<field name="osv">project.review.suozhangshenpi_form</field>
+			<field name="name">workflow.project.review.suozhangshenpi.form</field>
+			<field name="osv">project.review.suozhangshenpi.form</field>
 			<field name="on_create">True</field>
 		</record>
 		<!-- Activities -->
-		<record id="act_draft" model="workflow.activity">
+		<record id="act_suozhangshenpi_draft" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_project_review_suozhangshenpi_form" />
 			<field name="name">draft</field>
 			<field name="flow_start">True</field>
 			<field name="kind">function</field>
 			<field name="action">update_project_suozhangshenpi_form()</field>
 		</record>
-		<record id="act_accepted" model="workflow.activity">
+		<record id="act_suozhangshenpi_submitted" model="workflow.activity">
+			<field name="wkf_id" ref="wkf_project_review_suozhangshenpi_form" />
+			<field name="name">Submitted</field>
+			<field name="kind">function</field>
+			<field name="action">write({'state':'submitted'})</field>
+		</record>
+		<record id="act_suozhangshenpi_accepted" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_project_review_suozhangshenpi_form" />
 			<field name="name">Accepted</field>
+			<field name="flow_stop">True</field>
 			<field name="kind">function</field>
 			<field name="action">write({'state':'accepted'})</field>
 		</record>
-		<record id="act_rejected" model="workflow.activity">
+		<record id="act_suozhangshenpi_rejected" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_project_review_suozhangshenpi_form" />
 			<field name="name">Rejected</field>
+			<field name="flow_stop">True</field>
 			<field name="kind">function</field>
 			<field name="action">write({'state':'rejected'})</field>
 		</record>
 		<!-- Transitions -->
-		<record id="t1" model="workflow.transition">
-			<field name="act_from" ref="act_draft"/>
-			<field name="act_to" ref="act_accepted"/>
-			<field name="signal">review_accept</field>
+		<record model="workflow.transition">
+			<field name="act_from" ref="act_suozhangshenpi_draft"/>
+			<field name="act_to" ref="act_suozhangshenpi_submitted"/>
+			<field name="signal">suozhang_review_submit</field>
 		</record>
-		<record id="t2" model="workflow.transition">
-			<field name="act_from" ref="act_draft"/>
-			<field name="act_to" ref="act_rejected"/>
-			<field name="signal">review_reject</field>
+		<record model="workflow.transition">
+			<field name="act_from" ref="act_suozhangshenpi_submitted"/>
+			<field name="act_to" ref="act_suozhangshenpi_accepted"/>
+			<field name="signal">suozhang_review_accept</field>
+		</record>
+		<record model="workflow.transition">
+			<field name="act_from" ref="act_suozhangshenpi_submitted"/>
+			<field name="act_to" ref="act_suozhangshenpi_rejected"/>
+			<field name="signal">suozhang_review_reject</field>
 		</record>
 
 	</data>

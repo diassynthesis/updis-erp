@@ -9,16 +9,6 @@
 				<xpath expr="//header" position="replace">
 					<header>
 						<button name="action_suozhangshenpi" string="所长审批申请单" state="tianshenqingdan" type="object"/>
-						<!-- <button name="%(tijiaoshenqingdan_act)d" string="提交所长审批" states="tianshenqingdan" type="action" icon="gtk-go-forward" />
-						<button name="%(suozhangshenpi_act)d" string="审批" states="suozhangshenpi" type="action" icon="gtk-cancel" />
-						<button name="%(tijiaojingyingshi_act)d" string="提交经营室" type="action" states="suozhangshenpi" icon="gtk-go-forward" />	 -->					
-						<!-- <button name="project_zhidingbumen_reject" string="打回" states="zhidingbumen" icon="gtk-cancel" />	
-						<button name="project_zhidingfuzeren" string="提交总师室" states="zhidingbumen" icon="gtk-go-forward" />						
-						<button name="project_zhidingfuzeren_reject" string="打回" states="zhidingfuzeren" icon="gtk-cancel" />
-						<button name="project_suozhangqianzi" string="提交所长签字" states="zhidingfuzeren" icon="gtk-go-forward" />						
-						<button name="project_suozhangqianzi_reject" string="打回" states="suozhangqianzi" icon="gtk-cancel" />
-						<button name="project_fuzerenqidong" string="启动项目" states="suozhangqianzi" icon="gtk-go-forward" />						
-						<button name="project_fuzerenqidong_reject" string="打回" states="fuzerenqidong" icon="gtk-cancel" /> -->
 						<field name="state" widget="statusbar" statusbar_colors='{"fuzerenqidong":"blue"}' readonly="1"/>
 					</header>
 				</xpath>

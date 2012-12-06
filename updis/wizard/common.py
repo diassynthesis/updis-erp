@@ -9,8 +9,9 @@ class review_abstract(osv.AbstractModel):
 	3. 发送短信通知
 	4. 更新对应项目信息
 	'''
-	_name = "project.review_abstract"	
-	_columns = {	
+	_name = "project.review.abstract"	
+	_columns = {
+		'create_date':fields.datetime('Create Date'),
 		'project_id':fields.many2one('project.project','Project'),
 		'send_email':fields.boolean(u"发送邮件通知"),
 		'send_sms':fields.boolean(u"发送短信通知"),
@@ -22,10 +23,10 @@ class review_abstract(osv.AbstractModel):
 			('submitted','Submitted'),
 			('accepted','Accepted'),
 			('rejected','Rejected'),
-			],"State",readonly=True)
+			],"Status",readonly=True,select=True)
 	}
 	_defaults = {
-		'state':lambda *a:'draft',
+		'state':'draft',
 		'submitter_id':lambda self, cr, uid, c=None:uid,
 	}
 	def reject(self,cr,uid,ids,context=None):

@@ -95,24 +95,7 @@ class updis_project(osv.osv):
 		'state': lambda *a: 'tianshenqingdan',
 		'xiangmubianhao':lambda self, cr, uid, c=None: self.pool.get('ir.sequence').next_by_code(cr, uid, 'project.project', context=c)
 	}
-	def action_suozhangshenpi(self, cr, uid, ids, context=None):
-		# suozhangshenpi_form = self.pool.get('project.review.suozhangshenpi_form')
-		# suozhangshenpi_form_id = False
-		assert len(ids)==1
-		ctx = (context or {}).copy()
-		ctx['default_project_id']=ids[0]
-		# for pid in ids:
-		# 	suozhangshenpi_form_ids=suozhangshenpi_form.search(cr,uid,[('project_id','=',ids[0])])
-		# 	suozhangshenpi_form_id = suozhangshenpi_form_ids and suozhangshenpi_form_ids[0] or False
-		return {
-			'name': _('Suozhang shenpi'),				
-					'type':'ir.actions.act_window',
-					'view_mode':'form',
-					'res_model':'project.review.suozhangshenpi_form',
-					# 'res_id':suozhangshenpi_form_id,
-					'target':'new',
-					'context':ctx
-				}
+	
 	def project_tianshenqingdan(self, cr, uid, ids, context=None):
 		self.write(cr, uid, ids, { 'state': 'tianshenqingdan' })
 		return True
