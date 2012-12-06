@@ -6,7 +6,7 @@
 			<field name="model">project.review.suozhangshenpi.form</field>
 			<field name="arch" type="xml">
 				<form string="suozhangshenpi" version="7.0">
-					<field name="state" widget="statusbar" readonly="1" statusbar_visible="submitted,accepted"/>
+					<field name="state" widget="statusbar" readonly="1" statusbar_visible="submitted,draft"/>
 					<group string="基本信息" col="4">
 						<field name="guimo" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
 						<field name="jianyishejibumen_id" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
