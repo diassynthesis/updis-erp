@@ -16,6 +16,17 @@
 						<field name="shizhenpeitao" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
 						<field name="duofanghetong" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
 					</group>
+					<group string="项目内容" col="4">						
+						<field name="yaoqiuxingchengwenjian" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
+						<field name="yinhanyaoqiu" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
+						<field name="difangfagui" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>		
+						<field name="fujiayaoqiu" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>		
+						<field name="hetongyizhi" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
+						<field name="ziyuan" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>		
+						<field name="shebei" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>		
+						<field name="gongqi" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>		
+						<field name="shejifei" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
+					</group>
 					<group string="通知设置">
 						<field name="send_email" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
 						<field name="send_sms" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>

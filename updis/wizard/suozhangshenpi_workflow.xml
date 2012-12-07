@@ -17,6 +17,7 @@
 		<record id="act_suozhangshenpi_submitted" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_project_review_suozhangshenpi_form" />
 			<field name="name">Submitted</field>
+			<field name="action_id" ref="suozhangshenpi_multi_submitted"/>
 			<field name="kind">function</field>
 			<field name="action">write({'state':'submitted'})</field>
 		</record>
@@ -25,6 +26,7 @@
 			<field name="name">Accepted</field>
 			<field name="flow_stop">True</field>
 			<field name="kind">function</field>
+			<field name="action_id" ref="suozhangshenpi_multi_accepted"/>
 			<field name="action">write({'state':'accepted'})</field>
 		</record>
 		<record id="act_suozhangshenpi_rejected" model="workflow.activity">

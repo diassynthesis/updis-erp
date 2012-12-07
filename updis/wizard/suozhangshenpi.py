@@ -10,6 +10,7 @@ class suozhangshenpi_form(osv.Model):
 	_description=u"所长审批任意人员提交的申请单"
 	_inherit=['project.review.abstract']
 	_columns={
+		# 基础信息 
 		"guimo":fields.char(u"规模",size=64),
 		"waibao":fields.boolean(u"是否外包"),
 		"shizhenpeitao":fields.boolean(u"市政配套"),
@@ -17,10 +18,30 @@ class suozhangshenpi_form(osv.Model):
 		"jianyishejibumen_id":fields.many2one("hr.department",u"建议设计部门"),
 		"jianyixiangmufuzeren_id":fields.many2one("res.users",u"建议项目负责人"),
 		"jiafang_id":fields.many2one('res.partner', u"甲方"),		
+
+		# 所长审批
+		"yaoqiuxingchengwenjian":fields.selection([(u"已形成",u"已形成"),(u"未形成，但已确认",u"未形成，但已确认")],
+			u"顾客要求形成文件否"),		
+		"zhaobiaoshu":fields.boolean(u"有招标书"),# 明示要求
+		"weituoshu":fields.boolean(u"有委托书"),# 明示要求
+		"xieyicaoan":fields.boolean(u"有协议/合同草案"),# 明示要求
+		"koutouyaoqiujilu":fields.boolean(u"有口头要求记录"),# 明示要求
+		"yinhanyaoqiu":fields.selection([(u"有",u"有（需在评审记录一栏中标明记录）"),(u"无",u"无")],u"隐含要求"),
+		"difangfagui":fields.selection([(u"有",u"有（需在评审记录一栏中标明记录）"),(u"无",u"无")],u"地方规范或特殊法律法规"),
+		"fujiayaoqiu":fields.selection([(u"有",u"有（需在评审记录一栏中标明记录）"),(u"无",u"无")],u"附加要求"),
+		"hetongyizhi":fields.selection([(u"合同/协议要求表述不一致已解决",u"合同/协议要求表述不一致已解决"),
+			(u"没有出现不一致",u"没有出现不一致")],u"不一致是否解决"),	
+		"ziyuan":fields.selection([(u'人力资源满足',u'人力资源满足'),(u'人力资源不足',u'人力资源不足')],u'人力资源'),#本院是否有能力满足规定要求
+		"shebei":fields.selection([(u'设备满足','设备满足'),(u'设备不满足',u'设备不满足')],u"设备"),#本院是否有能力满足规定要求
+		"gongqi":fields.selection([(u'工期可接受','工期可接受'),(u'工期太紧',u'工期太紧')],u"工期"),#本院是否有能力满足规定要求
+		"shejifei":fields.selection([(u'设计费合理','设计费合理'),(u'设计费太低',u'设计费太低')],u'设计费'),#本院是否有能力满足规定要求
 	}
-	def update_project_suozhangshenpi_form(self,cr,uid,ids,*args):
+	def update_project_suozhangshenpi_form(self,cr,uid,ids,*args):		
+		project = self.pool.get('project.project')
 		for f in self.browse(cr,uid,ids):
-			f.project_id.suozhangshenpi_form_id = f
+			project.write(cr,uid,f.project_id.id,{
+				'suozhangshenpi_form_id':f.id
+				})
 		return True
 class updis_project(osv.Model):
 	_inherit='project.project'	
@@ -44,8 +65,8 @@ class updis_project(osv.Model):
 					'target':'new',
 					'context':ctx
 				}
-	def test_suozhangform_submitted(self, cr, uid, ids, *args):
-		return all([suozhangshenpi_form_id.state=='submitted' for proj in self.browse(cr,uid,ids) if proj.suozhangshenpi_form_id])
+	def test_suozhangform_accepted(self, cr, uid, ids, *args):
+		return all([(proj.suozhangshenpi_form_id and proj.suozhangshenpi_form_id.state=='accepted') for proj in self.browse(cr,uid,ids)])
 	def suozhangform_get(self, cr, uid, ids, *args):
 		return [suozhangshenpi_form_id.id for proj in self.browse(cr,uid,ids) if proj.suozhangshenpi_form_id]
 # class suozhangshenpi(osv.Model):

@@ -56,7 +56,7 @@
 			<field name="act_to" ref="act_suozhangshenpi"/>
 			<field name="trigger_model">project.review.suozhangshenpi.form</field>
 			<field name="trigger_expr_id">suozhangform_get()</field>
-			<field name="condition">test_suozhangform_submitted()</field>
+			<field name="condition">test_suozhangform_accepted()</field>
 		</record>
 		<record id="t2" model="workflow.transition">
 			<field name="act_from" ref="act_suozhangshenpi"/>
