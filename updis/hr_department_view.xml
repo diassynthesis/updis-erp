@@ -8,6 +8,7 @@
 			<field name="arch" type="xml">
 				<xpath expr="//field[@name='parent_id']" position="after">
 					<field name="deleted" />
+					<field name="display_in_front"/>
 					<field name="sequence"/>
 				</xpath>
 			</field>

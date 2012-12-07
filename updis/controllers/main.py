@@ -66,7 +66,7 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 		s = req.session
 		context = req.context
 		Menus = s.model("internal.home.menu")
-		return Menus.search([['parent_id','=',False]],0,False,False,context)
+		return Menus.search([('parent_id','=',False)],0,False,False,context)
 
 	def do_load_menu(self,req):
 		""""Loads all internal home menus and their sub menus"""
