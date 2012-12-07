@@ -25,31 +25,31 @@
 			<field name="model_id" ref="updis.model_project_review_suozhangshenpi_form"></field>
 			<field name="srcmodel_id" ref="sms.model_sms_sms"></field>			
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_content" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_send_sms" />
 			<field name="col1" ref="sms.field_sms_sms_content" />
 			<field name="type">equation</field>
 			<field name="value">u"%s于%s提交了项目%s"%(object.submitter_id.name,object.create_date,object.project_id.name)</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_to" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_send_sms" />
 			<field name="col1" ref="sms.field_sms_sms_to" />
 			<field name="type">equation</field>
 			<field name="value">object.reviewer_id.mobile</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_from" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_send_sms" />
 			<field name="col1" ref="sms.field_sms_sms_from" />
 			<field name="type">equation</field>
 			<field name="value">object.submitter_id.mobile</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_res_id" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_send_sms" />
 			<field name="col1" ref="sms.field_sms_sms_res_id" />
 			<field name="type">equation</field>
 			<field name="value">object.id</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_model" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_send_sms" />
 			<field name="col1" ref="sms.field_sms_sms_model" />
 			<field name="type">value</field>
@@ -65,122 +65,122 @@
 			<field name="write_id">object.project_id</field>
 		</record>
 		<!-- 基本信息 -->
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_guimo" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_guimo" />
 			<field name="type">equation</field>
 			<field name="value">object.guimo</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_waibao" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_waibao" />
 			<field name="type">equation</field>
 			<field name="value">object.waibao</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_shizhenpeitao" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_shizhenpeitao" />
 			<field name="type">equation</field>
 			<field name="value">object.shizhenpeitao</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_duofanghetong" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_duofanghetong" />
 			<field name="type">equation</field>
 			<field name="value">object.duofanghetong</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_jianyishejibumen_id" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_jianyishejibumen_id" />
 			<field name="type">equation</field>
 			<field name="value">object.jianyishejibumen_id</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_jianyixiangmufuzeren_id" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_jianyixiangmufuzeren_id" />
 			<field name="type">equation</field>
 			<field name="value">object.jianyixiangmufuzeren_id</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_jiafang_id" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_jiafang_id" />
 			<field name="type">equation</field>
 			<field name="value">object.jiafang_id</field>
 		</record>
 		<!-- 审批内容 -->
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_yaoqiuxingchengwenjian" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_yaoqiuxingchengwenjian" />
 			<field name="type">equation</field>
 			<field name="value">object.yaoqiuxingchengwenjian</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_zhaobiaoshu" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_zhaobiaoshu" />
 			<field name="type">equation</field>
 			<field name="value">object.zhaobiaoshu</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_weituoshu" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_weituoshu" />
 			<field name="type">equation</field>
 			<field name="value">object.weituoshu</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_xieyicaoan" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_xieyicaoan" />
 			<field name="type">equation</field>
 			<field name="value">object.xieyicaoan</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_koutouyaoqiujilu" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_koutouyaoqiujilu" />
 			<field name="type">equation</field>
 			<field name="value">object.koutouyaoqiujilu</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_yinhanyaoqiu" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_yinhanyaoqiu" />
 			<field name="type">equation</field>
 			<field name="value">object.yinhanyaoqiu</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_difangfagui" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_difangfagui" />
 			<field name="type">equation</field>
 			<field name="value">object.difangfagui</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_fujiayaoqiu" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_fujiayaoqiu" />
 			<field name="type">equation</field>
 			<field name="value">object.fujiayaoqiu</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_hetongyizhi" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_hetongyizhi" />
 			<field name="type">equation</field>
 			<field name="value">object.hetongyizhi</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_ziyuan" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_ziyuan" />
 			<field name="type">equation</field>
 			<field name="value">object.ziyuan</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_shebei" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_shebei" />
 			<field name="type">equation</field>
 			<field name="value">object.shebei</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_gongqi" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_gongqi" />
 			<field name="type">equation</field>
 			<field name="value">object.gongqi</field>
 		</record>
-		<record model="ir.server.object.lines">
+		<record id="lines_suozhangshenpi_shejifei" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_shejifei" />
 			<field name="type">equation</field>
