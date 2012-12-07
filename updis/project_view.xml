@@ -9,6 +9,7 @@
 				<xpath expr="//header" position="replace">
 					<header>
 						<button name="action_suozhangshenpi" string="所长审批申请单" states="tianshenqingdan" type="object"/>
+						<button name="action_jingyingshishenpi" string="经营室审批申请单" states="suozhangshenpi" type="object"/>
 						<field name="state" widget="statusbar" statusbar_colors='{"fuzerenqidong":"blue"}' readonly="1"/>
 					</header>
 				</xpath>

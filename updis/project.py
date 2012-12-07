@@ -95,40 +95,41 @@ class updis_project(osv.osv):
 		'state': lambda *a: 'tianshenqingdan',
 		'xiangmubianhao':lambda self, cr, uid, c=None: self.pool.get('ir.sequence').next_by_code(cr, uid, 'project.project', context=c)
 	}
-	
-	def project_tianshenqingdan(self, cr, uid, ids, context=None):
-		self.write(cr, uid, ids, { 'state': 'tianshenqingdan' })
-		return True
-	def project_suozhangshenpi(self, cr, uid, ids, context=None):
-		self.write(cr, uid, ids, { 'state': 'suozhangshenpi' })
-		return True
-	def project_zhidingbumen(self, cr, uid, ids, context=None):
-		self.write(cr, uid, ids, { 'state': 'zhidingbumen' })
-		return True
-	def project_zhidingfuzeren(self, cr, uid, ids, context=None):
-		self.write(cr, uid, ids, { 'state': 'zhidingfuzeren' })
-		return True
-	def project_suozhangqianzi(self, cr, uid, ids, context=None):
-		self.write(cr, uid, ids, { 'state': 'suozhangqianzi' })
-		return True
-	def project_fuzerenqidong(self, cr, uid, ids, context=None):
-		self.write(cr, uid, ids, { 'state': 'fuzerenqidong' })
-		return True
-	
-class project_review_history(osv.Model):
-	_name="project.review.history"
-	_description="Keep every review of the project here."
-	_columns = {
-		'name':fields.text('Name',size=512),
-		'submitter_id': fields.many2one('res.users', 'Submitter', readonly=True),
-		'reviewer_id': fields.many2one('res.users', 'Reviewer', readonly=True),
-		'fields':fields.char("Fields reviewed", size=512, readonly=True),		
-		'result':fields.selection([
-			('submit','Submit'),
-			('accepted','Accepted'),
-			('rejected','Rejected')],
-			'Result'),
-		'comment':fields.text('Comment')
-	}
-	_order="create_date desc,result"
-project_review_history()
+	def _get_action(self,cr,uid,ids,form_model_name,action_name,context=None):
+		shenpi_form = self.pool.get(form_model_name)
+		shenpi_form_id = False
+		assert len(ids)==1
+		ctx = (context or {}).copy()
+		ctx['default_project_id']=ids[0]
+		shenpi_form_ids=shenpi_form.search(cr,uid,[('project_id','=',ids[0]),('state','not in',('accepted','rejected'))])
+		shenpi_form_id = shenpi_form_ids and shenpi_form_ids[0] or False
+		return {
+			'name': action_name,				
+					'type':'ir.actions.act_window',
+					'view_mode':'form',
+					'res_model':form_model_name,
+					'res_id':shenpi_form_id,
+					'target':'new',
+					'context':ctx
+				}
+	def _test_accepted(self,cr,uid,ids,form_field,*args):
+		return all([(getattr(proj,form_field) and getattr(proj,form_field).state=='accepted') for proj in self.browse(cr,uid,ids)])
+	def _get_form(self,cr,uid,ids,form_field,*args):
+		return [getattr(proj,form_field) for proj in self.browse(cr,uid,ids) if getattr(proj,form_field)]
+# class project_review_history(osv.Model):
+# 	_name="project.review.history"
+# 	_description="Keep every review of the project here."
+# 	_columns = {
+# 		'name':fields.text('Name',size=512),
+# 		'submitter_id': fields.many2one('res.users', 'Submitter', readonly=True),
+# 		'reviewer_id': fields.many2one('res.users', 'Reviewer', readonly=True),
+# 		'fields':fields.char("Fields reviewed", size=512, readonly=True),		
+# 		'result':fields.selection([
+# 			('submit','Submit'),
+# 			('accepted','Accepted'),
+# 			('rejected','Rejected')],
+# 			'Result'),
+# 		'comment':fields.text('Comment')
+# 	}
+# 	_order="create_date desc,result"
+# project_review_history()

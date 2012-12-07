@@ -2,7 +2,7 @@
 <openerp>
 	<data>
 		<record model="workflow" id="wkf_project_review_suozhangshenpi_form">
-			<field name="name">workflow.project.review.suozhangshenpi.form</field>
+			<field name="name">项目启动所长审批流程</field>
 			<field name="osv">project.review.suozhangshenpi.form</field>
 			<field name="on_create">True</field>
 		</record>
@@ -40,17 +40,17 @@
 		<record id="trans_suozhenshenpi_1" model="workflow.transition">
 			<field name="act_from" ref="act_suozhangshenpi_draft"/>
 			<field name="act_to" ref="act_suozhangshenpi_submitted"/>
-			<field name="signal">suozhang_review_submit</field>
+			<field name="signal">suozhangshenpi_review_submit</field>
 		</record>
 		<record id="trans_suozhenshenpi_2" model="workflow.transition">
 			<field name="act_from" ref="act_suozhangshenpi_submitted"/>
 			<field name="act_to" ref="act_suozhangshenpi_accepted"/>
-			<field name="signal">suozhang_review_accept</field>
+			<field name="signal">suozhangshenpi_review_accept</field>
 		</record>
 		<record id="trans_suozhenshenpi_3" model="workflow.transition">
 			<field name="act_from" ref="act_suozhangshenpi_submitted"/>
 			<field name="act_to" ref="act_suozhangshenpi_rejected"/>
-			<field name="signal">suozhang_review_reject</field>
+			<field name="signal">suozhangshenpi_review_reject</field>
 		</record>
 
 	</data>

@@ -37,38 +37,18 @@ class suozhangshenpi_form(osv.Model):
 		"shejifei":fields.selection([(u'设计费合理','设计费合理'),(u'设计费太低',u'设计费太低')],u'设计费'),#本院是否有能力满足规定要求
 	}
 	def update_project_suozhangshenpi_form(self,cr,uid,ids,*args):		
-		project = self.pool.get('project.project')
-		for f in self.browse(cr,uid,ids):
-			project.write(cr,uid,f.project_id.id,{
-				'suozhangshenpi_form_id':f.id
-				})
-		return True
+		return self._update_project_form(cr,uid,ids,'suozhangshenpi_form_id')
 class updis_project(osv.Model):
 	_inherit='project.project'	
 	_columns={
 		'suozhangshenpi_form_id':fields.many2one('project.review.suozhangshenpi.form',u'所长审批单'),
 	}
 	def action_suozhangshenpi(self, cr, uid, ids, context=None):
-		suozhangshenpi_form = self.pool.get('project.review.suozhangshenpi.form')
-		suozhangshenpi_form_id = False
-		assert len(ids)==1
-		ctx = (context or {}).copy()
-		ctx['default_project_id']=ids[0]
-		suozhangshenpi_form_ids=suozhangshenpi_form.search(cr,uid,[('project_id','=',ids[0]),('state','not in',('accepted','rejected'))])
-		suozhangshenpi_form_id = suozhangshenpi_form_ids and suozhangshenpi_form_ids[0] or False
-		return {
-			'name': _('Suozhang shenpi'),				
-					'type':'ir.actions.act_window',
-					'view_mode':'form',
-					'res_model':'project.review.suozhangshenpi.form',
-					'res_id':suozhangshenpi_form_id,
-					'target':'new',
-					'context':ctx
-				}
+		return _get_action(cr,uid,ids,'project.review.suozhangshenpi.form',u'所长审批单')
 	def test_suozhangform_accepted(self, cr, uid, ids, *args):
-		return all([(proj.suozhangshenpi_form_id and proj.suozhangshenpi_form_id.state=='accepted') for proj in self.browse(cr,uid,ids)])
+		return self._test_accepted(cr,uid,ids,'suozhangshenpi_form_id',*args)
 	def suozhangform_get(self, cr, uid, ids, *args):
-		return [suozhangshenpi_form_id.id for proj in self.browse(cr,uid,ids) if proj.suozhangshenpi_form_id]
+		return self._get_form(cr,uid,ids,'suozhangshenpi_form_id',*args)
 # class suozhangshenpi(osv.Model):
 # 	"""
 # 	所长审批任意人员提交的申请单

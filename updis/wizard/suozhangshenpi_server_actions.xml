@@ -103,6 +103,13 @@
 		</record>
 		<record model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
+			<field name="col1" ref="updis.field_project_project_jiafang_id" />
+			<field name="type">equation</field>
+			<field name="value">object.jiafang_id</field>
+		</record>
+		<!-- 审批内容 -->
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_yaoqiuxingchengwenjian" />
 			<field name="type">equation</field>
 			<field name="value">object.yaoqiuxingchengwenjian</field>
@@ -180,13 +187,6 @@
 			<field name="value">object.shejifei</field>
 		</record>
 
-		<!-- 审批内容 -->
-		<record model="ir.server.object.lines">
-			<field name="server_id" ref="suozhangshenpi_update_project" />
-			<field name="col1" ref="updis.field_project_project_jiafang_id" />
-			<field name="type">equation</field>
-			<field name="value">object.jiafang_id</field>
-		</record>
 
 		<!-- 处理审批通过 -->
 		<record id="suozhangshenpi_multi_submitted" model="ir.actions.server">

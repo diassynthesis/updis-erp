@@ -2,7 +2,7 @@
 <openerp>
 	<data>
 		<record model="workflow" id="wkf_up_project">
-			<field name="name">workflow.project.project</field>
+			<field name="name">项目启动流程</field>
 			<field name="osv">project.project</field>
 			<field name="on_create">True</field>
 		</record>
@@ -15,40 +15,40 @@
 		</record> -->
 		<record id="act_tianshenqingdan" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_up_project" />
-			<field name="name">tianshenqingdan</field>
+			<field name="name">任意人员填写申请单</field>
 			<field name="flow_start">True</field>
 			<field name="kind">function</field>
-			<field name="action">project_tianshenqingdan()</field>
+			<field name="action">write({'state':'tianshenqingdan'})</field>
 		</record>
 		<record id="act_suozhangshenpi" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_up_project" />
-			<field name="name">suozhangshenpi</field>
+			<field name="name">所长审批申请单</field>
 			<field name="kind">function</field>
-			<field name="action">project_suozhangshenpi()</field>
+			<field name="action">write({'state':'suozhangshenpi'})</field>
 		</record>
 		<record id="act_zhidingbumen" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_up_project" />
-			<field name="name">zhidingbumen</field>
+			<field name="name">经营室指定设计部门</field>
 			<field name="kind">function</field>
-			<field name="action">project_zhidingbumen()</field>
+			<field name="action">write({'state':'zhidingbumen'})</field>
 		</record>
 		<record id="act_zhidingfuzeren" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_up_project" />
-			<field name="name">zhidingfuzeren</field>
+			<field name="name">总师室指定负责人</field>
 			<field name="kind">function</field>
-			<field name="action">project_zhidingfuzeren()</field>
+			<field name="action">write({'state':'zhidingfuzeren'})</field>
 		</record>
 		<record id="act_suozhangqianzi" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_up_project" />
-			<field name="name">suozhangqianzi</field>
+			<field name="name">所长签字</field>
 			<field name="kind">function</field>
-			<field name="action">project_suozhangqianzi()</field>
+			<field name="action">write({'state':'suozhangqianzi'})</field>
 		</record>
 		<record id="act_fuzerenqidong" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_up_project" />
-			<field name="name">fuzerenqidong</field>
+			<field name="name">项目启动</field>
 			<field name="kind">function</field>
-			<field name="action">project_fuzerenqidong()</field>
+			<field name="action">write({'state':'fuzerenqidong'})</field>
 		</record>
 		<!-- Transitions -->
 		<record id="t1" model="workflow.transition">
@@ -58,51 +58,53 @@
 			<field name="trigger_expr_id">suozhangform_get()</field>
 			<field name="condition">test_suozhangform_accepted()</field>
 		</record>
-		<record id="t2" model="workflow.transition">
+		<!-- <record id="t2" model="workflow.transition">
 			<field name="act_from" ref="act_suozhangshenpi"/>
 			<field name="act_to" ref="act_tianshenqingdan"/>
 			<field name="signal">project_suozhangshenpi_reject</field>
-		</record>
+		</record> -->
 		<record id="t3" model="workflow.transition">
 			<field name="act_from" ref="act_suozhangshenpi"/>
 			<field name="act_to" ref="act_zhidingbumen"/>
-			<field name="signal">project_zhidingbumen</field>
+			<field name="trigger_model">project.review.jingyingshishenpi.form</field>
+			<field name="trigger_expr_id">jingyingshishenpi_get()</field>
+			<field name="condition">test_jingyingshishenpi_accepted()</field>
 		</record>
-		<record id="t4" model="workflow.transition">
+		<!-- <record id="t4" model="workflow.transition">
 			<field name="act_from" ref="act_zhidingbumen"/>
 			<field name="act_to" ref="act_suozhangshenpi"/>
 			<field name="signal">project_zhidingbumen_reject</field>
-		</record>
+		</record> -->
 		<record id="t5" model="workflow.transition">
 			<field name="act_from" ref="act_zhidingbumen"/>
 			<field name="act_to" ref="act_zhidingfuzeren"/>
 			<field name="signal">project_zhidingfuzeren</field>
 		</record>
-		<record id="t6" model="workflow.transition">
+		<!-- <record id="t6" model="workflow.transition">
 			<field name="act_from" ref="act_zhidingfuzeren"/>
 			<field name="act_to" ref="act_zhidingbumen"/>
 			<field name="signal">project_zhidingfuzeren_reject</field>
-		</record>
+		</record> -->
 		<record id="t7" model="workflow.transition">
 			<field name="act_from" ref="act_zhidingfuzeren"/>
 			<field name="act_to" ref="act_suozhangqianzi"/>
 			<field name="signal">project_suozhangqianzi</field>
 		</record>
-		<record id="t8" model="workflow.transition">
+		<!-- <record id="t8" model="workflow.transition">
 			<field name="act_from" ref="act_suozhangqianzi"/>
 			<field name="act_to" ref="act_zhidingfuzeren"/>
 			<field name="signal">project_suozhangqianzi_reject</field>
-		</record>
+		</record> -->
 		<record id="t9" model="workflow.transition">
 			<field name="act_from" ref="act_suozhangqianzi"/>
 			<field name="act_to" ref="act_fuzerenqidong"/>
 			<field name="signal">project_fuzerenqidong</field>
 		</record>
-		<record id="10" model="workflow.transition">
+		<!-- <record id="10" model="workflow.transition">
 			<field name="act_from" ref="act_fuzerenqidong"/>
 			<field name="act_to" ref="act_suozhangqianzi"/>
 			<field name="signal">project_fuzerenqidong_reject</field>
-		</record>
+		</record> -->
 
 	</data>
 </openerp>

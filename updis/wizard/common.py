@@ -44,16 +44,12 @@ class review_abstract(osv.AbstractModel):
 		'state':'draft',
 		'submitter_id':lambda self, cr, uid, c=None:uid,
 	}
-	def reject(self,cr,uid,ids,context=None):
-		self.write(cr,uid,ids,{'state':'rejected'})
+	def _update_project_form(self,cr,uid,ids,form_field_name,context=None):
+		project = self.pool.get('project.project')
+		for f in self.browse(cr,uid,ids):
+			project.write(cr,uid,f.project_id.id,{
+				form_field_name:f.id
+				})
 		return True
-	def accept(self,cr,uid,ids,context=None):
-		self.write(cr,uid,ids,{'state':'accepted'})
-		return True
-	def _get_last_submitter(self,cr,uid,context=None):
-		"""
-		返回最近的提交人ID
-		"""
-		project_review_history = self.pool.get('project.review.history')
-		return project_review_history.search(cr,uid,['result','=','submit'],limit=1)
+	
 review_abstract()
