@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<!-- 邮件 -->
+		<record id="suozhangshenpi_send_email" model="ir.actions.server">
+			<field name="name">发送所长审批提醒邮件</field>
+			<field name="condition">obj.send_email</field>
+			<field name="state">email</field>
+			<field name="model_id" ref="updis.model_project_review_suozhangshenpi_form"></field>
+			<field name="email">obj.reviewer_id.email</field>
+			<field name="subject">请审批[[obj.submitter_id.name]]提交的项目[[obj.project_id.name]]</field>
+			<field name="message"><![CDATA[
+尊敬的[[obj.reviewer_id.name]]所长:
+[[obj.submitter_id.name]]于[[obj.create_date]]提交了项目<strong>[[obj.project_id.name]]</strong>任务下达申请单，
+请审批[[obj.submitter_id.name]]提交的项目[[obj.project_id.name]]
+审批地址是：
+<a href="">现在去审批</a>
+				 ]]></field>
+		</record>
+		<!-- 短信 -->
+		<record id="suozhangshenpi_send_sms" model="ir.actions.server">
+			<field name="name">发送所长审批提醒短信</field>
+			<field name="condition">obj.send_sms</field>
+			<field name="state">object_create</field>
+			<field name="model_id" ref="updis.model_project_review_suozhangshenpi_form"></field>
+			<field name="srcmodel_id" ref="sms.model_sms_sms"></field>			
+		</record>
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_send_sms" />
+			<field name="col1" ref="sms.field_sms_sms_content" />
+			<field name="type">equation</field>
+			<field name="value">u"%s于%s提交了项目%s"%(obj.submitter_id.name,obj.create_date,obj.project_id.name)</field>
+		</record>
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_send_sms" />
+			<field name="col1" ref="sms.field_sms_sms_to" />
+			<field name="type">equation</field>
+			<field name="value">object.reviewer_id.mobile</field>
+		</record>
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_send_sms" />
+			<field name="col1" ref="sms.field_sms_sms_from" />
+			<field name="type">equation</field>
+			<field name="value">object.submitter_id.mobile</field>
+		</record>
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_send_sms" />
+			<field name="col1" ref="sms.field_sms_sms_res_id" />
+			<field name="type">equation</field>
+			<field name="value">obj.id</field>
+		</record>
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_send_sms" />
+			<field name="col1" ref="sms.field_sms_sms_model" />
+			<field name="type">value</field>
+			<field name="value">project.review.suozhangshenpi.form</field>
+		</record>
+		<!-- 更新项目 -->
+		<record id="suozhangshenpi_update_project" model="ir.actions.server">
+			<field name="name">更新所长审批内容到项目</field>
+			<field name="condition">True</field>
+			<field name="state">object_write</field>
+			<field name="model_id" ref="updis.model_project_review_suozhangshenpi_form"></field>
+			<field name="srcmodel_id" ref="project.model_project_project"></field>
+		</record>
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_update_project" />
+			<field name="col1" ref="updis.field_project_project_guimo" />
+			<field name="type">equation</field>
+			<field name="value">obj.guimo</field>
+		</record>
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_update_project" />
+			<field name="col1" ref="updis.field_project_project_waibao" />
+			<field name="type">equation</field>
+			<field name="value">obj.waibao</field>
+		</record>
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_update_project" />
+			<field name="col1" ref="updis.field_project_project_shizhenpeitao" />
+			<field name="type">equation</field>
+			<field name="value">obj.shizhenpeitao</field>
+		</record>
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_update_project" />
+			<field name="col1" ref="updis.field_project_project_duofanghetong" />
+			<field name="type">equation</field>
+			<field name="value">obj.duofanghetong</field>
+		</record>
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_update_project" />
+			<field name="col1" ref="updis.field_project_project_jianyishejibumen_id" />
+			<field name="type">equation</field>
+			<field name="value">obj.jianyishejibumen_id</field>
+		</record>
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_update_project" />
+			<field name="col1" ref="updis.field_project_project_jianyixiangmufuzeren_id" />
+			<field name="type">equation</field>
+			<field name="value">obj.jianyixiangmufuzeren_id</field>
+		</record>
+		<record model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_update_project" />
+			<field name="col1" ref="updis.field_project_project_jiafang_id" />
+			<field name="type">equation</field>
+			<field name="value">obj.jiafang_id</field>
+		</record>
+
+		<!-- 处理审批通过 -->
+		<record id="suozhangshenpi_multi_submitted" model="ir.actions.server">
+			<field name="name">处理提交</field>
+			<field name="condition">True</field>
+			<field name="state">other</field>
+			<field name="model_id" ref="updis.model_project_review_suozhangshenpi_form"></field>
+			<field name="child_ids" eval="[(6,0,[ref('suozhangshenpi_send_email'),ref('suozhangshenpi_send_sms')])]"></field>
+		</record>
+		<record id="suozhangshenpi_multi_accepted" model="ir.actions.server">
+			<field name="name">处理审批通过</field>
+			<field name="condition">True</field>
+			<field name="state">other</field>
+			<field name="model_id" ref="updis.model_project_review_suozhangshenpi_form"></field>
+			<field name="child_ids" eval="[(6,0,[ref('suozhangshenpi_update_project'),])]"></field>
+		</record>
+	</data>
+</openerp>

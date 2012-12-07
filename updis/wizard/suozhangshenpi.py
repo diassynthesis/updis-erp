@@ -33,7 +33,7 @@ class updis_project(osv.Model):
 		assert len(ids)==1
 		ctx = (context or {}).copy()
 		ctx['default_project_id']=ids[0]
-		suozhangshenpi_form_ids=suozhangshenpi_form.search(cr,uid,[('project_id','=',ids[0])])
+		suozhangshenpi_form_ids=suozhangshenpi_form.search(cr,uid,[('project_id','=',ids[0]),('state','not in',('accepted','rejected'))])
 		suozhangshenpi_form_id = suozhangshenpi_form_ids and suozhangshenpi_form_ids[0] or False
 		return {
 			'name': _('Suozhang shenpi'),				
