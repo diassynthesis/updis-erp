@@ -44,7 +44,7 @@ class updis_project(osv.Model):
 		'suozhangshenpi_form_id':fields.many2one('project.review.suozhangshenpi.form',u'所长审批单'),
 	}
 	def action_suozhangshenpi(self, cr, uid, ids, context=None):
-		return _get_action(cr,uid,ids,'project.review.suozhangshenpi.form',u'所长审批单')
+		return self._get_action(cr,uid,ids,'project.review.suozhangshenpi.form',u'所长审批单')
 	def test_suozhangform_accepted(self, cr, uid, ids, *args):
 		return self._test_accepted(cr,uid,ids,'suozhangshenpi_form_id',*args)
 	def suozhangform_get(self, cr, uid, ids, *args):

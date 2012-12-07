@@ -24,7 +24,7 @@
 						<field name="comment" />
 					</group>
 					<footer>
-						<button name="jingyingshishenpi_review_submit" string="提交所长审批" states="draft" class="oe_highlight"/>
+						<button name="jingyingshishenpi_review_submit" string="提交经营室审批" states="draft" class="oe_highlight"/>
 						<button name="jingyingshishenpi_review_accept" string="审批通过" states="submitted" class="oe_highlight"/>
 						<button name="jingyingshishenpi_review_reject" string="打回" states="submitted" class="oe_highlight"/>
 						<button string="Cancel" class="oe_link" special="cancel"/>
