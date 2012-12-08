@@ -75,7 +75,7 @@ class updis_project(osv.osv):
 		"chenjiebumen_id":fields.many2one("hr.department",u"承接部门"),
 
 		# 总师室
-		"category_id":fields.many2many("project.upcategory","up_project_category_rel","project_id","category_id",u"项目类别"),
+		"categories_id":fields.many2many("project.upcategory","up_project_category_rel","project_id","category_id",u"项目类别"),
 		"toubiaoleibie":fields.selection([(u'商务标',u'商务标'),(u'技术标',u'技术标'),(u'综合标',u'综合标')],u"投标类别"),
 		"guanlijibie":fields.selection([(u'院级',u'院级'),(u'所级',u'所级')],u'项目管理级别'),
 		"chenjiefuzeren_id":fields.many2one("res.users",u"承接项目负责人"),
@@ -93,7 +93,7 @@ class updis_project(osv.osv):
 	}
 	_defaults = {
 		'state': lambda *a: 'tianshenqingdan',
-		'xiangmubianhao':lambda self, cr, uid, c=None: self.pool.get('ir.sequence').next_by_code(cr, uid, 'project.project', context=c)
+		# 'xiangmubianhao':lambda self, cr, uid, c=None: self.pool.get('ir.sequence').next_by_code(cr, uid, 'project.project', context=c)
 	}
 	def _get_action(self,cr,uid,ids,form_model_name,action_name,context=None):
 		shenpi_form = self.pool.get(form_model_name)

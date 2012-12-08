@@ -10,6 +10,8 @@
 					<header>
 						<button name="action_suozhangshenpi" string="所长审批申请单" states="tianshenqingdan" type="object"/>
 						<button name="action_jingyingshishenpi" string="经营室审批申请单" states="suozhangshenpi" type="object"/>
+						<button name="action_zongshishishenpi" string="总师室审批申请单" states="zhidingbumen" type="object"/>
+						<button name="action_suozhangqianzishenpi" string="所长签字审批申请单" states="zhidingfuzeren" type="object"/>
 						<field name="state" widget="statusbar" statusbar_colors='{"fuzerenqidong":"blue"}' readonly="1"/>
 					</header>
 				</xpath>
@@ -18,7 +20,7 @@
 				</xpath>
 				<xpath expr="//page[last()]" position="after">	
 					<page string="Project Category">
-						<field name="category_id"/>					
+						<field name="categories_id"/>					
 					</page>
 				</xpath>
 				<xpath expr="//page[@name='team']" position="after">

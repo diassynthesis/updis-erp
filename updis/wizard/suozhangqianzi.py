@@ -3,10 +3,10 @@ from osv import osv,fields
 from tools.translate import _
 from . import common
 
-class jingyingshishenpi_form(osv.Model):
-	"""经营室审批单"""
-	_name="project.review.jingyingshishenpi.form"
-	_description=u"经营室审批"
+class suozhangqianzishenpi_form(osv.Model):
+	"""所长签字审批单"""
+	_name="project.review.suozhangqianzishenpi.form"
+	_description=u"所长签字审批"
 	_inherit=['project.review.abstract']
 	_columns={
 		"xiangmubianhao":fields.char(u"项目编号",select=True,size=128,readonly=True),
@@ -20,16 +20,16 @@ class jingyingshishenpi_form(osv.Model):
 	_defaults = {
 		'xiangmubianhao':lambda self, cr, uid, c=None: self.pool.get('ir.sequence').next_by_code(cr, uid, 'project.project', context=c)
 	}
-	def update_project_jingyingshishenpi_form(self,cr,uid,ids,*args):		
-		return self._update_project_form(cr,uid,ids,'jingyingshishenpi_form_id')
+	def update_project_suozhangqianzishenpi_form(self,cr,uid,ids,*args):		
+		return self._update_project_form(cr,uid,ids,'suozhangqianzishenpi_form_id')
 class updis_project(osv.Model):
 	_inherit='project.project'	
 	_columns={
-		'jingyingshishenpi_form_id':fields.many2one('project.review.jingyingshishenpi.form',u'经营室审批单'),
+		'suozhangqianzishenpi_form_id':fields.many2one('project.review.suozhangqianzishenpi.form',u'所长签字审批单'),
 	}
-	def action_jingyingshishenpi(self, cr, uid, ids, context=None):
-		return self._get_action(cr,uid,ids,'project.review.jingyingshishenpi.form',u'经营室审批单')
-	def test_jingyingshishenpi_accepted(self, cr, uid, ids, *args):
-		return self._test_accepted(cr,uid,ids,'jingyingshishenpi_form_id',*args)
-	def jingyingshishenpi_get(self, cr, uid, ids, *args):
-		return self._get_form(cr,uid,ids,'jingyingshishenpi_form_id',*args)
+	def action_suozhangqianzishenpi(self, cr, uid, ids, context=None):
+		return self._get_action(cr,uid,ids,'project.review.suozhangqianzishenpi.form',u'所长签字审批单')
+	def test_suozhangqianzishenpi_accepted(self, cr, uid, ids, *args):
+		return self._test_accepted(cr,uid,ids,'suozhangqianzishenpi_form_id',*args)
+	def suozhangqianzishenpi_get(self, cr, uid, ids, *args):
+		return self._get_form(cr,uid,ids,'suozhangqianzishenpi_form_id',*args)
