@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <document filename="test.pdf">
-  <template pageSize="(612.0,792.0)" title="Test" author="Martin Simon" allowSplitting="20">
+  <template pageSize="(595.0,842.0)" title="Test" author="Martin Simon" allowSplitting="20">
     <pageTemplate id="first">
-      <frame id="first" x1="57.0" y1="57.0" width="498" height="678"/>
+      <frame id="first" x1="57.0" y1="57.0" width="481" height="728"/>
     </pageTemplate>
   </template>
   <stylesheet>
@@ -10,120 +10,28 @@
       <blockAlignment value="LEFT"/>
       <blockValign value="TOP"/>
     </blockTableStyle>
-    <blockTableStyle id="Table1">
-      <blockAlignment value="LEFT"/>
-      <blockValign value="TOP"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="0,0" stop="0,-1"/>
-      <lineStyle kind="LINEABOVE" colorName="#000000" start="0,0" stop="0,0"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="0,-1" stop="0,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="1,0" stop="1,-1"/>
-      <lineStyle kind="LINEAFTER" colorName="#000000" start="1,0" stop="1,-1"/>
-      <lineStyle kind="LINEABOVE" colorName="#000000" start="1,0" stop="1,0"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="0,1" stop="0,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="0,-1" stop="0,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="1,1" stop="1,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="2,1" stop="2,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="2,-1" stop="2,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="3,1" stop="3,-1"/>
-      <lineStyle kind="LINEAFTER" colorName="#000000" start="3,1" stop="3,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="3,-1" stop="3,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="0,2" stop="0,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="0,-1" stop="0,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="1,2" stop="1,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="2,2" stop="2,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="2,-1" stop="2,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="3,2" stop="3,-1"/>
-      <lineStyle kind="LINEAFTER" colorName="#000000" start="3,2" stop="3,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="3,-1" stop="3,-1"/>
-    </blockTableStyle>
     <initialize>
       <paraStyle name="all" alignment="justify"/>
     </initialize>
-    <paraStyle name="P1" fontName="Helvetica" fontSize="16.0" leading="20" alignment="CENTER" spaceBefore="0.0" spaceAfter="8.0"/>
-    <paraStyle name="P2" fontName="Helvetica" alignment="LEFT" spaceBefore="0.0" spaceAfter="8.0"/>
-    <paraStyle name="P3" fontName="Helvetica" alignment="LEFT"/>
+    <paraStyle name="P1" fontName="Helvetica-Bold"/>
     <paraStyle name="Standard" fontName="Helvetica"/>
     <paraStyle name="Heading" fontName="Helvetica" fontSize="14.0" leading="17" spaceBefore="12.0" spaceAfter="6.0"/>
     <paraStyle name="Text body" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
     <paraStyle name="List" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
     <paraStyle name="Caption" fontName="Helvetica" fontSize="12.0" leading="15" spaceBefore="6.0" spaceAfter="6.0"/>
     <paraStyle name="Index" fontName="Helvetica"/>
-    <paraStyle name="Table Contents" fontName="Helvetica"/>
     <images/>
   </stylesheet>
   <story>
     <para style="P1">[[repeatIn(objects,'o')]]产品要求评审及任务下达记录</para>
-    <para style="P2">
-      <font face="Helvetica" size="11.0">QRT7.2.2-1</font>
-      <font face="Helvetica" size="10.0"/>
-      <font face="Helvetica">版别</font>
-      <font face="Helvetica" size="11.0">/</font>
-      <font face="Helvetica">修改码：</font>
-      <font face="Helvetica" size="11.0">E/1112</font>
-      <font face="Helvetica">项目编号：[[o.name]]</font>
-    </para>
-    <blockTable colWidths="125.0,125.0,125.0,125.0" style="Table1">
-      <tr>
-        <td>
-          <para style="P3">
-            <font face="Helvetica">项目名称</font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">[[o.name]]</para>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <para style="P3">
-            <font face="Helvetica">委托单位</font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font face="Helvetica">规模</font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <para style="P3">
-            <font face="Helvetica">委托单位地址</font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font face="Helvetica">联系人及电话</font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-      </tr>
-    </blockTable>
-    <para style="P2">
-      <font color="white"> </font>
+    <para style="P3">
+      <font face="Helvetica-Bold" size="11.0">QRT7.2.2-1</font>
+      <font face="Helvetica-Bold" size="10.0"/>
+      <font face="Helvetica-Bold">版别</font>
+      <font face="Helvetica-Bold" size="11.0">/</font>
+      <font face="Helvetica-Bold">修改码：</font>
+      <font face="Helvetica-Bold" size="11.0">E/1112</font>
+      <font face="Helvetica-Bold">项目编号：[[o.xiangmubianhao]]</font>
     </para>
   </story>
 </document>
-
