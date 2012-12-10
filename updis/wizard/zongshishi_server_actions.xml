@@ -87,13 +87,13 @@
 			<field name="server_id" ref="zongshishishenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_chenjiefuzeren_id" />
 			<field name="type">equation</field>
-			<field name="value">object.chenjiefuzeren_id</field>
+			<field name="value">object.chenjiefuzeren_id.id</field>
 		</record>
 		<record id="lines_zongshishi_chenjiebumen_id" model="ir.server.object.lines">
 			<field name="server_id" ref="zongshishishenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_zhuguanzongshi_id" />
 			<field name="type">equation</field>
-			<field name="value">object.zhuguanzongshi_id</field>
+			<field name="value">object.zhuguanzongshi_id.id</field>
 		</record>
 		<!-- 更新项目分类 -->
 		<record id="zongshishishenpi_update_project_categories" model="ir.actions.server">

@@ -27,6 +27,13 @@
 						<field name="gongqi" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>		
 						<field name="shejifei" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
 					</group>
+					<group string="明示要求" col="4">
+						<!-- 明示要求 -->
+						<field name="zhaobiaoshu" />		
+						<field name="weituoshu" />	
+						<field name="xieyicaoan" />		
+						<field name="koutouyaoqiujilu" />
+					</group>
 					<group string="通知设置">
 						<field name="send_email" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
 						<field name="send_sms" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>

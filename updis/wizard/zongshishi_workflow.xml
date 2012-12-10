@@ -34,7 +34,8 @@
 			<field name="name">Rejected</field>
 			<field name="flow_stop">True</field>
 			<field name="kind">function</field>
-			<field name="action">write({'state':'rejected'})</field>
+			<field name="action">write({'state':'rejected'})
+			copy_rejected(default={'state':'draft'})</field>
 		</record>
 		<!-- Transitions -->
 		<record id="trans_zongshishishenpi_1" model="workflow.transition">

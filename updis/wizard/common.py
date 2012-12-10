@@ -44,6 +44,12 @@ class review_abstract(osv.AbstractModel):
 		'state':'draft',
 		'submitter_id':lambda self, cr, uid, c=None:uid,
 	}
+	def copy_rejected(self,cr,uid,ids,default=None, context=None):
+		ret = []
+		for id in ids:
+			new_id = self.copy(cr,uid,id,default=default,context=context)
+			ret.append(new_id)
+		return ret
 	def _update_project_form(self,cr,uid,ids,form_field_name,context=None):
 		project = self.pool.get('project.project')
 		for f in self.browse(cr,uid,ids):

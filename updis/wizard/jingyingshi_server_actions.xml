@@ -93,7 +93,7 @@
 			<field name="server_id" ref="jingyingshishenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_chenjiebumen_id" />
 			<field name="type">equation</field>
-			<field name="value">object.chenjiebumen_id</field>
+			<field name="value">object.chenjiebumen_id.id</field>
 		</record>
 
 		<!-- 处理审批通过 -->

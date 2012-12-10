@@ -93,19 +93,19 @@
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_jianyishejibumen_id" />
 			<field name="type">equation</field>
-			<field name="value">object.jianyishejibumen_id</field>
+			<field name="value">object.jianyishejibumen_id.id</field>
 		</record>
 		<record id="lines_suozhangshenpi_jianyixiangmufuzeren_id" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_jianyixiangmufuzeren_id" />
 			<field name="type">equation</field>
-			<field name="value">object.jianyixiangmufuzeren_id</field>
+			<field name="value">object.jianyixiangmufuzeren_id.id</field>
 		</record>
 		<record id="lines_suozhangshenpi_jiafang_id" model="ir.server.object.lines">
 			<field name="server_id" ref="suozhangshenpi_update_project" />
 			<field name="col1" ref="updis.field_project_project_jiafang_id" />
 			<field name="type">equation</field>
-			<field name="value">object.jiafang_id</field>
+			<field name="value">object.jiafang_id.id</field>
 		</record>
 		<!-- 审批内容 -->
 		<record id="lines_suozhangshenpi_yaoqiuxingchengwenjian" model="ir.server.object.lines">
@@ -186,7 +186,30 @@
 			<field name="type">equation</field>
 			<field name="value">object.shejifei</field>
 		</record>
-
+		<record id="lines_suozhangshenpi_shejifei" model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_update_project" />
+			<field name="col1" ref="updis.field_project_project_zhaobiaoshu" />
+			<field name="type">equation</field>
+			<field name="value">object.zhaobiaoshu</field>
+		</record>
+		<record id="lines_suozhangshenpi_shejifei" model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_update_project" />
+			<field name="col1" ref="updis.field_project_project_weituoshu" />
+			<field name="type">equation</field>
+			<field name="value">object.weituoshu</field>
+		</record>
+		<record id="lines_suozhangshenpi_shejifei" model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_update_project" />
+			<field name="col1" ref="updis.field_project_project_xieyicaoan" />
+			<field name="type">equation</field>
+			<field name="value">object.xieyicaoan</field>
+		</record>
+		<record id="lines_suozhangshenpi_shejifei" model="ir.server.object.lines">
+			<field name="server_id" ref="suozhangshenpi_update_project" />
+			<field name="col1" ref="updis.field_project_project_koutouyaoqiujilu" />
+			<field name="type">equation</field>
+			<field name="value">object.koutouyaoqiujilu</field>
+		</record>
 
 		<!-- 处理审批通过 -->
 		<record id="suozhangshenpi_multi_submitted" model="ir.actions.server">
