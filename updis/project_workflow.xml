@@ -13,12 +13,12 @@
 			<field name="name">draft</field>
 			<field name="kind">dummy</field>			
 		</record> -->
-		<record id="act_tianshenqingdan" model="workflow.activity">
+		<record id="act_open" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_up_project" />
 			<field name="name">任意人员填写申请单</field>
 			<field name="flow_start">True</field>
 			<field name="kind">function</field>
-			<field name="action">write({'state':'tianshenqingdan'})</field>
+			<field name="action">write({'state':'open'})</field>
 		</record>
 		<record id="act_suozhangshenpi" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_up_project" />
@@ -52,7 +52,7 @@
 		</record>
 		<!-- Transitions -->
 		<record id="t1" model="workflow.transition">
-			<field name="act_from" ref="act_tianshenqingdan"/>
+			<field name="act_from" ref="act_open"/>
 			<field name="act_to" ref="act_suozhangshenpi"/>
 			<field name="trigger_model">project.review.suozhangshenpi.form</field>
 			<field name="trigger_expr_id">suozhangform_get()</field>

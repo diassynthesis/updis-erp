@@ -27,7 +27,8 @@
 			<field name="flow_stop">True</field>
 			<field name="kind">function</field>
 			<field name="action_id" ref="suozhangqianzishenpi_multi_accepted"/>
-			<field name="action">write({'state':'accepted'})</field>
+			<field name="action">write({'state':'accepted'})
+trg_project_write()</field>
 		</record>
 		<record id="act_suozhangqianzishenpi_rejected" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_project_review_suozhangqianzishenpi_form" />
@@ -35,7 +36,7 @@
 			<field name="flow_stop">True</field>
 			<field name="kind">function</field>
 			<field name="action">write({'state':'rejected'})
-			copy_rejected(default={'state':'draft'})</field>
+copy_rejected(default={'state':'draft'})</field>
 		</record>
 		<!-- Transitions -->
 		<record id="trans_suozhangqianzishenpi_1" model="workflow.transition">

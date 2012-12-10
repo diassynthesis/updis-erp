@@ -2,6 +2,8 @@
 from osv import osv,fields
 from tools.translate import _
 from . import common
+import netsvc
+
 
 class suozhangqianzishenpi_form(osv.Model):
 	"""所长签字审批单"""
@@ -22,6 +24,11 @@ class suozhangqianzishenpi_form(osv.Model):
 	}
 	def update_project_suozhangqianzishenpi_form(self,cr,uid,ids,*args):		
 		return self._update_project_form(cr,uid,ids,'suozhangqianzishenpi_form_id')
+	def trg_project_write(self,cr,uid,ids,context=None):
+		wkf_service = netsvc.LocalService('workflow')
+		for frm in self.browse(cr,uid,ids,context=context):
+			wkf_service.trg_write(uid,'project.project',frm.project_id.id,cr)
+		return True
 class updis_project(osv.Model):
 	_inherit='project.project'	
 	_columns={

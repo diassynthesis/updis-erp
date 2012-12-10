@@ -8,11 +8,11 @@
 			<field name="arch" type="xml">
 				<xpath expr="//header" position="replace">
 					<header>
-						<button name="action_suozhangshenpi" string="所长审批申请单" states="tianshenqingdan" type="object"/>
+						<button name="action_suozhangshenpi" string="所长审批申请单" states="open" type="object"/>
 						<button name="action_jingyingshishenpi" string="经营室审批申请单" states="suozhangshenpi" type="object"/>
 						<button name="action_zongshishishenpi" string="总师室审批申请单" states="zhidingbumen" type="object"/>
 						<button name="action_suozhangqianzishenpi" string="所长签字审批申请单" states="zhidingfuzeren" type="object"/>
-						<field name="state" widget="statusbar" statusbar_colors='{"fuzerenqidong":"blue"}' readonly="1"/>
+						<field name="state" widget="statusbar" statusbar_colors='{"open":"blue"}' readonly="1"/>
 					</header>
 				</xpath>
 				<xpath expr="//field[@name='user_id']" position="after">

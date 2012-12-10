@@ -87,16 +87,16 @@ class updis_project(osv.osv):
 		
 		"state":fields.selection([
 			# ("draft",u"New project"),
-			("tianshenqingdan",u"任意人员填写申请单"),
+			("open",u"任意人员填写申请单"),
 			("suozhangshenpi",u"所长审批"),
 			("zhidingbumen",u"经营室指定部门"),
 			("zhidingfuzeren",u"总师室指定负责人"),
 			("suozhangqianzi",u"所长签字"),
 			("fuzerenqidong",u"启动项目"),
-		],"State",readonly=True,help='When project is created, the state is \'tianshenqingdan\'')
+		],"State",readonly=True,help='When project is created, the state is \'open\'')
 	}
 	_defaults = {
-		'state': lambda *a: 'tianshenqingdan',
+		'state': lambda *a: 'open',
 		# 'xiangmubianhao':lambda self, cr, uid, c=None: self.pool.get('ir.sequence').next_by_code(cr, uid, 'project.project', context=c)
 	}
 	def _get_action(self,cr,uid,ids,form_model_name,action_name,context=None):
