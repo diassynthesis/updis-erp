@@ -1,201 +1,109 @@
 <?xml version="1.0"?>
 <document filename="test.pdf">
-  <template pageSize="(612.0,792.0)" title="Test" author="Martin Simon" allowSplitting="20">
+  <template pageSize="(612.0,792.0)" title="Test" author="Shrek Zhou" allowSplitting="20">
     <pageTemplate id="first">
       <frame id="first" x1="57.0" y1="57.0" width="498" height="678"/>
     </pageTemplate>
   </template>
   <stylesheet>
-    <blockTableStyle id="Standard_Outline">
-      <blockAlignment value="LEFT"/>
-      <blockValign value="TOP"/>
-    </blockTableStyle>
+    <paraStyle name="Label" fontName="Helvetica" fontSize="10.0"/>
+    <paraStyle name="Value" fontName="Helvetica" fontSize="10.0"/>
     <blockTableStyle id="Table1">
-      <blockAlignment value="LEFT"/>
-      <blockValign value="TOP"/>
+      <blockFont name="Helvetica-Bold" size="10"/>
     </blockTableStyle>
-    <blockTableStyle id="Table2">
-      <blockAlignment value="LEFT"/>
-      <blockValign value="TOP"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="0,0" stop="0,-1"/>
-      <lineStyle kind="LINEABOVE" colorName="#000000" start="0,0" stop="0,0"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="0,-1" stop="0,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="1,0" stop="1,-1"/>
-      <lineStyle kind="LINEABOVE" colorName="#000000" start="1,0" stop="1,0"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="2,0" stop="2,-1"/>
-      <lineStyle kind="LINEABOVE" colorName="#000000" start="2,0" stop="2,0"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="2,-1" stop="2,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="3,0" stop="3,-1"/>
-      <lineStyle kind="LINEAFTER" colorName="#000000" start="3,0" stop="3,-1"/>
-      <lineStyle kind="LINEABOVE" colorName="#000000" start="3,0" stop="3,0"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="3,-1" stop="3,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="0,1" stop="0,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="0,-1" stop="0,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="1,1" stop="1,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="2,1" stop="2,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="2,-1" stop="2,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="3,1" stop="3,-1"/>
-      <lineStyle kind="LINEAFTER" colorName="#000000" start="3,1" stop="3,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="3,-1" stop="3,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="0,2" stop="0,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="0,-1" stop="0,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="1,2" stop="1,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="2,2" stop="2,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="2,-1" stop="2,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="3,2" stop="3,-1"/>
-      <lineStyle kind="LINEAFTER" colorName="#000000" start="3,2" stop="3,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="3,-1" stop="3,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="0,3" stop="0,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="0,-1" stop="0,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="1,3" stop="1,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="2,3" stop="2,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="2,-1" stop="2,-1"/>
-      <lineStyle kind="LINEBEFORE" colorName="#000000" start="3,3" stop="3,-1"/>
-      <lineStyle kind="LINEAFTER" colorName="#000000" start="3,3" stop="3,-1"/>
-      <lineStyle kind="LINEBELOW" colorName="#000000" start="3,-1" stop="3,-1"/>
+    <blockTableStyle id="BasicInfoTable">
+      <lineStyle kind="GRID" colorName="#000000" thickness="0.5" start="0,0" stop="-1,-1"/>
+      <blockSpan start="1,0" stop="-1,0" />
     </blockTableStyle>
-    <initialize>
-      <paraStyle name="all" alignment="justify"/>
-    </initialize>
-    <paraStyle name="P1" fontName="Helvetica" fontSize="16.0" leading="20" alignment="CENTER" spaceBefore="0.0" spaceAfter="8.0"/>
-    <paraStyle name="P2" fontName="Helvetica" alignment="LEFT" spaceBefore="0.0" spaceAfter="8.0"/>
-    <paraStyle name="P3" fontName="Helvetica" alignment="LEFT"/>
-    <paraStyle name="P4" fontName="Helvetica" fontSize="12.0" leading="15" alignment="LEFT" textColor="#ffffff"/>
-    <paraStyle name="P5" fontName="Helvetica" fontSize="12.0" leading="15" alignment="LEFT" textColor="#000000"/>
-    <paraStyle name="Standard" fontName="Helvetica"/>
-    <paraStyle name="Heading" fontName="Helvetica" fontSize="14.0" leading="17" spaceBefore="12.0" spaceAfter="6.0"/>
-    <paraStyle name="Text body" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
-    <paraStyle name="List" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
-    <paraStyle name="Caption" fontName="Helvetica" fontSize="12.0" leading="15" spaceBefore="6.0" spaceAfter="6.0"/>
-    <paraStyle name="Index" fontName="Helvetica"/>
-    <paraStyle name="Table Contents" fontName="Helvetica"/>
-    <paraStyle name="Table Heading" fontName="Helvetica" alignment="CENTER"/>
-    <images/>
+    <blockTableStyle id="SuoZhangTable">
+      <blockFont name="Helvetica" size="8" />
+      <lineStyle kind="GRID" colorName="#000000" thickness="0.5" start="0,0" stop="-1,-1"/>
+      <blockSpan start="1,0" stop="2,0" />
+      <blockSpan start="1,1" stop="2,1" />
+      <blockSpan start="0,2" stop="0,5" />
+      <blockSpan start="1,2" stop="1,5" />
+      <blockValign value="MIDDLE" start="0,2" stop="1,2"/>
+    </blockTableStyle>
   </stylesheet>
   <story>
-    <para style="P1">[[repeatIn(objects,'o')]]<font face="Helvetica">产品要求评审及任务下达记录</font></para>
+    <title>[[repeatIn(objects,'o')]]产品要求评审及任务下达记录</title>
     <blockTable colWidths="146.0,170.0,183.0" style="Table1">
       <tr>
-        <td>
-          <para style="P2">
-            <font face="Helvetica" size="11.0">QRT7.2.2-1</font>
-          </para>
-        </td>
-        <td>
-          <para style="P2">
-            <font face="Helvetica">版别</font>
-            <font face="Helvetica" size="11.0">/</font>
-            <font face="Helvetica">修改码：</font>
-            <font face="Helvetica" size="11.0">E/1112</font>
-          </para>
-        </td>
-        <td>
-          <para style="P2">
-            <font face="Helvetica">项目编号：[[o.xiangmubianhao]</font>
-          </para>
-        </td>
+        <td><para style="Label">QRT7.2.2-1</para></td>
+        <td><para style="Label">版别/修改码：E/1112</para></td>
+        <td><para style="Label">项目编号：[[o.xiangmubianhao]]</para></td>
       </tr>
+    </blockTable>   
+    <blockTable colWidths="104.5,169.5,104.5,119.5" style="BasicInfoTable">
+      <tr>
+        <td><para style="Label">项目名称</para></td>
+        <td><para style="Value">[[o.name]]</para></td>
+        <td><para style="Label"></para></td>
+        <td><para style="Value"></para></td>
+      </tr>
+      <tr>
+        <td><para style="Label">委托单位</para></td>
+        <td><para style="Value"></para></td>
+        <td><para style="Label">规模</para></td>
+        <td><para style="Value">[[o.guimo]]</para></td>
+      </tr>
+      <tr>
+        <td><para style="Label">委托单位地址</para></td>
+        <td><para style="Value"></para></td>
+        <td><para style="Label">联系人及电话</para></td>
+        <td><para style="Value"></para></td>
+      </tr>
+    </blockTable> 
+    <blockTable style="SuoZhangTable" colWidths="50,60,130,208,50">
+      <tr>
+        <td><para>序号</para></td>
+        <td><para>评 审 内 容</para></td>
+        <td><para></para></td>
+        <td><para>评  审  意  见</para></td>
+        <td><para>评 审 人</para></td>
+      </tr>      
+      <tr>
+        <td><para>1</para></td>
+        <td><para>顾客要求形成文件否</para></td>
+        <td><para></para></td>
+        <td><para> [[o.yaoqiuxingchengwenjian==u'已形成' and '【√】' or '【】']]已形成  [[o.yaoqiuxingchengwenjian==u'未形成，但已确认' and '【√】' or '【】']]未形成，但已确认</para></td>
+        <td><para></para></td>
+      </tr>     
+      <tr>
+        <td><para>2</para></td>
+        <td><para>设计要求
+          是否得到
+          规定</para></td>
+        <td><para>明示要求</para></td>
+        <td><para>[[o.zhaobiaoshu and '【√】' or '【】']] 有招标书     [[o.weituoshu and '【√】' or '【】']] 有委托书     
+          [[o.xieyicaoan and '【√】' or '【】']] 有协议/合同草案  [[o.koutouyaoqiujilu and '【√】' or '【】']] 有口头要求记录</para></td>
+        <td><para></para></td>
+      </tr> 
+      <tr>
+        <td><para></para></td>
+        <td><para></para></td>
+        <td><para>隐含要求</para></td>
+        <td><para>[[o.yinhanyaoqiu==u'有' and '【√】' or '【】']] 有（需在评审记录一栏中标明记录）
+          [[o.yinhanyaoqiu!=u'有' and '【√】' or '【】']] 无</para></td>
+        <td><para></para></td>
+      </tr> 
+      <tr>
+        <td><para></para></td>
+        <td><para></para></td>
+        <td><para>地方规范或特殊法律法规</para></td>
+        <td><para>[[o.difangfagui==u'有' and '【√】' or '【】']] 有（需在评审记录一栏中标明记录）
+          [[o.difangfagui!=u'有' and '【√】' or '【】']] 无</para></td>
+        <td><para></para></td>
+      </tr> 
+      <tr>
+        <td><para></para></td>
+        <td><para></para></td>
+        <td><para>附加要求</para></td>
+        <td><para>[[o.fujiayaoqiu==u'有' and '【√】' or '【】']] 有（需在评审记录一栏中标明记录）
+          [[o.fujiayaoqiu!=u'有' and '【√】' or '【】']] 无</para></td>
+        <td><para></para></td>
+      </tr> 
     </blockTable>
-    <para style="Text body">
-      <font color="white"> </font>
-    </para>
-    <blockTable colWidths="125.0,125.0,125.0,125.0" style="Table2">
-      <tr>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-        <td>
-          <para style="P3">
-            <font color="white"> </font>
-          </para>
-        </td>
-      </tr>
-    </blockTable>
-    <para style="P2">
-      <font face="Helvetica" size="10.0"/>
-    </para>
   </story>
 </document>
 
