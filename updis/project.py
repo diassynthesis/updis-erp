@@ -50,8 +50,8 @@ class updis_project(osv.osv):
 		
 		# 所长审批
 		"yaoqiuxingchengwenjian":fields.selection([
-			("yiXingChen",u"已形成"),
-			("weiXingChen",u"未形成，但已确认")],
+			(u"已形成",u"已形成"),
+			(u"未形成，但已确认",u"未形成，但已确认")],
 			u"顾客要求形成文件否"),		
 		"zhaobiaoshu":fields.boolean(u"有招标书"),# 明示要求
 		"weituoshu":fields.boolean(u"有委托书"),# 明示要求
