@@ -1,109 +1,142 @@
 <?xml version="1.0"?>
 <document filename="test.pdf">
   <template pageSize="(612.0,792.0)" title="Test" author="Shrek Zhou" allowSplitting="20">
-    <pageTemplate id="first">
-      <frame id="first" x1="57.0" y1="57.0" width="498" height="678"/>
-    </pageTemplate>
+	<pageTemplate id="first">
+	  <frame id="first" x1="57.0" y1="57.0" width="498" height="678"/>
+	</pageTemplate>
   </template>
   <stylesheet>
-    <paraStyle name="Label" fontName="Helvetica" fontSize="10.0"/>
-    <paraStyle name="Value" fontName="Helvetica" fontSize="10.0"/>
-    <blockTableStyle id="Table1">
-      <blockFont name="Helvetica-Bold" size="10"/>
-    </blockTableStyle>
-    <blockTableStyle id="BasicInfoTable">
-      <lineStyle kind="GRID" colorName="#000000" thickness="0.5" start="0,0" stop="-1,-1"/>
-      <blockSpan start="1,0" stop="-1,0" />
-    </blockTableStyle>
-    <blockTableStyle id="SuoZhangTable">
-      <blockFont name="Helvetica" size="8" />
-      <lineStyle kind="GRID" colorName="#000000" thickness="0.5" start="0,0" stop="-1,-1"/>
-      <blockSpan start="1,0" stop="2,0" />
-      <blockSpan start="1,1" stop="2,1" />
-      <blockSpan start="0,2" stop="0,5" />
-      <blockSpan start="1,2" stop="1,5" />
-      <blockValign value="MIDDLE" start="0,2" stop="1,2"/>
-    </blockTableStyle>
+	<paraStyle name="Label" fontName="Helvetica" fontSize="8.0"/>
+	<paraStyle name="Value" fontName="Helvetica" fontSize="8.0"/>
+	<blockTableStyle id="Table1">
+	  <blockFont name="Helvetica-Bold" size="10"/>
+	</blockTableStyle>
+	<blockTableStyle id="BasicInfoTable">
+	  <lineStyle kind="GRID" colorName="#000000" thickness="0.5" start="0,0" stop="-1,-1"/>
+	  <blockSpan start="1,0" stop="-1,0" />
+	</blockTableStyle>
+	<blockTableStyle id="SuoZhangTable">
+	  <lineStyle kind="GRID" colorName="#000000" thickness="0.5" start="0,0" stop="-1,-1"/>
+	  <blockSpan start="1,0" stop="2,0" />
+	  <blockSpan start="1,1" stop="2,1" />
+	  <blockSpan start="0,2" stop="0,5" />
+	  <blockSpan start="1,2" stop="1,5" />
+	  <blockSpan start="1,7" stop="2,7" />
+	  <blockSpan start="1,6" stop="2,6" />
+	  <blockAlignment value="CENTER" start='0,0' stop="-1,0" />
+	  <blockValign value="MIDDLE" start="0,2" stop="1,2"/>      
+	  <blockValign value="MIDDLE" start="0,6" stop="1,7"/>
+	</blockTableStyle>
+	<blockTableStyle id="JingYingShiTable">
+	  <lineStyle kind="GRID" colorName="#000000" thickness="0.5" start="0,0" stop="-1,-1"/>
+	</blockTableStyle>
   </stylesheet>
   <story>
-    <title>[[repeatIn(objects,'o')]]产品要求评审及任务下达记录</title>
-    <blockTable colWidths="146.0,170.0,183.0" style="Table1">
-      <tr>
-        <td><para style="Label">QRT7.2.2-1</para></td>
-        <td><para style="Label">版别/修改码：E/1112</para></td>
-        <td><para style="Label">项目编号：[[o.xiangmubianhao]]</para></td>
-      </tr>
-    </blockTable>   
-    <blockTable colWidths="104.5,169.5,104.5,119.5" style="BasicInfoTable">
-      <tr>
-        <td><para style="Label">项目名称</para></td>
-        <td><para style="Value">[[o.name]]</para></td>
-        <td><para style="Label"></para></td>
-        <td><para style="Value"></para></td>
-      </tr>
-      <tr>
-        <td><para style="Label">委托单位</para></td>
-        <td><para style="Value"></para></td>
-        <td><para style="Label">规模</para></td>
-        <td><para style="Value">[[o.guimo]]</para></td>
-      </tr>
-      <tr>
-        <td><para style="Label">委托单位地址</para></td>
-        <td><para style="Value"></para></td>
-        <td><para style="Label">联系人及电话</para></td>
-        <td><para style="Value"></para></td>
-      </tr>
-    </blockTable> 
-    <blockTable style="SuoZhangTable" colWidths="50,60,130,208,50">
-      <tr>
-        <td><para>序号</para></td>
-        <td><para>评 审 内 容</para></td>
-        <td><para></para></td>
-        <td><para>评  审  意  见</para></td>
-        <td><para>评 审 人</para></td>
-      </tr>      
-      <tr>
-        <td><para>1</para></td>
-        <td><para>顾客要求形成文件否</para></td>
-        <td><para></para></td>
-        <td><para> [[o.yaoqiuxingchengwenjian==u'已形成' and '【√】' or '【】']]已形成  [[o.yaoqiuxingchengwenjian==u'未形成，但已确认' and '【√】' or '【】']]未形成，但已确认</para></td>
-        <td><para></para></td>
-      </tr>     
-      <tr>
-        <td><para>2</para></td>
-        <td><para>设计要求
-          是否得到
-          规定</para></td>
-        <td><para>明示要求</para></td>
-        <td><para>[[o.zhaobiaoshu and '【√】' or '【】']] 有招标书     [[o.weituoshu and '【√】' or '【】']] 有委托书     
-          [[o.xieyicaoan and '【√】' or '【】']] 有协议/合同草案  [[o.koutouyaoqiujilu and '【√】' or '【】']] 有口头要求记录</para></td>
-        <td><para></para></td>
-      </tr> 
-      <tr>
-        <td><para></para></td>
-        <td><para></para></td>
-        <td><para>隐含要求</para></td>
-        <td><para>[[o.yinhanyaoqiu==u'有' and '【√】' or '【】']] 有（需在评审记录一栏中标明记录）
-          [[o.yinhanyaoqiu!=u'有' and '【√】' or '【】']] 无</para></td>
-        <td><para></para></td>
-      </tr> 
-      <tr>
-        <td><para></para></td>
-        <td><para></para></td>
-        <td><para>地方规范或特殊法律法规</para></td>
-        <td><para>[[o.difangfagui==u'有' and '【√】' or '【】']] 有（需在评审记录一栏中标明记录）
-          [[o.difangfagui!=u'有' and '【√】' or '【】']] 无</para></td>
-        <td><para></para></td>
-      </tr> 
-      <tr>
-        <td><para></para></td>
-        <td><para></para></td>
-        <td><para>附加要求</para></td>
-        <td><para>[[o.fujiayaoqiu==u'有' and '【√】' or '【】']] 有（需在评审记录一栏中标明记录）
-          [[o.fujiayaoqiu!=u'有' and '【√】' or '【】']] 无</para></td>
-        <td><para></para></td>
-      </tr> 
-    </blockTable>
+	<title>[[repeatIn(objects,'o')]]产品要求评审及任务下达记录</title>
+	<blockTable colWidths="146.0,170.0,183.0" style="Table1">
+	  <tr>
+		<td><para style="Label">QRT7.2.2-1</para></td>
+		<td><para style="Label">版别/修改码：E/1112</para></td>
+		<td><para style="Label">项目编号：[[o.xiangmubianhao]]</para></td>
+	  </tr>
+	</blockTable>   
+	<blockTable colWidths="104.5,169.5,104.5,119.5" style="BasicInfoTable">
+	  <tr>
+		<td><para style="Label">项目名称</para></td>
+		<td><para style="Value">[[o.name]]</para></td>
+		<td><para style="Label"></para></td>
+		<td><para style="Value"></para></td>
+	  </tr>
+	  <tr>
+		<td><para style="Label">委托单位</para></td>
+		<td><para style="Value"></para></td>
+		<td><para style="Label">规模</para></td>
+		<td><para style="Value">[[o.guimo]]</para></td>
+	  </tr>
+	  <tr>
+		<td><para style="Label">委托单位地址</para></td>
+		<td><para style="Value"></para></td>
+		<td><para style="Label">联系人及电话</para></td>
+		<td><para style="Value"></para></td>
+	  </tr>
+	</blockTable> 
+	<blockTable style="SuoZhangTable" colWidths="50,60,130,208,50">
+	  <tr>
+		<td><para style="Label" alignment="center" fontName="Helvetica-Bold">序号</para></td>
+		<td><para style="Label" alignment="center" fontName="Helvetica-Bold">评 审 内 容</para></td>
+		<td><para style="Label" alignment="center" fontName="Helvetica-Bold"></para></td>
+		<td><para style="Label" alignment="center" fontName="Helvetica-Bold">评  审  意  见</para></td>
+		<td><para style="Label" alignment="center" fontName="Helvetica-Bold">评 审 人</para></td>
+	  </tr>      
+	  <tr>
+		<td><para style="Label">1</para></td>
+		<td><para style="Label">顾客要求形成文件否</para></td>
+		<td><para style="Label"></para></td>
+		<td><para style="Value"> [[o.yaoqiuxingchengwenjian==u'已形成' and '【√】' or '【 】']]已形成  [[o.yaoqiuxingchengwenjian==u'未形成，但已确认' and '【√】' or '【 】']]未形成，但已确认</para></td>
+		<td><para style="Value">[[get_suozhangshenpi(o.id)]]</para></td>
+	  </tr>     
+	  <tr>
+		<td><para style="Label">2</para></td>
+		<td><para style="Label">设计要求
+		  是否得到
+		  规定</para></td>
+		<td><para style="Label">明示要求</para></td>
+		<td><para style="Value">[[o.zhaobiaoshu and '【√】' or '【 】']] 有招标书     [[o.weituoshu and '【√】' or '【 】']] 有委托书     
+		  [[o.xieyicaoan and '【√】' or '【 】']] 有协议/合同草案  [[o.koutouyaoqiujilu and '【√】' or '【 】']] 有口头要求记录</para></td>
+		<td><para style="Value"></para></td>
+	  </tr> 
+	  <tr>
+		<td><para style="Label"></para></td>
+		<td><para style="Label"></para></td>
+		<td><para style="Label">隐含要求</para></td>
+		<td><para style="Value">[[o.yinhanyaoqiu==u'有' and '【√】' or '【 】']] 有（需在评审记录一栏中标明记录）
+		  [[o.yinhanyaoqiu!=u'有' and '【√】' or '【 】']] 无</para></td>
+		<td><para style="Value"></para></td>
+	  </tr> 
+	  <tr>
+		<td><para style="Label"></para></td>
+		<td><para style="Label"></para></td>
+		<td><para style="Label">地方规范或特殊法律法规</para></td>
+		<td><para style="Value">[[o.difangfagui==u'有' and '【√】' or '【 】']] 有（需在评审记录一栏中标明记录）
+		  [[o.difangfagui!=u'有' and '【√】' or '【 】']] 无</para></td>
+		<td><para style="Value"></para></td>
+	  </tr> 
+	  <tr>
+		<td><para style="Label"></para></td>
+		<td><para style="Label"></para></td>
+		<td><para style="Label">附加要求</para></td>
+		<td><para style="Value">[[o.fujiayaoqiu==u'有' and '【√】' or '【 】']] 有（需在评审记录一栏中标明记录）
+		  [[o.fujiayaoqiu!=u'有' and '【√】' or '【 】']] 无</para></td>
+		<td><para style="Value"></para></td>
+	  </tr> 
+	  <tr>
+		<td><para style="Label">3</para></td>
+		<td><para style="Label">与以前表述不一致的合同/ 协议要求是否
+		  解决</para></td>
+		<td><para style="Label"></para></td>
+		<td><para style="Value">[[o.hetongyizhi==u'合同/协议要求表述不一致已解决' and '【√】' or '【 】']]合同/协议要求表述不一致已解决
+		  [[o.hetongyizhi==u'没有出现不一致' and '【√】' or '【 】']]没有出现不一致</para></td>
+		<td><para style="Value"></para></td>
+	  </tr>
+	  <tr>
+		<td><para style="Label">4</para></td>
+		<td><para style="Label">本院是否有能力满足规定要求</para></td>
+		<td><para style="Label"></para></td>
+		<td><para style="Value">[[o.ziyuan==u'人力资源满足' and '【√】' or '【 】']]人力资源满足  [[o.ziyuan==u'人力资源不足' and '【√】' or '【 】']]人力资源不足
+		[[o.shebei==u'设备满足' and '【√】' or '【 】']]设备满足  [[o.shebei==u'设备不满足' and '【√】' or '【 】']]设备不满足
+		[[o.gongqi==u'工期可接受' and '【√】' or '【 】']]工期可接受  [[o.gongqi==u'工期太紧' and '【√】' or '【 】']]工期太紧
+		[[o.shejifei==u'设计费合理' and '【√】' or '【 】']]设计费合理  [[o.shejifei==u'设计费太低' and '【√】' or '【 】']]设计费太低
+		</para>
+		</td>
+		<td><para style="Value"></para></td>
+	  </tr>
+	</blockTable>
+	<blockTable style="JingYingShiTable" colWidths="239,259">
+	  <tr>
+		<td><para style="Label">评审方式：[[o.pingshenfangshi==u'会议' and '【√】' or '【 】']]会议  	[[o.pingshenfangshi==u'会签' and '【√】' or '【 】']]会签		[[o.pingshenfangshi==u'审批' and '【√】' or '【 】']]审批</para></td>
+		<td><para style="Label"><font face="Helvetica-Bold">引发措施记录：</font></para></td>
+	  </tr>
+	</blockTable>
   </story>
 </document>
 

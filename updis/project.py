@@ -49,7 +49,9 @@ class updis_project(osv.osv):
 		"jiafang_id":fields.many2one('res.partner', u"甲方"),
 		
 		# 所长审批
-		"yaoqiuxingchengwenjian":fields.selection([(u"已形成",u"已形成"),(u"未形成，但已确认",u"未形成，但已确认")],
+		"yaoqiuxingchengwenjian":fields.selection([
+			("yiXingChen",u"已形成"),
+			("weiXingChen",u"未形成，但已确认")],
 			u"顾客要求形成文件否"),		
 		"zhaobiaoshu":fields.boolean(u"有招标书"),# 明示要求
 		"weituoshu":fields.boolean(u"有委托书"),# 明示要求
@@ -77,7 +79,9 @@ class updis_project(osv.osv):
 		# 总师室
 		"categories_id":fields.many2many("project.upcategory","up_project_category_rel","project_id","category_id",u"项目类别"),
 		"toubiaoleibie":fields.selection([(u'商务标',u'商务标'),(u'技术标',u'技术标'),(u'综合标',u'综合标')],u"投标类别"),
-		"guanlijibie":fields.selection([(u'院级',u'院级'),(u'所级',u'所级')],u'项目管理级别'),
+		"guanlijibie":fields.selection([
+			(u'院级',u'院级'),
+			(u'所级',u'所级')],u'项目管理级别'),
 		"chenjiefuzeren_id":fields.many2one("res.users",u"承接项目负责人"),
 		"zhuguanzongshi_id":fields.many2one("res.users",u"主管总师"),
 		

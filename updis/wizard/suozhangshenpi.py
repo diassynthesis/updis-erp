@@ -20,7 +20,9 @@ class suozhangshenpi_form(osv.Model):
 		"jiafang_id":fields.many2one('res.partner', u"甲方"),		
 
 		# 所长审批
-		"yaoqiuxingchengwenjian":fields.selection([(u"已形成",u"已形成"),(u"未形成，但已确认",u"未形成，但已确认")],
+		"yaoqiuxingchengwenjian":fields.selection([
+			("yiXingChen",u"已形成"),
+			("weiXingChen",u"未形成，但已确认")],
 			u"顾客要求形成文件否"),		
 		"zhaobiaoshu":fields.boolean(u"有招标书"),# 明示要求
 		"weituoshu":fields.boolean(u"有委托书"),# 明示要求
@@ -35,6 +37,7 @@ class suozhangshenpi_form(osv.Model):
 		"shebei":fields.selection([(u'设备满足','设备满足'),(u'设备不满足',u'设备不满足')],u"设备"),#本院是否有能力满足规定要求
 		"gongqi":fields.selection([(u'工期可接受','工期可接受'),(u'工期太紧',u'工期太紧')],u"工期"),#本院是否有能力满足规定要求
 		"shejifei":fields.selection([(u'设计费合理','设计费合理'),(u'设计费太低',u'设计费太低')],u'设计费'),#本院是否有能力满足规定要求
+
 	}
 	def update_project_suozhangshenpi_form(self,cr,uid,ids,*args):		
 		return self._update_project_form(cr,uid,ids,'suozhangshenpi_form_id')
