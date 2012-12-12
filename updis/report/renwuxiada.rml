@@ -29,6 +29,16 @@
 	</blockTableStyle>
 	<blockTableStyle id="JingYingShiTable">
 	  <lineStyle kind="GRID" colorName="#000000" thickness="0.5" start="0,0" stop="-1,-1"/>
+	  <blockValign value="MIDDLE"/>
+	</blockTableStyle>
+	<blockTableStyle id="ReviewResultTable">
+	  <lineStyle kind="GRID" colorName="#000000" thickness="0.5" start="0,0" stop="-1,-1"/>
+	  <blockValign value="MIDDLE"/>
+	  <blockSpan start="0,0" stop="0,3" />
+	  <blockSpan start="1,0" stop="3,0" />
+	  <blockSpan start="1,1" stop="1,3" />
+	  <blockSpan start="2,1" stop="3,1" />
+	  <blockSpan start="0,-1" stop="-1,-1" />
 	</blockTableStyle>
   </stylesheet>
   <story>
@@ -73,7 +83,7 @@
 		<td><para style="Label">顾客要求形成文件否</para></td>
 		<td><para style="Label"></para></td>
 		<td><para style="Value"> [[o.yaoqiuxingchengwenjian==u'已形成' and '【√】' or '【 】']]已形成  [[o.yaoqiuxingchengwenjian==u'未形成，但已确认' and '【√】' or '【 】']]未形成，但已确认</para></td>
-		<td><para style="Value">[[get_suozhangshenpi(o.id)]]</para></td>
+		<td><para style="Value">[[suozhangshenpi(o.id).reviewer_id.name]]</para></td>
 	  </tr>     
 	  <tr>
 		<td><para style="Label">2</para></td>
@@ -134,8 +144,61 @@
 	<blockTable style="JingYingShiTable" colWidths="239,259">
 	  <tr>
 		<td><para style="Label">评审方式：[[o.pingshenfangshi==u'会议' and '【√】' or '【 】']]会议  	[[o.pingshenfangshi==u'会签' and '【√】' or '【 】']]会签		[[o.pingshenfangshi==u'审批' and '【√】' or '【 】']]审批</para></td>
-		<td><para style="Label"><font face="Helvetica-Bold">引发措施记录：</font></para></td>
+		<td><para style="Label"><font face="Helvetica-Bold">引发措施记录：</font>[[o.yinfacuoshi==u'可以接受' and '【√】' or '【 】']]可以接受		[[o.yinfacuoshi==u'不接受' and '【√】' or '【 】']]不接受	[[o.yinfacuoshi==u'加班' and '【√】' or '【 】']]加班	
+[[o.yinfacuoshi==u'院内调配' and '【√】' or '【 】']]院内调配	[[o.yinfacuoshi==u'外协' and '【√】' or '【 】']]外协	[[o.yinfacuoshi==u'其它' and '【√】' or '【 】']]其它</para></td>
 	  </tr>
+	</blockTable>
+	<blockTable style="ReviewResultTable" colWidths="27,249,55,166">
+		<tr>
+			<td><para style="Label" alignment="center">
+	评
+审
+结
+果
+与
+任
+务
+下
+达</para></td>
+			<td><para style="Value">任务要求：[[o.renwuyaoqiu==u'见委托书' and '【√】' or '【 】']]见委托书		[[o.renwuyaoqiu==u'见合同草案' and '【√】' or '【 】']]见合同草案			[[o.renwuyaoqiu==u'见洽谈记录' and '【√】' or '【 】']]见洽谈记录			[[o.renwuyaoqiu==u'见电话记录' and '【√】' or '【 】']]见电话记录			[[o.renwuyaoqiu==u'招标文件' and '【√】' or '【 】']]招标文件
+				承接部门：[[o.chenjiebumen_id.name]]  							评审主持人：</para>
+		</td>
+			<td><para style="Value"></para></td>
+			<td><para style="Value"></para></td>		
+		</tr>
+		<tr>
+			<td><para style="Label"></para></td>
+			<td><para style="Label">类别：[[ u'区域\城镇体系\总体规划' in category_names(o.id) and '【√】' or '【 】']]区域\城镇体系\总体规划		[[ u'专项规划(研究)' in category_names(o.id) and '【√】' or '【 】']]专项规划(研究)		[[ u'分区规划' in category_names(o.id) and '【√】' or '【 】']]分区规划		[[ u'法定图则' in category_names(o.id) and '【√】' or '【 】']]法定图则			[[ u'控规' in category_names(o.id) and '【√】' or '【 】']]控规 		[[ u'修规(详细蓝图)' in category_names(o.id) and '【√】' or '【 】']]修规(详细蓝图)		[[ u'旧改项目' in category_names(o.id) and '【√】' or '【 】']]旧改项目		[[ u'城市设计' in category_names(o.id) and '【√】' or '【 】']]城市设计		[[ u'工程项目' in category_names(o.id) and '【√】' or '【 】']]工程项目		[[ u'市政专项' in category_names(o.id) and '【√】' or '【 】']]市政专项		[[ u'其它' in category_names(o.id) and '【√】' or '【 】']]其它
+			投标类别：[[o.toubiaoleibie==u'商务标' and '【√】' or '【 】']]商务标 	[[o.toubiaoleibie==u'技术标' and '【√】' or '【 】']]技术标 	[[o.toubiaoleibie==u'综合标' and '【√】' or '【 】']]综合标
+			项目管理级别：[[o.guanlijibie==u'院级' and '【√】' or '【 】']]院级 	[[o.guanlijibie==u'所级' and '【√】' or '【 】']]所级
+			项目负责人：
+			主管总师：
+			</para></td>
+			<td><para style="Label" alignment="center">会 签 栏</para></td>
+			<td><para style="Label"></para></td>
+		</tr>
+		<tr>
+			<td><para style="Label"></para></td>
+			<td><para style="Label"></para></td>
+			<td><para style="Label">总师室</para></td>
+			<td><para style="Label"></para></td>
+		</tr>
+		<tr>
+			<td><para style="Label"></para></td>
+			<td><para style="Label"></para></td>
+			<td><para style="Label">承接部门
+				负责人</para></td>
+			<td><para style="Label"></para></td>
+		</tr>
+		<tr>
+			<td><para style="Label">注：1. 评审方式中：总规项目为会议、一般项目为会签、规划局直接委托项目为审批；
+2. 出现与以前表述不一致的合同/ 协议要求时，必需在评审记录中写明情况；
+3. 评审记录栏填写不下时，可采取附页方式；
+4. 所级项目不设主管总师。</para></td>
+			<td><para style="Label"></para></td>
+			<td><para style="Label"></para></td>
+			<td><para style="Label"></para></td>
+		</tr>
 	</blockTable>
   </story>
 </document>

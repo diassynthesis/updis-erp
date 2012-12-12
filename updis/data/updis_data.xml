@@ -39,7 +39,7 @@
 			<field name="name">工程项目</field>
 		</record>
 		<record id="cat10" model="project.upcategory">
-			<field name="name">市政专题</field>
+			<field name="name">市政专项</field>
 		</record>
 		<record id="cat11" model="project.upcategory">
 			<field name="name">其它</field>
