@@ -9,9 +9,8 @@ class fuzerenqidong_form(osv.Model):
 	_description=u"经营室审批"
 	_inherit=['project.review.abstract']
 	_columns={
-		'duty_id':fields.many2one('project.duty','Duty'),
-		'profession_id':fields.many2one('project.profession','Profession'),
-		'project_id':fields.many2one('project.project','Project'),
+		'shizhengxietiaoren_id':fields.many2one("res.users",u"市政协调人"),
+		'project_assignment_ids':fields.many2many("project.assignment",'fuzerenqidong_assignment_rel',"fuzerenqidong_form_id","assignment_id",string="Assignments"),
 		'state':fields.selection([
 			(u'项目负责人创建',u'项目负责人创建'),
 			(u'设计部门负责人签字',u'设计部门负责人签字'),
@@ -24,7 +23,8 @@ class fuzerenqidong_form(osv.Model):
 		return self._update_project_form(cr,uid,ids,'fuzerenqidong_form_id')
 class updis_project(osv.Model):
 	_inherit='project.project'	
-	_columns={
+	_columns={		
+		'shizhengxietiaoren_id':fields.many2one("res.users",u"市政协调人"),
 		'fuzerenqidong_form_id':fields.many2one('project.review.fuzerenqidong.form',u'经营室审批单'),
 	}
 	def action_fuzerenqidong(self, cr, uid, ids, context=None):

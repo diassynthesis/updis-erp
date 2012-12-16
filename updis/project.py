@@ -143,3 +143,12 @@ class project_duty(osv.Model):
 	_defaults={
 		'active':True
 	}
+class project_assignment(osv.Model):
+	"""docstring for project_assignment"""
+	_name="project.assignment"
+	_description="Project Assignment"
+	_columns={
+		'duty_id':fields.many2one('project.duty','Duty'),
+		'profession_id':fields.many2one('project.profession','Profession'),
+		'project_id':fields.many2one('project.project','Project'),
+	}

@@ -7,12 +7,9 @@
 			<field name="arch" type="xml">
 				<form string="fuzerenqidongshenpi" version="7.0">
 					<field name="state" widget="statusbar" readonly="1" />
-					<group string="经营室指定设计部门">
-						<field name="xiangmubianhao" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
-						<field name="pingshenfangshi" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
-						<field name="yinfacuoshi" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
-						<field name="renwuyaoqiu" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
-						<field name="chenjiebumen_id" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
+					<group string="人员分配">
+						<field name="shizhengxietiaoren_id" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
+						<field name="project_assignment_ids" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
 					</group>
 					<group string="通知设置">
 						<field name="send_email" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
