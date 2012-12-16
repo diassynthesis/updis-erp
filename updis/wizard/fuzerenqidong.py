@@ -12,12 +12,12 @@ class fuzerenqidong_form(osv.Model):
 		'shizhengxietiaoren_id':fields.many2one("res.users",u"市政协调人"),
 		'project_assignment_ids':fields.many2many("project.assignment",'fuzerenqidong_assignment_rel',"fuzerenqidong_form_id","assignment_id",string="Assignments"),
 		'state':fields.selection([
-			(u'项目负责人创建',u'项目负责人创建'),
+			('draft',u'项目负责人创建'),
 			(u'设计部门负责人签字',u'设计部门负责人签字'),
 			(u'配合部门负责人签字',u'配合部门负责人签字')],'State',readonly=True)
 	}
 	_defaults={
-		'state':u'项目负责人创建',
+		'state':'draft',
 	}
 	def update_project_fuzerenqidong_form(self,cr,uid,ids,*args):		
 		return self._update_project_form(cr,uid,ids,'fuzerenqidong_form_id')
