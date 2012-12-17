@@ -85,6 +85,7 @@ class updis_project(osv.osv):
 		"chenjiefuzeren_id":fields.many2one("res.users",u"承接项目负责人"),
 		"zhuguanzongshi_id":fields.many2one("res.users",u"主管总师"),
 		
+		'assignment_ids':fields.one2many('project.assignment','project_id','Project Assignment'),
 		"state":fields.selection([
 			# ("draft",u"New project"),
 			("open",u"任意人员填写申请单"),
@@ -120,20 +121,25 @@ class updis_project(osv.osv):
 		return all([(getattr(proj,form_field) and getattr(proj,form_field).state=='accepted') for proj in self.browse(cr,uid,ids)])
 	def _get_form(self,cr,uid,ids,form_field,*args):
 		return [getattr(proj,form_field) for proj in self.browse(cr,uid,ids) if getattr(proj,form_field)]
-# class project_review_history(osv.Model):
-# 	_name="project.review.history"
-# 	_description="Keep every review of the project here."
-# 	_columns = {
-# 		'name':fields.text('Name',size=512),
-# 		'submitter_id': fields.many2one('res.users', 'Submitter', readonly=True),
-# 		'reviewer_id': fields.many2one('res.users', 'Reviewer', readonly=True),
-# 		'fields':fields.char("Fields reviewed", size=512, readonly=True),		
-# 		'result':fields.selection([
-# 			('submit','Submit'),
-# 			('accepted','Accepted'),
-# 			('rejected','Rejected')],
-# 			'Result'),
-# 		'comment':fields.text('Comment')
-# 	}
-# 	_order="create_date desc,result"
-# project_review_history()
+class project_profession(osv.Model):
+	"""Profession"""
+	_name="project.profession"
+	_description="Project Profession"
+	_columns={
+		'name':fields.char("Name",size=64),
+		'active':fields.boolean("Active"),
+	}
+	_defaults={
+		'active':True
+	}
+class project_duty(osv.Model):
+	"""Duty"""
+	_name="project.duty"
+	_description="Project Duty"
+	_columns={
+		'name':fields.char("Name",size=64),
+		'active':fields.boolean("Active"),
+	}
+	_defaults={
+		'active':True
+	}

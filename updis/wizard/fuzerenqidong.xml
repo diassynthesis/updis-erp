@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<record id="project_review_fuzerenqidong_form_form_view" model="ir.ui.view">
+			<field name="name">project.review.fuzerenqidong.form.form.view</field>
+			<field name="model">project.review.fuzerenqidong.form</field>
+			<field name="arch" type="xml">
+				<form string="fuzerenqidongshenpi" version="7.0">
+					<field name="state" widget="statusbar" readonly="1" />
+					<group string="经营室指定设计部门">
+						<field name="xiangmubianhao" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
+						<field name="pingshenfangshi" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
+						<field name="yinfacuoshi" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
+						<field name="renwuyaoqiu" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
+						<field name="chenjiebumen_id" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
+					</group>
+					<group string="通知设置">
+						<field name="send_email" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
+						<field name="send_sms" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
+					</group>
+					<group string="Review Comment">
+						<field name="review_log" />
+						<field name="reviewer_id" domain="[('groups_id','=',%(group_up_project_jingyingshi)d)]"  attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
+						<field name="comment" />
+					</group>
+					<footer>
+						<button name="fuzerenqidong_review_submit" string="提交经营室审批" states="draft" class="oe_highlight"/>
+						<button name="fuzerenqidong_review_accept" string="审批通过" states="submitted" class="oe_highlight"/>
+						<button name="fuzerenqidong_review_reject" string="打回" states="submitted" class="oe_highlight"/>
+						<button string="Cancel" class="oe_link" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+	</data>
+</openerp>
