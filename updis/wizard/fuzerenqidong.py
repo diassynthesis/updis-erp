@@ -4,7 +4,7 @@ from tools.translate import _
 from . import common
 
 class fuzerenqidong_form(osv.Model):
-	"""经营室审批单"""
+	"""项目负责人启动项目"""
 	_name="project.review.fuzerenqidong.form"
 	_description=u"经营室审批"
 	_inherit=['project.review.abstract']
@@ -25,10 +25,10 @@ class updis_project(osv.Model):
 	_inherit='project.project'	
 	_columns={		
 		'shizhengxietiaoren_id':fields.many2one("res.users",u"市政协调人"),
-		'fuzerenqidong_form_id':fields.many2one('project.review.fuzerenqidong.form',u'经营室审批单'),
+		'fuzerenqidong_form_id':fields.many2one('project.review.fuzerenqidong.form',u'项目负责人启动项目'),
 	}
 	def action_fuzerenqidong(self, cr, uid, ids, context=None):
-		return self._get_action(cr,uid,ids,'project.review.fuzerenqidong.form',u'经营室审批单')
+		return self._get_action(cr,uid,ids,'project.review.fuzerenqidong.form',u'项目负责人启动项目')
 	def test_fuzerenqidong_accepted(self, cr, uid, ids, *args):
 		return self._test_accepted(cr,uid,ids,'fuzerenqidong_form_id',*args)
 	def fuzerenqidong_get(self, cr, uid, ids, *args):

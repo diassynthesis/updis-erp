@@ -24,8 +24,9 @@
 	  <blockSpan start="1,7" stop="2,7" />
 	  <blockSpan start="1,6" stop="2,6" />
 	  <blockAlignment value="CENTER" start='0,0' stop="-1,0" />
-	  <blockValign value="MIDDLE" start="0,2" stop="1,2"/>      
-	  <blockValign value="MIDDLE" start="0,6" stop="1,7"/>
+	  <!-- <blockValign value="MIDDLE" start="0,2" stop="1,2"/>      
+	  <blockValign value="MIDDLE" start="0,6" stop="1,7"/>    -->
+	  <blockValign value="MIDDLE" start="0,0" stop="-1,-1"/>
 	</blockTableStyle>
 	<blockTableStyle id="JingYingShiTable">
 	  <lineStyle kind="GRID" colorName="#000000" thickness="0.5" start="0,0" stop="-1,-1"/>
@@ -83,7 +84,7 @@
 		<td><para style="Label">顾客要求形成文件否</para></td>
 		<td><para style="Label"></para></td>
 		<td><para style="Value"> [[o.yaoqiuxingchengwenjian==u'已形成' and '【√】' or '【 】']]已形成  [[o.yaoqiuxingchengwenjian==u'未形成，但已确认' and '【√】' or '【 】']]未形成，但已确认</para></td>
-		<td><para style="Value">[[suozhangshenpi(o.id).reviewer_id.name]]</para></td>
+		<td><para style="Value">[[suozhangshenpi(o.id).reviewer_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[suozhangshenpi(o.id).reviewer_id.sign_image]] </para></td>
 	  </tr>     
 	  <tr>
 		<td><para style="Label">2</para></td>
@@ -93,7 +94,7 @@
 		<td><para style="Label">明示要求</para></td>
 		<td><para style="Value">[[o.zhaobiaoshu and '【√】' or '【 】']] 有招标书     [[o.weituoshu and '【√】' or '【 】']] 有委托书     
 		  [[o.xieyicaoan and '【√】' or '【 】']] 有协议/合同草案  [[o.koutouyaoqiujilu and '【√】' or '【 】']] 有口头要求记录</para></td>
-		<td><para style="Value"></para></td>
+		<td><para style="Value">[[suozhangshenpi(o.id).reviewer_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[suozhangshenpi(o.id).reviewer_id.sign_image]]</para></td>
 	  </tr> 
 	  <tr>
 		<td><para style="Label"></para></td>
@@ -101,7 +102,7 @@
 		<td><para style="Label">隐含要求</para></td>
 		<td><para style="Value">[[o.yinhanyaoqiu==u'有' and '【√】' or '【 】']] 有（需在评审记录一栏中标明记录）
 		  [[o.yinhanyaoqiu!=u'有' and '【√】' or '【 】']] 无</para></td>
-		<td><para style="Value"></para></td>
+		<td><para style="Value">[[suozhangshenpi(o.id).reviewer_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[suozhangshenpi(o.id).reviewer_id.sign_image]]</para></td>
 	  </tr> 
 	  <tr>
 		<td><para style="Label"></para></td>
@@ -109,7 +110,7 @@
 		<td><para style="Label">地方规范或特殊法律法规</para></td>
 		<td><para style="Value">[[o.difangfagui==u'有' and '【√】' or '【 】']] 有（需在评审记录一栏中标明记录）
 		  [[o.difangfagui!=u'有' and '【√】' or '【 】']] 无</para></td>
-		<td><para style="Value"></para></td>
+		<td><para style="Value">[[suozhangshenpi(o.id).reviewer_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[suozhangshenpi(o.id).reviewer_id.sign_image]]</para></td>
 	  </tr> 
 	  <tr>
 		<td><para style="Label"></para></td>
@@ -117,7 +118,7 @@
 		<td><para style="Label">附加要求</para></td>
 		<td><para style="Value">[[o.fujiayaoqiu==u'有' and '【√】' or '【 】']] 有（需在评审记录一栏中标明记录）
 		  [[o.fujiayaoqiu!=u'有' and '【√】' or '【 】']] 无</para></td>
-		<td><para style="Value"></para></td>
+		<td><para style="Value">[[suozhangshenpi(o.id).reviewer_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[suozhangshenpi(o.id).reviewer_id.sign_image]]</para></td>
 	  </tr> 
 	  <tr>
 		<td><para style="Label">3</para></td>
@@ -126,7 +127,7 @@
 		<td><para style="Label"></para></td>
 		<td><para style="Value">[[o.hetongyizhi==u'合同/协议要求表述不一致已解决' and '【√】' or '【 】']]合同/协议要求表述不一致已解决
 		  [[o.hetongyizhi==u'没有出现不一致' and '【√】' or '【 】']]没有出现不一致</para></td>
-		<td><para style="Value"></para></td>
+		<td><para style="Value">[[suozhangshenpi(o.id).reviewer_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[suozhangshenpi(o.id).reviewer_id.sign_image]]</para></td>
 	  </tr>
 	  <tr>
 		<td><para style="Label">4</para></td>
@@ -138,7 +139,7 @@
 		[[o.shejifei==u'设计费合理' and '【√】' or '【 】']]设计费合理  [[o.shejifei==u'设计费太低' and '【√】' or '【 】']]设计费太低
 		</para>
 		</td>
-		<td><para style="Value"></para></td>
+		<td><para style="Value">[[suozhangshenpi(o.id).reviewer_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[suozhangshenpi(o.id).reviewer_id.sign_image]]</para></td>
 	  </tr>
 	</blockTable>
 	<blockTable style="JingYingShiTable" colWidths="239,259">
@@ -160,8 +161,17 @@
 务
 下
 达</para></td>
-			<td><para style="Value">任务要求：[[o.renwuyaoqiu==u'见委托书' and '【√】' or '【 】']]见委托书		[[o.renwuyaoqiu==u'见合同草案' and '【√】' or '【 】']]见合同草案			[[o.renwuyaoqiu==u'见洽谈记录' and '【√】' or '【 】']]见洽谈记录			[[o.renwuyaoqiu==u'见电话记录' and '【√】' or '【 】']]见电话记录			[[o.renwuyaoqiu==u'招标文件' and '【√】' or '【 】']]招标文件
-				承接部门：[[o.chenjiebumen_id.name]]  							评审主持人：</para>
+			<td><para style="Value">任务要求：[[o.renwuyaoqiu==u'见委托书' and '【√】' or '【 】']]见委托书		[[o.renwuyaoqiu==u'见合同草案' and '【√】' or '【 】']]见合同草案			[[o.renwuyaoqiu==u'见洽谈记录' and '【√】' or '【 】']]见洽谈记录			[[o.renwuyaoqiu==u'见电话记录' and '【√】' or '【 】']]见电话记录			[[o.renwuyaoqiu==u'招标文件' and '【√】' or '【 】']]招标文件</para>
+			<blockTable colWidths="50,84,50,84	">
+				<tr>
+					<td><para style="Label">承接部门：</para></td>
+					<td><para style="Value">[[o.chenjiebumen_id.name]]</para></td>
+					<td><para style="Label">评审主持人：</para></td>
+					<td>
+						<para style="Label">[[jingyingshishenpi(o.id).reviewer_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]][[jingyingshishenpi(o.id).reviewer_id.sign_image]]</para>
+					</td>
+				</tr>				
+			</blockTable>
 		</td>
 			<td><para style="Value"></para></td>
 			<td><para style="Value"></para></td>		
@@ -170,10 +180,18 @@
 			<td><para style="Label"></para></td>
 			<td><para style="Label">类别：[[ u'区域\城镇体系\总体规划' in category_names(o.id) and '【√】' or '【 】']]区域\城镇体系\总体规划		[[ u'专项规划(研究)' in category_names(o.id) and '【√】' or '【 】']]专项规划(研究)		[[ u'分区规划' in category_names(o.id) and '【√】' or '【 】']]分区规划		[[ u'法定图则' in category_names(o.id) and '【√】' or '【 】']]法定图则			[[ u'控规' in category_names(o.id) and '【√】' or '【 】']]控规 		[[ u'修规(详细蓝图)' in category_names(o.id) and '【√】' or '【 】']]修规(详细蓝图)		[[ u'旧改项目' in category_names(o.id) and '【√】' or '【 】']]旧改项目		[[ u'城市设计' in category_names(o.id) and '【√】' or '【 】']]城市设计		[[ u'工程项目' in category_names(o.id) and '【√】' or '【 】']]工程项目		[[ u'市政专项' in category_names(o.id) and '【√】' or '【 】']]市政专项		[[ u'其它' in category_names(o.id) and '【√】' or '【 】']]其它
 			投标类别：[[o.toubiaoleibie==u'商务标' and '【√】' or '【 】']]商务标 	[[o.toubiaoleibie==u'技术标' and '【√】' or '【 】']]技术标 	[[o.toubiaoleibie==u'综合标' and '【√】' or '【 】']]综合标
-			项目管理级别：[[o.guanlijibie==u'院级' and '【√】' or '【 】']]院级 	[[o.guanlijibie==u'所级' and '【√】' or '【 】']]所级
-			项目负责人：
-			主管总师：
-			</para></td>
+			项目管理级别：[[o.guanlijibie==u'院级' and '【√】' or '【 】']]院级 	[[o.guanlijibie==u'所级' and '【√】' or '【 】']]所级</para>
+			<blockTable colWidths="49,200">
+				<tr>
+					<td><para style="Label">项目负责人：</para></td>
+					<td><para style="Label">[[o.chenjiefuzeren_id.name]]</para></td>
+				</tr>
+				<tr>
+					<td><para style="Label">主管总师：</para></td>
+					<td><para style="Label">[[o.zhuguanzongshi_id.name]]</para></td>
+				</tr>
+			</blockTable>
+			</td>
 			<td><para style="Label" alignment="center">会 签 栏</para></td>
 			<td><para style="Label"></para></td>
 		</tr>
@@ -181,14 +199,14 @@
 			<td><para style="Label"></para></td>
 			<td><para style="Label"></para></td>
 			<td><para style="Label">总师室</para></td>
-			<td><para style="Label"></para></td>
+			<td><para style="Label">[[zongshishishenpi(o.id).reviewer_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]][[zongshishishenpi(o.id).reviewer_id.sign_image]]</para></td>
 		</tr>
 		<tr>
 			<td><para style="Label"></para></td>
 			<td><para style="Label"></para></td>
 			<td><para style="Label">承接部门
-				负责人</para></td>
-			<td><para style="Label"></para></td>
+				负责人[[o.chenjiebumen_id.manager_id.sign_image]]</para></td>
+			<td><para style="Label">[[o.chenjiebumen_id.manager_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]][[o.chenjiebumen_id.manager_id.sign_image]]</para></td>
 		</tr>
 		<tr>
 			<td><para style="Label">注：1. 评审方式中：总规项目为会议、一般项目为会签、规划局直接委托项目为审批；

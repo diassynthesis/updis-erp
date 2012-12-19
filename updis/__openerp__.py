@@ -36,6 +36,7 @@ UPDIS Implementation Guide.""",
         'project_view.xml',      
         'project_workflow.xml',    
         'report/renwuxiada.xml',
+        'res_users.xml',
     ],
     'js': [
         'static/src/js/updis.js',

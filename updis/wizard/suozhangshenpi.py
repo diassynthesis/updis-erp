@@ -17,6 +17,7 @@ class suozhangshenpi_form(osv.Model):
 		"duofanghetong":fields.boolean(u"多方合同"),
 		"jianyishejibumen_id":fields.many2one("hr.department",u"建议设计部门"),
 		"jianyixiangmufuzeren_id":fields.many2one("res.users",u"建议项目负责人"),
+		"shifoutoubiao":fields.boolean(u"是否投标项目"),
 		"jiafang_id":fields.many2one('res.partner', u"甲方"),		
 
 		# 所长审批

@@ -26,6 +26,7 @@
 						<field name="shebei" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>		
 						<field name="gongqi" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>		
 						<field name="shejifei" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
+						<field name="shifoutoubiao" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
 					</group>
 					<group string="明示要求" col="4">
 						<!-- 明示要求 -->

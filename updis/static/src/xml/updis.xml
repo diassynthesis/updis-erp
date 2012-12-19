@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template>
-	<t t-name="WebClient">
+	<!-- <t t-name="WebClient">
 		<div class="openerp openerp_webclient_container">
 		<table class="oe_webclient">
 			<tr>
@@ -23,7 +23,7 @@
 			</tr>
 		</table>
 		</div>
-	</t>
+	</t> -->
 	<t t-name="InternalHome">
 		<div id="wrapper" class="openerp-internal">
 			<div id="header">

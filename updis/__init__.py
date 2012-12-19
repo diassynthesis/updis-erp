@@ -3,6 +3,7 @@ import hr_department
 import document_page
 import project
 import internal_home_menu
+import res_users
 
 from . import http
 from . import controllers
