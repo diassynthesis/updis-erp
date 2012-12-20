@@ -35,6 +35,7 @@
 								<field name="waibao"/>
 								<field name="shizhenpeitao"/>
 								<field name="duofanghetong"/>
+								<field name="shifoutoubiao"/>
 							</group>
 							
 							<group string="所长审批内容">
