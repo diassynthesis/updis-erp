@@ -10,6 +10,10 @@ class fuzerenqidong_form(osv.Model):
 	_inherit=['project.review.abstract']
 	_columns={
 		'shizhengxietiaoren_id':fields.many2one("res.users",u"市政协调人"),
+		'gongzuodagang':fields.boolean(u'有工作大纲（保存归档）'),
+		'chuangyouxiangmu':fields.boolean(u'创优项目'),
+		'zhuantihuozixiang':fields.boolean(u'专题或子项（详见工作大纲）'),
+		'youfenbaofang':fields.boolean(u'有分包方（详见分包协议）'),
 		'project_assignment_ids':fields.many2many("project.assignment",'fuzerenqidong_assignment_rel',"fuzerenqidong_form_id","assignment_id",string="Assignments"),
 		'state':fields.selection([
 			('draft',u'项目负责人创建'),

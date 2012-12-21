@@ -7,6 +7,12 @@
 			<field name="arch" type="xml">
 				<form string="fuzerenqidongshenpi" version="7.0">
 					<field name="state" widget="statusbar" readonly="1" />
+					<group>
+						<field name="gongzuodagang" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
+						<field name="chuangyouxiangmu" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
+						<field name="zhuantihuozixiang" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
+						<field name="youfenbaofang" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
+					</group>
 					<group string="人员分配">
 						<field name="shizhengxietiaoren_id" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
 						<field name="project_assignment_ids" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	

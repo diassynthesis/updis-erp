@@ -47,6 +47,10 @@ class updis_project(osv.osv):
 		"jianyixiangmufuzeren_id":fields.many2one("res.users",u"建议项目负责人"),
 		"shifoutoubiao":fields.boolean(u"是否投标项目"),
 		"jiafang_id":fields.many2one('res.partner', u"甲方"),
+		'gongzuodagang':fields.boolean(u'有工作大纲（保存归档）'),
+		'chuangyouxiangmu':fields.boolean(u'创优项目'),
+		'zhuantihuozixiang':fields.boolean(u'专题或子项（详见工作大纲）'),
+		'youfenbaofang':fields.boolean(u'有分包方（详见分包协议）'),
 		
 		# 所长审批
 		"yaoqiuxingchengwenjian":fields.selection([

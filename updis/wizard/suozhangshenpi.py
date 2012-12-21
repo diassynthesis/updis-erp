@@ -18,6 +18,7 @@ class suozhangshenpi_form(osv.Model):
 		"jianyishejibumen_id":fields.many2one("hr.department",u"建议设计部门"),
 		"jianyixiangmufuzeren_id":fields.many2one("res.users",u"建议项目负责人"),
 		"shifoutoubiao":fields.boolean(u"是否投标项目"),
+		"toubiaoleibie":fields.selection([(u'商务标',u'商务标'),(u'技术标',u'技术标'),(u'综合标',u'综合标')],u"投标类别"),
 		"jiafang_id":fields.many2one('res.partner', u"甲方"),		
 
 		# 所长审批
@@ -40,6 +41,10 @@ class suozhangshenpi_form(osv.Model):
 		"shejifei":fields.selection([(u'设计费合理','设计费合理'),(u'设计费太低',u'设计费太低')],u'设计费'),#本院是否有能力满足规定要求
 
 	}
+	def onchange_shifoutoubiao(self,cr,uid,ids,shifoutoubiao,context=None):
+		# if shifoutoubiao:
+		return {'value':{}}
+
 	def update_project_suozhangshenpi_form(self,cr,uid,ids,*args):		
 		return self._update_project_form(cr,uid,ids,'suozhangshenpi_form_id')
 class updis_project(osv.Model):

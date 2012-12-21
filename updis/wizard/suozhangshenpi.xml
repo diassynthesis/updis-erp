@@ -15,7 +15,8 @@
 						<field name="waibao" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
 						<field name="shizhenpeitao" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
 						<field name="duofanghetong" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>						
-						<field name="shifoutoubiao" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
+						<field name="shifoutoubiao" on_change="onchange_shifoutoubiao(shifoutoubiao)" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
+						<field name="toubiaoleibie" attrs="{'readonly':[('state','&lt;&gt;','draft')],'invisible':[('shifoutoubiao','=',False)]}"/>	
 					</group>
 					<group string="项目内容" col="4">						
 						<field name="yaoqiuxingchengwenjian" attrs="{'readonly':[('state','=','draft')]}"/>	
