@@ -52,7 +52,7 @@ UPDIS Implementation Guide.""",
         'static/src/xml/*.xml',
     ],
     'demo': [],
-    'post_load': 'wsgi_postload',
+    #'post_load': 'wsgi_postload',
     'installable': True,
     'application': True
 }

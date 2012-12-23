@@ -7,7 +7,7 @@
 			<field name="arch" type="xml">
 				<form string="fuzerenqidongshenpi" version="7.0">
 					<field name="state" widget="statusbar" readonly="1" />
-					<group>
+					<group string="项目信息" col="4">
 						<field name="gongzuodagang" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
 						<field name="chuangyouxiangmu" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
 						<field name="zhuantihuozixiang" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	

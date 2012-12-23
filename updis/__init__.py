@@ -5,9 +5,9 @@ import project
 import internal_home_menu
 import res_users
 
-from . import http
+#from . import http
 from . import controllers
 from . import report
 from . import wizard
 
-wsgi_postload = http.wsgi_postload
+#wsgi_postload = http.wsgi_postload

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import logging
 import operator
 import simplejson
@@ -6,7 +5,7 @@ import os
 import openerp
 import time
 
-from openerp.addons.web import nonliterals
+#from openerp.addons.web import nonliterals
 from openerp.addons.web.controllers.main import manifest_list, module_boot,html_template
 
 class InternalHomeMenu(openerp.addons.web.http.Controller):
@@ -36,6 +35,7 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 				cat.setdefault('children',[]).sort(key=operator.itemgetter('sequence'))
 		ret.update(self.do_load_department_pagies(req))
 		return ret
+	'''
 	@openerp.addons.web.http.jsonrequest
 	def add_to_home_menu(self, req, parent_menu_id, action_id, context_to_save, domain, view_type, view_mode, name=''):
 		to_eval = nonliterals.CompoundContext(context_to_save)
@@ -58,6 +58,7 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 			'action': 'ir.actions.act_window,'+ str(act_window),
 			})
 		return True
+	'''
 	@openerp.addons.web.http.jsonrequest
 	def load_menu(self,req):
 		return {'data':self.do_load_menu(req)}
