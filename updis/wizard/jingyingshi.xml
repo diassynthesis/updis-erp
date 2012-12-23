@@ -7,7 +7,7 @@
 			<field name="arch" type="xml">
 				<form string="jingyingshishenpishenpi" version="7.0">
 					<field name="state" widget="statusbar" readonly="1" statusbar_visible="submitted,draft"/>
-					<group string="经营室指定设计部门">
+					<group string="经营室指定设计部门" col="4">
 						<field name="xiangmubianhao" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
 						<field name="pingshenfangshi" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
 						<field name="yinfacuoshi" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	

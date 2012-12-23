@@ -23,6 +23,9 @@ class review_abstract(osv.AbstractModel):
 		review_log = data.review_log and data.review_log or u''
 		review_log += log;
 		return self.write(cr,uid,id,{'review_log':review_log},context=context)
+	#def _get_project(self,cr,udi,context=None):
+		#import pdb;pdb.set_trace()
+		#return context.get('default_project_id',None)
 	_name = "project.review.abstract"	
 	_columns = {
 		'create_date':fields.datetime('Create Date'),
@@ -43,6 +46,7 @@ class review_abstract(osv.AbstractModel):
 	_defaults = {
 		'state':'draft',
 		'submitter_id':lambda self, cr, uid, c=None:uid,
+		#'project_id':_get_project,
 	}
 	def copy_rejected(self,cr,uid,ids,default=None, context=None):
 		ret = []

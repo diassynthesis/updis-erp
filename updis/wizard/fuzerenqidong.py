@@ -15,6 +15,7 @@ class fuzerenqidong_form(osv.Model):
 		'zhuantihuozixiang':fields.boolean(u'专题或子项（详见工作大纲）'),
 		'youfenbaofang':fields.boolean(u'有分包方（详见分包协议）'),
 		'project_assignment_ids':fields.many2many("project.assignment",'fuzerenqidong_assignment_rel',"fuzerenqidong_form_id","assignment_id",string="Assignments"),
+		#'assignment_ids':fields.related('project_id','assignment_ids',relation="project.assignment", type="one2many",string="Assignment"),
 		'state':fields.selection([
 			('draft',u'项目负责人创建'),
 			(u'设计部门负责人签字',u'设计部门负责人签字'),

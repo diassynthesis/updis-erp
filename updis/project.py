@@ -151,8 +151,14 @@ class project_assignment(osv.Model):
 	"""docstring for project_assignment"""
 	_name="project.assignment"
 	_description="Project Assignment"
+	def _get_project(self,cr,uid,*args,**kwargs):
+		#import pdb;pdb.set_trace()
+		pass
 	_columns={
 		'duty_id':fields.many2one('project.duty','Duty'),
 		'profession_id':fields.many2one('project.profession','Profession'),
 		'project_id':fields.many2one('project.project','Project'),
 	}
+	_defaults = {
+			'project_id':_get_project,
+			}
