@@ -10,6 +10,7 @@
 					<field name="deleted" />
 					<field name="display_in_front"/>
 					<field name="sequence"/>
+					<field name="code" />
 				</xpath>
 			</field>
 		</record>
