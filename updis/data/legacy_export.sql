@@ -1,3 +1,35 @@
+--all employee with dep and pos. make sure to import pos and dep first!
+SELECT dbo.LZ_MISUser.SU_UserID AS 'External Id', 
+      dbo.LZ_MISUser.SU_UserName AS [user], 
+      dbo.LZ_MISUser.SU_UserName AS name, dbo.LZ_MISUser.SU_LoginName AS login, 
+      ~dbo.LZ_MISUser.SU_IsDel AS active, dbo.LZ_MisUserAddressBook.SU_EmpAddr AS work_location, 
+      dbo.LZ_MisUserAddressBook.SU_EmpHmTel AS home_phone, 
+      dbo.LZ_MisUserAddressBook.SU_EmpMobile AS mobile_phone, 
+      dbo.LZ_MisUserAddressBook.SU_EmpComTel AS work_phone, 
+      dbo.LZ_MisUserAddressBook.SU_EmpEAddr AS work_email, 
+      dbo.LZ_MISUserInfo.SU_Sex AS gender, replace(CONVERT(varchar, 
+		      dbo.LZ_MISUserInfo.SU_Birthday, 111),'/','-') AS birthday, 
+      dbo.LZ_MISUserInfo.SU_Folk AS folk, dbo.LZ_MISUserInfo.SU_Bio AS notes, 
+      dbo.LZ_MISUserInfo.SU_Diploma AS diploma, 
+      dbo.LZ_MISUserInfo.SU_Degree AS degree, 
+      dbo.LZ_MISUserInfo.SU_Academy AS academy, 
+      dbo.LZ_MISUserInfo.SU_Speciality AS major,      
+      dbo.LZ_MISDepPos.PI_PosID AS [job/external id], 
+      dbo.LZ_MISDepPos.UG_UserGrpID AS [department/external id]
+FROM dbo.LZ_MISUser INNER JOIN
+      dbo.LZ_MisUserAddressBook ON 
+      dbo.LZ_MISUser.SU_UserID = dbo.LZ_MisUserAddressBook.SU_UserID INNER JOIN
+      dbo.LZ_MISUserInfo ON 
+      dbo.LZ_MISUserInfo.SU_UserID = dbo.LZ_MisUserAddressBook.SU_UserID INNER JOIN
+      dbo.LZ_MISDepPosUser ON 
+      dbo.LZ_MISDepPosUser.SU_UserID = dbo.LZ_MISUserInfo.SU_UserID INNER JOIN
+      dbo.LZ_MISDepPos ON 
+      dbo.LZ_MISDepPosUser.DP_ID = dbo.LZ_MISDepPos.DP_ID INNER JOIN
+      dbo.LZ_MISPosInfo ON 
+      dbo.LZ_MISDepPos.PI_PosID = dbo.LZ_MISPosInfo.PI_PosId
+WHERE (dbo.LZ_MISUser.SU_LoginName <> 'admin') AND
+      (dbo.LZ_MISDepPos.UG_UserGrpID <> 'UG050721000001')
+
 --Non active employee
 SELECT dbo.LZ_MISUser.SU_UserID AS legacyID, 
       dbo.LZ_MISUser.SU_UserID AS 'External Id', 
