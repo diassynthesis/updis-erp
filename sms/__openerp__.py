@@ -7,7 +7,7 @@
     'author': 'Shrek ()',
     'license': 'AGPL-3',
     'depends': ['base','hr'],
-    'auto_install': True,
+    'auto_install': False,
     'data':[
         'sms_view.xml',
         'sms_workflow.xml'

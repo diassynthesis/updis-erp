@@ -4,7 +4,7 @@ import document_page
 import project
 import internal_home_menu
 import res_users
-
+import mail_message
 #from . import http
 from . import controllers
 from . import report
