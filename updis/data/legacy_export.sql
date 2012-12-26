@@ -1,5 +1,6 @@
 --active employee with dep and pos. make sure to import pos and dep first!
-SELECT dbo.LZ_MISUser.SU_UserID AS 'External Id', 
+SELECT 'USR_'+dbo.LZ_MISUser.SU_UserID AS 'User External Id', 
+      'EMP_'+dbo.LZ_MisUser.SU_UserID as 'Emp External Id',
       dbo.LZ_MISUser.SU_UserName AS [user], 
       dbo.LZ_MISUser.SU_UserName AS name, dbo.LZ_MISUser.SU_LoginName AS login, 
       ~dbo.LZ_MISUser.SU_IsDel AS active, dbo.LZ_MisUserAddressBook.SU_EmpAddr AS work_location, 
@@ -14,8 +15,8 @@ SELECT dbo.LZ_MISUser.SU_UserID AS 'External Id',
       dbo.LZ_MISUserInfo.SU_Degree AS degree, 
       dbo.LZ_MISUserInfo.SU_Academy AS academy, 
       dbo.LZ_MISUserInfo.SU_Speciality AS major,
-      dbo.LZ_MISPosInfo.PI_PosName as job,
-      dbo.LZ_MISDepartment.UG_UserGrpName AS department
+      dbo.LZ_MISPosInfo.PI_PosID as [job/external id],
+      dbo.LZ_MISDepartment.UG_UserGrpID AS [department/external id]
 FROM dbo.LZ_MISUser INNER JOIN
       dbo.LZ_MisUserAddressBook ON 
       dbo.LZ_MISUser.SU_UserID = dbo.LZ_MisUserAddressBook.SU_UserID INNER JOIN
@@ -32,9 +33,9 @@ FROM dbo.LZ_MISUser INNER JOIN
 WHERE (dbo.LZ_MISUser.SU_IsDel=0) AND 
 	(dbo.LZ_MISUser.SU_LoginName <> 'admin') AND
 	      (dbo.LZ_MISDepPos.UG_UserGrpID <> 'UG050721000001')
-
 -- non active employees with dep and pos.
-SELECT dbo.LZ_MISUser.SU_UserID AS 'External Id', 
+SELECT 'USR_'+dbo.LZ_MISUser.SU_UserID AS 'User External Id', 
+      'EMP_'+dbo.LZ_MisUser.SU_UserID as 'Emp External Id',
       dbo.LZ_MISUser.SU_UserName AS [user], 
       dbo.LZ_MISUser.SU_UserName AS name, dbo.LZ_MISUser.SU_LoginName AS login, 
       ~dbo.LZ_MISUser.SU_IsDel AS active, dbo.LZ_MisUserAddressBook.SU_EmpAddr AS work_location, 
@@ -49,8 +50,8 @@ SELECT dbo.LZ_MISUser.SU_UserID AS 'External Id',
       dbo.LZ_MISUserInfo.SU_Degree AS degree, 
       dbo.LZ_MISUserInfo.SU_Academy AS academy, 
       dbo.LZ_MISUserInfo.SU_Speciality AS major,
-      dbo.LZ_MISPosInfo.PI_PosName as job,
-      dbo.LZ_MISDepartment.UG_UserGrpName AS department
+      dbo.LZ_MISPosInfo.PI_PosID as [job/external id],
+      dbo.LZ_MISDepartment.UG_UserGrpID AS [department/external id]
 FROM dbo.LZ_MISUser INNER JOIN
       dbo.LZ_MisUserAddressBook ON 
       dbo.LZ_MISUser.SU_UserID = dbo.LZ_MisUserAddressBook.SU_UserID INNER JOIN
