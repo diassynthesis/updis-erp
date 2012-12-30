@@ -8,7 +8,7 @@ class hr_employee_updis(osv.osv):
 	_columns = {
 			'gender': fields.selection([(u'男', u'男'),(u'女', u'女')], 'Gender'),
 			"folk": fields.char("Folk", size=32),
-			"native_place": fields.char(u"", size=32),
+			"native_place": fields.char(u"Native Place", size=32),
 			'diploma': fields.char("Diploma",size=128),
 			'degree': fields.char("Degree",size=128),
 			'academy': fields.char("Academy", size=128),
