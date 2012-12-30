@@ -71,6 +71,7 @@ class document_page(osv.osv):
 		'sequence':fields.integer("Display Sequence"),
 		'fbbm':fields.char("Publisher",size=128,help="Pubsher, by default it's user's department."),
 		'display_source':fields.boolean("Display Publisher?",help="If checked, fbbm will be display in internal home page"),
+		'display_name':fields.boolean("Display Name?",help="If checked, author name will be display in internal home page"),
 		'allow_send_sms':fields.boolean("Allow Send SMS?",help="If checked, user can choose to send sms for a page"),
 		'sms_receivers':fields.many2many("hr.employee","document_page_user_rel","page_id","user_id","SMS Receiver"),
 		'category_allow_send_sms':fields.function(_category_allow_send_sms,type='boolean',string="Category Allow Send SMS?"),

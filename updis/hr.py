@@ -15,7 +15,7 @@ class hr_employee_updis(osv.osv):
 			'begin_work_date': fields.date("Begin Work Date"),
 			'enter_date': fields.date("Enter Date"),
 			'contract_date': fields.date("Contract Date"),
-			'aptitude': fields.char("Contract Date",size=128),
+			'aptitude': fields.char("Aptitude",size=128),
 			'major': fields.char("Major", size=128),
 			'year_vac_days': fields.integer("Year Vacation Days"),
 			'have_vac_days': fields.integer("Have Vacation Days"),
