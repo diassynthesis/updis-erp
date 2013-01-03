@@ -3,6 +3,7 @@ import tools
 
 
 class document_page(osv.osv):
+	_log_access=False
 	_inherit = ['document.page','mail.thread', 'ir.needaction_mixin']
 	_name="document.page"
 	def _get_image(self, cr, uid, ids, name, args, context=None):
