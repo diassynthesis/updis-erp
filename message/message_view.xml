@@ -1,22 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
 	<data>
-		<menuitem name="Message" id="base.menu_main_message" sequence="40"/>
+		<menuitem name="Message Management" id="base.menu_main_message" sequence="120"/>
+		<menuitem name="Message" parent="base.menu_main_message" id="message" sequence="40"/>
+		<record id="action_messages" model="ir.actions.act_window">
+			<field name="name">Messages</field>
+			<field name="res_model">message.message</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		<record id="action_message_categories" model="ir.actions.act_window">
+			<field name="name">Message categories</field>
+			<field name="res_model">message.category</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		<menuitem name="Messages" id="message_message" parent="message" action="action_messages"/>
+		<menuitem name="Message categories" id="message_category" parent="message" action="action_message_categories"/>
 		<record id="form_message_message" model="ir.ui.view">
 			<field name="name">form.message.message</field>
 			<field name="model">message.message</field>
 			<field name="arch" type="xml">
 				<form string="Message" version="7.0">
-					<h1><field name="name"/></h1>
-					<field name="category_id" class="oe_edit_only"/>
-					<field name="sequence" class="oe_edit_only"/>
-					<field name="is_anonymous" class="oe_edit_only"/>
-					<field name="fbbm" class="oe_edit_only"/>
-					<field name="read_times" class="oe_edit_only"/>
-					<field name="expire_date" class="oe_edit_only"/>
-					<field name="name_for_display" class="oe_edit_only"/>
-					<field name="content" class="oe_edit_only"/>
-					<field name="content" class="oe_view_only"/>
+					<h1><field name="name" placeholder="消息标题"/></h1>
+					<group>
+						<group col="4">
+							<field name="category_id" class="oe_edit_only"/>
+							<field name="sequence" class="oe_edit_only"/>
+							<field name="is_display_name" class="oe_edit_only"/>
+							<field name="fbbm" class="oe_edit_only"/>
+							<field name="read_times" class="oe_edit_only" readonly="1"/>
+							<field name="expire_date" class="oe_edit_only"/>
+							<field name="name_for_display" class="oe_edit_only"/>
+						</group>
+					</group>
+					<field name="content" widget="html" /> 
 				</form>
 			</field>
 		</record>
@@ -39,12 +57,16 @@
 			<field name="model">message.category</field>
 			<field name="arch" type="xml">
 				<form string="Message Category" version="7.0">
-					<field name="name" placeholder="Title"/>
-					<field name="is_anonymous_allowed" class="oe_edit_only"/>
-					<field name="is_display_fbbm" class="oe_edit_only"/>
-					<field name="is_display_read_times" class="oe_edit_only"/>
-					<field name="display_position" class="oe_edit_only"/>
-					<field name="display_in_departments" class="oe_edit_only"/>
+					<h1><field name="name" placeholder="消息分类名称"/></h1>
+					<group>
+						<group col="4">
+							<field name="is_anonymous_allowed"/>
+							<field name="is_display_fbbm"/>
+							<field name="is_display_read_times"/>
+							<field name="display_position"/> 
+						</group>
+					</group>
+					<field name="display_in_departments"/>
 				</form>
 			</field>
 		</record>
@@ -58,7 +80,6 @@
 					<field name="is_display_fbbm"/>
 					<field name="is_display_read_times"/>
 					<field name="display_position"/>
-					<field name="display_in_departments"/>
 				</tree>
 			</field>
 		</record>

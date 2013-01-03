@@ -14,20 +14,21 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 	def load_home_page_categories(self,req):
 		ret = {}
 		context = req.context
-		Page = req.session.model("document.page")	
+		Category = req.session.model("message.category")	
+		Message = req.session.model("message.message")	
 
 		# All categories to display on internal home page
-		categories_ids = Page.search([['type','=','category'],['display_position','!=',False]])		
-		categories = Page.read(categories_ids,['name','display_position','sequence','display_source'])
+		categories_ids = Category.search([('display_position','!=',False)])		
+		categories = Category.read(categories_ids,['name','display_position','sequence','is_display_fbbm'])
 		categories_map = dict((category['id'],category) for category in categories)
 
 		# import pdb;pdb.set_trace()
 		for cat in categories:
 			ret.setdefault(cat['display_position'],[]).append(cat)
 			cat_id = cat['id']
-			pagies_id = Page.search([['type','=','content'],['parent_id','=',cat_id]],limit=6)
-			pagies = Page.read(pagies_id,['name','write_date','write_uid','sequence','department_id','fbbm'])
-			categories_map[cat_id]['children'] = pagies
+			messages_id = Message.search([('category_id','=',cat_id)],limit=6)
+			messages = Message.read(messages_id,['name','write_date','write_uid','sequence','department_id','fbbm'])
+			categories_map[cat_id]['children'] = messages
 			categories_map[cat_id]['photo_news'] = self.do_load_first_photo_page(req,cat_id)
 		for k,v in ret.items():
 			v.sort(key=operator.itemgetter('sequence'))
@@ -115,34 +116,33 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 		'''
 		ret = {}
 		Department = req.session.model("hr.department")
-		Page = req.session.model("document.page") 
+		Message = req.session.model("message.message") 
+		Category = req.session.model("message.category") 
 		departments_ids = Department.search([('deleted','=',False)])
 		departments = Department.read(departments_ids,['name','sequence'])
 		ret['departments'] = departments
 		# import pdb;pdb.set_trace()
 		for dep in departments:
-			categories_ids = Page.search([('type','=','category'),('display_in_departments','=',dep['id'])])
-			categories = Page.read(categories_ids,['name','sequence','display_source'])
+			categories_ids = Category.search([('display_in_departments','=',dep['id'])])
+			categories = Category.read(categories_ids,['name','sequence','display_fbbm'])
 			dep['categories'] = categories
 			for cat in categories:
-				pagies_id = Page.search([('type','=','content'),('parent_id','=',cat['id']),('department_id','=',dep['id'])],limit=6)
-				pagies = Page.read(pagies_id,['name','write_date','write_uid','sequence','department_id','fbbm'])
+				pagies_id = Message.search([('category_id','=',cat['id']),('department_id','=',dep['id'])],limit=6)
+				pagies = Message.read(pagies_id,['name','write_date','write_uid','sequence','department_id','fbbm'])
 				cat['pagies'] = pagies
 				cat['photo_news'] = self.do_load_first_photo_page(req,cat['id'],dep['id'])
 		return ret
 	def do_load_first_photo_page(self,req,cat_id,department_id=False):
-		Page = req.session.model("document.page") 
+		Message = req.session.model("message.message") 
 		options = [
-			('type','=','content'),
-			('parent_id','=',cat_id),
-			('photo_news','=',True),
+			('category_id','=',cat_id),
 			('image_medium','!=',False),
 		]
 		if department_id:
 			options.append(('department_id','=',department_id))
-		pagies_id = Page.search(options,limit=1)
+		pagies_id = Message.search(options,limit=1)
 		if pagies_id:
-			return Page.read(pagies_id,['name','write_date','write_uid','image_medium'])[0]
+			return Message.read(pagies_id,['name','write_date','write_uid','image_medium'])[0]
 
 		
 class InternalHome(openerp.addons.web.http.Controller):

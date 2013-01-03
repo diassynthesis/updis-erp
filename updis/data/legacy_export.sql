@@ -185,6 +185,6 @@ SELECT * FROM
 ORDER BY bSysTable.[external id] ASC
 
 --Message catgories
-SELECT 'category' as Type, HM_ID AS [external id], HM_Name AS name, 
-      HM_Disname AS display_name
+SELECT HM_ID AS [external id], HM_Name AS name, 
+      case when HM_Disname=1 then 0 else 1 end AS is_anonymous_allowed
 FROM dbo.HP_Module

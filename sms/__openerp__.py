@@ -10,6 +10,6 @@
     'auto_install': False,
     'data':[
         'sms_view.xml',
-        'sms_workflow.xml'
+        'sms_workflow.xml',
     ]
 }
