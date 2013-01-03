@@ -1,3 +1,4 @@
+#-*- encoding:UTF-8
 from osv import osv,fields
 import tools
 
@@ -39,6 +40,12 @@ class document_page(osv.osv):
 			else:
 				result[obj.id]=True			
 		return result
+	def _name_display(self,cr,uid,ids,field_name,args,context=None):
+		result = dict.fromkeys(ids, False)
+		for obj in self.browse(cr, uid, ids, context=context):
+			result[obj.id] = obj.display_name and obj.write_uid.name or u'匿名用户'
+		return result	
+
 	_columns = {
 		# 'content': fields.html("Content"),
 		'photo_news':fields.boolean("Photo News?"),
@@ -72,6 +79,7 @@ class document_page(osv.osv):
 		'fbbm':fields.char("Publisher",size=128,help="Pubsher, by default it's user's department."),
 		'display_source':fields.boolean("Display Publisher?",help="If checked, fbbm will be display in internal home page"),
 		'display_name':fields.boolean("Display Name?",help="If checked, author name will be display in internal home page"),
+		'name_display':fields.function(_name_display,type="char",size=64,string="Name"),
 		'allow_send_sms':fields.boolean("Allow Send SMS?",help="If checked, user can choose to send sms for a page"),
 		'sms_receivers':fields.many2many("hr.employee","document_page_user_rel","page_id","user_id","SMS Receiver"),
 		'category_allow_send_sms':fields.function(_category_allow_send_sms,type='boolean',string="Category Allow Send SMS?"),
