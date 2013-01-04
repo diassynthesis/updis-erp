@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<menuitem name="Message" id="base.menu_main_message" sequence="40"/>
+		<record id="form_message_message" model="ir.ui.view">
+			<field name="name">form.message.message</field>
+			<field name="model">message.message</field>
+			<field name="arch" type="xml">
+				<form string="Message" version="7.0">
+					<h1><field name="name"/></h1>
+					<field name="category_id" class="oe_edit_only"/>
+					<field name="sequence" class="oe_edit_only"/>
+					<field name="is_anonymous" class="oe_edit_only"/>
+					<field name="fbbm" class="oe_edit_only"/>
+					<field name="read_times" class="oe_edit_only"/>
+					<field name="expire_date" class="oe_edit_only"/>
+					<field name="name_for_display" class="oe_edit_only"/>
+					<field name="content" class="oe_edit_only"/>
+					<field name="content" class="oe_view_only"/>
+				</form>
+			</field>
+		</record>
+		<record id="tree_message_message" model="ir.ui.view">
+			<field name="name">tree.message.message</field>
+			<field name="model">message.message</field>
+			<field name="arch" type="xml">
+				<tree string="Message">
+					<field name="name"/>
+					<field name="category_id"/>
+					<field name="fbbm"/>
+					<field name="read_times"/>
+					<field name="name_for_display"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="form_message_category" model="ir.ui.view">
+			<field name="name">form.message.category</field>
+			<field name="model">message.category</field>
+			<field name="arch" type="xml">
+				<form string="Message Category" version="7.0">
+					<field name="name" placeholder="Title"/>
+					<field name="is_anonymous_allowed" class="oe_edit_only"/>
+					<field name="is_display_fbbm" class="oe_edit_only"/>
+					<field name="is_display_read_times" class="oe_edit_only"/>
+					<field name="display_position" class="oe_edit_only"/>
+					<field name="display_in_departments" class="oe_edit_only"/>
+				</form>
+			</field>
+		</record>
+		<record id="tree_message_category" model="ir.ui.view">
+			<field name="name">tree.message.category</field>
+			<field name="model">message.category</field>
+			<field name="arch" type="xml">
+				<tree string="Message Category" version="7.0">
+					<field name="name"/>
+					<field name="is_anonymous_allowed"/>
+					<field name="is_display_fbbm"/>
+					<field name="is_display_read_times"/>
+					<field name="display_position"/>
+					<field name="display_in_departments"/>
+				</tree>
+			</field>
+		</record>
+	</data>
+</openerp>
