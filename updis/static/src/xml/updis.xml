@@ -81,10 +81,10 @@
 		</div>		
 	</t>		
 	<t t-name="InternalHome.news.item.shortcut">
-		<li><a t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a><p class="page-meta"><t t-esc="widget.format(page.write_date,{'type':'date'},'-')"/> <t t-esc="page.fbbm" t-if="category.display_source"/></p></li>
+		<li><a t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a><p class="page-meta"><t t-esc="widget.format(page.write_date,{'type':'date'},'-')"/> <t t-esc="page.fbbm" t-if="category.is_display_fbbm"/></p></li>
 	</t>
 	<t t-name="InternalHome.news.item.content">
-		<p><a t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a><span class="page-meta"><t t-esc="widget.format(page.write_date,{'type':'date'},'-')"/> <t t-esc="page.fbbm" t-if="category.display_source" /></span></p>
+		<p><a t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a><span class="page-meta"><t t-esc="widget.format(page.write_date,{'type':'date'},'-')"/> <t t-esc="page.fbbm" t-if="category.is_display_fbbm" /></span></p>
 	</t>
 	<t t-name="InternalHome.news.item.department">
 		<a t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a>

@@ -39,6 +39,8 @@ class updis_project(osv.osv):
 	_inherit = "project.project"
 	_columns = {
 		# 基础信息
+		"state_id":fields.many2one('res.country.state','State'),
+		"city":fields.char("City",size=128),
 		"guimo":fields.char(u"规模",size=64),
 		"waibao":fields.boolean(u"是否外包"),
 		"shizhenpeitao":fields.boolean(u"市政配套"),

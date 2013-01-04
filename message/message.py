@@ -1,24 +1,44 @@
 #encoding:UTF-8
+import time
 from osv import osv,fields
 import tools
+import openerp.pooler as pooler
+from openerp.tools.safe_eval import safe_eval as eval
+class Env(dict):
+    def __init__(self, cr, uid, model, ids):
+        self.cr = cr
+        self.uid = uid
+        self.model = model
+        self.ids = ids
+        self.obj = pooler.get_pool(cr.dbname).get(model)
+        self.columns = self.obj._columns.keys() + self.obj._inherit_fields.keys()
+
+    def __getitem__(self, key):
+        if (key in self.columns) or (key in dir(self.obj)):
+            res = self.obj.browse(self.cr, self.uid, self.ids[0])
+            return res[key]
+        else:
+            return super(Env, self).__getitem__(key)
 
 class MessageCategory(osv.Model):
 	_name="message.category"
 	_order="name"
 	_columns={
 			'name':fields.char("Title",size=128),
+			'meta':fields.char('Meta',help="all message fields are available", size=128),
 			'sequence':fields.integer("Display Sequence"),
 			'is_anonymous_allowed':fields.boolean('Allow publish messages anonymously?'),
-			'is_display_fbbm':fields.boolean('Display fbbm?'),
-			'is_display_read_times':fields.boolean('Display read times?'),
+			#'is_display_fbbm':fields.boolean('Display fbbm?'),
+			#'is_display_read_times':fields.boolean('Display read times?'),
 			'display_position':fields.selection(
 				[("shortcut","Shortcuts"),("content_left","Content Left"),("content_right","Content Right")]
 				,"Display Position"),
 			'display_in_departments':fields.many2many("hr.department",string="Display in Departments",domain="[('deleted','=',False)]"),
 			}
 	_defaults={
-			'is_display_fbbm':True,
+			#'is_display_fbbm':True,
 			'is_anonymous_allowed':False,
+			#'is_display_read_times':True,
 			}
 
 class Message(osv.Model):
@@ -26,6 +46,7 @@ class Message(osv.Model):
 	_log_access=False
 	_name="message.message"
 	_order="name"
+	_inherit=['mail.thread', 'ir.needaction_mixin']
 	def _default_fbbm(self,cr,uid,context=None):
 		employee_ids = self.pool.get('hr.employee').search(cr,uid,[('user_id','=',uid)])
 		if employee_ids:
@@ -48,8 +69,19 @@ class Message(osv.Model):
 		for obj in self.browse(cr, uid, ids, context=context):
 			result[obj.id] = obj.is_display_name and obj.write_uid.name or u'匿名用户'
 		return result	
+	def _get_meta_display(self,cr,uid,ids,field_name,args,context=None):
+		result = dict.fromkeys(ids, False)
+		for obj in self.browse(cr, uid, ids, context=context):
+			meta = ''
+			if obj.category_id.meta:
+				env = Env(cr, uid, 'message.message', ids)
+				meta = eval(obj.category_id.meta,env,nocopy=True)
+			result[obj.id] = meta
+		return result	
+
 	_columns={
 			'name':fields.char("Title",size=128,required=True),
+			'meta_display':fields.function(_get_meta_display,type="char", size=256,string="Meta"),
 			'category_id':fields.many2one('message.category','Category',required=True),
 			'content':fields.text("Content"),
 			'sequence':fields.integer("Display Sequence"),

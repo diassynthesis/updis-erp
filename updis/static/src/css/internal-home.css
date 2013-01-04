@@ -280,3 +280,6 @@
 .page-meta{
 	color: gray;
 }
+.openerp .oe_view_manager table.oe_view_manager_header {
+	display:none;
+}

@@ -69,6 +69,8 @@
 					<page string="Project Info" name="project_info">
 						<group>
 							<group string="基本信息">
+								<field name="state_id" class="oe_no_button" placeholder="State" options="{&quot;no_open&quot;: True}"/>
+								<field name="city"/>
 								<field name="guimo"/>
 								<field name="jianyishejibumen_id"/>
 								<field name="jianyixiangmufuzeren_id"/>
