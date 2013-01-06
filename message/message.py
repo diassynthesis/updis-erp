@@ -34,12 +34,17 @@ class MessageCategory(osv.Model):
 				[("shortcut","Shortcuts"),("content_left","Content Left"),("content_right","Content Right")]
 				,"Display Position"),
 			'display_in_departments':fields.many2many("hr.department",string="Display in Departments",domain="[('deleted','=',False)]"),
+			'is_allow_send_sms':fields.boolean('Allow send SMS?'),
+			'is_allow_sms_receiver':fields.boolean('Allow specify sms receiver?'),
+			'default_sms_receiver_ids':fields.many2many('res.users',string='Default SMS Receivers'),
 			}
 	_defaults={
 			#'is_display_fbbm':True,
 			'is_anonymous_allowed':False,
 			#'is_display_read_times':True,
 			}
+	def onchange_is_allow_send_sms(self,cr,uid,ids,is_allow_send_sms,context=None):
+		return {}
 
 class Message(osv.Model):
 	#TODO: turn off for data import only
@@ -110,10 +115,24 @@ class Message(osv.Model):
 			'write_date':fields.datetime('Modification date',select=True),
 			'write_uid':fields.many2one('res.users','Last Contributor',select=True),
 			'name_for_display':fields.function(_get_name_display,type="char",size=64,string="Name"),
+			'sms_receiver_ids':fields.many2many('res.users',string='Default SMS Receivers'),
+			'sms':fields.text('SMS',size=140),
+			'is_allow_send_sms':fields.related('category_id','is_allow_send_sms',type="boolean",string="Allow send SMS?"),
+			'is_allow_sms_receiver':fields.related('category_id','is_allow_send_sms',type="boolean",string="Allow specify sms receiver?"),
 			}
 	_defaults={
 			'fbbm':_default_fbbm,
 			'department_id':_default_department,
 			'is_display_name':False
 			}
-
+	def onchange_category(self,cr,uid,ids,category_id,context=None):
+		ret = {'value':{}}
+		if category_id:
+			message_category = self.pool.get('message.category').browse(cr,uid,category_id)
+			sms_vals = {
+					'is_allow_send_sms':message_category.is_allow_send_sms,
+					'is_allow_sms_receiver':message_category.is_allow_sms_receiver,
+					'sms_receiver_ids':[x.id for x in message_category.default_sms_receiver_ids],
+					}
+			ret['value'].update(sms_vals)
+		return ret

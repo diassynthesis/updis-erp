@@ -28,13 +28,30 @@
 					</div>
 					<group>
 						<group col="4">
-							<field name="category_id" class="oe_edit_only"/>
-							<field name="sequence" class="oe_edit_only"/>
-							<field name="is_display_name" class="oe_edit_only"/>
-							<field name="fbbm" class="oe_edit_only"/>
-							<field name="read_times" class="oe_edit_only" readonly="1"/>
-							<field name="expire_date" class="oe_edit_only"/>
-							<field name="name_for_display" class="oe_edit_only"/>
+							<field name="is_allow_send_sms" invisible="1"/>
+							<field name="is_allow_sms_receiver" invisible="1"/>
+							<field name="category_id" on_change="onchange_category(category_id)"/>
+							<field name="sequence"/>
+							<field name="is_display_name"/>
+							<field name="fbbm"/>
+							<field name="read_times" readonly="1"/>
+							<field name="expire_date"/>
+							<field name="name_for_display"/>
+						</group>
+					</group>
+					<group attrs="{'invisible':[('is_allow_send_sms','=',False)]}">
+						<group>
+							<div>
+								<label for="sms"/>
+								<field name="sms"/>
+								<label for="sms_receiver_ids" attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
+								<field name="sms_receiver_ids" attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
+									<tree editable="bottom" string="SMS Receivers">
+										<field name="name"/>
+										<field name="phone"/>
+									</tree>
+								</field>
+							</div>
 						</group>
 					</group>
 					<field name="content" widget="html" /> 
@@ -70,9 +87,30 @@
 							<field name="is_anonymous_allowed"/>
 							<field name="display_position"/> 
 							<field name="meta"/> 
+							<newline/>
+							<field name="is_allow_send_sms" on_change="onchange_is_allow_send_sms(is_allow_send_sms)" />
 						</group>
 					</group>
-					<field name="display_in_departments"/>
+					<group attrs="{'invisible':[('is_allow_send_sms','=',False)]}">
+						<div>
+							<field name="is_allow_sms_receiver" nolabel="1"/>
+							<label for="is_allow_sms_receiver"/>
+							<separator colspan="2" />
+							<label for="default_sms_receiver_ids"/>
+							<field name="default_sms_receiver_ids" nolabel="1">
+								<tree editable="bottom" string="SMS Receivers">
+									<field name="name" string="人员"/>
+									<field name="phone"/>
+								</tree>
+							</field>
+						</div>
+					</group>
+					<label for="display_in_departments" string="在以下部门显示"/>
+					<field name="display_in_departments" >
+						<tree string="部门">
+							<field name="name"/>
+						</tree>
+					</field>
 				</form>
 			</field>
 		</record>

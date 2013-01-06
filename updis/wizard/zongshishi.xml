@@ -14,10 +14,10 @@
 						<field name="zhuguanzongshi_id" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
 						<field name="categories_id" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
 					</group>
-					<group string="通知设置">
+					<!-- <group string="通知设置">
 						<field name="send_email" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
 						<field name="send_sms" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
-					</group>
+					</group> -->
 					<group string="Review Comment">
 						<field name="review_log" />
 						<field name="reviewer_id" domain="[('groups_id','=',%(group_up_project_zongshishi)d)]"  attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>

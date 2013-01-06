@@ -7,10 +7,10 @@
 			<field name="arch" type="xml">
 				<form string="suozhangqianzishenpishenpi" version="7.0">
 					<field name="state" widget="statusbar" readonly="1" statusbar_visible="submitted,draft"/>				
-					<group string="通知设置">
+					<!-- <group string="通知设置">
 						<field name="send_email" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
 						<field name="send_sms" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
-					</group>
+					</group> -->
 					<group string="Review Comment">
 						<field name="review_log" />
 						<field name="reviewer_id" domain="[('groups_id','=',%(group_up_project_suozhang)d)]"  attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>

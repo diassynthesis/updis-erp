@@ -39,7 +39,8 @@ class updis_project(osv.osv):
 	_inherit = "project.project"
 	_columns = {
 		# 基础信息
-		"state_id":fields.many2one('res.country.state','State'),
+		'country_id': fields.many2one('res.country', 'Country'),
+		"state_id":fields.many2one('res.country.state','State',domain="[('country_id','=',country_id)]"),
 		"city":fields.char("City",size=128),
 		"guimo":fields.char(u"规模",size=64,readonly=True),
 		"waibao":fields.boolean(u"是否外包",readonly=True),
@@ -127,6 +128,8 @@ class updis_project(osv.osv):
 		return all([(getattr(proj,form_field) and getattr(proj,form_field).state=='accepted') for proj in self.browse(cr,uid,ids)])
 	def _get_form(self,cr,uid,ids,form_field,*args):
 		return [getattr(proj,form_field) for proj in self.browse(cr,uid,ids) if getattr(proj,form_field)]
+	def onchange_country(self, cr, uid, ids, country_id, context=None):
+		return {}
 class project_profession(osv.Model):
 	"""Profession"""
 	_name="project.profession"
