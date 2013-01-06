@@ -42,6 +42,43 @@
 				</tree>
 			</field>
 		</record>
+		<record id="edit_updis_project" model="ir.ui.view">
+			<field name="name">project.project.updisform</field>
+			<field name="model">project.project</field>
+			<field name="sequence">10</field>
+			<field name="arch" type="xml">
+				<form string="Project" version="7.0">
+					<header>
+						<button name="action_suozhangshenpi" string="所长审批申请单" states="open" type="object"/>
+						<button name="action_jingyingshishenpi" string="经营室审批申请单" states="suozhangshenpi" type="object"/>
+						<button name="action_zongshishishenpi" string="总师室审批申请单" states="zhidingbumen" type="object"/>
+						<button name="action_suozhangqianzishenpi" string="所长签字审批申请单" states="zhidingfuzeren" type="object"/>
+						<button name="action_fuzerenqidong" string="负责人启动" states="suozhangqianzi" type="object"/>
+						<field name="state" widget="statusbar" statusbar_colors='{"open":"blue"}' readonly="1"/>
+					</header>
+					<sheet string="Project">
+						<field name="analytic_account_id" invisible="1" required="0"/>
+						<div class="oe_title">
+							<label for="name" class="oe_edit_only" string="Project Name"/>
+							<h1>
+								<field name="name" string="Project Name"/>
+							</h1>
+							<div name="options_active">
+								<field name="use_tasks" class="oe_inline" invisible="1" />
+								<label for="use_tasks" invisible="1" />
+							</div>
+						</div>
+						<div class="oe_right oe_button_box" name="buttons" groups="base.group_user">
+							<button name="%(act_project_project_2_project_task_all)d" string="Tasks"
+								type="action" attrs="{'invisible':[('use_tasks','=', 0)]}"/>
+							<button name="attachment_tree_view" string="Documents" type="object"/>
+						</div>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
 		<record id="edit_project_inherit" model="ir.ui.view">
 			<field name="name">project.project.form.inherit</field>
 			<field name="model">project.project</field>

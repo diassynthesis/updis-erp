@@ -1,4 +1,4 @@
-.openerp {
+.openerp,.ui-widget{
 	font-family: "Microsoft YaHei", "Lucida Grande", Helvetica, Verdana, Arial, sans-serif;
 }
 .oe_footer span {
