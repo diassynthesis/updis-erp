@@ -27,7 +27,7 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 			ret.setdefault(cat['display_position'],[]).append(cat)
 			cat_id = cat['id']
 			messages_id = Message.search([('category_id','=',cat_id)],limit=6)
-			messages = Message.read(messages_id,['name','write_date','write_uid','sequence','department_id','fbbm'])
+			messages = Message.read(messages_id,['name','write_date','write_uid','sequence','department_id','fbbm','category_message_title_meta_display'])
 			categories_map[cat_id]['children'] = messages
 			categories_map[cat_id]['photo_news'] = self.do_load_first_photo_page(req,cat_id)
 		for k,v in ret.items():
@@ -127,9 +127,9 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 			categories = Category.read(categories_ids,['name','sequence','display_fbbm'])
 			dep['categories'] = categories
 			for cat in categories:
-				pagies_id = Message.search([('category_id','=',cat['id']),('department_id','=',dep['id'])],limit=6)
-				pagies = Message.read(pagies_id,['name','write_date','write_uid','sequence','department_id','fbbm'])
-				cat['pagies'] = pagies
+				messages_id = Message.search([('category_id','=',cat['id']),('department_id','=',dep['id'])],limit=6)
+				messages = Message.read(messages_id,['name','write_date','write_uid','sequence','department_id','fbbm','category_message_title_meta_display'])
+				cat['pagies'] = messages
 				cat['photo_news'] = self.do_load_first_photo_page(req,cat['id'],dep['id'])
 		return ret
 	def do_load_first_photo_page(self,req,cat_id,department_id=False):

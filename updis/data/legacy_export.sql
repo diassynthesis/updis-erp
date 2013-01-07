@@ -167,29 +167,28 @@ WHERE (dbo.LZ_MISDepPos.UG_UserGrpID <> 'UG050721000001')
 
 --Messages
 SELECT * FROM 
-      (SELECT TOP 10000 * FROM 
-            (SELECT TOP 50000 dbo.Hp_Information.HI_ID AS [external id], 
-            dbo.Hp_Information.HI_Title AS name, dbo.Hp_Information.HI_Content AS content, 
-            dbo.Hp_Information.HI_ReadTimes AS [read times], 
-            replace(CONVERT(varchar, 
-		      dbo.Hp_Information.HI_SetTime, 120),'/','-') AS create_date, 	
-            replace(CONVERT(varchar, 
-		      dbo.Hp_Information.HI_SetTime, 120),'/','-') AS write_date, 
-            replace(CONVERT(varchar, 
-		      dbo.Hp_Information.HI_OverTime, 111),'/','-') AS expire_date, 
-            'USR_'+dbo.Hp_Information.HU_UserID AS [Author / external id], 
-            'USR_'+dbo.Hp_Information.HU_UserID AS [Last Contributor / external id], 
-            dbo.Hp_Information.HI_DisName AS [Display name?], 
-            dbo.HP_Module.HM_id AS [Category/external id], 
-            SZGH_OA_20050823.dbo.p_systemuser.UserGrpID AS [department/external id], 
-            SZGH_OA_20050823.dbo.p_systemuser.Grpname AS Department, 
-            dbo.Hp_Information.HI_FBBM AS Publisher 
-            FROM dbo.Hp_Information INNER JOIN
-            dbo.HP_Module ON dbo.Hp_Information.HM_ID = dbo.HP_Module.HM_ID INNER JOIN
-            SZGH_OA_20050823.dbo.p_systemuser ON 
-            dbo.Hp_Information.HU_UserID = SZGH_OA_20050823.dbo.p_systemuser.SU_UserID ORDER BY dbo.Hp_Information.HI_ID ASC
-          ) AS aSysTable ORDER BY aSysTable.[external id] DESC) as bSysTable
-ORDER BY bSysTable.[external id] ASC
+(SELECT TOP 1000 * FROM 
+	(SELECT TOP 1000 dbo.Hp_Information.HI_ID AS [external id], 
+		dbo.Hp_Information.HI_Title AS name, dbo.Hp_Information.HI_Content AS content, 
+		dbo.Hp_Information.HI_ReadTimes AS [read times], 
+		replace(CONVERT(varchar, 
+				dbo.Hp_Information.HI_SetTime, 120),'/','-') AS create_date, 	
+		replace(CONVERT(varchar, 
+				dbo.Hp_Information.HI_SetTime, 120),'/','-') AS write_date, 
+		replace(CONVERT(varchar, 
+				dbo.Hp_Information.HI_OverTime, 111),'/','-') AS expire_date, 
+		'USR_'+dbo.Hp_Information.HU_UserID AS [Author / external id], 
+		'USR_'+dbo.Hp_Information.HU_UserID AS [Last Contributor / external id], 
+		dbo.Hp_Information.HI_DisName AS [Display name?], 
+		dbo.HP_Module.HM_id AS [Category/external id], 
+		SZGH_OA_20050823.dbo.p_systemuser.UserGrpID AS [department/external id], 
+		SZGH_OA_20050823.dbo.p_systemuser.Grpname AS Department, 
+		dbo.Hp_Information.HI_FBBM AS Publisher 
+		FROM dbo.Hp_Information INNER JOIN
+		dbo.HP_Module ON dbo.Hp_Information.HM_ID = dbo.HP_Module.HM_ID INNER JOIN
+		SZGH_OA_20050823.dbo.p_systemuser ON 
+		dbo.Hp_Information.HU_UserID = SZGH_OA_20050823.dbo.p_systemuser.SU_UserID ORDER BY dbo.Hp_Information.HI_SetTime DESC
+) AS aSysTable ORDER BY aSysTable.[create_date] ASC) as bSysTable ORDER BY bSysTable.[create_date] DESC
 
 --Message catgories
 SELECT HM_ID AS [external id], HM_Name AS name, 

@@ -1,59 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <template>
 	<t t-name="WebClient">
-    <div class="openerp openerp_webclient_container">
-    <table class="oe_webclient">
-        <tr>
-            <td colspan="2" class="oe_topbar">
-                <div class="oe_menu_placeholder"/>
-                <div class="oe_user_menu_placeholder"/>
-                <div class="oe_systray"/>
-            </td>
-        </tr>
-        <tr>
-            <td class="oe_leftbar" valign="top">
-                <t t-set="debug" t-value="__debug__ ? '&amp;debug' : ''"/>
-                <a class="oe_logo" t-attf-href="/?ts=#{Date.now()}#{debug}">
-                    <span class="oe_logo_edit">Edit Company data</span>
-                    <img t-att-src='widget.session.url("/web/binary/company_logo")'/>
-                </a>
-                <div class="oe_secondary_menus_container"/>
-                <div class="oe_footer">
-                    <a href="http://www.upr.cn" target="_blank"><span>深圳市城市规划设计研究院</span></a>
-                </div>
-            </td>
-            <td class="oe_application">
-            </td>
-        </tr>
-    </table>
-    </div>
-</t>
-<t t-name="Login">
-    <div class="oe_login">
-        <div class="oe_login_bottom"> </div>
-        <div class="oe_login_error_message"/>
-        <div class="oe_login_pane">
-            <div class="oe_login_logo"><img src='/web/static/src/img/logo2.png'/></div>
-            <form action="" method="post">
-                <div class="oe_login_dbpane" >
-                    Database:
-                    <input name="db" t-att-value="widget.selected_db || ''"/>
-                </div>
-                <ul>
-                    <li>用户名</li>
-                    <li><input name="login" type="text" t-att-value="widget.selected_login || ''" autofocus="autofocus"/></li>
-                    <li>密码</li>
-                    <li><input name="password" type="password" t-att-value="widget.selected_password || ''"/></li>
-                    <li><button name="submit">进入系统</button></li>
-                </ul>
-            </form>
-            <div class="oe_login_footer">
-                <!-- <a href="#" class="oe_login_manage_db">Manage Databases</a> |
-                <a href="http://www.openerp.com" target="_blank">Powered by <span>OpenERP</span></a> -->
-            </div>
-        </div>
-    </div>
-</t>
+		<div class="openerp openerp_webclient_container">
+			<table class="oe_webclient">
+				<tr>
+					<td colspan="2" class="oe_topbar">
+						<div class="oe_menu_placeholder"/>
+						<div class="oe_user_menu_placeholder"/>
+						<div class="oe_systray"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="oe_leftbar" valign="top">
+						<t t-set="debug" t-value="__debug__ ? '&amp;debug' : ''"/>
+						<a class="oe_logo" t-attf-href="/?ts=#{Date.now()}#{debug}">
+							<span class="oe_logo_edit">Edit Company data</span>
+							<img t-att-src='widget.session.url("/web/binary/company_logo")'/>
+						</a>
+						<div class="oe_secondary_menus_container"/>
+						<div class="oe_footer">
+							<a href="http://www.upr.cn" target="_blank"><span>深圳市城市规划设计研究院</span></a>
+						</div>
+					</td>
+					<td class="oe_application">
+					</td>
+				</tr>
+			</table>
+		</div>
+	</t>
 	<t t-name="InternalHome">
 		<div id="wrapper" class="openerp-internal">
 			<div id="header">
@@ -61,14 +35,14 @@
 					<div class="top-holder">
 						<!-- ***************** - Top Toolbar Left Side - ***************** -->
 						<div class="sub-nav">
-							 <ul>
-								 <li><a id="link_home" href="#">Backoffice</a></li>
-							 </ul>
+							<ul>
+								<li><a id="link_home" href="#">Backoffice</a></li>
+							</ul>
 						</div>
-						 <!-- ***************** - END Top Toolbar Left Side - ***************** -->
-						 <!-- ***************** - Top Toolbar Right Side - ***************** -->
+						<!-- ***************** - END Top Toolbar Left Side - ***************** -->
+						<!-- ***************** - Top Toolbar Right Side - ***************** -->
 						<div class="oe_topbar sub-nav2" style="background-image:none;background-color:#000;width:auto;">
-							
+
 						</div><!-- end sub-nav2 -->
 					</div>		 
 				</div>
@@ -95,7 +69,7 @@
 		</div>
 	</t>
 	<t t-name="InternalHome.head">
-		
+
 		<div class="header-holder">
 			<div class="rays">
 				<div class="header-area">
@@ -104,20 +78,20 @@
 					<!-- ***************** - END LOGO - ***************** -->
 
 					<ul id="menu-main-nav">
-						
+
 					</ul>
 				</div>
 			</div>
 		</div>		
 	</t>		
 	<t t-name="InternalHome.news.item.shortcut">
-		<li><a t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a><p class="page-meta"><t t-esc="widget.format(page.write_date,{'type':'date'},'-')"/> <t t-esc="page.fbbm" t-if="category.is_display_fbbm"/></p></li>
+		<li><a target="_blank" t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a><p class="page-meta"><t t-esc="widget.format(page.write_date,{'type':'date'},'-')"/> <t t-esc="page.fbbm" t-if="category.is_display_fbbm"/></p></li>
 	</t>
 	<t t-name="InternalHome.news.item.content">
-		<p><a t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a><span class="page-meta"><t t-esc="widget.format(page.write_date,{'type':'date'},'-')"/> <t t-esc="page.fbbm" t-if="category.is_display_fbbm" /></span></p>
+		<p><a target="_blank" t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a><span class="page-meta"><t t-esc="widget.format(page.write_date,{'type':'date'},'-')"/> <t t-esc="page.fbbm" t-if="category.is_display_fbbm" /></span></p>
 	</t>
 	<t t-name="InternalHome.news.item.department">
-		<a t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a>
+		<a target="_blank" t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.name" /></a>
 	</t>
 	<t t-name="InternalHome.homepage.categories.shortcut">
 		<div id="news">
@@ -143,7 +117,7 @@
 					<img t-att-src="'data:image/png;base64,'+category['photo_news']['image_medium']"/>
 				</a>
 			</dt>
-			
+
 			<dd>
 				<a href="#"><t t-esc="category['photo_news']['name']"/></a>
 				<p><t t-esc="widget.format(category.photo_news.write_date,{'type':'date'},'-')"/><t t-esc="category['photo_news']['department_id']"/></p>

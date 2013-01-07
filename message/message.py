@@ -25,7 +25,8 @@ class MessageCategory(osv.Model):
 	_order="name"
 	_columns={
 			'name':fields.char("Title",size=128),
-			'meta':fields.char('Meta',help="all message fields are available", size=128),
+			'message_meta':fields.char('Meta',help="this meta is used to show the message meta info for a categor, all message fields are available", size=1024),
+			'category_message_title_meta':fields.char('Category meta',help="This meta is used to display the message title in internal home page for a category,all message fields are available.", size=1024),
 			'sequence':fields.integer("Display Sequence"),
 			'is_anonymous_allowed':fields.boolean('Allow publish messages anonymously?'),
 			#'is_display_fbbm':fields.boolean('Display fbbm?'),
@@ -50,7 +51,7 @@ class Message(osv.Model):
 	#TODO: turn off for data import only
 	_log_access=False
 	_name="message.message"
-	_order="name"
+	_order="sequence,write_date desc"
 	_inherit=['mail.thread', 'ir.needaction_mixin']
 	def _default_fbbm(self,cr,uid,context=None):
 		employee_ids = self.pool.get('hr.employee').search(cr,uid,[('user_id','=',uid)])
@@ -74,19 +75,29 @@ class Message(osv.Model):
 		for obj in self.browse(cr, uid, ids, context=context):
 			result[obj.id] = obj.is_display_name and obj.write_uid.name or u'匿名用户'
 		return result	
-	def _get_meta_display(self,cr,uid,ids,field_name,args,context=None):
+	def _get_message_meta_display(self,cr,uid,ids,field_name,args,context=None):
 		result = dict.fromkeys(ids, False)
 		for obj in self.browse(cr, uid, ids, context=context):
-			meta = ''
-			if obj.category_id.meta:
+			message_meta = ''
+			if obj.category_id.message_meta:
 				env = Env(cr, uid, 'message.message', ids)
-				meta = eval(obj.category_id.meta,env,nocopy=True)
-			result[obj.id] = meta
+				message_meta = eval(obj.category_id.message_meta,env,nocopy=True)
+			result[obj.id] = message_meta
+		return result	
+	def _get_category_message_title_meta_display(self,cr,uid,ids,field_name,args,context=None):
+		result = dict.fromkeys(ids, False)
+		for obj in self.browse(cr, uid, ids, context=context):
+			category_message_title_meta = ''
+			if obj.category_id.category_message_title_meta:
+				env = Env(cr, uid, 'message.message', ids)
+				category_message_title_meta = eval(obj.category_id.category_message_title_meta,env,nocopy=True)
+			result[obj.id] = category_message_title_meta
 		return result	
 
 	_columns={
 			'name':fields.char("Title",size=128,required=True),
-			'meta_display':fields.function(_get_meta_display,type="char", size=256,string="Meta"),
+			'message_meta_display':fields.function(_get_message_meta_display,type="char", size=256,string="Meta"),
+			'category_message_title_meta_display':fields.function(_get_category_message_title_meta_display,type="char", size=256,string="Category meta"),
 			'category_id':fields.many2one('message.category','Category',required=True),
 			'content':fields.text("Content"),
 			'sequence':fields.integer("Display Sequence"),

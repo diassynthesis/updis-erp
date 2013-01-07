@@ -24,9 +24,9 @@
 				<form string="Message" version="7.0">
 					<h1><field name="name" placeholder="消息标题"/></h1>
 					<div class="oe_document_page">
-						<field name="meta_display"/>
+						<field name="message_meta_display" widget="html"/>
 					</div>
-					<group>
+					<group class="oe_edit_only">
 						<group col="4">
 							<field name="is_allow_send_sms" invisible="1"/>
 							<field name="is_allow_sms_receiver" invisible="1"/>
@@ -39,7 +39,7 @@
 							<field name="name_for_display"/>
 						</group>
 					</group>
-					<group attrs="{'invisible':[('is_allow_send_sms','=',False)]}">
+					<group attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
 						<group>
 							<div>
 								<label for="sms"/>
@@ -86,7 +86,9 @@
 						<group col="4">
 							<field name="is_anonymous_allowed"/>
 							<field name="display_position"/> 
-							<field name="meta"/> 
+							<field name="message_meta"/> 
+							<field name="category_message_title_meta"/> 
+							<field name="sequence"/> 
 							<newline/>
 							<field name="is_allow_send_sms" on_change="onchange_is_allow_send_sms(is_allow_send_sms)" />
 						</group>
