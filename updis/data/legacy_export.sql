@@ -144,7 +144,9 @@ WHERE (dbo.LZ_MISUser.SU_IsDel=1) AND
 	      (dbo.LZ_MISDepPos.UG_UserGrpID <> 'UG050721000001')
 --department
 SELECT UG_UserGrpID AS [external id], UG_UserGrpName AS name, 
-      UG_IsDel AS deleted
+      UG_IsDel AS deleted,
+      UG_InUse AS is_in_use,
+      ug_usergrpforshort AS short_name
 FROM dbo.LZ_MISDepartment
 
 --position

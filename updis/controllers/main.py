@@ -36,30 +36,6 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 				cat.setdefault('children',[]).sort(key=operator.itemgetter('sequence'))
 		ret.update(self.do_load_department_pagies(req))
 		return ret
-	'''
-	@openerp.addons.web.http.jsonrequest
-	def add_to_home_menu(self, req, parent_menu_id, action_id, context_to_save, domain, view_type, view_mode, name=''):
-		to_eval = nonliterals.CompoundContext(context_to_save)
-		to_eval.session = req.session
-		ctx = dict((k, v) for k, v in to_eval.evaluate().iteritems()
-				   if not k.startswith('search_default_'))
-		domain = nonliterals.CompoundDomain(domain)
-		domain.session = req.session
-		domain = domain.evaluate()
-		act_window = req.session.model(view_type).copy(action_id,{
-			'domain':str(domain),
-			'context':str(ctx),
-			# 'view_mode':view_mode,
-			'name':name
-			})
-		menu_id = req.session.model("internal.home.menu").create({
-			'name':name,
-			'parent_id':parent_menu_id,
-			'icon': 'STOCK_DIALOG_QUESTION',
-			'action': 'ir.actions.act_window,'+ str(act_window),
-			})
-		return True
-	'''
 	@openerp.addons.web.http.jsonrequest
 	def load_menu(self,req):
 		return {'data':self.do_load_menu(req)}
@@ -118,7 +94,7 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 		Department = req.session.model("hr.department")
 		Message = req.session.model("message.message") 
 		Category = req.session.model("message.category") 
-		departments_ids = Department.search([('deleted','=',False)])
+		departments_ids = Department.search([('is_in_use','=',True),('deleted','=',False)])
 		departments = Department.read(departments_ids,['name','sequence'])
 		ret['departments'] = departments
 		# import pdb;pdb.set_trace()

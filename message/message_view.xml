@@ -47,8 +47,8 @@
 								<label for="sms_receiver_ids" attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
 								<field name="sms_receiver_ids" attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
 									<tree editable="bottom" string="SMS Receivers">
-										<field name="name"/>
-										<field name="phone"/>
+										<field name="name" string="人员"/>
+										<field name="mobile"/>
 									</tree>
 								</field>
 							</div>
@@ -88,6 +88,7 @@
 							<field name="display_position"/> 
 							<field name="message_meta"/> 
 							<field name="category_message_title_meta"/> 
+							<field name="category_message_title_size"/> 
 							<field name="sequence"/> 
 							<newline/>
 							<field name="is_allow_send_sms" on_change="onchange_is_allow_send_sms(is_allow_send_sms)" />
@@ -102,7 +103,7 @@
 							<field name="default_sms_receiver_ids" nolabel="1">
 								<tree editable="bottom" string="SMS Receivers">
 									<field name="name" string="人员"/>
-									<field name="phone"/>
+									<field name="mobile"/>
 								</tree>
 							</field>
 						</div>

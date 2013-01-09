@@ -26,6 +26,7 @@ class MessageCategory(osv.Model):
 	_columns={
 			'name':fields.char("Title",size=128),
 			'message_meta':fields.char('Meta',help="this meta is used to show the message meta info for a categor, all message fields are available", size=1024),
+			'category_message_title_size':fields.integer('Message title length',help='-1 means no shorten at all'),
 			'category_message_title_meta':fields.char('Category meta',help="This meta is used to display the message title in internal home page for a category,all message fields are available.", size=1024),
 			'sequence':fields.integer("Display Sequence"),
 			'is_anonymous_allowed':fields.boolean('Allow publish messages anonymously?'),
@@ -42,6 +43,7 @@ class MessageCategory(osv.Model):
 	_defaults={
 			#'is_display_fbbm':True,
 			'is_anonymous_allowed':False,
+			'category_message_title_size':10,
 			#'is_display_read_times':True,
 			}
 	def onchange_is_allow_send_sms(self,cr,uid,ids,is_allow_send_sms,context=None):
@@ -49,7 +51,7 @@ class MessageCategory(osv.Model):
 
 class Message(osv.Model):
 	#TODO: turn off for data import only
-	_log_access=False
+	#_log_access=False
 	_name="message.message"
 	_order="sequence,write_date desc"
 	_inherit=['mail.thread', 'ir.needaction_mixin']
@@ -80,7 +82,7 @@ class Message(osv.Model):
 		for obj in self.browse(cr, uid, ids, context=context):
 			message_meta = ''
 			if obj.category_id.message_meta:
-				env = Env(cr, uid, 'message.message', ids)
+				env = Env(cr, uid, 'message.message', [obj.id])
 				message_meta = eval(obj.category_id.message_meta,env,nocopy=True)
 			result[obj.id] = message_meta
 		return result	
@@ -89,13 +91,21 @@ class Message(osv.Model):
 		for obj in self.browse(cr, uid, ids, context=context):
 			category_message_title_meta = ''
 			if obj.category_id.category_message_title_meta:
-				env = Env(cr, uid, 'message.message', ids)
+				env = Env(cr, uid, 'message.message', [obj.id])
 				category_message_title_meta = eval(obj.category_id.category_message_title_meta,env,nocopy=True)
 			result[obj.id] = category_message_title_meta
+		return result	
+	def _get_shorten_name(self,cr,uid,ids,field_name,args,context=None):
+		result = dict.fromkeys(ids, False)
+		for obj in self.browse(cr, uid, ids, context=context):
+			size = obj.category_id.category_message_title_size
+			title = len(obj.name)>size and obj.name[:size]+'...' or obj.name
+			result[obj.id] = title
 		return result	
 
 	_columns={
 			'name':fields.char("Title",size=128,required=True),
+			'shorten_name':fields.function(_get_shorten_name,type="char", size=256,string="Shorten title"),
 			'message_meta_display':fields.function(_get_message_meta_display,type="char", size=256,string="Meta"),
 			'category_message_title_meta_display':fields.function(_get_category_message_title_meta_display,type="char", size=256,string="Category meta"),
 			'category_id':fields.many2one('message.category','Category',required=True),
@@ -147,3 +157,15 @@ class Message(osv.Model):
 					}
 			ret['value'].update(sms_vals)
 		return ret
+	def create(self,cr,uid,vals,context=None):
+		mid = super(Message,self).create(cr,uid,vals,context)
+		sms = self.pool.get('sms.sms')
+		message = self.pool.get('message.message').browse(cr,uid,mid,context=context)
+		if message.is_allow_send_sms:
+			to = ','.join([rid.mobile for rid in message.sms_receiver_ids if rid.mobile])
+			if to:
+				content = message.sms and message.sms or message.name
+				sid = sms.create(cr,uid,{'to':to,'content':content,'model':'message.message','res_id':mid},context=context)
+		return mid
+
+

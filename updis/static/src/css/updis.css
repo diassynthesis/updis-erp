@@ -4,18 +4,30 @@
 .oe_footer span {
 	font-size: 0.7em;
 }
+.openerp .oe_topbar {
+	width: 100%;
+	height: 32px;
+	background-color: #414141;
+	background-color: #4E656A;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#646060), to(#262626));
+	background-image: -webkit-linear-gradient(top, #4E656A, #4E656A);
+	background-image: -moz-linear-gradient(top, #646060, #4E656A);
+	background-image: -ms-linear-gradient(top, #646060, #262626);
+	background-image: -o-linear-gradient(top, #646060, #262626);
+	background-image: linear-gradient(to bottom, #646060, #262626);
+}
 .openerp .oe_login .oe_login_bottom {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  text-shadow: 0 1px 1px #999999;
-  background-color: #4E656A;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#4E656A), to(#4C4C4C));
-  background-image: -webkit-linear-gradient(top, #4E656A, #4C4C4C);
-  background-image: -moz-linear-gradient(top, #4E656A, #4C4C4C);
-  background-image: -ms-linear-gradient(top, #4E656A, #4C4C4C);
-  background-image: -o-linear-gradient(top, #4E656A, #4C4C4C);
-  background-image: linear-gradient(to bottom, #4E656A, #4C4C4C);
+	position: absolute;
+	top: 50%;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	text-shadow: 0 1px 1px #999999;
+	background-color: #4E656A;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#4E656A), to(#4C4C4C));
+	background-image: -webkit-linear-gradient(top, #4E656A, #4C4C4C);
+	background-image: -moz-linear-gradient(top, #4E656A, #4C4C4C);
+	background-image: -ms-linear-gradient(top, #4E656A, #4C4C4C);
+	background-image: -o-linear-gradient(top, #4E656A, #4C4C4C);
+	background-image: linear-gradient(to bottom, #4E656A, #4C4C4C);
 }
