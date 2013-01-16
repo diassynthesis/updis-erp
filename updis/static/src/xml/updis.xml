@@ -28,6 +28,34 @@
 			</table>
 		</div>
 	</t>
+	<t t-name="mail.compose_message">
+        <div t-if="widget.show_composer and !widget.options.readonly" t-attf-class="oe_msg oe_msg_composer #{widget.thread_level and widget.options.display_indented_thread > -1 ? 'oe_msg_indented' : ''}">
+            <div class="oe_msg_left">
+                <img class="oe_msg_icon" alt="User img" t-attf-src="#{widget.avatar}"/>
+            </div>
+            <div class="oe_msg_center">
+                <div class="oe_msg_content">
+                    <t t-call="mail.thread.list_recipients"/>
+                    <textarea class="field_text"></textarea>
+                    <input class="oe_is_anonymous" type="checkbox" checked="on">匿名评论</input>
+                </div>
+                <div class="oe_msg_footer">
+                    <div class="oe_msg_attachment_list"></div>
+                    <button class="oe_post">Post</button>
+                    <t t-call="mail.compose_message.add_attachment"/>
+                    <!--<a class="oe_cancel oe_e">X</a>-->
+                </div>
+            </div>
+        </div>
+        <div t-if="widget.show_compact_message and !widget.show_composer and !widget.options.readonly" t-attf-class="oe_msg oe_msg_composer_compact #{widget.thread_level and widget.options.display_indented_thread > -1 ? 'oe_msg_indented' : ''}">
+            <div class="field_text oe_compact">
+                <t t-if="widget.options.compose_placeholder" t-raw="widget.options.compose_placeholder"/>
+                <t t-if="!widget.options.compose_placeholder and !widget.options.view_mailbox">Write to the followers of this document...</t>
+                <t t-if="!widget.options.compose_placeholder and widget.options.view_mailbox">Share with my followers...</t>
+            </div>
+        </div>
+        <span t-if="!(widget.show_compact_message and !widget.show_composer) and !widget.show_composer" class="oe_placeholder_compose"></span>
+    </t>
 	<t t-name="InternalHome">
 		<div id="wrapper" class="openerp-internal">
 			<div id="header">

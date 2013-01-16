@@ -35,3 +35,9 @@ class mail_message(osv.Model):
 				message_dict.update({
 					'author_id':(author_id[0],u'匿名用户'),																		})
 		return ret
+	def _message_read_dict(self, cr, uid, message, parent_id=False, context=None):		
+		ret = super(mail_message,self)._message_read_dict(cr, uid, message, parent_id=parent_id, context=context)
+		ret.update({
+			'is_anonymous':message.is_anonymous,
+			})
+		return ret
