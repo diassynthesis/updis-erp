@@ -94,7 +94,7 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 		Department = req.session.model("hr.department")
 		Message = req.session.model("message.message") 
 		Category = req.session.model("message.category") 
-		departments_ids = Department.search([('is_in_use','=',True),('deleted','=',False)])
+		departments_ids = Department.search([('is_in_use','=',True),('deleted','=',False),('display_in_front','=',True)])
 		departments = Department.read(departments_ids,['name','sequence'])
 		ret['departments'] = departments
 		# import pdb;pdb.set_trace()

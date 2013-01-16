@@ -85,7 +85,7 @@
 		</div>		
 	</t>		
 	<t t-name="InternalHome.news.item.shortcut">
-		<li><a target="_blank" t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.category_message_title_meta_display" /></a></li>
+		<li><a target="_blank" t-attf-title="#{page.name}" t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.category_message_title_meta_display" /></a></li>
 	</t>
 	<t t-name="InternalHome.news.item.content">
 		<p><a target="_blank" t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.category_message_title_meta_display" /></a></p>
@@ -98,7 +98,7 @@
 			<t t-if="widget.data['shortcut']">
 				<t t-foreach="widget.data['shortcut']" t-as="category">
 					<div t-att-class="(category_index+1)%3==0 &amp;&amp; category_index>0? 'one_third_last':'one_third'">
-						<ul style="list-style:none;">
+						<ul style="list-style:none;padding-left:10px;">
 							<h2><span><t t-esc="category.name" /></span></h2>
 							<t t-foreach="category.children" t-as="page">
 								<t t-call="InternalHome.news.item.shortcut"/>

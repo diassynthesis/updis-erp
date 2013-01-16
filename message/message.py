@@ -25,6 +25,7 @@ class MessageCategory(osv.Model):
 	_order="name"
 	_columns={
 			'name':fields.char("Title",size=128),
+			'default_message_count':fields.integer('Default message count',help="How many messages should be displayed in front door for this category?"),
 			'message_meta':fields.char('Meta',help="this meta is used to show the message meta info for a categor, all message fields are available", size=1024),
 			'category_message_title_size':fields.integer('Message title length',help='-1 means no shorten at all'),
 			'category_message_title_meta':fields.char('Category meta',help="This meta is used to display the message title in internal home page for a category,all message fields are available.", size=1024),

@@ -89,6 +89,7 @@
 							<field name="message_meta"/> 
 							<field name="category_message_title_meta"/> 
 							<field name="category_message_title_size"/> 
+							<field name="default_message_count"/> 
 							<field name="sequence"/> 
 							<newline/>
 							<field name="is_allow_send_sms" on_change="onchange_is_allow_send_sms(is_allow_send_sms)" />
