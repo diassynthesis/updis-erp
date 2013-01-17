@@ -116,10 +116,10 @@
 		<li><a target="_blank" t-attf-title="#{page.name}" t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.category_message_title_meta_display" /></a></li>
 	</t>
 	<t t-name="InternalHome.news.item.content">
-		<p><a target="_blank" t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.category_message_title_meta_display" /></a></p>
+		<p><a target="_blank" t-attf-title="#{page.name}" t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.category_message_title_meta_display" /></a></p>
 	</t>
 	<t t-name="InternalHome.news.item.department">
-		<a target="_blank" t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.category_message_title_meta_display" /></a>
+		<a target="_blank" t-attf-title="#{page.name}" t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.category_message_title_meta_display" /></a>
 	</t>
 	<t t-name="InternalHome.homepage.categories.shortcut">
 		<div id="news">

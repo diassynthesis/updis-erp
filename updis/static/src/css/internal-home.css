@@ -283,3 +283,6 @@
 .openerp .oe_view_manager table.oe_view_manager_header {
 	display:none;
 }
+a.page-item:hover{
+	color:#FF6600 !important;
+}
