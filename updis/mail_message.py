@@ -27,6 +27,7 @@ class mail_message(osv.Model):
 				logging.getLogger('mail.message').warning("Updated Comment! for %s"%comment_obj.res_id)
 	def _message_read_dict_postprocess(self, cr, uid, messages, message_tree, context=None):
 		ret = super(mail_message,self)._message_read_dict_postprocess(cr, uid, messages, message_tree, context=context)
+		# import pdb;pdb.set_trace()
 		for message_dict in messages:
 			message_id = message_dict.get('id')
 			message = message_tree[message_id]

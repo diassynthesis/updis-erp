@@ -4,6 +4,13 @@ openerp.updis = function(openerp) {
 		init: function (parent, datasets, options) {            
             this.is_anonymous = datasets.is_anonymous;
             return this._super(parent,datasets, options);
+        },
+        format_data:function(){
+        	ret = this._super.apply(this,arguments);
+        	if (this.is_anonymous) {
+        		this.avatar = ('/updis/static/src/img/anonymous.png');
+        	}
+        	return ret;
         }
 	})
 	openerp.mail.Thread.include({
