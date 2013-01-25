@@ -169,8 +169,8 @@ WHERE (dbo.LZ_MISDepPos.UG_UserGrpID <> 'UG050721000001')
 
 --Messages
 SELECT * FROM 
-(SELECT TOP 1000 * FROM 
-	(SELECT TOP 1000 dbo.Hp_Information.HI_ID AS [external id], 
+(SELECT TOP 10000 * FROM 
+	(SELECT TOP 10000 dbo.Hp_Information.HI_ID AS [external id], 
 		dbo.Hp_Information.HI_Title AS name, dbo.Hp_Information.HI_Content AS content, 
 		dbo.Hp_Information.HI_ReadTimes AS [read times], 
 		replace(CONVERT(varchar, 
@@ -184,13 +184,31 @@ SELECT * FROM
 		dbo.Hp_Information.HI_DisName AS [Display name?], 
 		dbo.HP_Module.HM_id AS [Category/external id], 
 		SZGH_OA_20050823.dbo.p_systemuser.UserGrpID AS [department/external id], 
-		SZGH_OA_20050823.dbo.p_systemuser.Grpname AS Department, 
 		dbo.Hp_Information.HI_FBBM AS Publisher 
 		FROM dbo.Hp_Information INNER JOIN
 		dbo.HP_Module ON dbo.Hp_Information.HM_ID = dbo.HP_Module.HM_ID INNER JOIN
 		SZGH_OA_20050823.dbo.p_systemuser ON 
-		dbo.Hp_Information.HU_UserID = SZGH_OA_20050823.dbo.p_systemuser.SU_UserID ORDER BY dbo.Hp_Information.HI_SetTime DESC
-) AS aSysTable ORDER BY aSysTable.[create_date] ASC) as bSysTable ORDER BY bSysTable.[create_date] DESC
+		dbo.Hp_Information.HU_UserID = SZGH_OA_20050823.dbo.p_systemuser.SU_UserID ORDER BY dbo.Hp_Information.HI_SetTime ASC
+) AS aSysTable ORDER BY aSysTable.[create_date] DESC) as bSysTable ORDER BY bSysTable.[create_date] ASC;
+
+--Message comments
+SELECT 
+'comment' as type,
+'message.message' as model,
+HC_ID as external_id,
+HI_ID as legacy_message_id,
+HC_Comment as body,
+HC_CreateTime as [Date],
+RU_UserId as [Author/external_id],
+~DisName as is_anonymous
+FROM HP_InfoComment
+WHERE HI_ID in 
+(SELECT TOP 10000 dbo.Hp_Information.HI_ID  
+	FROM dbo.Hp_Information INNER JOIN
+	dbo.HP_Module ON dbo.Hp_Information.HM_ID = dbo.HP_Module.HM_ID INNER JOIN
+	SZGH_OA_20050823.dbo.p_systemuser ON 
+	dbo.Hp_Information.HU_UserID = SZGH_OA_20050823.dbo.p_systemuser.SU_UserID ORDER BY dbo.Hp_Information.HI_SetTime DESC
+);
 
 --Message catgories
 SELECT HM_ID AS [external id], HM_Name AS name, 
