@@ -52,7 +52,7 @@ class MessageCategory(osv.Model):
 
 class Message(osv.Model):
 	#TODO: turn off for data import only
-	#_log_access=False
+	_log_access=False
 	_name="message.message"
 	_order="sequence,write_date desc"
 	_inherit=['mail.thread', 'ir.needaction_mixin']
