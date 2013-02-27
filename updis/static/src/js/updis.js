@@ -1,6 +1,6 @@
 openerp.updis = function(openerp) {
 	var QWeb = openerp.web.qweb;	
-	if (openerp.mail){){
+	if (openerp.mail){
 		openerp.mail.ThreadMessage.include({
 			init: function (parent, datasets, options) {            
 				this.is_anonymous = datasets.is_anonymous;
