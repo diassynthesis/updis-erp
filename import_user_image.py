@@ -3,6 +3,7 @@ import base64
 __author__ = 'Zhou Guangwen'
 from xmlrpclib import ServerProxy
 import os
+import sys
 
 # -*- coding: utf-8 -*-
 ##############################################################################
@@ -403,11 +404,10 @@ def get_connection(hostname=None, protocol="xmlrpc", port='auto', database=None,
     return Connection(get_connector(hostname, protocol, port), database, login, password, user_id)
 
 
-def do_import(img_path):
+def do_import_user(img_path):
     server = get_connection('113.108.103.13', database='updis', login='admin', password='Freeborders#1')
     model_model = server.get_model('ir.model.data')
     user_model = server.get_model('res.users')
-    service = ServerProxy('http://localhost:8069/openerp/xmlrpc/1/object')
     for path in os.listdir(img_path):
         if path.startswith('P_'):
             external_id = path[2:-4]
@@ -424,5 +424,25 @@ def do_import(img_path):
                 print 'Image uploaded for user user_id %s' % user_id
 
 
+def do_import_employee(img_path):
+    server = get_connection('113.108.103.13', database='updis', login='admin', password='Freeborders#1')
+    model_model = server.get_model('ir.model.data')
+    user_model = server.get_model('hr.employee')
+    for path in os.listdir(img_path):
+        if path.startswith('P_'):
+            external_id = path[2:-4]
+            print external_id
+            for r in model_model.search_read([('model', '=', 'hr.employee'), ('name', '=', 'EMP_' + external_id)],
+                                             ['res_id']):
+                user_id = r.get('res_id')
+                print user_id
+                img_encoded = base64.encodestring(open(os.path.join(img_path, path), 'rb').read())
+                try:
+                    user_model.write(user_id, {'image': img_encoded})
+                except:
+                    print 'image upload failed! %s ' % user_id
+                print 'Image uploaded for user user_id %s' % user_id
+
 if __name__ == '__main__':
-    do_import('C:\Users\Zhou Guangwen\Documents\Spec\PhotoImages')
+	#do_import_employee(sys.argv[1])
+	do_import_user(sys.argv[1])
