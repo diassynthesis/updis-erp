@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% import "_pagination.html" as paginator %}
+{% block content_class %}
+    content_blog
+{% endblock %}
+{% block tools %}
+    <div class="tools">
+        <div class="holder">
+            <div class="frame">
+                <h1>{{ category.name }}</h1>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block sidebar %}
+    <div id="sidebar" class="sidebar_blog">
+        <div class="sidebar-widget">
+
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    {% for msg in messages %}
+        <div class="blog_wrap">
+            <div class="post_title">
+                <h1>
+                    <a target="_blank" href="{{ url_for('.message_view', message_id=msg.id) }}"> {{ msg.name }}</a>
+                </h1>
+
+                <p class="posted-by-text">
+                    <span>发布者</span>
+                    <a href="#">{{ msg.write_uid|last }}</a>
+                </p>
+            </div>
+            <div class="post_content">
+                {% if msg.image_medium %}
+                    <div class="post_thumb">
+                        <div class="post_thumb_load">
+                            <a target="_blank" href="{{ url_for('.messages_view', message_id=msg.id) }}"
+                               class="attachment-fadeIn" style="display: inline">
+                                <img src="data:image/png;base64,{{ msg.image_medium }}" height="218" width="538"/>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="" style="min-height: 50px">
+                    {{ msg.content|html_truncate|safe|replace('&nbsp;',' ')}}
+                </div>
+                <a class="ka_button small_button" style="opacity:1;" title="{{ msg.name }}"
+                   href="{{ url_for('.message_view', message_id=msg.id) }}">
+                    <span>阅读</span>
+                </a>
+
+                <div class="post_date">
+                    <span class="day">{{ msg.write_date|format_date('%d') }}</span>
+                    <br>
+                    <span class="month">{{ msg.write_date|format_date('%b') }}</span>
+                </div>
+                <div class="post_comments">
+                    <a href="{{ url_for('.message_view', message_id=msg.id) }}#post-comments">
+                        <span>{{ msg.message_ids|length }}</span>
+                    </a>
+                </div>
+                <div class="post_footer">
+                    <div class="post_cats">
+                        <p>
+                            <span>分类：</span>
+                            <a href="{{ url_for('.category_messages', cat_id=msg.category_id|first,page=1) }}">{{ msg.category_id|last }}</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {{ paginator.render_pagination(pagination) }}
+{% endblock %}
