@@ -12,14 +12,14 @@ class CASController(openerpweb.Controller):
 
     @openerpweb.httprequest
     def callback(self, req, *args, **kwargs):
-        status, uid, cookies = pycas.login(req, CAS_SERVER, SERVICE_URL)
+        status, uid, cookies,attrs = pycas.login(req, CAS_SERVER, SERVICE_URL)
         print status, uid, cookies
         return werkzeug.utils.redirect("/")
 
     @openerpweb.httprequest
     def cas_login(self, req):
         try:
-            status, uid, cookies = pycas.login(req, CAS_SERVER, SERVICE_URL)
+            status, uid, cookies,attrs = pycas.login(req, CAS_SERVER, SERVICE_URL)
             return werkzeug.utils.redirect("/")
         except SystemExit, e:
             redirect = werkzeug.utils.redirect("%s/cas/login?service=%s" % (CAS_SERVER, SERVICE_URL))

@@ -171,7 +171,7 @@ def do_redirect(cas_host, service_url, opt, secure):
     cas_url = cas_host + "/cas/login?service=" + service_url
     if opt in ("renew", "gateway"):
         cas_url += "&%s=true" % opt
-    #  Print redirect page to browser
+        #  Print redirect page to browser
     print "Refresh: 0; url=%s" % cas_url
     print "Content-type: text/html"
     if opt == "gateway":
@@ -231,10 +231,10 @@ def decode_cookie(cookie_vals, lifetime=None):
     #  Valid authentication cookie takes precedence
     if COOKIE_AUTH in cookie_attrs:
         return COOKIE_AUTH, id
-    #  Gateway cookie takes next precedence
+        #  Gateway cookie takes next precedence
     if COOKIE_GATEWAY in cookie_attrs:
         return COOKIE_GATEWAY, ""
-    #  If we've gotten here, there should be only one attribute left.
+        #  If we've gotten here, there should be only one attribute left.
     return cookie_attrs[0], ""
 
 
@@ -248,14 +248,14 @@ def validate_cas_1(cas_host, service_url, ticket):
     #  Ticket does not validate, return error
     if response == "no\n":
         f_validate.close()
-        return TICKET_INVALID, ""
+        return TICKET_INVALID, "",()
     #  Ticket validates
     else:
         #  Get id
         id = f_validate.readline()
         f_validate.close()
         id = id.strip()
-        return TICKET_OK, id
+        return TICKET_OK, id,()
 
 
 #  Validate ticket using cas 2.0 protocol
@@ -268,13 +268,18 @@ def validate_cas_2(cas_host, service_url, ticket, opt):
     f_validate = urllib.urlopen(cas_validate)
     #  Get first line - should be yes or no
     response = f_validate.read()
+    print response
     id = parse_tag(response, "cas:user")
+    db = parse_tag(response, "cas:db")
+    password = parse_tag(response, "cas:password")
+    login = parse_tag(response, "cas:login")
+    lang = parse_tag(response, "cas:lang")
     #  Ticket does not validate, return error
     if id == "":
-        return TICKET_INVALID, ""
+        return TICKET_INVALID, "", (db, login, password, lang)
     #  Ticket validates
     else:
-        return TICKET_OK, id
+        return TICKET_OK, id, (db, login, password, lang)
 
 
 #  Read cookies from env variable HTTP_COOKIE.
@@ -304,30 +309,30 @@ def get_cookie_status(request):
 def get_ticket_status(request, cas_host, service_url, protocol, opt):
     if request.params.has_key("ticket"):
         ticket = request.params.get("ticket")
-        if protocol ==1:
-            ticket_status, id = validate_cas_1(cas_host, service_url, ticket, opt)
+        if protocol == 1:
+            ticket_status, id, attrs = validate_cas_1(cas_host, service_url, ticket, opt)
         else:
-            ticket_status, id = validate_cas_2(cas_host, service_url, ticket, opt)
+            ticket_status, id, attrs = validate_cas_2(cas_host, service_url, ticket, opt)
         if ticket_status == TICKET_OK:
-            return TICKET_OK, id
+            return TICKET_OK, id, attrs
         else:
-            return ticket_status,""
+            return ticket_status, "", attrs
     else:
-        return TICKET_NONE, ""
-    # if cgi.FieldStorage().has_key("ticket"):
-    #     ticket = cgi.FieldStorage()["ticket"].value
-    #     if protocol == 1:
-    #         ticket_status, id = validate_cas_1(cas_host, service_url, ticket, opt)
-    #     else:
-    #         ticket_status, id = validate_cas_2(cas_host, service_url, ticket, opt)
-    #     #  Make cookie and return id
-    #     if ticket_status == TICKET_OK:
-    #         return TICKET_OK, id
-    #     #  Return error status
-    #     else:
-    #         return ticket_status, ""
-    # else:
-    #     return TICKET_NONE, ""
+        return TICKET_NONE, "",()
+        # if cgi.FieldStorage().has_key("ticket"):
+        #     ticket = cgi.FieldStorage()["ticket"].value
+        #     if protocol == 1:
+        #         ticket_status, id = validate_cas_1(cas_host, service_url, ticket, opt)
+        #     else:
+        #         ticket_status, id = validate_cas_2(cas_host, service_url, ticket, opt)
+        #     #  Make cookie and return id
+        #     if ticket_status == TICKET_OK:
+        #         return TICKET_OK, id
+        #     #  Return error status
+        #     else:
+        #         return ticket_status, ""
+        # else:
+        #     return TICKET_NONE, ""
 
 
 #-----------------------------------------------------------------------
@@ -359,17 +364,17 @@ def login(req, cas_host, service_url, lifetime=None, secure=1, protocol=2, path=
     #     TICKET_NONE    - no ticket found.
     #  If ticket is ok, then user has authenticated, return id and
     #  a pycas cookie for calling program to send to web browser.
-    ticket_status, id = get_ticket_status(req,cas_host, service_url, protocol, opt)
+    ticket_status, id, attrs = get_ticket_status(req, cas_host, service_url, protocol, opt)
 
     if ticket_status == TICKET_OK:
         timestr = str(int(time.time()))
         hash = makehash(timestr + ":" + id)
         cookie_val = hash + timestr + ":" + id
         domain = urlparse.urlparse(service_url)[1]
-        return CAS_OK, id, make_pycas_cookie(cookie_val, domain, path, secure)
+        return CAS_OK, id, make_pycas_cookie(cookie_val, domain, path, secure), attrs
 
     elif ticket_status == TICKET_INVALID:
-        return CAS_TICKET_INVALID, "", ""
+        return CAS_TICKET_INVALID, "", "", attrs
 
 
     #  If unathenticated and in gateway mode, return gateway status and clear
@@ -379,7 +384,7 @@ def login(req, cas_host, service_url, lifetime=None, secure=1, protocol=2, path=
             domain, path = urlparse.urlparse(service_url)[1:3]
             #  Set cookie expiration in the past to clear the cookie.
             past_date = time.strftime("%a, %d-%b-%Y %H:%M:%S %Z", time.localtime(time.time() - 48 * 60 * 60))
-            return CAS_GATEWAY, "", make_pycas_cookie("", domain, path, secure, past_date)
+            return CAS_GATEWAY, "", make_pycas_cookie("", domain, path, secure, past_date),()
 
     #  Do redirect
     do_redirect(cas_host, service_url, opt, secure)
