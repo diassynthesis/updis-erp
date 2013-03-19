@@ -121,32 +121,32 @@ class InternalHomeMenu(openerp.addons.web.http.Controller):
 			return Message.read(pagies_id,['name','write_date','write_uid','image_medium'])[0]
 
 		
-class InternalHome(openerp.addons.web.http.Controller):
-	_cp_path = "/cms"
-	@openerp.addons.web.http.httprequest
-	def index(self, req, s_action=None, db=None, **kw):
-		js = "\n        ".join('<script type="text/javascript" src="%s"></script>' % i for i in manifest_list(req, 'js', db=db))
-
-		js += '\n <script type="text/javascript" src="/updis/static/src/js/updis.js"></script>'
-		js += '\n <script type="text/javascript" src="/updis/static/src/js/karma.js"></script>'
-		js += '\n <script type="text/javascript" src="/updis/static/src/js/tab.js"></script>'
-		# js += '\n <script type="text/javascript" src="/updis/static/src/js/bootstrap.js"></script>'
-		css = "\n        ".join('<link rel="stylesheet" href="%s">' % i for i in manifest_list(req, 'css', db=db))
-		css += '\n <link rel="stylesheet" href="/updis/static/src/css/style.css">'
-		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/common.css">'
-		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/ie8.css">'
-		css += '\n <link rel="stylesheet" href="/updis/static/src/css/internal-home.css">'
-		css += '\n <link rel="stylesheet" href="/updis/static/src/css/karma-teal-grey.css">'
-		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/secondary-teal-grey.css">'
-		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/bootstrap-responsive.css">'
-		# cookie = req.httprequest.cookies.get("instance0|session_id")
-		# session_id = cookie.replace("%22","")
-		# template = html_template.replace('<html','<html manifest="/pos/manifest?session_id=%s"'%session_id)
-		print js
-		r = html_template % {
-			'js': js,
-			'css': css,
-			'modules': simplejson.dumps(module_boot(req)+['updis',]),
-			'init': 'var wc = new s.web.InternalHome();wc.appendTo($(document.body));'
-		}
-		return r
+# class InternalHome(openerp.addons.web.http.Controller):
+# 	_cp_path = "/cms"
+# 	@openerp.addons.web.http.httprequest
+# 	def index(self, req, s_action=None, db=None, **kw):
+# 		js = "\n        ".join('<script type="text/javascript" src="%s"></script>' % i for i in manifest_list(req, 'js', db=db))
+#
+# 		js += '\n <script type="text/javascript" src="/updis/static/src/js/updis.js"></script>'
+# 		js += '\n <script type="text/javascript" src="/updis/static/src/js/karma.js"></script>'
+# 		js += '\n <script type="text/javascript" src="/updis/static/src/js/tab.js"></script>'
+# 		# js += '\n <script type="text/javascript" src="/updis/static/src/js/bootstrap.js"></script>'
+# 		css = "\n        ".join('<link rel="stylesheet" href="%s">' % i for i in manifest_list(req, 'css', db=db))
+# 		css += '\n <link rel="stylesheet" href="/updis/static/src/css/style.css">'
+# 		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/common.css">'
+# 		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/ie8.css">'
+# 		css += '\n <link rel="stylesheet" href="/updis/static/src/css/internal-home.css">'
+# 		css += '\n <link rel="stylesheet" href="/updis/static/src/css/karma-teal-grey.css">'
+# 		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/secondary-teal-grey.css">'
+# 		# css += '\n <link rel="stylesheet" href="/updis/static/src/css/bootstrap-responsive.css">'
+# 		# cookie = req.httprequest.cookies.get("instance0|session_id")
+# 		# session_id = cookie.replace("%22","")
+# 		# template = html_template.replace('<html','<html manifest="/pos/manifest?session_id=%s"'%session_id)
+# 		print js
+# 		r = html_template % {
+# 			'js': js,
+# 			'css': css,
+# 			'modules': simplejson.dumps(module_boot(req)+['updis',]),
+# 			'init': 'var wc = new s.web.InternalHome();wc.appendTo($(document.body));'
+# 		}
+# 		return r
