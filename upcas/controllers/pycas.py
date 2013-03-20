@@ -248,14 +248,14 @@ def validate_cas_1(cas_host, service_url, ticket):
     #  Ticket does not validate, return error
     if response == "no\n":
         f_validate.close()
-        return TICKET_INVALID, "",()
+        return TICKET_INVALID, "", ()
     #  Ticket validates
     else:
         #  Get id
         id = f_validate.readline()
         f_validate.close()
         id = id.strip()
-        return TICKET_OK, id,()
+        return TICKET_OK, id, ()
 
 
 #  Validate ticket using cas 2.0 protocol
@@ -270,16 +270,17 @@ def validate_cas_2(cas_host, service_url, ticket, opt):
     response = f_validate.read()
     print response
     id = parse_tag(response, "cas:user")
+    uid = parse_tag(response, "cas:id")
     db = parse_tag(response, "cas:db")
     password = parse_tag(response, "cas:password")
     login = parse_tag(response, "cas:login")
     lang = parse_tag(response, "cas:lang")
     #  Ticket does not validate, return error
     if id == "":
-        return TICKET_INVALID, "", (db, login, password, lang)
+        return TICKET_INVALID, "", (db, login, password, lang, uid)
     #  Ticket validates
     else:
-        return TICKET_OK, id, (db, login, password, lang)
+        return TICKET_OK, id, (db, login, password, lang, uid)
 
 
 #  Read cookies from env variable HTTP_COOKIE.
@@ -318,7 +319,7 @@ def get_ticket_status(request, cas_host, service_url, protocol, opt):
         else:
             return ticket_status, "", attrs
     else:
-        return TICKET_NONE, "",()
+        return TICKET_NONE, "", ()
         # if cgi.FieldStorage().has_key("ticket"):
         #     ticket = cgi.FieldStorage()["ticket"].value
         #     if protocol == 1:
@@ -384,7 +385,7 @@ def login(req, cas_host, service_url, lifetime=None, secure=1, protocol=2, path=
             domain, path = urlparse.urlparse(service_url)[1:3]
             #  Set cookie expiration in the past to clear the cookie.
             past_date = time.strftime("%a, %d-%b-%Y %H:%M:%S %Z", time.localtime(time.time() - 48 * 60 * 60))
-            return CAS_GATEWAY, "", make_pycas_cookie("", domain, path, secure, past_date),()
+            return CAS_GATEWAY, "", make_pycas_cookie("", domain, path, secure, past_date), ()
 
     #  Do redirect
     do_redirect(cas_host, service_url, opt, secure)
