@@ -1,0 +1,6 @@
+Copy updis.py to openerp\service\
+Copy messages to openerp\service\
+Add follwoing to wsgi_server.py application_unproxied:
+    if environ['PATH_INFO'].startswith('/internal'):
+        result = updis.app.wsgi_app(environ,start_response)
+        return result

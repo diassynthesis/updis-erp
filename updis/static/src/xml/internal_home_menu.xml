@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+    <t t-name="InternalHomeMenu">
+    </t>
+<t t-name="InternalHomeMenu.head">
+    <t t-if="rootmenu.children">
+    	<li t-foreach="rootmenu.children" t-as="menu" t-att-class="menu.children.length>0? 'parent' :''">
+    		<t t-call="InternalHomeMenu.link"/>
+            <t t-if="menu.children.length>0" >
+                <ul class="sub-menu">
+                    <li t-foreach="menu.children" t-as="menu">
+                        <t t-call="InternalHomeMenu.link"/>  
+                    </li>
+                </ul>   
+            </t>        
+    	</li>
+    </t>
+</t>
+<t t-name="InternalHomeMenu.footer">
+    <t t-if="rootmenu.children">
+        <div t-foreach="rootmenu.children" t-as="menu" t-att-class="menu_last? 'one_fifth_last':'one_fifth'">
+            <h3><t t-esc="menu.name"/></h3>
+            <t t-if="menu.children">
+                <t t-call="InternalHomeMenu.footer.secondary"/>
+            </t>
+        </div>
+    </t>
+</t>
+<t t-name="InternalHomeMenu.footer.secondary">
+    <ul>
+        <li t-foreach="menu.children" t-as="menu">
+            <t t-call="InternalHomeMenu.link"/>  
+        </li>
+    </ul>
+</t>
+<t t-name="InternalHomeMenu.link">
+    <a t-attf-href="#menu_id=#{menu.id}&amp;action=#{menu.action ? menu.action.split(',')[1] : ''}"
+        t-att-class="menu.children.length ? 'oe_menu_toggler' : 'oe_menu_leaf'"
+        t-att-data-menu="menu.id"
+        t-att-data-action-model="menu.action ? menu.action.split(',')[0] : ''"
+        t-att-data-action-id="menu.action ? menu.action.split(',')[1] : ''">
+        <span>
+            <strong><t t-esc="menu.name"/></strong>
+        </span>
+        <t t-if="menu.needaction_enabled and menu.needaction_counter">
+            <div class="oe_tag oe_tag_dark oe_menu_counter">
+                <t t-esc="menu.needaction_counter"/>
+            </div>
+        </t>
+    </a>
+</t>
+
+</template>

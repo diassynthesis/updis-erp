@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<record model="ir.actions.server" id="ir_actions_server_create_sms_for_page">
+			<field name="name">Create SMS from page</field>
+			<field eval="6" name="sequence"/>
+			<field name="model_id" search="[('model','=','document.page')]"/>
+			<field name="state">object_create</field>
+			<field name="condition">obj.type=='content' and obj.category_allow_send_sms</field>
+			<field name="srcmodel_id" ref="sms.model_sms_sms"></field>			
+		</record>
+		<record model="ir.server.object.lines" id="object_line_content">
+			<field name="server_id" ref="ir_actions_server_create_sms_for_page" />
+			<field name="col1" search="[('model','=','sms.sms'),('name','=','content')]"></field>
+			<field name="type">equation</field>
+			<field name="value">obj.sms_content and obj.sms_content or obj.name</field>
+		</record>
+		<record model="ir.server.object.lines" id="object_line_to">
+			<field name="server_id" ref="ir_actions_server_create_sms_for_page" />
+			<field name="col1" search="[('model','=','sms.sms'),('name','=','to')]"></field>
+			<field name="type">equation</field>
+			<field name="value">",".join([user.mobile_phone for user in obj.sms_receivers])</field>
+		</record>
+		<record model="workflow" id="wkf_document_page">
+			<field name="name">workflow.document.page.create_sms</field>
+			<field name="osv">document.page</field>
+			<field name="on_create">True</field>			
+		</record>
+
+		<record model="workflow.activity" id="act_draft">
+			<field name="wkf_id" ref="wkf_document_page"></field>
+			<field name="flow_start">True</field>
+			<field name="kind">dummy</field>
+			<field name="name">Create SMS From Page</field>
+			<field name="action_id" ref="ir_actions_server_create_sms_for_page" />
+		</record>
+	</data>
+</openerp>

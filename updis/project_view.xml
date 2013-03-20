@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+	<data>
+		<record id="project_assignment_search" model="ir.ui.view">
+			<field name="name">project.assignment.search</field>
+			<field name="model">project.assignment</field>
+			<field name="arch" type="xml">
+				<search string="Project Assignment">
+					<field name="project_id" string="Project"/>
+					<field name="duty_id" string="Duty"/>
+					<field name="profession_id" string="Profession"/>
+					<group expand="0" string="Group By...">
+						<filter string="Project" icon="terp-folder-orange" domain="" context="{'group_by':'project_id'}"/>
+						<filter string="Profession" icon="terp-folder-orange" domain="" context="{'group_by':'profession_id'}"/>
+						<filter string="Duty" icon="terp-folder-orange" domain="" context="{'group_by':'duty_id'}"/>
+					</group>
+				</search>
+			</field>
+		</record>
+		<record id="project_assignment_form" model="ir.ui.view">
+			<field name="name">project.assignment.form</field>
+			<field name="model">project.assignment</field>
+			<field name="arch" type="xml">
+				<form version="7.0" string="Project Assignment Form">
+					<group col="4">
+						<field name="duty_id"/>
+						<field name="profession_id"/>
+						<field name="project_id"/>
+					</group>
+				</form>
+			</field>
+		</record>
+
+		<record id="project_assignment_tree" model="ir.ui.view">
+			<field name="name">project.assignment.tree</field>
+			<field name="model">project.assignment</field>
+			<field name="arch" type="xml">
+				<tree string="项目分工">
+					<field name="duty_id"/>
+					<field name="profession_id"/>
+					<field name="project_id"/>
+				</tree>
+			</field>
+		</record>
+		<record id="edit_updis_project" model="ir.ui.view">
+			<field name="name">project.project.updisform</field>
+			<field name="model">project.project</field>
+			<field name="priority">10</field>
+			<field name="arch" type="xml">
+				<form string="Project" version="7.0">
+					<header>
+						<button name="action_suozhangshenpi" string="所长审批申请单" states="open" type="object"/>
+						<button name="action_jingyingshishenpi" string="经营室审批申请单" states="suozhangshenpi" type="object"/>
+						<button name="action_zongshishishenpi" string="总师室审批申请单" states="zhidingbumen" type="object"/>
+						<button name="action_suozhangqianzishenpi" string="所长签字审批申请单" states="zhidingfuzeren" type="object"/>
+						<button name="action_fuzerenqidong" string="负责人启动" states="suozhangqianzi" type="object"/>
+						<field name="state" widget="statusbar" statusbar_colors='{"open":"blue"}' readonly="1"/>
+					</header>
+					<sheet string="Project">
+						<field name="analytic_account_id" invisible="1" required="0"/>
+						<div class="oe_title">
+							<label for="name" class="oe_edit_only" string="Project Name"/>
+							<h1>
+								<field name="name" string="Project Name"/>
+							</h1>
+							<div name="options_active">
+								<field name="use_tasks" class="oe_inline" invisible="1" />
+								<label for="use_tasks" invisible="1" />
+							</div>
+						</div>
+						<div class="oe_right oe_button_box" name="buttons" groups="base.group_user">
+							<button name="%(project.act_project_project_2_project_task_all)d" string="Tasks"
+								type="action" attrs="{'invisible':[('use_tasks','=', 0)]}"/>
+							<button name="attachment_tree_view" string="Documents" type="object"/>
+						</div>
+						<group>
+							<group col="4">
+								<field name="country_id" class="oe_no_button" on_change="onchange_country(country_id)" options="{'no_open':True}"/>
+								<field name="state_id" class="oe_no_button" options="{'no_open':True}"/>
+								<field name="city"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+		<record id="edit_project_inherit" model="ir.ui.view">
+			<field name="name">project.project.form.inherit</field>
+			<field name="model">project.project</field>
+			<field name="inherit_id" ref="project.edit_project" />
+			<field name="arch" type="xml">
+				<xpath expr="//header" position="replace">
+					<header>
+						<button name="action_suozhangshenpi" string="所长审批申请单" states="open" type="object"/>
+						<button name="action_jingyingshishenpi" string="经营室审批申请单" states="suozhangshenpi" type="object"/>
+						<button name="action_zongshishishenpi" string="总师室审批申请单" states="zhidingbumen" type="object"/>
+						<button name="action_suozhangqianzishenpi" string="所长签字审批申请单" states="zhidingfuzeren" type="object"/>
+						<button name="action_fuzerenqidong" string="负责人启动" states="suozhangqianzi" type="object"/>
+						<field name="state" widget="statusbar" statusbar_colors='{"open":"blue"}' readonly="1"/>
+					</header>
+				</xpath>
+				<xpath expr="//field[@name='user_id']" position="after">
+					<field name="xiangmubianhao" readonly="1" />
+				</xpath>
+				<xpath expr="//page[last()]" position="after">	
+					<page string="Project Category">
+						<field name="categories_id"/>					
+					</page>
+				</xpath>
+				<xpath expr="//page[@name='team']" position="after">
+					<page string="Project Info" name="project_info">
+						<group>
+							<group string="基本信息">
+								<field name="state_id" class="oe_no_button" placeholder="State" options="{&quot;no_open&quot;: True}"/>
+								<field name="city"/>
+								<field name="guimo"/>
+								<field name="jianyishejibumen_id"/>
+								<field name="jianyixiangmufuzeren_id"/>
+								<field name="jiafang_id"/>	
+								<field name="waibao"/>
+								<field name="shizhenpeitao"/>
+								<field name="duofanghetong"/>
+								<field name="shifoutoubiao"/>
+							</group>
+
+							<group string="所长审批内容">
+								<!-- 所长审批内容 -->
+								<field name="yaoqiuxingchengwenjian"/>	
+								<field name="yinhanyaoqiu"/>	
+								<field name="difangfagui"/>		
+								<field name="fujiayaoqiu"/>		
+								<field name="hetongyizhi"/>	
+								<field name="ziyuan"/>		
+								<field name="shebei"/>		
+								<field name="gongqi"/>		
+								<field name="shejifei"/>
+							</group>
+							<group string="明示要求">
+								<!-- 明示要求 -->
+								<field name="zhaobiaoshu" />		
+								<field name="weituoshu" />	
+								<field name="xieyicaoan" />		
+								<field name="koutouyaoqiujilu" />
+							</group>
+							<group string="经营室指定设计部门">
+								<field name="pingshenfangshi"/>	
+								<field name="yinfacuoshi"/>	
+								<field name="renwuyaoqiu"/>	
+								<field name="chenjiebumen_id"/>
+							</group>
+							<group string="总师室指定项目负责人">
+								<field name="toubiaoleibie"/>
+								<field name="guanlijibie"/>
+								<field name="chenjiefuzeren_id"/>
+								<field name="zhuguanzongshi_id"/>
+							</group>
+						</group>
+					</page>
+				</xpath>
+				<xpath expr="//page[@name='team']" position="replace"></xpath>
+			</field>
+		</record>
+	</data>
+</openerp>
