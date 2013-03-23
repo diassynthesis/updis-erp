@@ -1,3 +1,4 @@
+
 #!/usr/bin/python
 
 #  Debug
@@ -7,13 +8,13 @@
 ## sys.stderr = sys.stdout
 
 #  Copyright 2011 Jon Rifkin
-# 
+#
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
 #  You may obtain a copy of the License at
-# 
+#
 #      http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 #  Unless required by applicable law or agreed to in writing, software
 #  distributed under the License is distributed on an "AS IS" BASIS,
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,7 +38,7 @@
 #
 #  Required Parameters
 #
-#      - CAS_SERVER : the url of your CAS server 
+#      - CAS_SERVER : the url of your CAS server
 #                     (for example, https://login.yoursite.edu).
 #      - THIS_SCRIPT: the url of the calling python cgi script.
 #
@@ -45,14 +46,14 @@
 #
 #      - status:  return code, 0 for success.
 #      - id    :  the user name returned by cas.
-#      - cookie:  when non-blank, send this cookie to the client's 
+#      - cookie:  when non-blank, send this cookie to the client's
 #                 browser so it can authenticate for the rest of the
 #                 session.
 #
 #  Optional Parmaters:
-#      - lifetime:  lifetime of the cookie in seconds, enforced by pycas. 
+#      - lifetime:  lifetime of the cookie in seconds, enforced by pycas.
 #                   Default is 0, meaning unlimited lifetime.
-#      - path:      Authentication cookie applies for all urls under 'path'. 
+#      - path:      Authentication cookie applies for all urls under 'path'.
 #                   Defaults to "/" (all urls).
 #      - protocol:  CAS protocol version.  Default is 2.  Can be set to 1.
 #      - secure:    Default is 1, which authenticates for https connections only.
@@ -102,6 +103,8 @@ CAS_MSG = (
     "CAS server ticket invalid.",
     "CAS server returned without ticket while in gateway mode.",
 )
+CAS_SERVER = "https://zhouguangwen-pc:8443"
+SERVICE_URL = "http://zhouguangwen-pc:8069"
 
 ###Optional log file for debugging
 ###LOG_FILE="/tmp/cas.log"
@@ -159,7 +162,8 @@ def makehash(str, secret=SECRET):
 
 #  Form cookie
 def make_pycas_cookie(val, domain, path, secure, expires=None):
-    cookie = "Set-Cookie: %s=%s;domain=%s;path=%s" % (PYCAS_NAME, val, domain, path)
+    cookie = "%s;domain=%s;path=%s" % (val, domain, path)
+    # cookie = "%s=%s;path=%s"%(PYCAS_NAME,val,path)
     if secure:
         cookie += ";secure"
     if expires:
@@ -183,7 +187,7 @@ If your browser does not redirect you, then please follow <a href="%s">this link
     raise SystemExit
 
 
-#  Retrieve id from pycas cookie and test data for validity 
+#  Retrieve id from pycas cookie and test data for validity
 # (to prevent mailicious users from falsely authenticating).
 #  Return status and id (id will be empty string if unknown).
 def decode_cookie(cookie_vals, lifetime=None):
@@ -235,7 +239,9 @@ def decode_cookie(cookie_vals, lifetime=None):
     if COOKIE_GATEWAY in cookie_attrs:
         return COOKIE_GATEWAY, ""
         #  If we've gotten here, there should be only one attribute left.
-    return cookie_attrs[0], ""
+    if cookie_attrs:
+        return cookie_attrs[0], ""
+    return "", ""
 
 
 #  Validate ticket using cas 1.0 protocol
@@ -309,7 +315,7 @@ def get_cookie_status(request):
 
 def get_ticket_status(request, cas_host, service_url, protocol, opt):
     if request.params.has_key("ticket"):
-        ticket = request.params.get("ticket")
+        ticket = request.params.pop("ticket")
         if protocol == 1:
             ticket_status, id, attrs = validate_cas_1(cas_host, service_url, ticket, opt)
         else:
@@ -354,10 +360,10 @@ def login(req, cas_host, service_url, lifetime=None, secure=1, protocol=2, path=
     cookie_status, id = get_cookie_status(req)
 
     if cookie_status == COOKIE_AUTH:
-        return CAS_OK, id, ""
+        return CAS_OK, id, "", ()
 
     if cookie_status == COOKIE_INVALID:
-        return CAS_COOKIE_INVALID, "", ""
+        return CAS_COOKIE_INVALID, "", "", ()
 
     #  Check ticket ticket returned by CAS server, ticket status can be
     #     TICKET_OK      - a valid authentication ticket from CAS server
@@ -432,8 +438,8 @@ td {background-color: #dddddd; padding: 4px}
 <p>
 <b>Parameters sent from browser</b>
 <table>
-<tr> <td>Ticket</td> <td>%s</td> </tr> 
-<tr> <td>Cookie</td> <td>%s</td> </tr> 
+<tr> <td>Ticket</td> <td>%s</td> </tr>
+<tr> <td>Cookie</td> <td>%s</td> </tr>
 </table>
 </p>""" % (ticket, in_cookie)
 
