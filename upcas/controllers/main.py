@@ -1,3 +1,4 @@
+import urllib
 from openerp.addons.web.controllers.main import set_cookie_and_redirect
 
 __author__ = 'Zhou Guangwen'
@@ -42,7 +43,7 @@ class CASController(openerpweb.Controller):
                     req.session.authenticate(db, login, password, env)
 
                     ret = self.session_info(req)
-                    ret.update({'password':password})
+                    ret.update({'password': password})
                     return ret
                 else:
                     return self.cas_login_info(req, path)
@@ -51,30 +52,13 @@ class CASController(openerpweb.Controller):
         except SystemExit:
             return self.cas_login_info(req, path)
 
-    @openerpweb.httprequest
-    def callback(self, req, *args, **kwargs):
-        status, uid, cookies, attrs = pycas.login(req, pycas.CAS_SERVER, pycas.SERVICE_URL)
-        print status, uid, cookies
-        db, login, password, lang, uid = attrs
-        wsgienv = req.httprequest.environ
-        env = dict(
-            base_location=None,
-            HTTP_HOST=wsgienv['HTTP_HOST'],
-            REMOTE_ADDR=wsgienv['REMOTE_ADDR'],
-        )
-        ret = req.session.authenticate(db, login, password, env)
-        return "%s" % ret
-
-    # @openerpweb.httprequest
-    # def cas_login(self, req):
-    #     try:
-    #         status, uid, cookies, attrs = pycas.login(req, pycas.CAS_SERVER, pycas.SERVICE_URL)
-    #         return werkzeug.utils.redirect("/")
-    #     except SystemExit, e:
-    #         redirect = werkzeug.utils.redirect("%s/cas/login?service=%s" % (pycas.CAS_SERVER, pycas.SERVICE_URL))
-    #         return redirect
-
-    @openerpweb.httprequest
-    def foo(self, req):
-        req.session.authenticate("updis", "admin", "Freeborders#1", {})
-        return werkzeug.utils.redirect("/")
+    @openerpweb.jsonrequest
+    def cas_logout(self, req):
+        return {
+            'logout_url':pycas.CAS_SERVER + "/cas/logout"
+        }
+        # response = urllib.urlopen(pycas.CAS_SERVER + "/cas/logout")
+        # response = response.read()
+        # return {
+        #     "response": response
+        # }

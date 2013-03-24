@@ -1,70 +1,7 @@
 
 #!/usr/bin/python
-
-#  Debug
-## import os
-## print "Content-type: text/html\n"
-## import sys
-## sys.stderr = sys.stdout
-
-#  Copyright 2011 Jon Rifkin
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-
-
-
-
-#-----------------------------------------------------------------------
-#  Usage
-#-----------------------------------------------------------------------
-#
-#  Purpose
-#      Authenticate users against a CAS server from your python cgi scripts.
-#
-#  Using in your script
-#
-#      import pycas
-#      status, id, cookie = pycas.login(CAS_SERVER,THIS_SCRIPT)
-#
-#  Required Parameters
-#
-#      - CAS_SERVER : the url of your CAS server
-#                     (for example, https://login.yoursite.edu).
-#      - THIS_SCRIPT: the url of the calling python cgi script.
-#
-#  Returned Values
-#
-#      - status:  return code, 0 for success.
-#      - id    :  the user name returned by cas.
-#      - cookie:  when non-blank, send this cookie to the client's
-#                 browser so it can authenticate for the rest of the
-#                 session.
-#
-#  Optional Parmaters:
-#      - lifetime:  lifetime of the cookie in seconds, enforced by pycas.
-#                   Default is 0, meaning unlimited lifetime.
-#      - path:      Authentication cookie applies for all urls under 'path'.
-#                   Defaults to "/" (all urls).
-#      - protocol:  CAS protocol version.  Default is 2.  Can be set to 1.
-#      - secure:    Default is 1, which authenticates for https connections only.
-#      - opt:       set to 'renew' or 'gateway' for these CAS options.
-#
-#        Examples:
-#          status, id, cookie = pycas.login(CAS_SERVER,THIS_SCRIPT,protocol=1,secure=0)
-#          status, id, cookie = pycas.login(CAS_SERVER,THIS_SCRIPT,path="/cgi-bin/accts")
-#
-#   Status Codes are listed below.
-#
+# Based on the pycas client from official site.
+# Author Shrek (zgwmike@hotmail.com)
 
 #-----------------------------------------------------------------------
 #  Constants
