@@ -405,17 +405,19 @@ def get_connection(hostname=None, protocol="xmlrpc", port='auto', database=None,
 
 
 def do_import_user(img_path):
-    server = get_connection('113.108.103.13', database='updis', login='admin', password='Freeborders#1')
+    server = get_connection('localhost', database='test', login='admin', password='admin')
     model_model = server.get_model('ir.model.data')
     user_model = server.get_model('res.users')
     for path in os.listdir(img_path):
         if path.startswith('P_'):
             external_id = path[2:-4]
             print external_id
+            i = 0
             for r in model_model.search_read([('model', '=', 'res.users'), ('name', '=', 'USR_' + external_id)],
                                              ['res_id']):
                 user_id = r.get('res_id')
-                print user_id
+                i = i + 1
+                print '%d %s' % (i, user_id)
                 img_encoded = base64.encodestring(open(os.path.join(img_path, path), 'rb').read())
                 try:
                     user_model.write(user_id, {'image': img_encoded})
@@ -425,17 +427,19 @@ def do_import_user(img_path):
 
 
 def do_import_employee(img_path):
-    server = get_connection('113.108.103.13', database='updis', login='admin', password='Freeborders#1')
+    server = get_connection('localhost', database='test', login='admin', password='admin')
     model_model = server.get_model('ir.model.data')
     user_model = server.get_model('hr.employee')
     for path in os.listdir(img_path):
         if path.startswith('P_'):
             external_id = path[2:-4]
             print external_id
+            i = 0
             for r in model_model.search_read([('model', '=', 'hr.employee'), ('name', '=', 'EMP_' + external_id)],
                                              ['res_id']):
                 user_id = r.get('res_id')
-                print user_id
+                i = i + 1
+                print '%d %s' % (i, user_id)
                 img_encoded = base64.encodestring(open(os.path.join(img_path, path), 'rb').read())
                 try:
                     user_model.write(user_id, {'image': img_encoded})
@@ -443,6 +447,9 @@ def do_import_employee(img_path):
                     print 'image upload failed! %s ' % user_id
                 print 'Image uploaded for user user_id %s' % user_id
 
+
 if __name__ == '__main__':
-	#do_import_employee(sys.argv[1])
-	do_import_user(sys.argv[1])
+#do_import_employee(sys.argv[1])
+# do_import_user(sys.argv[1])
+#     do_import_user('/home/cysnake4713/share/sql/PhotoImages/')
+    do_import_employee('/home/cysnake4713/share/sql/PhotoImages/')
