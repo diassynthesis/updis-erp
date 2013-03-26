@@ -7,6 +7,7 @@
   $.cleditor.buttons.fileuploader = {
     name: "fileuploader",
     // image: "fileuploader.gif",
+    stripIndex: 28,
     title: "Add File",
     command: "inserthtml",
     popupName: "fileuploader",
@@ -40,6 +41,7 @@
   $.cleditor.buttons.imageuploader = {
     name: "imageuploader",
     // image: "imageuploader.gif",
+    stripIndex: 23,
     title: "Add Image",
     command: "inserthtml",
     popupName: "imageuploader",
