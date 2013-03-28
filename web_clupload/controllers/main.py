@@ -34,7 +34,7 @@ class InternalHome(openerp.addons.web.http.Controller):
 		try:	
 			args = self._create_attachment(req,qqfile,True)		
 			# model, id, field, **kw
-			url = '%s/web/binary/image?session_id=%s&model=ir.attachment&field=datas&id=%s'%(req.httprequest.url_root, req.session_id, args['id'])
+			url = '%sweb/binary/image?session_id=%s&model=ir.attachment&field=datas&id=%s'%(req.httprequest.url_root, req.session_id, args['id'])
 			args['url'] = url
 		except Exception, e:
 			args = { 'error': e.message}
@@ -44,7 +44,7 @@ class InternalHome(openerp.addons.web.http.Controller):
 		try:	
 			args = self._create_attachment(req,qqfile)		
 			# model, field, id=None, filename_field=None, **kw)
-			url = '%s/web/binary/saveas?session_id=%s&model=ir.attachment&field=datas&filename_field=datas_fname&id=%s'%(req.httprequest.url_root, req.session_id, args['id'])
+			url = '%sweb/binary/saveas?session_id=%s&model=ir.attachment&field=datas&filename_field=datas_fname&id=%s'%(req.httprequest.url_root, req.session_id, args['id'])
 			args['url'] = url
 		except Exception, e:
 			args = { 'error': e.message}

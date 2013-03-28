@@ -11,7 +11,8 @@
 					<field name="display_in_front"/>
 					<field name="sequence"/>
 					<field name="code" />
-				</xpath>
+                    <field name="image_medium" widget='image'/>
+                </xpath>
 			</field>
 		</record>
 		<!-- <record id="view_department_tree_inherit" model="ir.ui.view">
