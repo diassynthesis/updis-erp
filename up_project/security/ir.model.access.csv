@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_up_project_project,up.project.project,model_up_project_project,up_project.group_up_project_user,1,1,1,0
+project_upcategory_all,project.project_upcategory,model_project_upcategory,,1,0,0,0

@@ -1,4 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 internal_home_all,internal.home.menu,model_internal_home_menu,,1,0,0,0
 hr_department_all,hr.department,model_hr_department,,1,0,0,0
-project_upcategory_all,project.project_upcategory,model_project_upcategory,,1,0,0,0
