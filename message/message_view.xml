@@ -1,145 +1,352 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-	<data>
-		<menuitem name="Message Management" id="base.menu_main_message" sequence="120"/>
-		<menuitem name="Message" parent="base.menu_main_message" id="message" sequence="40"/>
-		<record id="action_messages" model="ir.actions.act_window">
-			<field name="name">Messages</field>
-			<field name="res_model">message.message</field>
-			<field name="view_type">form</field>
-			<field name="view_mode">tree,form</field>
-		</record>
-		<record id="action_message_categories" model="ir.actions.act_window">
-			<field name="name">Message categories</field>
-			<field name="res_model">message.category</field>
-			<field name="view_type">form</field>
-			<field name="view_mode">tree,form</field>
-		</record>
-		<menuitem name="Messages" id="message_message" parent="message" action="action_messages"/>
-		<menuitem name="Message categories" id="message_category" parent="message" action="action_message_categories"/>
-		<record id="form_message_message" model="ir.ui.view">
-			<field name="name">form.message.message</field>
-			<field name="model">message.message</field>
-			<field name="arch" type="xml">
-				<form string="Message" version="7.0">
-					<h1><field name="name" placeholder="消息标题"/></h1>
-					<div class="oe_document_page">
-						<field name="message_meta_display" widget="html"/>
-					</div>
-					<group class="oe_edit_only">
-						<group col="4">
-							<field name="is_allow_send_sms" invisible="1"/>
-							<field name="is_allow_sms_receiver" invisible="1"/>
-							<field name="category_id" on_change="onchange_category(category_id)"/>
-							<field name="sequence"/>
-							<field name="is_display_name"/>
-							<field name="fbbm"/>
-							<field name="read_times" readonly="1"/>
-							<field name="expire_date"/>
-							<field name="name_for_display"/>
-						</group>
-					</group>
-					<group attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
-						<group>
-							<div>
-								<label for="sms"/>
-								<field name="sms"/>
-								<label for="sms_receiver_ids" attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
-								<field name="sms_receiver_ids" attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
-									<tree editable="bottom" string="SMS Receivers">
-										<field name="name" string="人员"/>
-										<field name="mobile"/>
-									</tree>
-								</field>
-							</div>
-						</group>
-					</group>
-					<field name="content" widget="html" /> 
-					<div class="oe_chatter">
-						<!--<field name="message_follower_ids" widget="mail_followers" help="Follow this project to automatically follow all related update and comments."/>-->
-						<field name="message_ids" widget="mail_thread"/>
-					</div>
-				</form>
-			</field>
-		</record>
-		<record id="tree_message_message" model="ir.ui.view">
-			<field name="name">tree.message.message</field>
-			<field name="model">message.message</field>
-			<field name="arch" type="xml">
-				<tree string="Message">
-					<field name="name"/>
-					<field name="category_id"/>
-					<field name="fbbm"/>
-					<field name="read_times"/>
-					<field name="name_for_display"/>
-				</tree>
-			</field>
-		</record>
+    <data>
+        <!--message_category -->
+        <record id="search_message_category" model="ir.ui.view">
+            <field name="name">message.category.search</field>
+            <field name="model">message.category</field>
+            <field name="arch" type="xml">
+                <search string="Message Category Search">
+                    <field name="name"/>
+                    <group expand="1" string="Group by...">
+                        <filter name="by-status" string="Is in use" domain="[]" context="{'group_by':'is_in_use'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="form_message_category" model="ir.ui.view">
+            <field name="name">message.category.form</field>
+            <field name="model">message.category</field>
+            <field name="arch" type="xml">
+                <form string="Message Category" version="7.0">
+                    <h1>
+                        <field name="name" placeholder="消息分类名称"/>
+                    </h1>
+                    <group>
+                        <group col="4">
+                            <field name="is_anonymous_allowed"/>
+                            <field name="display_position"/>
+                            <field name="message_meta"/>
+                            <field name="category_message_title_meta"/>
+                            <field name="category_message_title_size"/>
+                            <field name="default_message_count"/>
+                            <field name="sequence"/>
+                            <field name="is_in_use"/>
+                            <newline/>
+                            <field name="is_allow_send_sms" on_change="onchange_is_allow_send_sms(is_allow_send_sms)"/>
+                        </group>
+                    </group>
+                    <group attrs="{'invisible':[('is_allow_send_sms','=',False)]}">
+                        <div>
+                            <field name="is_allow_sms_receiver" nolabel="1"/>
+                            <label for="is_allow_sms_receiver"/>
+                            <separator colspan="2"/>
+                            <label for="default_sms_receiver_ids"/>
+                            <field name="default_sms_receiver_ids" nolabel="1">
+                                <tree editable="bottom" string="SMS Receivers">
+                                    <field name="name" string="人员"/>
+                                    <field name="mobile"/>
+                                </tree>
+                            </field>
+                        </div>
+                    </group>
+                    <label for="display_in_departments" string="在以下部门显示"/>
+                    <field name="display_in_departments">
+                        <tree string="部门">
+                            <field name="name"/>
+                        </tree>
+                    </field>
+                    <label for="category_manager" string="管理员"/>
+                    <field name="category_manager">
+                        <tree string="Category Manager">
+                            <field name="name"/>
+                        </tree>
+                    </field>
+                </form>
+            </field>
+        </record>
+        <record id="tree_message_category" model="ir.ui.view">
+            <field name="name">message.category.tree</field>
+            <field name="model">message.category</field>
+            <field name="arch" type="xml">
+                <tree string="Message Category" version="7.0">
+                    <field name="name"/>
+                    <field name="is_anonymous_allowed"/>
+                    <field name="display_position"/>
+                    <field name="is_in_use"/>
+                </tree>
+            </field>
+        </record>
 
-		<record id="form_message_category" model="ir.ui.view">
-			<field name="name">form.message.category</field>
-			<field name="model">message.category</field>
-			<field name="arch" type="xml">
-				<form string="Message Category" version="7.0">
-					<h1><field name="name" placeholder="消息分类名称"/></h1>
-					<group>
-						<group col="4">
-							<field name="is_anonymous_allowed"/>
-							<field name="display_position"/> 
-							<field name="message_meta"/> 
-							<field name="category_message_title_meta"/> 
-							<field name="category_message_title_size"/> 
-							<field name="default_message_count"/> 
-							<field name="sequence"/> 
-							<newline/>
-							<field name="is_allow_send_sms" on_change="onchange_is_allow_send_sms(is_allow_send_sms)" />
-						</group>
-					</group>
-					<group attrs="{'invisible':[('is_allow_send_sms','=',False)]}">
-						<div>
-							<field name="is_allow_sms_receiver" nolabel="1"/>
-							<label for="is_allow_sms_receiver"/>
-							<separator colspan="2" />
-							<label for="default_sms_receiver_ids"/>
-							<field name="default_sms_receiver_ids" nolabel="1">
-								<tree editable="bottom" string="SMS Receivers">
-									<field name="name" string="人员"/>
-									<field name="mobile"/>
-								</tree>
-							</field>
-						</div>
-					</group>
-					<label for="display_in_departments" string="在以下部门显示"/>
-					<field name="display_in_departments" >
-						<tree string="部门">
-							<field name="name"/>
-						</tree>
-					</field>
-				</form>
-			</field>
-		</record>
-		<record id="tree_message_category" model="ir.ui.view">
-			<field name="name">tree.message.category</field>
-			<field name="model">message.category</field>
-			<field name="arch" type="xml">
-				<tree string="Message Category" version="7.0">
-					<field name="name"/>
-					<field name="is_anonymous_allowed"/>
-					<field name="display_position"/>
-				</tree>
-			</field>
-		</record>
-		<record id="search_message_message" model="ir.ui.view">
-			<field name="name">search.message.message</field>
-			<field name="model">message.message</field>
-			<field name="arch" type="xml">
-				<search string="Message Filter">
-					<group expand="0" string="Group by...">
-						<filter string="Category" domain="[]" context="{'group_by':'category_id'}"/>
-						<filter string="Publisher" domain="[]" context="{'group_by':'fbbm'}"/>
-					</group>
-				</search>
-			</field>
-		</record>
-	</data>
+        <!--message -->
+        <record id="search_message_message" model="ir.ui.view">
+            <field name="name">message.message.search</field>
+            <field name="model">message.message</field>
+            <field name="arch" type="xml">
+                <search string="Message Filter">
+                    <field name="name"/>
+                    <group expand="0" string="Group by...">
+                        <filter name="by-category" string="Category" domain="[]" context="{'group_by':'category_id'}"/>
+                        <filter name="by-publisher" string="Publisher" domain="[]" context="{'group_by':'fbbm'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="tree_message_message" model="ir.ui.view">
+            <field name="name">message.message.tree</field>
+            <field name="model">message.message</field>
+            <field name="arch" type="xml">
+                <tree string="Message">
+                    <field name="name"/>
+                    <field name="create_date"/>
+                    <field name="category_id"/>
+                    <field name="read_times"/>
+                    <field name="name_for_display"/>
+                </tree>
+            </field>
+        </record>
+        <record id="form_message_message_my" model="ir.ui.view">
+            <field name="name">message.message.form</field>
+            <field name="model">message.message</field>
+            <field name="arch" type="xml">
+                <form string="Message" version="7.0">
+                    <h1>
+                        <field name="name" placeholder="消息标题"/>
+                    </h1>
+                    <div class="oe_document_page">
+                        <field name="message_meta_display" widget="html"/>
+                    </div>
+                    <group class="oe_edit_only">
+                        <group col="4">
+                            <field name="is_allow_send_sms" invisible="1"/>
+                            <field name="is_allow_sms_receiver" invisible="1"/>
+                            <field name="category_id" domain="[('name','in',[u'通知',u'畅所欲言',u'服务申报'])]"
+                                   on_change="onchange_category(category_id)"/>
+                            <field name="sequence"/>
+                            <field name="is_display_name"/>
+                            <field name="fbbm"/>
+                            <field name="read_times" readonly="1"/>
+                            <field name="expire_date"/>
+                            <field name="name_for_display"/>
+                        </group>
+                    </group>
+                    <group attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
+                        <group>
+                            <div>
+                                <label for="sms"/>
+                                <field name="sms"/>
+                                <label for="sms_receiver_ids"
+                                       attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
+                                <field name="sms_receiver_ids"
+                                       attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
+                                    <tree editable="bottom" string="SMS Receivers">
+                                        <field name="name" string="人员"/>
+                                        <field name="mobile"/>
+                                    </tree>
+                                </field>
+                            </div>
+                        </group>
+                    </group>
+                    <field name="content" widget="html"/>
+                    <div class="oe_chatter">
+                        <!--<field name="message_follower_ids" widget="mail_followers" help="Follow this project to automatically follow all related update and comments."/>-->
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="form_message_message_manager" model="ir.ui.view">
+            <field name="name">message.message.form</field>
+            <field name="model">message.message</field>
+            <field name="arch" type="xml">
+                <form string="Message" version="7.0">
+                    <h1>
+                        <field name="name" placeholder="消息标题"/>
+                    </h1>
+                    <div class="oe_document_page">
+                        <field name="message_meta_display" widget="html"/>
+                    </div>
+                    <group class="oe_edit_only">
+                        <group col="4">
+                            <field name="is_allow_send_sms" invisible="1"/>
+                            <field name="is_allow_sms_receiver" invisible="1"/>
+                            <field name="category_id" domain="[('category_manager.id','=',uid)]"
+                                   on_change="onchange_category(category_id)"/>
+                            <field name="sequence"/>
+                            <field name="is_display_name"/>
+                            <field name="fbbm"/>
+                            <field name="read_times" readonly="1"/>
+                            <field name="expire_date"/>
+                            <field name="name_for_display"/>
+                        </group>
+                    </group>
+                    <group attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
+                        <group>
+                            <div>
+                                <label for="sms"/>
+                                <field name="sms"/>
+                                <label for="sms_receiver_ids"
+                                       attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
+                                <field name="sms_receiver_ids"
+                                       attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
+                                    <tree editable="bottom" string="SMS Receivers">
+                                        <field name="name" string="人员"/>
+                                        <field name="mobile"/>
+                                    </tree>
+                                </field>
+                            </div>
+                        </group>
+                    </group>
+                    <field name="content" widget="html"/>
+                    <div class="oe_chatter">
+                        <!--<field name="message_follower_ids" widget="mail_followers" help="Follow this project to automatically follow all related update and comments."/>-->
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="form_message_message_admin" model="ir.ui.view">
+            <field name="name">message.message.form</field>
+            <field name="model">message.message</field>
+            <field name="arch" type="xml">
+                <form string="Message" version="7.0">
+                    <h1>
+                        <field name="name" placeholder="消息标题"/>
+                    </h1>
+                    <div class="oe_document_page">
+                        <field name="message_meta_display" widget="html"/>
+                    </div>
+                    <group class="oe_edit_only">
+                        <group col="4">
+                            <field name="is_allow_send_sms" invisible="1"/>
+                            <field name="is_allow_sms_receiver" invisible="1"/>
+                            <field name="category_id" on_change="onchange_category(category_id)"/>
+                            <field name="sequence"/>
+                            <field name="is_display_name"/>
+                            <field name="fbbm"/>
+                            <field name="read_times" readonly="1"/>
+                            <field name="expire_date"/>
+                            <field name="name_for_display"/>
+                        </group>
+                    </group>
+                    <group attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
+                        <group>
+                            <div>
+                                <label for="sms"/>
+                                <field name="sms"/>
+                                <label for="sms_receiver_ids"
+                                       attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
+                                <field name="sms_receiver_ids"
+                                       attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
+                                    <tree editable="bottom" string="SMS Receivers">
+                                        <field name="name" string="人员"/>
+                                        <field name="mobile"/>
+                                    </tree>
+                                </field>
+                            </div>
+                        </group>
+                    </group>
+                    <field name="content" widget="html"/>
+                    <div class="oe_chatter">
+                        <!--<field name="message_follower_ids" widget="mail_followers" help="Follow this project to automatically follow all related update and comments."/>-->
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <menuitem name="Message Management" id="menu_message_root" sequence="120"/>
+        <menuitem name="Message" parent="menu_message_root" id="menu_message_message" sequence="40"/>
+        <menuitem name="Message Category" parent="menu_message_root" id="menu_message_message_category" sequence="80"/>
+        <record id="action_internal_messages" model="ir.actions.act_window">
+            <field name="name">Internal Messages</field>
+            <field name="res_model">message.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">
+                [('category_id.category_manager.id','=',uid),('department_id.member_ids.user_id','=',uid)]
+            </field>
+            <field name="context">{'search_default_by-category':1}</field>
+            <field name="search_view_id" ref="search_message_message"/>
+        </record>
+        <record id="action_all_messages" model="ir.actions.act_window">
+            <field name="name">All Messages</field>
+            <field name="res_model">message.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('category_id.category_manager.id','=',uid)]</field>
+            <field name="context">{'search_default_by-category':1}</field>
+            <field name="search_view_id" ref="search_message_message"/>
+        </record>
+        <record id="action_admin_messages" model="ir.actions.act_window">
+            <field name="name">All Messages</field>
+            <field name="res_model">message.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_by-category':1}</field>
+            <field name="search_view_id" ref="search_message_message"/>
+        </record>
+        <record id="action_my_messages" model="ir.actions.act_window">
+            <field name="name">My Messages</field>
+            <field name="res_model">message.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('create_uid','=',uid),('category_id.name','in',[u'通知',u'畅所欲言',u'服务申报'])]</field>
+            <field name="context">{'search_default_by-category':1}</field>
+            <field name="search_view_id" ref="search_message_message"/>
+        </record>
+        <record id="action_message_categories" model="ir.actions.act_window">
+            <field name="name">Message categories</field>
+            <field name="res_model">message.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_by-status':1}</field>
+            <field name="search_view_id" ref="search_message_category"/>
+        </record>
+        <record id="act_view_message_message_my_tree" model="ir.actions.act_window.view">
+            <field name="sequence">16</field>
+            <field name="view_id" ref="tree_message_message"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_my_messages"/>
+        </record>
+        <record id="act_view_message_message_my_form" model="ir.actions.act_window.view">
+            <field name="sequence">17</field>
+            <field name="view_id" ref="form_message_message_my"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_my_messages"/>
+        </record>
+        <record id="act_view_message_message_manager_tree" model="ir.actions.act_window.view">
+            <field name="sequence">16</field>
+            <field name="view_id" ref="tree_message_message"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_all_messages"/>
+        </record>
+        <record id="act_view_message_message_manager_form" model="ir.actions.act_window.view">
+            <field name="sequence">17</field>
+            <field name="view_id" ref="form_message_message_manager"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_all_messages"/>
+        </record>
+        <record id="act_view_message_message_admin_tree" model="ir.actions.act_window.view">
+            <field name="sequence">16</field>
+            <field name="view_id" ref="tree_message_message"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_admin_messages"/>
+        </record>
+        <record id="act_view_message_message_admin_form" model="ir.actions.act_window.view">
+            <field name="sequence">17</field>
+            <field name="view_id" ref="form_message_message_admin"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_admin_messages"/>
+        </record>
+        <menuitem name="My Messages" id="menu_message_message_my_act" parent="menu_message_message"
+                  action="action_my_messages"/>
+        <menuitem name="All Messages" id="menu_message_message_all_act" parent="menu_message_message"
+                  action="action_all_messages"/>
+        <menuitem name="Admin Messages" id="menu_message_message_admin_act" parent="menu_message_message"
+                  action="action_admin_messages"/>
+        <menuitem name="Internal Messages" id="menu_message_message_internal_act" parent="menu_message_message"
+                  action="action_internal_messages"/>
+        <menuitem name="Message categories detail" id="menu_message_category_detail_act"
+                  parent="menu_message_message_category" action="action_message_categories"/>
+    </data>
 </openerp>

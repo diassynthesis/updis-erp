@@ -28,196 +28,46 @@
 			</table>
 		</div>
 	</t>
-	<t t-name="mail.compose_message">
+    <t t-name="mail.compose_message">
         <div t-if="widget.show_composer and !widget.options.readonly" t-attf-class="oe_msg oe_msg_composer #{widget.thread_level and widget.options.display_indented_thread > -1 ? 'oe_msg_indented' : ''}">
             <div class="oe_msg_left">
                 <img class="oe_msg_icon" alt="User img" t-attf-src="#{widget.avatar}"/>
             </div>
             <div class="oe_msg_center">
                 <div class="oe_msg_content">
+                    <button class="oe_full" title="Open the full mail composer"><span class='oe_e'>&amp;ograve</span></button>
                     <t t-call="mail.thread.list_recipients"/>
                     <textarea class="field_text"></textarea>
                     <input class="oe_is_anonymous" type="checkbox" checked="on">匿名评论</input>
                 </div>
                 <div class="oe_msg_footer">
                     <div class="oe_msg_attachment_list"></div>
-                    <button class="oe_post">Post</button>
+                    <button class="oe_post">
+                        <t t-if="!widget.is_log">Send</t>
+                        <t t-if="widget.is_log">Log a note</t>
+                    </button>
                     <t t-call="mail.compose_message.add_attachment"/>
-                    <!--<a class="oe_cancel oe_e">X</a>-->
                 </div>
             </div>
         </div>
         <div t-if="widget.show_compact_message and !widget.show_composer and !widget.options.readonly" t-attf-class="oe_msg oe_msg_composer_compact #{widget.thread_level and widget.options.display_indented_thread > -1 ? 'oe_msg_indented' : ''}">
-            <div class="field_text oe_compact">
-                <t t-if="widget.options.compose_placeholder" t-raw="widget.options.compose_placeholder"/>
-                <t t-if="!widget.options.compose_placeholder and !widget.options.view_mailbox">Write to the followers of this document...</t>
-                <t t-if="!widget.options.compose_placeholder and widget.options.view_mailbox">Share with my followers...</t>
-            </div>
+            <t t-if="widget.options.view_mailbox">
+                <div class="field_text oe_compact oe_compact_inbox">
+                    <t t-if="widget.options.compose_placeholder" t-raw="widget.options.compose_placeholder"/>
+                    <t t-if="!widget.options.compose_placeholder and widget.options.view_mailbox">Share with my followers...</t>
+                </div>
+            </t>
+            <t t-if="!widget.options.view_mailbox">
+                <div class="field_text oe_compact oe_compact_record">
+                    <a class="oe_compose_post">
+                        <t t-if="widget.options.compose_placeholder" t-raw="widget.options.compose_placeholder"/>
+                        <t t-if="!widget.options.compose_placeholder and !widget.options.view_mailbox">Send a message</t>
+                    </a>
+                    <span class="oe_grey">or</span>
+                    <a class="oe_compose_log">Log a note</a>
+                </div>
+            </t>
         </div>
         <span t-if="!(widget.show_compact_message and !widget.show_composer) and !widget.show_composer" class="oe_placeholder_compose"></span>
     </t>
-	<t t-name="InternalHome">
-		<div id="wrapper" class="openerp-internal">
-			<div id="header">
-				<div class="top-block">
-					<div class="top-holder">
-						<!-- ***************** - Top Toolbar Left Side - ***************** -->
-						<div class="sub-nav">
-							<ul>
-								<li><a id="link_home" href="#">Backoffice</a></li>
-							</ul>
-						</div>
-						<!-- ***************** - END Top Toolbar Left Side - ***************** -->
-						<!-- ***************** - Top Toolbar Right Side - ***************** -->
-						<div class="oe_topbar sub-nav2" style="background-image:none;background-color:#000;width:auto;">
-
-						</div><!-- end sub-nav2 -->
-					</div>		 
-				</div>
-			</div>
-			<div id="main">
-				<div class="main-area home-main-area">
-					<div class="main-holder home-holder">
-						<div id="content" class="content_full_width openerp">
-							<div id="shortcuts" />
-							<div id="bodyContent" class="oe_application"/>
-						</div>
-					</div>
-				</div>	
-				<div id="footer">
-					<div class="footer-area">
-						<div class="footer-wrapper">
-							<div class="footer-holder">	
-
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</t>
-	<t t-name="InternalHome.head">
-
-		<div class="header-holder">
-			<div class="rays">
-				<div class="header-area">
-					<!-- ***************** - LOGO - ***************** -->
-					<a href="#" class="logo" id="company-logo"><img src="/updis/static/src/img/logo.gif" alt="UPDIS" /> </a>
-					<!-- ***************** - END LOGO - ***************** -->
-
-					<ul id="menu-main-nav">
-
-					</ul>
-				</div>
-			</div>
-		</div>		
-	</t>		
-	<t t-name="InternalHome.news.item.shortcut">
-		<li><a target="_blank" t-attf-title="#{page.name}" t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.category_message_title_meta_display" /></a></li>
-	</t>
-	<t t-name="InternalHome.news.item.content">
-		<p><a target="_blank" t-attf-title="#{page.name}" t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.category_message_title_meta_display" /></a></p>
-	</t>
-	<t t-name="InternalHome.news.item.department">
-		<a target="_blank" t-attf-title="#{page.name}" t-attf-href="#id=#{page.id}&amp;view_type=form&amp;model=message.message" class="page-item" t-att-data-id="page.id"><t t-raw="page.category_message_title_meta_display" /></a>
-	</t>
-	<t t-name="InternalHome.homepage.categories.shortcut">
-		<div id="news">
-			<t t-if="widget.data['shortcut']">
-				<t t-foreach="widget.data['shortcut']" t-as="category">
-					<div t-att-class="(category_index+1)%3==0 &amp;&amp; category_index>0? 'one_third_last':'one_third'">
-						<ul style="list-style:none;padding-left:10px;">
-							<h2><span><t t-esc="category.name" /></span></h2>
-							<t t-foreach="category.children" t-as="page">
-								<t t-call="InternalHome.news.item.shortcut"/>
-							</t>
-						</ul>
-					</div>
-				</t>
-			</t>			
-			<br class="clear" />
-		</div>
-	</t>
-	<t t-name="InternalHome.homepage.categories.content.photo_page">
-		<dl class="short" t-if="category['photo_news']">
-			<dt>
-				<a href="#">
-					<img t-att-src="'data:image/png;base64,'+category['photo_news']['image_medium']"/>
-				</a>
-			</dt>
-
-			<dd>
-				<a href="#"><t t-esc="category['photo_news']['name']"/></a>
-				<p><t t-esc="widget.format(category.photo_news.write_date,{'type':'date'},'-')"/><t t-esc="category['photo_news']['department_id']"/></p>
-				<span />
-			</dd>
-		</dl>
-	</t>
-	<t t-name="InternalHome.homepage.categories.content">		
-		<div id="tabbox" class="one_half">
-			<t t-if="widget.data['content_left']">
-				<ul class="tabs" id="tabs">
-					<li t-foreach="widget.data['content_left']" t-as="category" t-att-class="category_first?'thistab':''">
-						<a href="#"><t t-esc="category.name"/></a>
-					</li>
-				</ul>
-				<ul class="tab_conbox" id="tab_conbox">
-					<li t-foreach="widget.data['content_left']" t-as="category" class="tab_con">	
-						<t t-call="InternalHome.homepage.categories.content.photo_page"/>
-						<div class="nr">
-							<t t-foreach="category.children" t-as="page">
-								<t t-call="InternalHome.news.item.content"/>
-							</t>
-						</div>
-					</li>
-				</ul>
-			</t>
-		</div>
-		<div id="tabbox2" class="one_half_last">
-			<t t-if="widget.data['content_right']">
-				<ul class="tabs" id="tabs2">
-					<li t-foreach="widget.data['content_right']" t-as="category" t-att-class="category_first?'thistab':''">
-						<a href="#"><t t-esc="category.name"/></a>
-					</li>
-				</ul>
-				<ul class="tab_conbox" id="tab_conbox2">
-					<li t-foreach="widget.data['content_right']" t-as="category" class="tab_con">		
-						<t t-call="InternalHome.homepage.categories.content.photo_page"/>
-						<div class="nr">
-							<t t-foreach="category.children" t-as="page">
-								<t t-call="InternalHome.news.item.content"/>
-							</t>
-						</div>
-					</li>
-				</ul>
-			</t>
-		</div>
-	</t>
-	<t t-name="InternalHome.homepage.departments">
-		<t t-if="widget.data['departments']">
-			<div id="tabbox_c" class="clear department-container tabs-container">
-				<a href="#" class="arrow"><img src="/updis/static/src/img/left.gif" /></a>
-				<a href="#" class="arrow_r"><img src="/updis/static/src/img/right.gif" /></a>
-				<ul class="tabs" id="tabs3">
-					<li t-foreach="widget.data['departments']" t-as="department">
-						<a href="#"><t t-esc="department.name" /></a>
-					</li>
-				</ul>
-				<ul class="tab_conbox" id="tab_conbox3">
-					<t t-foreach="widget.data['departments']" t-as="department">					
-						<li class="tab_con">
-							<div class="term">
-								<dl t-foreach="department['categories']" t-as="category" t-att-class="(category_index+1%3)==0 &amp;&amp; category_index>0? 'one_fourth_last':'one_fourth'">
-									<dt><t t-esc="category.name" /></dt>
-									<dd t-foreach="category['pagies']" t-as="page">
-										<t t-call="InternalHome.news.item.department"/>
-									</dd>
-								</dl>
-							</div>
-						</li>
-					</t>
-				</ul>
-			</div>
-		</t>
-	</t>
 </template>

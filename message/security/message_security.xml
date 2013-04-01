@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+        <record model="res.groups" id="message.message_global_manager">
+            <field name="name">Global Manager</field>
+            <field name="category_id" ref="base.module_category_message_management"/>
+            <field name="comment">the user will be able to manage all message stuff .</field>
+        </record>
+        <record model="res.groups" id="message.message_internal_manager">
+            <field name="name">Internal Manager</field>
+            <field name="category_id" ref="base.module_category_message_management"/>
+            <field name="comment">the user will be able to manage message stuff in their own department.</field>
+        </record>
+        <record model="res.groups" id="message.message_admin">
+            <field name="name">Admin</field>
+            <field name="category_id" ref="base.module_category_message_management"/>
+            <field name="comment">the user will be able to admin every message stuff.</field>
+        </record>
+
+        <record model="ir.ui.menu" id="message.menu_message_message_all_act">
+            <field eval="[(4, ref('message.message_global_manager'))]" name="groups_id"/>
+        </record>
+        <record model="ir.ui.menu" id="message.menu_message_message_category">
+            <field eval="[(4, ref('message.message_admin'))]" name="groups_id"/>
+        </record>
+        <record model="ir.ui.menu" id="message.menu_message_category_detail_act">
+            <field eval="[(4, ref('message.message_admin'))]" name="groups_id"/>
+        </record>
+        <record model="ir.ui.menu" id="message.menu_message_message_internal_act">
+            <field eval="[(4, ref('message.message_internal_manager'))]" name="groups_id"/>
+        </record>
+        <record model="ir.ui.menu" id="message.menu_message_message_admin_act">
+            <field eval="[(4, ref('message.message_admin'))]" name="groups_id"/>
+        </record>
+    </data>
+
+
+    <data noupdate="0">
+        <record model="ir.rule" id="message_message_display_role">
+            <field name="name">Message-Message Display Rule</field>
+            <field model="ir.model" name="model_id" ref="model_message_message"/>
+            <field eval="True" name="global"/>
+            <field name="domain_force">[('category_id.is_in_use','=',True)]</field>
+        </record>
+    </data>
+
+</openerp>
