@@ -182,7 +182,7 @@ class Message(osv.Model):
         sms = self.pool.get('sms.sms')
         message = self.pool.get('message.message').browse(cr, uid, mid, context=context)
         if message.is_allow_send_sms:
-            to = ','.join([rid.mobile for rid in message.sms_receiver_ids if rid.mobile])
+            to = ','.join([rid.mobile_phone for rid in message.sms_receiver_ids if rid.mobile_phone])
             if to:
                 content = message.sms and message.sms or message.name
                 sid = sms.create(cr, uid, {'to': to, 'content': content, 'model': 'message.message', 'res_id': mid},
