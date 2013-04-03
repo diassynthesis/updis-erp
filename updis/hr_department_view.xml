@@ -11,6 +11,7 @@
 					<field name="display_in_front"/>
 					<field name="sequence"/>
 					<field name="code" />
+                    <newline/>
                     <field name="image_medium" widget='image'/>
                 </xpath>
 			</field>
