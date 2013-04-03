@@ -262,9 +262,6 @@
             <field name="res_model">message.message</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">
-                [('category_id.category_manager.id','=',uid),('department_id.member_ids.user_id','=',uid)]
-            </field>
             <field name="context">{'search_default_by-category':1}</field>
             <field name="search_view_id" ref="search_message_message"/>
         </record>
