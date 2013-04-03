@@ -45,7 +45,7 @@
                             <field name="default_sms_receiver_ids" nolabel="1">
                                 <tree editable="bottom" string="SMS Receivers">
                                     <field name="name" string="人员"/>
-                                    <field name="mobile"/>
+                                    <field name="mobile_phone"/>
                                 </tree>
                             </field>
                         </div>
@@ -141,7 +141,7 @@
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
                                     <tree editable="bottom" string="SMS Receivers">
                                         <field name="name" string="人员"/>
-                                        <field name="mobile"/>
+                                        <field name="mobile_phone"/>
                                     </tree>
                                 </field>
                             </div>
@@ -191,7 +191,7 @@
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
                                     <tree editable="bottom" string="SMS Receivers">
                                         <field name="name" string="人员"/>
-                                        <field name="mobile"/>
+                                        <field name="mobile_phone"/>
                                     </tree>
                                 </field>
                             </div>
@@ -240,7 +240,7 @@
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
                                     <tree editable="bottom" string="SMS Receivers">
                                         <field name="name" string="人员"/>
-                                        <field name="mobile"/>
+                                        <field name="mobile_phone"/>
                                     </tree>
                                 </field>
                             </div>

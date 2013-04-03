@@ -49,9 +49,11 @@ class MessageCategory(osv.Model):
                                                    domain="[('deleted','=',False)]"),
         'is_allow_send_sms': fields.boolean('Allow send SMS?'),
         'is_allow_sms_receiver': fields.boolean('Allow specify sms receiver?'),
-        'default_sms_receiver_ids': fields.many2many('res.users', string='Default SMS Receivers'),
+        'default_sms_receiver_ids': fields.many2many("hr.employee", "message_category_hr_employee_rel",
+                                                     "message_category_id", "hr_employee_id",
+                                                     string='Default SMS Receivers'),
         'is_in_use': fields.boolean('Is in use?'),
-        'category_manager': fields.many2many('res.users',String="Category Manager"),
+        'category_manager': fields.many2many('res.users', String="Category Manager"),
     }
     _defaults = {
         #'is_display_fbbm':True,
@@ -148,7 +150,8 @@ class Message(osv.Model):
         'write_date': fields.datetime('Modification date', select=True),
         'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
         'name_for_display': fields.function(_get_name_display, type="char", size=64, string="Name"),
-        'sms_receiver_ids': fields.many2many('res.users', string='Default SMS Receivers'),
+        'sms_receiver_ids': fields.many2many("hr.employee", "message_hr_employee_rel", "message_id", "hr_employee_id",
+                                             "SMS Receiver"),
         'sms': fields.text('SMS', size=140),
         'is_allow_send_sms': fields.related('category_id', 'is_allow_send_sms', type="boolean",
                                             string="Allow send SMS?"),
@@ -174,7 +177,7 @@ class Message(osv.Model):
         return ret
 
     def create(self, cr, uid, vals, context=None):
-        context.update({'mail_create_nolog':True})
+        context.update({'mail_create_nolog': True})
         mid = super(Message, self).create(cr, uid, vals, context)
         sms = self.pool.get('sms.sms')
         message = self.pool.get('message.message').browse(cr, uid, mid, context=context)
