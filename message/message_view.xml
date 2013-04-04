@@ -85,6 +85,7 @@
             <field name="arch" type="xml">
                 <search string="Message Filter">
                     <field name="name"/>
+                    <field name="category_id"/>
                     <group expand="0" string="Group by...">
                         <filter name="by-category" string="Category" domain="[]" context="{'group_by':'category_id'}"/>
                         <filter name="by-publisher" string="Publisher" domain="[]" context="{'group_by':'fbbm'}"/>
