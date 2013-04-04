@@ -54,12 +54,14 @@ class MessageCategory(osv.Model):
                                                      string='Default SMS Receivers'),
         'is_in_use': fields.boolean('Is in use?'),
         'category_manager': fields.many2many('res.users', String="Category Manager"),
+        'is_public': fields.boolean('Is public category?'),
     }
     _defaults = {
         #'is_display_fbbm':True,
         'is_anonymous_allowed': False,
         'category_message_title_size': 10,
         'is_in_use': False,
+        'is_public': False,
         #'is_display_read_times':True,
     }
 

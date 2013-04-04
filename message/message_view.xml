@@ -32,6 +32,7 @@
                             <field name="default_message_count"/>
                             <field name="sequence"/>
                             <field name="is_in_use"/>
+                            <field name="is_public"/>
                             <newline/>
                             <field name="is_allow_send_sms" on_change="onchange_is_allow_send_sms(is_allow_send_sms)"/>
                         </group>
@@ -121,7 +122,7 @@
                         <group col="4">
                             <field name="is_allow_send_sms" invisible="1"/>
                             <field name="is_allow_sms_receiver" invisible="1"/>
-                            <field name="category_id" domain="[('name','in',[u'通知',u'畅所欲言',u'服务申报'])]"
+                            <field name="category_id" domain="[('is_public','=',True)]"
                                    on_change="onchange_category(category_id)"/>
                             <field name="sequence"/>
                             <field name="is_display_name"/>
@@ -288,7 +289,7 @@
             <field name="res_model">message.message</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('create_uid','=',uid),('category_id.name','in',[u'通知',u'畅所欲言',u'服务申报'])]</field>
+            <field name="domain">[('create_uid','=',uid),('category_id.is_public','=',True)]</field>
             <field name="context">{'search_default_by-category':1}</field>
             <field name="search_view_id" ref="search_message_message"/>
         </record>
