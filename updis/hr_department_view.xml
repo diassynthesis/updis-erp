@@ -1,7 +1,21 @@
 <?xml version="1.0" ?>
 <openerp>
 	<data>
-		<record id="view_department_form_inherit" model="ir.ui.view">			
+        <!--message_category -->
+        <record id="search_hr_department_inherit" model="ir.ui.view">
+            <field name="inherit_id" ref="hr.view_department_filter"/>
+            <field name="name">hr.department.search</field>
+            <field name="model">hr.department</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='manager_id']" position="after">
+                    <group expand="1" string="Group by...">
+                        <filter name="by-removed" string="Is Removed" domain="[]" context="{'group_by':'deleted'}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+		<record id="view_department_form_inherit" model="ir.ui.view">
 			<field name="name">hr.department.form.inherit</field>
 			<field name="model">hr.department</field>
 			<field name="inherit_id" ref="hr.view_department_form"/>
@@ -16,7 +30,26 @@
                 </xpath>
 			</field>
 		</record>
-		<!-- <record id="view_department_tree_inherit" model="ir.ui.view">
+
+        <record id="view_department_tree_inherit" model="ir.ui.view">
+            <field name="name">hr.department.tree.inherit</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='manager_id']" position="after">
+                    <field name="deleted"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!--<record id="open_module_tree_department" model="ir.actions.act_window">
+            <field name="name">Departments</field>
+            <field name="res_model">hr.department</field>
+            <field name="view_type">form</field>
+            <field name="search_view_id" ref="view_department_tree_inherit"/>
+            <field name="context">{'search_default_by-removed':1}</field>
+        </record>
+		 <record id="view_department_tree_inherit" model="ir.ui.view">
 			<field name="name">hr.department.tree.inherit</field>
 			<field name="model">hr.department</field>
 			<field name="inherit_id" ref="hr.view_department_tree"/>
