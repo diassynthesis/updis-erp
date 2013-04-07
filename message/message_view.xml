@@ -126,6 +126,8 @@
                             <newline/>
                             <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
                             <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
+                            <newline/>
+                            <field name="source"/>
                             <field name="category_id_name" invisible="1"/>
                             <field name="is_allow_send_sms" invisible="1"/>
                             <field name="is_allow_sms_receiver" invisible="1"/>

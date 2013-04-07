@@ -151,6 +151,7 @@ class Message(osv.Model):
         'create_uid': fields.many2one('res.users', 'Author', select=True),
         'write_date': fields.datetime('Modification date', select=True),
         'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
+        'source': fields.char("Source", size=128),
         'name_for_display': fields.function(_get_name_display, type="char", size=64, string="Name"),
         'sms_receiver_ids': fields.many2many("hr.employee", "message_hr_employee_rel", "message_id", "hr_employee_id",
                                              "SMS Receiver"),
@@ -159,8 +160,8 @@ class Message(osv.Model):
                                             string="Allow send SMS?"),
         'is_allow_sms_receiver': fields.related('category_id', 'is_allow_send_sms', type="boolean",
                                                 string="Allow specify sms receiver?"),
-        'category_id_name':  fields.related('category_id', 'name', type="char",
-                                            string="category name"),
+        'category_id_name': fields.related('category_id', 'name', type="char",
+                                           string="category name"),
     }
     _defaults = {
         'fbbm': _default_fbbm,
