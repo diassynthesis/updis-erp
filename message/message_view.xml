@@ -120,16 +120,15 @@
                     </div>
                     <group class="oe_edit_only">
                         <group col="4">
-                            <field name="is_allow_send_sms" invisible="1"/>
-                            <field name="is_allow_sms_receiver" invisible="1"/>
                             <field name="category_id" widget="selection" options="{'no_open': True}"
                                    domain="[('is_public','=',True)]" on_change="onchange_category(category_id)"/>
-                            <field name="sequence"/>
                             <field name="is_display_name"/>
-                            <field name="fbbm"/>
-                            <field name="read_times" readonly="1"/>
-                            <field name="expire_date"/>
-                            <field name="name_for_display"/>
+                            <newline/>
+                            <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
+                            <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
+                            <field name="category_id_name" invisible="1"/>
+                            <field name="is_allow_send_sms" invisible="1"/>
+                            <field name="is_allow_sms_receiver" invisible="1"/>
                         </group>
                     </group>
                     <group attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
@@ -170,16 +169,15 @@
                     </div>
                     <group class="oe_edit_only">
                         <group col="4">
-                            <field name="is_allow_send_sms" invisible="1"/>
-                            <field name="is_allow_sms_receiver" invisible="1"/>
                             <field name="category_id" widget="selection" domain="[('category_manager.id','=',uid)]"
                                    on_change="onchange_category(category_id)"/>
-                            <field name="sequence"/>
                             <field name="is_display_name"/>
-                            <field name="fbbm"/>
-                            <field name="read_times" readonly="1"/>
-                            <field name="expire_date"/>
-                            <field name="name_for_display"/>
+                            <newline/>
+                            <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
+                            <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
+                            <field name="category_id_name" invisible="1"/>
+                            <field name="is_allow_send_sms" invisible="1"/>
+                            <field name="is_allow_sms_receiver" invisible="1"/>
                         </group>
                     </group>
                     <group attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
@@ -220,15 +218,14 @@
                     </div>
                     <group class="oe_edit_only">
                         <group col="4">
+                            <field name="category_id" on_change="onchange_category(category_id)"/>
+                            <field name="is_display_name"/>
+                            <newline/>
+                            <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
+                            <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
+                            <field name="category_id_name" invisible="1"/>
                             <field name="is_allow_send_sms" invisible="1"/>
                             <field name="is_allow_sms_receiver" invisible="1"/>
-                            <field name="category_id" on_change="onchange_category(category_id)"/>
-                            <field name="sequence"/>
-                            <field name="is_display_name"/>
-                            <field name="fbbm"/>
-                            <field name="read_times" readonly="1"/>
-                            <field name="expire_date"/>
-                            <field name="name_for_display"/>
                         </group>
                     </group>
                     <group attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">

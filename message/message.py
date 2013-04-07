@@ -159,6 +159,8 @@ class Message(osv.Model):
                                             string="Allow send SMS?"),
         'is_allow_sms_receiver': fields.related('category_id', 'is_allow_send_sms', type="boolean",
                                                 string="Allow specify sms receiver?"),
+        'category_id_name':  fields.related('category_id', 'name', type="char",
+                                            string="category name"),
     }
     _defaults = {
         'fbbm': _default_fbbm,
@@ -174,6 +176,7 @@ class Message(osv.Model):
                 'is_allow_send_sms': message_category.is_allow_send_sms,
                 'is_allow_sms_receiver': message_category.is_allow_sms_receiver,
                 'sms_receiver_ids': [x.id for x in message_category.default_sms_receiver_ids],
+                'category_id_name': message_category.name,
             }
             ret['value'].update(sms_vals)
         return ret
