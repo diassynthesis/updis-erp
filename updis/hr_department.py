@@ -1,10 +1,22 @@
-from osv import fields, osv
+from openerp.tools import image_resize_image, image_resize_image_big, image_resize_image_small
 from openerp import tools
+
+from osv import fields, osv
 
 
 class updis_department(osv.osv):
     _description = "UPDIS Department"
     _inherit = "hr.department"
+
+    def _image_resize_image_medium(self, cr, uid, ids, name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            return_dict = dict()
+            return_dict['image_medium'] = tools.image_resize_image_medium(obj.image, size=(275, 145))
+            result[obj.id] = return_dict
+
+
+        return result
 
     def _get_image(self, cr, uid, ids, name, args, context=None):
         result = dict.fromkeys(ids, False)
@@ -26,7 +38,7 @@ class updis_department(osv.osv):
         'have_image': fields.boolean("is department photo upload"),
         'image': fields.binary("Department Photo",
                                help="This field holds the image used as photo for the employee, limited to 1024x1024px."),
-        'image_medium': fields.function(_get_image, fnct_inv=_set_image,
+        'image_medium': fields.function(_image_resize_image_medium, fnct_inv=_set_image,
                                         string="Medium-sized photo", type="binary", multi="_get_image",
                                         store={
                                             'hr.department': (lambda self, cr, uid, ids, c={}: ids, ['image'], 10),
