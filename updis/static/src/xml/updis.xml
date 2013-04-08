@@ -70,4 +70,18 @@
         </div>
         <span t-if="!(widget.show_compact_message and !widget.show_composer) and !widget.show_composer" class="oe_placeholder_compose"></span>
     </t>
+
+    <t t-name="UserMenu.about">
+
+        <div class="oe_about">
+            <img class="oe_logo" src="/updis/static/src/img/updis1.png"/>
+            <h3>Version 1.0</h3>
+
+            <div class="oe_bottom">
+                <p>Copyright © 2004-TODAY OpenERP SA. All Rights Reserved.<br />
+                    OpenERP is a trademark of the <a target="_blank" href="http://upr.cn/" style="text-decoration: underline;">OpenERP SA Company</a>.</p>
+            </div>
+        </div>
+
+    </t>
 </template>

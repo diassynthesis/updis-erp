@@ -25,3 +25,19 @@ controls:   // controls to add to the toolbar
                             "| removeformat | bullets numbering | outdent " +
                             "indent | link unlink | source" +
                             " fileuploader imageuploader icon",
+
+
+openerp 7 全依赖：
+libsm-dev python-ldap libice-dev libunistring0:i386 python-numpy
+  python-matplotlib libpthread-stubs0 python-pygments python-pybabel
+  python-babel python-matplotlib-data python-mock docutils-common
+  python-vatnumber libgomp1:i386 python-webdav liblapack3gf x11proto-kb-dev
+  python-libxslt1 python-psutil xtrans-dev libyaml-0-2 x11proto-input-dev
+  python-tz python-vobject python-docutils libxt-dev libcroco3:i386 python-zsi
+  postgresql python-utidylib libxau-dev python-suds libgettextpo0:i386
+  libblas3gf docutils-doc xorg-sgml-doctools libgfortran3 python-pydot
+  python-yaml python-psycopg2 python-unittest2 libx11-dev python-gdata
+  libx11-doc python-antlr libxcb1-dev python-pychart python-roman
+  python-jinja2 python-werkzeug python-xlwt python-feedparser
+  x11proto-core-dev libxdmcp-dev libtidy-0.99-0 libpthread-stubs0-dev
+  python-pyparsing

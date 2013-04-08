@@ -49,15 +49,19 @@ class MessageCategory(osv.Model):
                                                    domain="[('deleted','=',False)]"),
         'is_allow_send_sms': fields.boolean('Allow send SMS?'),
         'is_allow_sms_receiver': fields.boolean('Allow specify sms receiver?'),
-        'default_sms_receiver_ids': fields.many2many('res.users', string='Default SMS Receivers'),
+        'default_sms_receiver_ids': fields.many2many("hr.employee", "message_category_hr_employee_rel",
+                                                     "message_category_id", "hr_employee_id",
+                                                     string='Default SMS Receivers'),
         'is_in_use': fields.boolean('Is in use?'),
-        'category_manager': fields.many2many('res.users',String="Category Manager"),
+        'category_manager': fields.many2many('res.users', String="Category Manager"),
+        'is_public': fields.boolean('Is public category?'),
     }
     _defaults = {
         #'is_display_fbbm':True,
         'is_anonymous_allowed': False,
         'category_message_title_size': 10,
         'is_in_use': False,
+        'is_public': False,
         #'is_display_read_times':True,
     }
 
@@ -147,13 +151,17 @@ class Message(osv.Model):
         'create_uid': fields.many2one('res.users', 'Author', select=True),
         'write_date': fields.datetime('Modification date', select=True),
         'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
+        'source': fields.char("Source", size=128),
         'name_for_display': fields.function(_get_name_display, type="char", size=64, string="Name"),
-        'sms_receiver_ids': fields.many2many('res.users', string='Default SMS Receivers'),
+        'sms_receiver_ids': fields.many2many("hr.employee", "message_hr_employee_rel", "message_id", "hr_employee_id",
+                                             "SMS Receiver"),
         'sms': fields.text('SMS', size=140),
         'is_allow_send_sms': fields.related('category_id', 'is_allow_send_sms', type="boolean",
                                             string="Allow send SMS?"),
         'is_allow_sms_receiver': fields.related('category_id', 'is_allow_send_sms', type="boolean",
                                                 string="Allow specify sms receiver?"),
+        'category_id_name': fields.related('category_id', 'name', type="char",
+                                           string="category name"),
     }
     _defaults = {
         'fbbm': _default_fbbm,
@@ -169,17 +177,18 @@ class Message(osv.Model):
                 'is_allow_send_sms': message_category.is_allow_send_sms,
                 'is_allow_sms_receiver': message_category.is_allow_sms_receiver,
                 'sms_receiver_ids': [x.id for x in message_category.default_sms_receiver_ids],
+                'category_id_name': message_category.name,
             }
             ret['value'].update(sms_vals)
         return ret
 
     def create(self, cr, uid, vals, context=None):
-        context.update({'mail_create_nolog':True})
+        context.update({'mail_create_nolog': True})
         mid = super(Message, self).create(cr, uid, vals, context)
         sms = self.pool.get('sms.sms')
         message = self.pool.get('message.message').browse(cr, uid, mid, context=context)
         if message.is_allow_send_sms:
-            to = ','.join([rid.mobile for rid in message.sms_receiver_ids if rid.mobile])
+            to = ','.join([rid.mobile_phone for rid in message.sms_receiver_ids if rid.mobile_phone])
             if to:
                 content = message.sms and message.sms or message.name
                 sid = sms.create(cr, uid, {'to': to, 'content': content, 'model': 'message.message', 'res_id': mid},
