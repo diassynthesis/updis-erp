@@ -139,7 +139,7 @@ class Message(osv.Model):
         'message_meta_display': fields.function(_get_message_meta_display, type="char", size=256, string="Meta"),
         'category_message_title_meta_display': fields.function(_get_category_message_title_meta_display, type="char",
                                                                size=256, string="Category meta"),
-        'category_id': fields.many2one('message.category', 'Category', required=True),
+        'category_id': fields.many2one('message.category', 'Category', required=True, change_default=True),
         'content': fields.text("Content"),
         'sequence': fields.integer("Display Sequence"),
         'is_display_name': fields.boolean('Display name?'),

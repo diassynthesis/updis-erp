@@ -178,6 +178,8 @@
                             <newline/>
                             <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
                             <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
+                            <newline/>
+                            <field name="source"/>
                             <field name="category_id_name" invisible="1"/>
                             <field name="is_allow_send_sms" invisible="1"/>
                             <field name="is_allow_sms_receiver" invisible="1"/>
@@ -226,6 +228,8 @@
                             <newline/>
                             <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
                             <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
+                            <newline/>
+                            <field name="source"/>
                             <field name="category_id_name" invisible="1"/>
                             <field name="is_allow_send_sms" invisible="1"/>
                             <field name="is_allow_sms_receiver" invisible="1"/>
@@ -277,7 +281,7 @@
             <field name="search_view_id" ref="search_message_message"/>
         </record>
         <record id="action_admin_messages" model="ir.actions.act_window">
-            <field name="name">All Messages</field>
+            <field name="name">Admin Messages</field>
             <field name="res_model">message.message</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
@@ -293,6 +297,58 @@
             <field name="context">{'search_default_by-category':1}</field>
             <field name="search_view_id" ref="search_message_message"/>
         </record>
+
+
+
+        <record id="action_my_messages_notice" model="ir.actions.act_window">
+            <field name="name">My Messages Notice</field>
+            <field name="res_model">message.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('create_uid','=',uid),('category_id.is_public','=',True)]</field>
+            <field name="context">{'search_default_by-category':1,'default_category_id':151}</field>
+            <field name="search_view_id" ref="search_message_message"/>
+        </record>
+        <record id="action_my_messages_food" model="ir.actions.act_window">
+            <field name="name">My Messages Notice</field>
+            <field name="res_model">message.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('create_uid','=',uid),('category_id.is_public','=',True)]</field>
+            <field name="context">{'search_default_by-category':1,'default_category_id':291}</field>
+            <field name="search_view_id" ref="search_message_message"/>
+        </record>
+        <record id="action_my_messages_service" model="ir.actions.act_window">
+            <field name="name">My Messages Notice</field>
+            <field name="res_model">message.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('create_uid','=',uid),('category_id.is_public','=',True)]</field>
+            <field name="context">{'search_default_by-category':1,'default_category_id':245}</field>
+            <field name="search_view_id" ref="search_message_message"/>
+        </record>
+        <record id="action_my_messages_chat" model="ir.actions.act_window">
+            <field name="name">My Messages Notice</field>
+            <field name="res_model">message.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('create_uid','=',uid),('category_id.is_public','=',True)]</field>
+            <field name="context">{'search_default_by-category':1,'default_category_id':154}</field>
+            <field name="search_view_id" ref="search_message_message"/>
+        </record>
+        <record id="action_my_messages_life" model="ir.actions.act_window">
+            <field name="name">My Messages Notice</field>
+            <field name="res_model">message.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('create_uid','=',uid),('category_id.is_public','=',True)]</field>
+            <field name="context">{'search_default_by-category':1,'default_category_id':194}</field>
+            <field name="search_view_id" ref="search_message_message"/>
+        </record>
+
+
+
+
         <record id="action_message_categories" model="ir.actions.act_window">
             <field name="name">Message categories</field>
             <field name="res_model">message.category</field>
@@ -313,6 +369,43 @@
             <field name="view_mode">form</field>
             <field name="act_window_id" ref="action_my_messages"/>
         </record>
+
+
+
+        <record id="act_view_message_message_my_form_notice" model="ir.actions.act_window.view">
+            <field name="sequence">18</field>
+            <field name="view_id" ref="form_message_message_my"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_my_messages_notice"/>
+        </record>
+        <record id="act_view_message_message_my_form_food" model="ir.actions.act_window.view">
+            <field name="sequence">18</field>
+            <field name="view_id" ref="form_message_message_my"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_my_messages_food"/>
+        </record>
+        <record id="act_view_message_message_my_form_service" model="ir.actions.act_window.view">
+            <field name="sequence">18</field>
+            <field name="view_id" ref="form_message_message_my"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_my_messages_service"/>
+        </record>
+        <record id="act_view_message_message_my_form_chat" model="ir.actions.act_window.view">
+            <field name="sequence">18</field>
+            <field name="view_id" ref="form_message_message_my"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_my_messages_chat"/>
+        </record>
+        <record id="act_view_message_message_my_form_life" model="ir.actions.act_window.view">
+            <field name="sequence">18</field>
+            <field name="view_id" ref="form_message_message_my"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_my_messages_life"/>
+        </record>
+
+
+
+
         <record id="act_view_message_message_manager_tree" model="ir.actions.act_window.view">
             <field name="sequence">16</field>
             <field name="view_id" ref="tree_message_message"/>
