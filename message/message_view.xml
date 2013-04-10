@@ -89,7 +89,7 @@
                     <field name="category_id"/>
                     <group expand="0" string="Group by...">
                         <filter name="by-category" string="Category" domain="[]" context="{'group_by':'category_id'}"/>
-                        <filter name="by-publisher" string="Publisher" domain="[]" context="{'group_by':'fbbm'}"/>
+                        <filter name="by-publisher" string="Publisher" domain="[]" context="{'group_by':'department_id'}"/>
                     </group>
                 </search>
             </field>
@@ -104,6 +104,7 @@
                     <field name="category_id"/>
                     <field name="read_times"/>
                     <field name="name_for_display"/>
+                    <field name="department_id"/>
                 </tree>
             </field>
         </record>
