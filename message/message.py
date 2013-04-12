@@ -162,6 +162,8 @@ class Message(osv.Model):
                                                 string="Allow specify sms receiver?"),
         'category_id_name': fields.related('category_id', 'name', type="char",
                                            string="category name"),
+        'category_id_is_anonymous_allowed': fields.related('category_id', 'is_anonymous_allowed', type="boolean",
+                                           string="category is anonymous allowed"),
     }
     _defaults = {
         'fbbm': _default_fbbm,
@@ -178,6 +180,7 @@ class Message(osv.Model):
                 'is_allow_sms_receiver': message_category.is_allow_sms_receiver,
                 'sms_receiver_ids': [x.id for x in message_category.default_sms_receiver_ids],
                 'category_id_name': message_category.name,
+                'category_id_is_anonymous_allowed': message_category.is_anonymous_allowed,
             }
             ret['value'].update(sms_vals)
         return ret
