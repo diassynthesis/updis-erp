@@ -47,7 +47,7 @@
             <field model="ir.model" name="model_id" ref="model_message_message"/>
             <field name="domain_force">[('category_id.is_in_use','=',True)]</field>
             <field name="groups" eval="[(4, ref('message.message_internal_manager'))]"/>
-            <field name="domain_force">[('department_id','child_of',[e.department_id for e in user.employee_ids])]</field>
+            <field name="domain_force">[('department_id.id','in',[e.department_id.id for e in user.employee_ids])]</field>
         </record>
     </data>
 
