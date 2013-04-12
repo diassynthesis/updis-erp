@@ -123,15 +123,16 @@
                         <group col="4">
                             <field name="category_id" widget="selection" options="{'no_open': True}"
                                    domain="[('is_public','=',True)]" on_change="onchange_category(category_id)"/>
-                            <field name="is_display_name"/>
+                            <field name="source"/>
                             <newline/>
                             <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
                             <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
                             <newline/>
-                            <field name="source"/>
+                            <field name="is_display_name" attrs="{'invisible':['!',('category_id_is_anonymous_allowed','=',True)]}"/>
                             <field name="category_id_name" invisible="1"/>
                             <field name="is_allow_send_sms" invisible="1"/>
                             <field name="is_allow_sms_receiver" invisible="1"/>
+                            <field name="category_id_is_anonymous_allowed" invisible="1"/>
                         </group>
                     </group>
                     <group attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
@@ -354,6 +355,15 @@
             <field name="context">{'search_default_by-category':1,'default_category_id':169}</field>
             <field name="search_view_id" ref="search_message_message"/>
         </record>
+        <record id="action_my_messages_news" model="ir.actions.act_window">
+            <field name="name">My Messages Notice</field>
+            <field name="res_model">message.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('create_uid','=',uid),('category_id.is_public','=',True)]</field>
+            <field name="context">{'search_default_by-category':1,'default_category_id':156}</field>
+            <field name="search_view_id" ref="search_message_message"/>
+        </record>
 
 
 
@@ -416,6 +426,12 @@
             <field name="view_id" ref="form_message_message_my"/>
             <field name="view_mode">form</field>
             <field name="act_window_id" ref="action_my_messages_share"/>
+        </record>
+        <record id="act_view_message_message_my_form_news" model="ir.actions.act_window.view">
+            <field name="sequence">18</field>
+            <field name="view_id" ref="form_message_message_my"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_my_messages_news"/>
         </record>
 
 
