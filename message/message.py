@@ -55,6 +55,7 @@ class MessageCategory(osv.Model):
         'is_in_use': fields.boolean('Is in use?'),
         'category_manager': fields.many2many('res.users', String="Category Manager"),
         'is_public': fields.boolean('Is public category?'),
+        'is_allowed_edit_sms_text': fields.boolean('Is Allowed Edit SMS Text?')
     }
     _defaults = {
         #'is_display_fbbm':True,
@@ -62,6 +63,7 @@ class MessageCategory(osv.Model):
         'category_message_title_size': 10,
         'is_in_use': False,
         'is_public': False,
+        'is_allowed_edit_sms_text':True,
         #'is_display_read_times':True,
     }
 
@@ -164,6 +166,8 @@ class Message(osv.Model):
                                            string="category name"),
         'category_id_is_anonymous_allowed': fields.related('category_id', 'is_anonymous_allowed', type="boolean",
                                            string="category is anonymous allowed"),
+        'category_id_is_allowed_edit_sms_text':fields.related('category_id', 'is_allowed_edit_sms_text', type="boolean",
+                                                              string="category is allowed edit sms text"),
     }
     _defaults = {
         'fbbm': _default_fbbm,
@@ -181,12 +185,24 @@ class Message(osv.Model):
                 'sms_receiver_ids': [x.id for x in message_category.default_sms_receiver_ids],
                 'category_id_name': message_category.name,
                 'category_id_is_anonymous_allowed': message_category.is_anonymous_allowed,
+                'category_id_is_allowed_edit_sms_text':message_category.is_allowed_edit_sms_text,
             }
             ret['value'].update(sms_vals)
         return ret
 
+    def onchange_name(self,cr, uid, ids, name, context=None):
+        ret = {'value': {}}
+        name_vals = {
+            'sms': name,
+        }
+        if not len(ids):
+            ret['value'].update(name_vals)
+        return ret
+
     def create(self, cr, uid, vals, context=None):
         context.update({'mail_create_nolog': True})
+        if not vals['category_id_is_allowed_edit_sms_text']:
+            vals['sms'] = vals['name']
         mid = super(Message, self).create(cr, uid, vals, context)
         sms = self.pool.get('sms.sms')
         message = self.pool.get('message.message').browse(cr, uid, mid, context=context)
