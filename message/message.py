@@ -151,7 +151,7 @@ class Message(osv.Model):
         'create_uid': fields.many2one('res.users', 'Author', select=True),
         'write_date': fields.datetime('Modification date', select=True),
         'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
-        'source': fields.char("Source", size=128),
+        'source': fields.char("Message Source", size=128),
         'name_for_display': fields.function(_get_name_display, type="char", size=64, string="Name"),
         'sms_receiver_ids': fields.many2many("hr.employee", "message_hr_employee_rel", "message_id", "hr_employee_id",
                                              "SMS Receiver"),
