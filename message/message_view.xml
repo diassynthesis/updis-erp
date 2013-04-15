@@ -137,7 +137,7 @@
                         <group col="4">
                             <field name="category_id" widget="selection" options="{'no_open': True}"
                                    domain="[('is_public','=',True)]" on_change="onchange_category(category_id)"/>
-                            <field name="source"/>
+                            <field name="source" attrs="{'invisible':[('category_id_name','=',u'通知')]}"/>
                             <newline/>
                             <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
                             <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
@@ -198,7 +198,7 @@
                             <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
                             <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
                             <newline/>
-                            <field name="source"/>
+                            <field name="source" attrs="{'invisible':[('category_id_name','=',u'通知')]}"/>
                             <field name="category_id_name" invisible="1"/>
                             <field name="is_allow_send_sms" invisible="1"/>
                             <field name="is_allow_sms_receiver" invisible="1"/>
@@ -252,7 +252,7 @@
                             <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
                             <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
                             <newline/>
-                            <field name="source"/>
+                            <field name="source" attrs="{'invisible':[('category_id_name','=',u'通知')]}"/>
                             <field name="category_id_name" invisible="1"/>
                             <field name="is_allow_send_sms" invisible="1"/>
                             <field name="is_allow_sms_receiver" invisible="1"/>
