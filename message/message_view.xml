@@ -130,18 +130,16 @@
                     <h1>
                         <field name="name" on_change="onchange_name(name)" placeholder="消息标题"/>
                     </h1>
-                    <div class="oe_document_page">
-                        <field name="message_meta_display" widget="html"/>
-                    </div>
-                    <group class="oe_edit_only">
-                        <group col="4">
-                            <field name="category_id" widget="selection" options="{'no_open': True}"
+
+                    <group col="6" colspan="4" class="oe_edit_only" string="Message Detail Config">
+                        <group colspan="2" col="2">
+                            <field colspan="2" name="category_id" widget="selection" options="{'no_open': True}"
                                    domain="[('is_public','=',True)]" on_change="onchange_category(category_id)"/>
+                        </group>
+                        <group col="2" colspan="4">
                             <field name="source" attrs="{'invisible':[('category_id_name','=',u'通知')]}"/>
-                            <newline/>
                             <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
                             <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
-                            <newline/>
                             <field name="is_display_name"
                                    attrs="{'invisible':['!',('category_id_is_anonymous_allowed','=',True)]}"/>
                             <field name="category_id_name" invisible="1"/>
@@ -151,7 +149,8 @@
                             <field name="category_id_is_allowed_edit_sms_text" invisible="1"/>
                         </group>
                     </group>
-                    <group attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
+                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only"
+                           string="Message SMS Config">
                         <group>
                             <div>
                                 <label for="sms"/>
@@ -169,11 +168,18 @@
                             </div>
                         </group>
                     </group>
-                    <field name="content" widget="html"/>
-                    <div class="oe_chatter">
-                        <!--<field name="message_follower_ids" widget="mail_followers" help="Follow this project to automatically follow all related update and comments."/>-->
-                        <field name="message_ids" widget="mail_thread"/>
-                    </div>
+                    <group colspan="4" string="Message Content Detail Config">
+                        <div class="oe_document_page">
+                            <field name="message_meta_display" widget="html"/>
+                        </div>
+                        <newline/>
+                        <field name="content" widget="html" nolabel="1"/>
+                        <newline/>
+                        <div class="oe_chatter">
+                            <!--<field name="message_follower_ids" widget="mail_followers" help="Follow this project to automatically follow all related update and comments."/>-->
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div>
+                    </group>
                 </form>
             </field>
         </record>
@@ -183,22 +189,21 @@
             <field name="arch" type="xml">
                 <form string="Message" version="7.0">
                     <h1>
-                        <field name="name" placeholder="消息标题"/>
+                        <field name="name" on_change="onchange_name(name)" placeholder="消息标题"/>
                     </h1>
-                    <div class="oe_document_page">
-                        <field name="message_meta_display" widget="html"/>
-                    </div>
-                    <group class="oe_edit_only">
-                        <group col="4">
-                            <field name="category_id" widget="selection" domain="[('category_manager.id','=',uid)]"
+
+                    <group col="6" colspan="4" class="oe_edit_only" string="Message CMS Detail Config">
+                        <group colspan="2" col="2">
+                            <field colspan="2" name="category_id" widget="selection"
+                                   domain="[('category_manager.id','=',uid)]"
                                    on_change="onchange_category(category_id)"/>
-                            <field name="is_display_name"
-                                   attrs="{'invisible':['!',('category_id_is_anonymous_allowed','=',True)]}"/>
-                            <newline/>
+                        </group>
+                        <group col="2" colspan="4">
+                            <field name="source" attrs="{'invisible':[('category_id_name','=',u'通知')]}"/>
                             <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
                             <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
-                            <newline/>
-                            <field name="source" attrs="{'invisible':[('category_id_name','=',u'通知')]}"/>
+                            <field name="is_display_name"
+                                   attrs="{'invisible':['!',('category_id_is_anonymous_allowed','=',True)]}"/>
                             <field name="category_id_name" invisible="1"/>
                             <field name="is_allow_send_sms" invisible="1"/>
                             <field name="is_allow_sms_receiver" invisible="1"/>
@@ -206,7 +211,8 @@
                             <field name="category_id_is_allowed_edit_sms_text" invisible="1"/>
                         </group>
                     </group>
-                    <group attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
+                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only"
+                           string="Message SMS Config">
                         <group>
                             <div>
                                 <label for="sms"/>
@@ -224,11 +230,18 @@
                             </div>
                         </group>
                     </group>
-                    <field name="content" widget="html"/>
-                    <div class="oe_chatter">
-                        <!--<field name="message_follower_ids" widget="mail_followers" help="Follow this project to automatically follow all related update and comments."/>-->
-                        <field name="message_ids" widget="mail_thread"/>
-                    </div>
+                    <group colspan="4" string="Message Content Detail">
+                        <div class="oe_document_page">
+                            <field name="message_meta_display" widget="html"/>
+                        </div>
+                        <newline/>
+                        <field name="content" widget="html" nolabel="1"/>
+                        <newline/>
+                        <div class="oe_chatter">
+                            <!--<field name="message_follower_ids" widget="mail_followers" help="Follow this project to automatically follow all related update and comments."/>-->
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div>
+                    </group>
                 </form>
             </field>
         </record>
@@ -240,19 +253,17 @@
                     <h1>
                         <field name="name" placeholder="消息标题"/>
                     </h1>
-                    <div class="oe_document_page">
-                        <field name="message_meta_display" widget="html"/>
-                    </div>
-                    <group class="oe_edit_only">
-                        <group col="4">
+
+                    <group col="6" colspan="4" class="oe_edit_only" string="Message Detail Config">
+                        <group colspan="2" col="2">
                             <field name="category_id" on_change="onchange_category(category_id)"/>
-                            <field name="is_display_name"
-                                   attrs="{'invisible':['!',('category_id_is_anonymous_allowed','=',True)]}"/>
-                            <newline/>
+                        </group>
+                        <group col="2" colspan="4">
+                            <field name="source" attrs="{'invisible':[('category_id_name','=',u'通知')]}"/>
                             <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
                             <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
-                            <newline/>
-                            <field name="source" attrs="{'invisible':[('category_id_name','=',u'通知')]}"/>
+                            <field name="is_display_name"
+                                   attrs="{'invisible':['!',('category_id_is_anonymous_allowed','=',True)]}"/>
                             <field name="category_id_name" invisible="1"/>
                             <field name="is_allow_send_sms" invisible="1"/>
                             <field name="is_allow_sms_receiver" invisible="1"/>
@@ -260,7 +271,8 @@
                             <field name="category_id_is_allowed_edit_sms_text" invisible="1"/>
                         </group>
                     </group>
-                    <group attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
+                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only"
+                           string="Message SMS Config">
                         <group>
                             <div>
                                 <label for="sms"/>
@@ -278,11 +290,18 @@
                             </div>
                         </group>
                     </group>
-                    <field name="content" widget="html"/>
-                    <div class="oe_chatter">
-                        <!--<field name="message_follower_ids" widget="mail_followers" help="Follow this project to automatically follow all related update and comments."/>-->
-                        <field name="message_ids" widget="mail_thread"/>
-                    </div>
+                    <group colspan="4" string="Message Content Detail">
+                        <div class="oe_document_page">
+                            <field name="message_meta_display" widget="html"/>
+                        </div>
+                        <newline/>
+                        <field name="content" widget="html" nolabel="1"/>
+                        <newline/>
+                        <div class="oe_chatter">
+                            <!--<field name="message_follower_ids" widget="mail_followers" help="Follow this project to automatically follow all related update and comments."/>-->
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div>
+                    </group>
                 </form>
             </field>
         </record>
