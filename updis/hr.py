@@ -31,7 +31,7 @@ class hr_employee_updis(osv.osv):
     'business_date': fields.date("Business Date"),
     'duty': fields.char("Duty", size=100),
     'duty_date': fields.date("Duty Date"),
-    'title': fields.char("Title", size=100),
+    'title': fields.char("Title Name", size=100),
     'title_date': fields.date("Title Date"),
     'reg_tax': fields.char("Reg Tax", size=100),
     'reg_tax_date': fields.date("RegTax Date"),

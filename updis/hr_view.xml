@@ -1,23 +1,86 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
-	<data>
-		<record id="view_employee_form_inherit" model="ir.ui.view">
-			<field name="name">hr.employee.form.inherit</field>
-			<field name="model">hr.employee</field>
-			<field name="inherit_id" ref="hr.view_employee_form" />
-			<field name="arch" type="xml">
-				<xpath expr="//group[@string='Contact Information']" position="after">
-					<group string="Education">
-						<field name="degree" />
-						<field name="diploma" />
-						<field name="academy" />
-						<field name="major" />
-					</group>
-				</xpath>
-				<xpath expr="//group[@string='Citizenship &amp; Other Info']" position="inside">
-					<field name="folk" />
-				</xpath>
-			</field>
-		</record>
-	</data>
+    <data>
+        <record id="view_employee_form_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@string='Public Information']/group/group[@string='Contact Information']"
+                       position="after">
+                    <group string="Education">
+                        <field name="degree"/>
+                        <field name="diploma"/>
+                        <field name="academy"/>
+                        <field name="major"/>
+                        <field name="gra_date"/>
+                    </group>
+                </xpath>
+                <xpath expr="//group[@string='Contact Information']" position="before">
+                    <group string="Public Personal Info">
+                        <field name="folk"/>
+                        <field name="gender"/>
+                        <field name="birthday"/>
+                        <field name="country_id" options='{"no_open": True}'/>
+                        <field name="native_place"/>
+                    </group>
+                </xpath>
+                <xpath expr="//group[@string='Position']" position="after">
+                    <group string="Work Information">
+                        <field name="business"/>
+                        <field name="business_date"/>
+                        <field name="duty"/>
+                        <field name="duty_date"/>
+                        <field name="enter_date"/>
+                        <field name="out_date"/>
+                        <field name="contract_date"/>
+
+                    </group>
+                    <group string="Title Information">
+                        <field name="title"/>
+                        <field name="title_date"/>
+                        <field name="begin_work_date"/>
+
+                    </group>
+                    <group string="Reg Tax">
+                        <field name="reg_tax"/>
+                        <field name="reg_tax_date"/>
+                        <field name="reg_tax_no"/>
+                    </group>
+                    <group string="Vacation">
+                        <field name="year_vac_days"/>
+                        <field name="have_vac_days"/>
+                    </group>
+                    <newline/>
+                    <group col="2" colspan="4" string="Other Info">
+                        <field name="aptitude"/>
+                        <field name="insurance"/>
+                        <field name="study_list"/>
+                        <field name="interest"/>
+                        <field name="practice"/>
+                        <field name="go_abroad_list"/>
+                        <field name="strong_point"/>
+
+
+                    </group>
+                </xpath>
+                <!--xpath expr="//group[@string='Citizenship &amp; Other Info']" position="inside">
+
+                </xpath-->
+                <xpath expr="//page[@string='Personal Information']/group/group[@string='Contact Information']/field[@name='address_home_id']"
+                       position="before">
+                    <field name="home_phone"/>
+                </xpath>
+                <xpath expr="//group[@string='Active']/field[@name='active']" position="after">
+                    <field name="user_id" on_change="onchange_user(user_id)" string="Related User"/>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="replace"/>
+                <xpath expr="//group[@string='Position']/field[@name='coach_id']" position="replace"/>
+                <xpath expr="//group[@string='Status']/field[@name='gender']" position="replace"/>
+                <xpath expr="//group[@string='Birth']" position="replace"/>
+                <xpath expr="//group[@string='Citizenship &amp; Other Info']/field[@name='country_id']"
+                       position="replace"/>
+            </field>
+        </record>
+    </data>
 </openerp>
