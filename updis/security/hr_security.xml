@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data noupdate="0">
+
+    <record id="hr_dept_comp_rule" model="ir.rule">
+        <field name="name">Hr Employee self update </field>
+        <field model="ir.model" name="model_id" ref="model_hr_employee"/>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="domain_force">[('id','in',[e.id for e in user.employee_ids])]</field>
+        <field name="perm_read">1</field>
+        <field name="perm_write">1</field>
+        <field name="perm_create">0</field>
+        <field name="perm_unlink">0</field>
+    </record>
+    <record id="hr_job_comp_rule" model="ir.rule">
+        <field name="name">Hr Employee other no update</field>
+        <field model="ir.model" name="model_id" ref="model_hr_employee"/>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="domain_force">['!',('id','in',[e.id for e in user.employee_ids])]</field>
+        <field name="perm_read">1</field>
+        <field name="perm_write">0</field>
+        <field name="perm_create">0</field>
+        <field name="perm_unlink">0</field>
+    </record>
+
+</data>
+</openerp>
