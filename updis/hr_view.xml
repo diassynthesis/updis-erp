@@ -6,10 +6,12 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
+
                 <xpath expr="//page[@string='Public Information']/group/group[@string='Contact Information']"
                        position="after">
+                    <field name="current_user_rules" />
                     <group string="Education">
-                        <field name="degree"/>
+                        <field name="degree"  attrs="{'readonly':1}"/>
                         <field name="diploma"/>
                         <field name="academy"/>
                         <field name="major"/>
@@ -60,8 +62,6 @@
                         <field name="practice"/>
                         <field name="go_abroad_list"/>
                         <field name="strong_point"/>
-
-
                     </group>
                 </xpath>
                 <!--xpath expr="//group[@string='Citizenship &amp; Other Info']" position="inside">
