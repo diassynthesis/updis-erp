@@ -26,6 +26,7 @@ COOKIE_AUTH = 0        #  PYCAS cookie is valid.
 COOKIE_NONE = 1        #  No PYCAS cookie found.
 COOKIE_GATEWAY = 2        #  PYCAS gateway cookie found.
 COOKIE_INVALID = 3        #  Invalid PYCAS cookie found.
+COOKIE_EXPIRED = 4
 
 #  Status codes returned internally by function get_ticket_status().
 TICKET_OK = 0        #  Valid CAS server ticket found.
