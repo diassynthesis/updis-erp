@@ -9,9 +9,8 @@
 
                 <xpath expr="//page[@string='Public Information']/group/group[@string='Contact Information']"
                        position="after">
-                    <field name="current_user_rules" />
                     <group string="Education">
-                        <field name="degree"  attrs="{'readonly':1}"/>
+                        <field name="degree" attrs="{'readonly':1}"/>
                         <field name="diploma"/>
                         <field name="academy"/>
                         <field name="major"/>
@@ -80,6 +79,37 @@
                 <xpath expr="//group[@string='Birth']" position="replace"/>
                 <xpath expr="//group[@string='Citizenship &amp; Other Info']/field[@name='country_id']"
                        position="replace"/>
+            </field>
+        </record>
+
+        <record id="action_view_leave_employee" model="ir.actions.act_window">
+            <field name="name">View Leaved Employee</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_type">form</field>
+            <field name="view_model">tree,form</field>
+            <field name="domain">[('active','=',False)]</field>
+        </record>
+
+        <menuitem name="Leave Employee" id="base.menu_leave_employee" parent="hr.menu_hr_main"
+                  action="action_view_leave_employee"/>
+
+        <record id="hr.open_view_employee_list_my" model="ir.actions.act_window">
+            <field name="name">Employees</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="hr.view_employee_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a new employee.
+              </p><p>
+                With just a quick glance on the OpenERP employee screen, you
+                can easily find all the information you need for each person;
+                contact data, job position, availability, etc.
+              </p>
             </field>
         </record>
     </data>

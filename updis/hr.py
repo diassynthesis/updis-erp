@@ -6,17 +6,6 @@ class hr_employee_updis(osv.osv):
     _description = "Employee"
     _inherit = "hr.employee"
 
-    def _get_user_rules(self, cr, uid, ids, field_name, args, context=None):
-        result = dict.fromkeys(ids, False)
-        users = self.pool.get('res.users').read(cr, uid, uid, fields=['groups_id'])
-        groups = self.pool.get('ir.model.data').search(cr, uid,
-                                                       [('name', '=', 'group_user'), ('model', '=', 'res.groups')])
-        if groups:
-            re = self.pool.get('ir.model.data').read(cr, uid, groups[0])['res_id']
-            if re in users['groups_id']:
-                for obj in self.browse(cr, uid, ids, context=context):
-                    result[obj.id] = obj.user_id.id == uid and 1 or 2
-        return result
 
     _columns = {
         'gender': fields.selection([(u'男', u'男'), (u'女', u'女')], 'Gender'),
@@ -52,7 +41,5 @@ class hr_employee_updis(osv.osv):
         'out_date': fields.date('Out Date'),
         'reg_tax_no': fields.char('Reg Tax No', size=128),
         'home_phone': fields.char('Home Phone', size=32, readonly=False),
-        'current_user_rules': fields.function(_get_user_rules, type='integer',
-                                              string="User rules"),
     }
 
