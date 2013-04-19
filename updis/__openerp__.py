@@ -12,6 +12,7 @@ UPDIS Implementation Guide.""",
     # 'depends': ['base',],
     'data': [
         'security/ir.model.access.csv',
+        # 'security/hr_security.xml',
         'internal_home_menu_view.xml',
         'hr_department_view.xml',
         'hr_view.xml',

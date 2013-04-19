@@ -1,0 +1,481 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* message
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0-20130306-002055\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-04-16 04:36+0000\n"
+"PO-Revision-Date: 2013-04-16 04:36+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: message
+#: help:message.category,category_message_title_size:0
+msgid "-1 means no shorten at all"
+msgstr "-1 means no shorten at all"
+
+#. module: message
+#: field:message.category,category_message_title_size:0
+msgid "Message title length"
+msgstr "Message title length"
+
+#. module: message
+#: field:message.message,source:0
+msgid "Message Source"
+msgstr "Message Source"
+
+#. module: message
+#: field:message.message,create_uid:0
+msgid "Author"
+msgstr "Author"
+
+#. module: message
+#: model:ir.ui.menu,name:message.menu_message_category_detail_act
+msgid "Message categories detail"
+msgstr "Message categories detail"
+
+#. module: message
+#: view:message.message:0
+msgid "Message Content Detail Config"
+msgstr "Message Content Detail Config"
+
+#. module: message
+#: view:message.category:0
+msgid "Is in use"
+msgstr "Is in use"
+
+#. module: message
+#: field:message.message,department_id:0
+msgid "Department"
+msgstr "Department"
+
+#. module: message
+#: view:message.message:0
+msgid "Message CMS Detail Config"
+msgstr "Message CMS Detail Config"
+
+#. module: message
+#: model:ir.actions.act_window,name:message.action_internal_messages
+#: model:ir.ui.menu,name:message.menu_message_message_internal_act
+msgid "Internal Messages"
+msgstr "Internal Messages"
+
+#. module: message
+#: field:message.category,name:0
+#: field:message.message,name:0
+msgid "Title"
+msgstr "Title"
+
+#. module: message
+#: view:message.category:0
+msgid "Category Manager"
+msgstr "Category Manager"
+
+#. module: message
+#: help:message.category,message_meta:0
+msgid "this meta is used to show the message meta info for a categor, all message fields are available"
+msgstr "this meta is used to show the message meta info for a categor, all message fields are available"
+
+#. module: message
+#: model:ir.model,name:message.model_message_category
+msgid "UPDIS Message Category"
+msgstr "UPDIS Message Category"
+
+#. module: message
+#: model:ir.ui.menu,name:message.menu_message_message_category
+#: view:message.category:0
+msgid "Message Category"
+msgstr "Message Category"
+
+#. module: message
+#: field:message.message,message_ids:0
+msgid "Messages"
+msgstr "Messages"
+
+#. module: message
+#: view:message.category:0
+msgid "CMS Config"
+msgstr "CMS Config"
+
+#. module: message
+#: help:message.message,message_unread:0
+msgid "If checked new messages require your attention."
+msgstr "If checked new messages require your attention."
+
+#. module: message
+#: model:res.groups,name:message.message_global_manager
+msgid "Global Manager"
+msgstr "Global Manager"
+
+#. module: message
+#: view:message.category:0
+msgid "Other Config"
+msgstr "Other Config"
+
+#. module: message
+#: help:message.message,message_summary:0
+msgid "Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views."
+msgstr "Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views."
+
+#. module: message
+#: model:res.groups,comment:message.message_admin
+msgid "the user will be able to admin every message stuff."
+msgstr "the user will be able to admin every message stuff."
+
+#. module: message
+#: view:message.category:0
+msgid "Message Category Search"
+msgstr "Message Category Search"
+
+#. module: message
+#: model:ir.ui.menu,name:message.menu_message_root
+msgid "Message Management"
+msgstr "Message Management"
+
+#. module: message
+#: field:message.message,sms_receiver_ids:0
+msgid "SMS Receiver"
+msgstr "SMS Receiver"
+
+#. module: message
+#: model:ir.actions.act_window,name:message.action_message_categories
+msgid "Message categories"
+msgstr "Message categories"
+
+#. module: message
+#: field:message.message,message_follower_ids:0
+msgid "Followers"
+msgstr "Followers"
+
+#. module: message
+#: field:message.category,default_message_count:0
+msgid "Default message count"
+msgstr "Default message count"
+
+#. module: message
+#: model:ir.actions.act_window,name:message.action_admin_messages
+#: model:ir.ui.menu,name:message.menu_message_message_admin_act
+msgid "Admin Messages"
+msgstr "Admin Messages"
+
+#. module: message
+#: view:message.message:0
+msgid "Message Filter"
+msgstr "Message Filter"
+
+#. module: message
+#: model:res.groups,name:message.message_internal_manager
+msgid "Internal Manager"
+msgstr "Internal Manager"
+
+#. module: message
+#: field:message.category,is_allow_sms_receiver:0
+#: field:message.message,is_allow_sms_receiver:0
+msgid "Allow specify sms receiver?"
+msgstr "Allow specify sms receiver?"
+
+#. module: message
+#: selection:message.category,display_position:0
+msgid "Content Left"
+msgstr "Content Left"
+
+#. module: message
+#: model:res.groups,comment:message.message_global_manager
+msgid "the user will be able to manage all message stuff ."
+msgstr "the user will be able to manage all message stuff ."
+
+#. module: message
+#: view:message.message:0
+#: field:message.message,fbbm:0
+msgid "Publisher"
+msgstr "Publisher"
+
+#. module: message
+#: field:message.message,is_display_name:0
+msgid "Display name?"
+msgstr "Display name?"
+
+#. module: message
+#: view:message.message:0
+msgid "Message SMS Config"
+msgstr "Message SMS Config"
+
+#. module: message
+#: model:res.groups,comment:message.message_internal_manager
+msgid "the user will be able to manage message stuff in their own department."
+msgstr "the user will be able to manage message stuff in their own department."
+
+#. module: message
+#: field:message.message,expire_date:0
+msgid "Expire Date"
+msgstr "Expire Date"
+
+#. module: message
+#: field:message.message,message_unread:0
+msgid "Unread Messages"
+msgstr "Unread Messages"
+
+#. module: message
+#: field:message.category,message_meta:0
+#: field:message.message,message_meta_display:0
+msgid "Meta"
+msgstr "Meta"
+
+#. module: message
+#: model:ir.ui.menu,name:message.menu_message_message
+#: view:message.message:0
+msgid "Message"
+msgstr "Message"
+
+#. module: message
+#: view:message.message:0
+#: field:message.message,category_id:0
+msgid "Category"
+msgstr "Category"
+
+#. module: message
+#: field:message.message,write_uid:0
+msgid "Last Contributor"
+msgstr "Last Contributor"
+
+#. module: message
+#: view:message.message:0
+msgid "Message Content Detail"
+msgstr "Message Content Detail"
+
+#. module: message
+#: field:message.message,sms:0
+msgid "SMS"
+msgstr "SMS"
+
+#. module: message
+#: field:message.message,category_id_name:0
+msgid "category name"
+msgstr "category name"
+
+#. module: message
+#: selection:message.category,display_position:0
+msgid "Content Right"
+msgstr "Content Right"
+
+#. module: message
+#: field:message.category,category_manager:0
+msgid "unknown"
+msgstr "unknown"
+
+#. module: message
+#: view:message.category:0
+msgid "部门"
+msgstr "department"
+
+#. module: message
+#: field:message.category,category_message_title_meta:0
+#: field:message.message,category_message_title_meta_display:0
+msgid "Category meta"
+msgstr "Category meta"
+
+#. module: message
+#: view:message.category:0
+msgid "Category Admins"
+msgstr "Category Admins"
+
+#. module: message
+#: field:message.message,message_is_follower:0
+msgid "Is a Follower"
+msgstr "Is a Follower"
+
+#. module: message
+#: model:ir.actions.act_window,name:message.action_my_messages
+#: model:ir.ui.menu,name:message.menu_message_message_my_act
+msgid "My Messages"
+msgstr "My Messages"
+
+#. module: message
+#: field:message.message,read_times:0
+msgid "Read Times"
+msgstr "Read Times"
+
+#. module: message
+#: field:message.category,is_allow_send_sms:0
+#: field:message.message,is_allow_send_sms:0
+msgid "Allow send SMS?"
+msgstr "Allow send SMS?"
+
+#. module: message
+#: field:message.category,display_in_departments:0
+msgid "Display in Departments"
+msgstr "Display in Departments"
+
+#. module: message
+#: field:message.message,message_summary:0
+msgid "Summary"
+msgstr "Summary"
+
+#. module: message
+#: view:message.category:0
+#: view:message.message:0
+msgid "SMS Receivers"
+msgstr "SMS Receivers"
+
+#. module: message
+#: field:message.message,category_id_is_allowed_edit_sms_text:0
+msgid "category is allowed edit sms text"
+msgstr "category is allowed edit sms text"
+
+#. module: message
+#: field:message.category,is_in_use:0
+msgid "Is in use?"
+msgstr "Is in use?"
+
+#. module: message
+#: field:message.category,is_allowed_edit_sms_text:0
+msgid "Is Allowed Edit SMS Text?"
+msgstr "Is Allowed Edit SMS Text?"
+
+#. module: message
+#: selection:message.category,display_position:0
+msgid "Shortcuts"
+msgstr "Shortcuts"
+
+#. module: message
+#: view:message.category:0
+#: view:message.message:0
+msgid "人员"
+msgstr "members"
+
+#. module: message
+#: field:message.message,write_date:0
+msgid "Modification date"
+msgstr "Modification date"
+
+#. module: message
+#: view:message.message:0
+msgid "消息标题"
+msgstr "Message Title"
+
+#. module: message
+#: field:message.message,content:0
+msgid "Content"
+msgstr "Content"
+
+#. module: message
+#: field:message.category,is_public:0
+msgid "Is public category?"
+msgstr "Is public category?"
+
+#. module: message
+#: view:message.category:0
+msgid "消息分类名称"
+msgstr "message category name"
+
+#. module: message
+#: model:ir.model,name:message.model_message_message
+msgid "UPDIS Message"
+msgstr "UPDIS Message"
+
+#. module: message
+#: view:message.category:0
+#: view:message.message:0
+msgid "Group by..."
+msgstr "Group by..."
+
+#. module: message
+#: view:message.category:0
+#: field:message.category,default_sms_receiver_ids:0
+msgid "Default SMS Receivers"
+msgstr "Default SMS Receivers"
+
+#. module: message
+#: field:message.message,name_for_display:0
+msgid "Name"
+msgstr "Name"
+
+#. module: message
+#: field:message.message,category_id_is_anonymous_allowed:0
+msgid "category is anonymous allowed"
+msgstr "category is anonymous allowed"
+
+#. module: message
+#: field:message.category,display_position:0
+msgid "Display Position"
+msgstr "Display Position"
+
+#. module: message
+#: model:res.groups,name:message.message_admin
+msgid "Admin"
+msgstr "Admin"
+
+#. module: message
+#: field:message.message,create_date:0
+msgid "Created on"
+msgstr "Created on"
+
+#. module: message
+#: view:message.category:0
+msgid "Category Config"
+msgstr "Category Config"
+
+#. module: message
+#: field:message.category,is_anonymous_allowed:0
+msgid "Allow publish messages anonymously?"
+msgstr "Allow publish messages anonymously?"
+
+#. module: message
+#: model:ir.actions.act_window,name:message.action_my_messages_chat
+#: model:ir.actions.act_window,name:message.action_my_messages_food
+#: model:ir.actions.act_window,name:message.action_my_messages_life
+#: model:ir.actions.act_window,name:message.action_my_messages_news
+#: model:ir.actions.act_window,name:message.action_my_messages_notice
+#: model:ir.actions.act_window,name:message.action_my_messages_service
+#: model:ir.actions.act_window,name:message.action_my_messages_share
+msgid "My Messages Notice"
+msgstr "My Messages Notice"
+
+#. module: message
+#: view:message.message:0
+msgid "Message Detail Config"
+msgstr "Message Detail Config"
+
+#. module: message
+#: help:message.category,category_message_title_meta:0
+msgid "This meta is used to display the message title in internal home page for a category,all message fields are available."
+msgstr "This meta is used to display the message title in internal home page for a category,all message fields are available."
+
+#. module: message
+#: help:message.message,message_ids:0
+msgid "Messages and communication history"
+msgstr "Messages and communication history"
+
+#. module: message
+#: help:message.category,default_message_count:0
+msgid "How many messages should be displayed in front door for this category?"
+msgstr "How many messages should be displayed in front door for this category?"
+
+#. module: message
+#: field:message.category,sequence:0
+#: field:message.message,sequence:0
+msgid "Display Sequence"
+msgstr "Display Sequence"
+
+#. module: message
+#: model:ir.actions.act_window,name:message.action_all_messages
+#: model:ir.ui.menu,name:message.menu_message_message_all_act
+msgid "All Messages"
+msgstr "All Messages"
+
+#. module: message
+#: field:message.message,shorten_name:0
+msgid "Shorten title"
+msgstr "Shorten title"
+
+#. module: message
+#: view:message.category:0
+msgid "Display In Department"
+msgstr "Display In Department"
+

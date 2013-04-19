@@ -1,4 +1,3 @@
-
 #!/usr/bin/python
 # Based on the pycas client from official site.
 # Author Shrek (zgwmike@hotmail.com)
@@ -27,6 +26,7 @@ COOKIE_AUTH = 0        #  PYCAS cookie is valid.
 COOKIE_NONE = 1        #  No PYCAS cookie found.
 COOKIE_GATEWAY = 2        #  PYCAS gateway cookie found.
 COOKIE_INVALID = 3        #  Invalid PYCAS cookie found.
+COOKIE_EXPIRED = 4
 
 #  Status codes returned internally by function get_ticket_status().
 TICKET_OK = 0        #  Valid CAS server ticket found.
@@ -40,11 +40,11 @@ CAS_MSG = (
     "CAS server ticket invalid.",
     "CAS server returned without ticket while in gateway mode.",
 )
-CAS_SERVER = "https://zhouguangwen-pc:8443"
-SERVICE_URL = "http://zhouguangwen-pc:8069"
+CAS_SERVER = "https://cysnake4713-lenovo:8443"
+SERVICE_URL = "http://cysnake4713-lenovo:8069"
 
 ###Optional log file for debugging
-###LOG_FILE="/tmp/cas.log"
+LOG_FILE = "/tmp/cas.log"
 
 
 #-----------------------------------------------------------------------
@@ -65,8 +65,8 @@ import urlparse
 #  For debugging.
 def writelog(msg):
     f = open(LOG_FILE, "a")
-    timestr = time.strftime("%Y-%m-%d %H:%M:%S ");
-    f.write(timestr + msg + "\n");
+    timestr = time.strftime("%Y-%m-%d %H:%M:%S ")
+    f.write(timestr + msg + "\n")
     f.close()
 
 #  Used for parsing xml.  Search str for first occurance of
