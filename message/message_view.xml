@@ -305,7 +305,7 @@
                 </form>
             </field>
         </record>
-        <menuitem name="Message Management" id="menu_message_root" sequence="120"/>
+        <menuitem name="Message Management" id="menu_message_root" sequence="1"/>
         <menuitem name="Message" parent="menu_message_root" id="menu_message_message" sequence="40"/>
         <menuitem name="Message Category" parent="menu_message_root" id="menu_message_message_category" sequence="80"/>
         <record id="action_internal_messages" model="ir.actions.act_window">

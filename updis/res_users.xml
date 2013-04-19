@@ -11,20 +11,5 @@
 				</xpath>
 			</field>
 		</record>
-
-        <record id="view_res_user_preference_form_inherit" model="ir.ui.view">
-            <field name="name">res.user.preference.form.inherit.matt</field>
-            <field name="model">res.users</field>
-            <field name="inherit_id" ref="base.view_users_form_simple_modif"/>
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='lang']" position="after">
-                    <field mode="tree" name="employee_ids" widget="one2many" nolabel="1" class="oe_inline oe_no_button">
-                        <tree editable="top">
-                            <field name="folk"/>
-                        </tree>
-                    </field>
-                </xpath>
-            </field>
-        </record>
 	</data>
 </openerp>
