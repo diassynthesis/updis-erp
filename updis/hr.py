@@ -6,7 +6,6 @@ class hr_employee_updis(osv.osv):
     _description = "Employee"
     _inherit = "hr.employee"
 
-
     _columns = {
         'gender': fields.selection([(u'男', u'男'), (u'女', u'女')], 'Gender'),
         "folk": fields.char("Folk", size=32),
@@ -24,7 +23,8 @@ class hr_employee_updis(osv.osv):
         'insurance': fields.char("Insurance", size=128),
         'awards': fields.text("Award"),
         'study_list': fields.text("Study List"),
-        'interest': fields.char("Interest", size=100),
+        'interest': fields.related('user_id', 'interest', type="char",
+                                   string="Interest"),
         'practice': fields.text("Practice"),
         'go_abroad_list': fields.text("Go Abroad List"),
         'join_ploy': fields.text("Join Ploy"),
@@ -41,5 +41,6 @@ class hr_employee_updis(osv.osv):
         'out_date': fields.date('Out Date'),
         'reg_tax_no': fields.char('Reg Tax No', size=128),
         'home_phone': fields.char('Home Phone', size=32, readonly=False),
+
     }
 
