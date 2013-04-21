@@ -29,7 +29,6 @@
                 <xpath expr="//group[@string='Birth']" position="replace"/>
                 <xpath expr="//group[@string='Citizenship &amp; Other Info']/field[@name='country_id']"
                        position="replace"/>
-
                 <xpath expr="//page[@string='Public Information']/group/group[@string='Contact Information']"
                        position="after">
                     <group string="Education">
@@ -99,6 +98,12 @@
                 <xpath expr="//group[@string='Active']/field[@name='active']" position="after">
                     <field name="user_id" on_change="onchange_user(user_id)" string="Related User"/>
                 </xpath>
+                <xpath expr="//field[@name='notes']" position="before">
+                    <group col="2" colspan="4" string="Personal Resume">
+                        <field name="person_resume"/>
+                    </group>
+                </xpath>
+                <xpath expr="//field[@name='notes']" position="replace"/>
             </field>
         </record>
 
