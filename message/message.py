@@ -90,7 +90,7 @@ class Message(osv.Model):
     def _default_department(self, cr, uid, context=None):
         employee_ids = self.pool.get('hr.employee').search(cr, uid, [('user_id', '=', uid)])
         if employee_ids:
-            return self.pool.get('hr.employee').browse(cr, uid, employee_ids[0]).department_id
+            return self.pool.get('hr.employee').browse(cr, uid, employee_ids[0]).department_id.id
 
     def _get_image(self, cr, uid, ids, name, args, context=None):
         result = dict.fromkeys(ids, False)
