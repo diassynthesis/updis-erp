@@ -104,7 +104,7 @@ class Message(osv.Model):
     def _get_name_display(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            result[obj.id] = obj.is_display_name and obj.write_uid.name or u'匿名用户'
+            result[obj.id] = obj.is_display_name and obj.create_uid.name or u'匿名用户'
         return result
 
     def _get_message_meta_display(self, cr, uid, ids, field_name, args, context=None):
