@@ -40,6 +40,9 @@
                         <field name="gra_date"/>
                     </group>
                 </xpath>
+                <xpath expr="//group[@string='Contact Information']/field[@name='address_id']" position="attributes">
+                    <attribute name="domain">[('is_company','=',True)]</attribute>
+                </xpath>
                 <xpath expr="//group[@string='Contact Information']" position="before">
                     <group string="Public Personal Info">
                         <field name="folk"/>

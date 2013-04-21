@@ -55,3 +55,5 @@ class hr_employee_updis(osv.osv):
                                      string="Home Phone"),
     }
 
+    def onchange_address_id(self, cr, uid, ids, address, context=None):
+        return {'value': {}}

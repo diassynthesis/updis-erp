@@ -6,13 +6,6 @@ from functools import partial
 class res_users(osv.osv):
     _inherit = "res.users"
 
-
-    def onchange_address_id(self, cr, uid, ids, address, context=None):
-        if address:
-            address = self.pool.get('res.partner').browse(cr, uid, address, context=context)
-            return {'value': {'work_phone': address.phone, 'mobile_phone': address.mobile}}
-        return {'value': {}}
-
     _columns = {
         'sign_image': fields.binary("Sign Image",
                                     help="This field holds the image used as siganture for this contact"),
