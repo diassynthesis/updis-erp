@@ -11,6 +11,7 @@ UPDIS Implementation Guide.""",
     'depends': ['base','hr','account_voucher', 'updis_auth_crypt', 'knowledge'],
     # 'depends': ['base',],
     'data': [
+        'security/res_user_security.xml',
         'security/ir.model.access.csv',
         # 'security/hr_security.xml',
         'internal_home_menu_view.xml',

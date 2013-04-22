@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 internal_home_all,internal.home.menu,model_internal_home_menu,,1,0,0,0
 hr_department_all,hr.department,model_hr_department,,1,0,0,0
+updis_res_user_modify,res.users,base.model_res_users,updis.group_res_user_manager,1,1,1,0
