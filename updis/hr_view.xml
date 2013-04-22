@@ -141,5 +141,24 @@
                 </p>
             </field>
         </record>
+
+        <record id="view_employee_filter_inherit" model="ir.ui.view">
+            <field name="name">Employees.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@string='Group By...']" position="replace"/>
+                <xpath expr="//field[@name='category_ids']" position="after">
+                    <field name="business"/>
+                    <field name="mobile_phone"/>
+                    <field name="work_phone"/>
+                    <field name="work_email"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Department" icon="terp-personal+" domain="[]"
+                                context="{'group_by':'department_id'}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
     </data>
 </openerp>
