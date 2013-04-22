@@ -29,7 +29,6 @@
                 <xpath expr="//group[@string='Birth']" position="replace"/>
                 <xpath expr="//group[@string='Citizenship &amp; Other Info']/field[@name='country_id']"
                        position="replace"/>
-
                 <xpath expr="//page[@string='Public Information']/group/group[@string='Contact Information']"
                        position="after">
                     <group string="Education">
@@ -39,6 +38,10 @@
                         <field name="major"/>
                         <field name="gra_date"/>
                     </group>
+                </xpath>
+                <xpath expr="//group[@string='Contact Information']/field[@name='address_id']" position="attributes">
+                    <attribute name="domain">[('is_company','=',True)]</attribute>
+                    <attribute name="widget">selection</attribute>
                 </xpath>
                 <xpath expr="//group[@string='Contact Information']" position="before">
                     <group string="Public Personal Info">
@@ -96,6 +99,12 @@
                 <xpath expr="//group[@string='Active']/field[@name='active']" position="after">
                     <field name="user_id" on_change="onchange_user(user_id)" string="Related User"/>
                 </xpath>
+                <xpath expr="//field[@name='notes']" position="before">
+                    <group col="2" colspan="4" string="Personal Resume">
+                        <field name="person_resume"/>
+                    </group>
+                </xpath>
+                <xpath expr="//field[@name='notes']" position="replace"/>
             </field>
         </record>
 
@@ -105,13 +114,32 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,kanban</field>
             <field name="domain">[('active','=',False)]</field>
-            <field name="context">{}</field>
+            <field name="context">{'search_default_department':1}</field>
             <field name="view_id" eval="False"/>
             <field name="search_view_id" ref="hr.view_employee_filter"/>
         </record>
 
         <menuitem name="Leave Employee" id="base.menu_leave_employee" parent="hr.menu_hr_main"
-                  action="action_view_leave_employee"/>
+                  action="action_view_leave_employee" groups="base.group_hr_user"/>
+
+        <record id="view_employee_filter_inherit" model="ir.ui.view">
+            <field name="name">Employees.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@string='Group By...']" position="replace"/>
+                <xpath expr="//field[@name='category_ids']" position="after">
+                    <field name="business"/>
+                    <field name="mobile_phone"/>
+                    <field name="work_phone"/>
+                    <field name="work_email"/>
+                    <group expand="0" string="Group By...">
+                        <filter name="department" string="Department" icon="terp-personal+" domain="[]"
+                                context="{'group_by':'department_id'}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
 
         <record id="hr.open_view_employee_list_my" model="ir.actions.act_window">
             <field name="name">Employees</field>
@@ -119,7 +147,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,kanban</field>
             <field name="domain">[]</field>
-            <field name="context">{}</field>
+            <field name="context">{'search_default_department':1}</field>
             <field name="view_id" eval="False"/>
             <field name="search_view_id" ref="hr.view_employee_filter"/>
             <field name="help" type="html">
@@ -133,5 +161,7 @@
                 </p>
             </field>
         </record>
+
+
     </data>
 </openerp>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data noupdate="0">
+    <data noupdate="1">
         <record model="res.groups" id="message.message_global_manager">
             <field name="name">Global Manager</field>
             <field name="category_id" ref="base.module_category_message_management"/>
@@ -35,7 +35,7 @@
     </data>
 
 
-    <data noupdate="0">
+    <data noupdate="1">
         <record model="ir.rule" id="message_message_display_role">
             <field name="name">Message-Message Display Rule</field>
             <field model="ir.model" name="model_id" ref="model_message_message"/>

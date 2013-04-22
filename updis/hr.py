@@ -37,6 +37,8 @@ class hr_employee_updis(osv.osv):
         'gra_date': fields.date('Graduate Date'),
         'out_date': fields.date('Out Date'),
         'reg_tax_no': fields.char('Reg Tax No', size=128),
+        'person_resume': fields.related('user_id', 'person_resume', type="text",
+                                        string="Personal Resume"),
         'mobile_phone': fields.related('user_id', 'mobile_phone', type="char",
                                        string="Work Mobile"),
         'work_phone': fields.related('user_id', 'work_phone', type="char",
@@ -55,3 +57,5 @@ class hr_employee_updis(osv.osv):
                                      string="Home Phone"),
     }
 
+    def onchange_address_id(self, cr, uid, ids, address, context=None):
+        return {'value': {}}

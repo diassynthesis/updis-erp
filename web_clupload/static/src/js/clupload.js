@@ -28,11 +28,15 @@
             params: {'session_id': openerp.instances.instance0.session.session_id},
             uploadButtonText: "上传文件",
             onComplete: function (id, fileName, responseJSON) {
-                var html = "<a href='" + responseJSON.url + "'>" + responseJSON.filename + "</a>";
-                var editor = data.editor;
-                editor.execCommand(data.command, html, null, data.button);
-                editor.hidePopups();
-                editor.focus();
+                if (responseJSON.success) {
+                    var html = "<a href='" + responseJSON.url + "'>" + responseJSON.filename + "</a>";
+                    var editor = data.editor;
+                    editor.execCommand(data.command, html, null, data.button);
+                    editor.hidePopups();
+                    editor.focus();
+                } else {
+                    alert("FTP服务器出错！请联系管理员。\n" + responseJSON.error);
+                }
             }
         });
     };
@@ -65,13 +69,17 @@
             sizeLimit: 3145728, //3M = 3*1024k*1024byte
             disableDefaultDropzone: true,
             onComplete: function (id, imageName, responseJSON) {
-                var html = "<img id='target' src='" + responseJSON.url + "'/>";
-                var editor = data.editor;
-                // $(html).appendTo($(data.popup).find('#imagecontainer'));
-                // $(data.popup).find('#target').Jcrop();
-                editor.execCommand(data.command, html, null, data.button);
-                editor.hidePopups();
-                editor.focus();
+                if (responseJSON.success) {
+                    var html = "<img id='target' src='" + responseJSON.url + "'/>";
+                    var editor = data.editor;
+                    // $(html).appendTo($(data.popup).find('#imagecontainer'));
+                    // $(data.popup).find('#target').Jcrop();
+                    editor.execCommand(data.command, html, null, data.button);
+                    editor.hidePopups();
+                    editor.focus();
+                } else {
+                    alert("FTP服务器出错！请联系管理员。\n" + responseJSON.error);
+                }
             }
         });
     };
