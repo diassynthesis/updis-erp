@@ -41,6 +41,7 @@
                 </xpath>
                 <xpath expr="//group[@string='Contact Information']/field[@name='address_id']" position="attributes">
                     <attribute name="domain">[('is_company','=',True)]</attribute>
+                    <attribute name="widget">selection</attribute>
                 </xpath>
                 <xpath expr="//group[@string='Contact Information']" position="before">
                     <group string="Public Personal Info">
