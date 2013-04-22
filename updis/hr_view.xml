@@ -121,13 +121,32 @@
         <menuitem name="Leave Employee" id="base.menu_leave_employee" parent="hr.menu_hr_main"
                   action="action_view_leave_employee"/>
 
+        <record id="view_employee_filter_inherit" model="ir.ui.view">
+            <field name="name">Employees.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@string='Group By...']" position="replace"/>
+                <xpath expr="//field[@name='category_ids']" position="after">
+                    <field name="business"/>
+                    <field name="mobile_phone"/>
+                    <field name="work_phone"/>
+                    <field name="work_email"/>
+                    <group expand="0" string="Group By...">
+                        <filter name="department" string="Department" icon="terp-personal+" domain="[]"
+                                context="{'group_by':'department_id'}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
         <record id="hr.open_view_employee_list_my" model="ir.actions.act_window">
             <field name="name">Employees</field>
             <field name="res_model">hr.employee</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,kanban</field>
             <field name="domain">[]</field>
-            <field name="context">{}</field>
+            <field name="context">{'search_default_department':1}</field>
             <field name="view_id" eval="False"/>
             <field name="search_view_id" ref="hr.view_employee_filter"/>
             <field name="help" type="html">
@@ -142,23 +161,6 @@
             </field>
         </record>
 
-        <record id="view_employee_filter_inherit" model="ir.ui.view">
-            <field name="name">Employees.inherit</field>
-            <field name="model">hr.employee</field>
-            <field name="inherit_id" ref="hr.view_employee_filter"/>
-            <field name="arch" type="xml">
-                <xpath expr="//group[@string='Group By...']" position="replace"/>
-                <xpath expr="//field[@name='category_ids']" position="after">
-                    <field name="business"/>
-                    <field name="mobile_phone"/>
-                    <field name="work_phone"/>
-                    <field name="work_email"/>
-                    <group expand="0" string="Group By...">
-                        <filter string="Department" icon="terp-personal+" domain="[]"
-                                context="{'group_by':'department_id'}"/>
-                    </group>
-                </xpath>
-            </field>
-        </record>
+
     </data>
 </openerp>
