@@ -119,7 +119,7 @@
         </record>
 
         <menuitem name="Leave Employee" id="base.menu_leave_employee" parent="hr.menu_hr_main"
-                  action="action_view_leave_employee"/>
+                  action="action_view_leave_employee" groups="base.group_hr_user"/>
 
         <record id="view_employee_filter_inherit" model="ir.ui.view">
             <field name="name">Employees.inherit</field>
