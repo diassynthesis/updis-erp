@@ -138,7 +138,8 @@
                         </group>
                         <group col="2" colspan="4">
                             <field name="source" attrs="{'invisible':[('category_id_name','=',u'通知')]}"/>
-                            <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
+                            <field name="fbbm"
+                                   attrs="{'invisible':['!',('category_id_name','=',u'通知')],'required':[('category_id_name','=',u'通知')]}"/>
                             <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
                             <field name="is_display_name"
                                    attrs="{'invisible':['!',('category_id_is_anonymous_allowed','=',True)]}"/>
@@ -200,7 +201,8 @@
                         </group>
                         <group col="2" colspan="4">
                             <field name="source" attrs="{'invisible':[('category_id_name','=',u'通知')]}"/>
-                            <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
+                            <field name="fbbm"
+                                   attrs="{'invisible':['!',('category_id_name','=',u'通知')],'required':[('category_id_name','=',u'通知')]}"/>
                             <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
                             <field name="is_display_name"
                                    attrs="{'invisible':['!',('category_id_is_anonymous_allowed','=',True)]}"/>
@@ -260,7 +262,8 @@
                         </group>
                         <group col="2" colspan="4">
                             <field name="source" attrs="{'invisible':[('category_id_name','=',u'通知')]}"/>
-                            <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
+                            <field name="fbbm"
+                                   attrs="{'invisible':['!',('category_id_name','=',u'通知')],'required':[('category_id_name','=',u'通知')]}"/>
                             <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
                             <field name="is_display_name"
                                    attrs="{'invisible':['!',('category_id_is_anonymous_allowed','=',True)]}"/>
