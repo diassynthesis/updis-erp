@@ -63,7 +63,7 @@ class MessageCategory(osv.Model):
         'category_message_title_size': 10,
         'is_in_use': False,
         'is_public': False,
-        'is_allowed_edit_sms_text':True,
+        'is_allowed_edit_sms_text': True,
         #'is_display_read_times':True,
     }
 
@@ -165,9 +165,10 @@ class Message(osv.Model):
         'category_id_name': fields.related('category_id', 'name', type="char",
                                            string="category name"),
         'category_id_is_anonymous_allowed': fields.related('category_id', 'is_anonymous_allowed', type="boolean",
-                                           string="category is anonymous allowed"),
-        'category_id_is_allowed_edit_sms_text':fields.related('category_id', 'is_allowed_edit_sms_text', type="boolean",
-                                                              string="category is allowed edit sms text"),
+                                                           string="category is anonymous allowed"),
+        'category_id_is_allowed_edit_sms_text': fields.related('category_id', 'is_allowed_edit_sms_text',
+                                                               type="boolean",
+                                                               string="category is allowed edit sms text"),
     }
     _defaults = {
         'fbbm': _default_fbbm,
@@ -185,12 +186,12 @@ class Message(osv.Model):
                 'sms_receiver_ids': [x.id for x in message_category.default_sms_receiver_ids],
                 'category_id_name': message_category.name,
                 'category_id_is_anonymous_allowed': message_category.is_anonymous_allowed,
-                'category_id_is_allowed_edit_sms_text':message_category.is_allowed_edit_sms_text,
+                'category_id_is_allowed_edit_sms_text': message_category.is_allowed_edit_sms_text,
             }
             ret['value'].update(sms_vals)
         return ret
 
-    def onchange_name(self,cr, uid, ids, name, context=None):
+    def onchange_name(self, cr, uid, ids, name, context=None):
         ret = {'value': {}}
         name_vals = {
             'sms': name,
@@ -209,7 +210,7 @@ class Message(osv.Model):
         if message.is_allow_send_sms:
             to = ','.join([rid.mobile_phone for rid in message.sms_receiver_ids if rid.mobile_phone])
             if to:
-                content = message.sms and message.sms or message.name
+                content = message.sms and message.category_id.name + ':' + message.sms or message.category_id.name + ':' + message.name
                 sid = sms.create(cr, uid, {'to': to, 'content': content, 'model': 'message.message', 'res_id': mid},
                                  context=context)
         return mid
