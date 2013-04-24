@@ -65,8 +65,8 @@ class InternalHome(openerp.addons.web.http.Controller):
             return args
 
     def _create_attachment(self, req, qqfile, resize_image=False):
-        context = req.context
-        Model = req.session.model('ir.attachment')
+        # context = req.context
+        # Model = req.session.model('ir.attachment')
 
         # datas = base64.encodestring(req.httprequest.data)
         # if resize_image:
