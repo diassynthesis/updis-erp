@@ -90,7 +90,7 @@ class InternalHome(openerp.addons.web.http.Controller):
         try:
             args = self._create_attachment(req, qqfile, True)
             # model, id, field, **kw
-            url = 'http://ftp.updis.cn:8000/erpupload/%s' % (args['filename'])
+            url = 'http://file.updis.cn/erpupload/%s' % (args['filename'])
             args['url'] = url
         except Exception, e:
             args = {'error': e.message, 'filename': qqfile}
@@ -101,7 +101,7 @@ class InternalHome(openerp.addons.web.http.Controller):
         try:
             args = self._create_attachment(req, qqfile)
             # model, field, id=None, filename_field=None, **kw)
-            url = 'http://ftp.updis.cn:8000/erpupload/%s' % (args['filename'])
+            url = 'http://file.updis.cn/erpupload/%s' % (args['filename'])
             args['url'] = url
         except Exception, e:
             args = {'error': e.message, 'filename': qqfile}
