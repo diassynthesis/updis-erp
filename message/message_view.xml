@@ -118,6 +118,7 @@
                     <field name="category_id"/>
                     <field name="read_times"/>
                     <field name="name_for_display"/>
+                    <field name="create_uid" groups="base.group_system"/>
                     <field name="department_id"/>
                 </tree>
             </field>
