@@ -211,7 +211,7 @@ def validate_cas_2(cas_host, service_url, ticket, opt):
     f_validate = urllib.urlopen(cas_validate)
     #  Get first line - should be yes or no
     response = f_validate.read()
-    print response
+    # print response
     id = parse_tag(response, "cas:user")
     uid = parse_tag(response, "cas:id")
     db = parse_tag(response, "cas:db")
