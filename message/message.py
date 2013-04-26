@@ -1,5 +1,6 @@
 #encoding:UTF-8
 import time
+import datetime
 from osv import osv, fields
 import tools
 import openerp.pooler as pooler
@@ -55,7 +56,7 @@ class MessageCategory(osv.Model):
         'is_in_use': fields.boolean('Is in use?'),
         'category_manager': fields.many2many('res.users', String="Category Manager"),
         'is_public': fields.boolean('Is public category?'),
-        'is_allowed_edit_sms_text': fields.boolean('Is Allowed Edit SMS Text?')
+        'is_allowed_edit_sms_text': fields.boolean('Is Allowed Edit SMS Text?'),
     }
     _defaults = {
         #'is_display_fbbm':True,
@@ -127,6 +128,27 @@ class Message(osv.Model):
             result[obj.id] = category_message_title_meta
         return result
 
+
+    def _get_create_date_display(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+
+            if obj.create_date:
+                create_date_display = datetime.datetime.strptime(obj.create_date,
+                                                                 '%Y-%m-%d %H:%M:%S') + datetime.timedelta(hours=8)
+                result[obj.id] = create_date_display.strftime('%Y-%m-%d %H:%M:%S')
+        return result
+
+    def _get_write_date_display(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+
+            if obj.write_date:
+                write_date_display = datetime.datetime.strptime(obj.write_date,
+                                                                '%Y-%m-%d %H:%M:%S') + datetime.timedelta(hours=8)
+                result[obj.id] = write_date_display.strftime('%Y-%m-%d %H:%M:%S')
+        return result
+
     def _get_shorten_name(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
@@ -169,6 +191,10 @@ class Message(osv.Model):
         'category_id_is_allowed_edit_sms_text': fields.related('category_id', 'is_allowed_edit_sms_text',
                                                                type="boolean",
                                                                string="category is allowed edit sms text"),
+        'create_date_display': fields.function(_get_create_date_display, type="date", string="Create Date Display",
+                                               readonly=True),
+        'write_date_display': fields.function(_get_write_date_display, type="date", string="Write Date Display",
+                                              readonly=True),
     }
     _defaults = {
         'fbbm': _default_fbbm,
