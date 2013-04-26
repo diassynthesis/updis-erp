@@ -82,12 +82,11 @@
             </t>
             <t t-if="!widget.options.view_mailbox">
                 <div class="field_text oe_compact oe_compact_record">
-                    <a class="oe_compose_post">
+                    <!--a class="oe_compose_post">
                         <t t-if="widget.options.compose_placeholder" t-raw="widget.options.compose_placeholder"/>
                         <t t-if="!widget.options.compose_placeholder and !widget.options.view_mailbox">评论</t>
-                    </a>
-                    <!--span class="oe_grey">或</span>
-                    <a class="oe_compose_log">Log a note</a-->
+                    </a-->
+                    <a class="oe_compose_log">评论</a>
                 </div>
             </t>
         </div>
