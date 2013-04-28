@@ -80,7 +80,6 @@
                     </group>
                     <newline/>
                     <group col="2" colspan="4" string="Other Info">
-                        <field name="aptitude"/>
                         <field name="insurance"/>
                         <field name="study_list"/>
                         <field name="interest"/>

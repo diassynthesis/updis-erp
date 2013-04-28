@@ -1,5 +1,6 @@
 #encoding:UTF-8
 import time
+import datetime
 from osv import osv, fields
 import tools
 import openerp.pooler as pooler
@@ -55,7 +56,7 @@ class MessageCategory(osv.Model):
         'is_in_use': fields.boolean('Is in use?'),
         'category_manager': fields.many2many('res.users', String="Category Manager"),
         'is_public': fields.boolean('Is public category?'),
-        'is_allowed_edit_sms_text': fields.boolean('Is Allowed Edit SMS Text?')
+        'is_allowed_edit_sms_text': fields.boolean('Is Allowed Edit SMS Text?'),
     }
     _defaults = {
         #'is_display_fbbm':True,
@@ -63,7 +64,7 @@ class MessageCategory(osv.Model):
         'category_message_title_size': 10,
         'is_in_use': False,
         'is_public': False,
-        'is_allowed_edit_sms_text':True,
+        'is_allowed_edit_sms_text': True,
         #'is_display_read_times':True,
     }
 
@@ -127,6 +128,27 @@ class Message(osv.Model):
             result[obj.id] = category_message_title_meta
         return result
 
+
+    def _get_create_date_display(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+
+            if obj.create_date:
+                create_date_display = datetime.datetime.strptime(obj.create_date,
+                                                                 '%Y-%m-%d %H:%M:%S') + datetime.timedelta(hours=8)
+                result[obj.id] = create_date_display.strftime('%Y-%m-%d %H:%M:%S')
+        return result
+
+    def _get_write_date_display(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+
+            if obj.write_date:
+                write_date_display = datetime.datetime.strptime(obj.write_date,
+                                                                '%Y-%m-%d %H:%M:%S') + datetime.timedelta(hours=8)
+                result[obj.id] = write_date_display.strftime('%Y-%m-%d %H:%M:%S')
+        return result
+
     def _get_shorten_name(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
@@ -165,9 +187,14 @@ class Message(osv.Model):
         'category_id_name': fields.related('category_id', 'name', type="char",
                                            string="category name"),
         'category_id_is_anonymous_allowed': fields.related('category_id', 'is_anonymous_allowed', type="boolean",
-                                           string="category is anonymous allowed"),
-        'category_id_is_allowed_edit_sms_text':fields.related('category_id', 'is_allowed_edit_sms_text', type="boolean",
-                                                              string="category is allowed edit sms text"),
+                                                           string="category is anonymous allowed"),
+        'category_id_is_allowed_edit_sms_text': fields.related('category_id', 'is_allowed_edit_sms_text',
+                                                               type="boolean",
+                                                               string="category is allowed edit sms text"),
+        'create_date_display': fields.function(_get_create_date_display, type="date", string="Create Date Display",
+                                               readonly=True),
+        'write_date_display': fields.function(_get_write_date_display, type="date", string="Write Date Display",
+                                              readonly=True),
     }
     _defaults = {
         'fbbm': _default_fbbm,
@@ -185,12 +212,12 @@ class Message(osv.Model):
                 'sms_receiver_ids': [x.id for x in message_category.default_sms_receiver_ids],
                 'category_id_name': message_category.name,
                 'category_id_is_anonymous_allowed': message_category.is_anonymous_allowed,
-                'category_id_is_allowed_edit_sms_text':message_category.is_allowed_edit_sms_text,
+                'category_id_is_allowed_edit_sms_text': message_category.is_allowed_edit_sms_text,
             }
             ret['value'].update(sms_vals)
         return ret
 
-    def onchange_name(self,cr, uid, ids, name, context=None):
+    def onchange_name(self, cr, uid, ids, name, context=None):
         ret = {'value': {}}
         name_vals = {
             'sms': name,
@@ -209,7 +236,7 @@ class Message(osv.Model):
         if message.is_allow_send_sms:
             to = ','.join([rid.mobile_phone for rid in message.sms_receiver_ids if rid.mobile_phone])
             if to:
-                content = message.sms and message.sms or message.name
+                content = message.sms and message.category_id.name + ':' + message.sms or message.category_id.name + ':' + message.name
                 sid = sms.create(cr, uid, {'to': to, 'content': content, 'model': 'message.message', 'res_id': mid},
                                  context=context)
         return mid

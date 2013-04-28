@@ -66,7 +66,7 @@
                                         </tree>
                                     </field>
                                 </page>
-                                <page string="Category Admins" attrs="{'invisible':[('is_public','=',True)]}">
+                                <page string="Category Admins">
                                     <field name="category_manager">
                                         <tree string="Category Manager">
                                             <field name="name"/>
@@ -118,6 +118,7 @@
                     <field name="category_id"/>
                     <field name="read_times"/>
                     <field name="name_for_display"/>
+                    <field name="create_uid" groups="base.group_system"/>
                     <field name="department_id"/>
                 </tree>
             </field>
@@ -138,7 +139,8 @@
                         </group>
                         <group col="2" colspan="4">
                             <field name="source" attrs="{'invisible':[('category_id_name','=',u'通知')]}"/>
-                            <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
+                            <field name="fbbm"
+                                   attrs="{'invisible':['!',('category_id_name','=',u'通知')],'required':[('category_id_name','=',u'通知')]}"/>
                             <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
                             <field name="is_display_name"
                                    attrs="{'invisible':['!',('category_id_is_anonymous_allowed','=',True)]}"/>
@@ -200,7 +202,8 @@
                         </group>
                         <group col="2" colspan="4">
                             <field name="source" attrs="{'invisible':[('category_id_name','=',u'通知')]}"/>
-                            <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
+                            <field name="fbbm"
+                                   attrs="{'invisible':['!',('category_id_name','=',u'通知')],'required':[('category_id_name','=',u'通知')]}"/>
                             <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
                             <field name="is_display_name"
                                    attrs="{'invisible':['!',('category_id_is_anonymous_allowed','=',True)]}"/>
@@ -260,7 +263,8 @@
                         </group>
                         <group col="2" colspan="4">
                             <field name="source" attrs="{'invisible':[('category_id_name','=',u'通知')]}"/>
-                            <field name="fbbm" attrs="{'invisible':['!',('category_id_name','=',u'通知')]}"/>
+                            <field name="fbbm"
+                                   attrs="{'invisible':['!',('category_id_name','=',u'通知')],'required':[('category_id_name','=',u'通知')]}"/>
                             <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
                             <field name="is_display_name"
                                    attrs="{'invisible':['!',('category_id_is_anonymous_allowed','=',True)]}"/>

@@ -7,6 +7,14 @@
  */
 
 openerp.upcas = function (instance) {
+    instance.web.SearchView = instance.web.SearchView.extend({
+        init: function () {
+            this._super.apply(this, arguments);
+            this.on('search_data', this, function () {
+                console.log('hello from cas!');
+            });
+        }
+    });
     instance.web.WebClient = instance.web.WebClient.extend({
         on_logout: function () {
             console.log("Logout!!!")

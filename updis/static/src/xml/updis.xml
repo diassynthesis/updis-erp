@@ -28,6 +28,29 @@
 			</table>
 		</div>
 	</t>
+    <!--
+        mail.compose_message.add_attachment template
+        Small template to be inserted in the composition for add attachments
+        -->
+    <t t-name="mail.compose_message.add_attachment">
+        <span class="oe_attachment_file">
+            <span class="oe_add">
+                <!-- uploader of file -->
+                <button class="oe_attach"><span class="oe_e">'</span></button>
+                <span class='oe_attach_label'>添加附件</span>
+                <t t-call="HiddenInputFile">
+                    <t t-set="fileupload_id" t-value="widget.fileupload_id"/>
+                    <t t-set="fileupload_action" t-translation="off">/web/binary/upload_attachment</t>
+                    <input type="hidden" name="model" value="mail.compose.message"/>
+                    <input type="hidden" name="id" value="0"/>
+                    <input type="hidden" name="session_id" t-att-value="widget.session.session_id"/>
+                </t>
+            </span>
+        </span>
+    </t>
+
+
+
     <t t-name="mail.compose_message">
         <div t-if="widget.show_composer and !widget.options.readonly" t-attf-class="oe_msg oe_msg_composer #{widget.thread_level and widget.options.display_indented_thread > -1 ? 'oe_msg_indented' : ''}">
             <div class="oe_msg_left">
@@ -43,8 +66,8 @@
                 <div class="oe_msg_footer">
                     <div class="oe_msg_attachment_list"></div>
                     <button class="oe_post">
-                        <t t-if="!widget.is_log">Send</t>
-                        <t t-if="widget.is_log">Log a note</t>
+                        <t t-if="!widget.is_log">评论</t>
+                        <t t-if="widget.is_log">评论</t>
                     </button>
                     <t t-call="mail.compose_message.add_attachment"/>
                 </div>
@@ -59,12 +82,11 @@
             </t>
             <t t-if="!widget.options.view_mailbox">
                 <div class="field_text oe_compact oe_compact_record">
-                    <a class="oe_compose_post">
+                    <!--a class="oe_compose_post">
                         <t t-if="widget.options.compose_placeholder" t-raw="widget.options.compose_placeholder"/>
                         <t t-if="!widget.options.compose_placeholder and !widget.options.view_mailbox">评论</t>
-                    </a>
-                    <!--span class="oe_grey">或</span>
-                    <a class="oe_compose_log">Log a note</a-->
+                    </a-->
+                    <a class="oe_compose_log">评论</a>
                 </div>
             </t>
         </div>

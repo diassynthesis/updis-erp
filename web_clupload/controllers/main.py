@@ -26,20 +26,24 @@ class InternalHome(openerp.addons.web.http.Controller):
     _FTP_USER_NAME = 'ftpuser'
     _FTP_PASSWORD = 'updis_ftp_2013'
 
+    def _get_salt(self, current_time, filename):
+        salt = str(random.random)
+        h = hashlib.md5(current_time + salt).hexdigest()
+        return h
+
     def _generate_file_name(self, s_file_name):
 
-        def _get_salt(current_time, filename):
-            salt = str(random.random)
-            h = hashlib.md5(current_time + salt).hexdigest()
-            return h
 
         current_time = time.strftime('%Y-%m-%d_%H-%M', time.localtime(time.time()))
-        salt = _get_salt(current_time, s_file_name)
+        salt = self._get_salt(current_time, s_file_name)
         return '%s_%s%s' % (current_time, salt, os.path.splitext(s_file_name)[1])
 
 
     def _upload_file_ftp(self, file_data, file_name):
-        HOME = os.getenv("HOME") + '/tempfile'
+        if os.getenv("HOME"):
+            HOME = os.getenv("HOME") + '/tempfile'
+        else:
+            HOME = '/home/updisadmin' + '/tempfile'
         if not os.path.exists(HOME):
             os.mkdir(HOME)
         new_file_name = self._generate_file_name(file_name)
@@ -65,8 +69,8 @@ class InternalHome(openerp.addons.web.http.Controller):
             return args
 
     def _create_attachment(self, req, qqfile, resize_image=False):
-        context = req.context
-        Model = req.session.model('ir.attachment')
+        # context = req.context
+        # Model = req.session.model('ir.attachment')
 
         # datas = base64.encodestring(req.httprequest.data)
         # if resize_image:
@@ -86,7 +90,7 @@ class InternalHome(openerp.addons.web.http.Controller):
         try:
             args = self._create_attachment(req, qqfile, True)
             # model, id, field, **kw
-            url = 'http://ftp.updis.cn:8000/erpupload/%s' % (args['filename'])
+            url = 'http://file.updis.cn:81/erpupload/%s' % (args['filename'])
             args['url'] = url
         except Exception, e:
             args = {'error': e.message, 'filename': qqfile}
@@ -97,7 +101,7 @@ class InternalHome(openerp.addons.web.http.Controller):
         try:
             args = self._create_attachment(req, qqfile)
             # model, field, id=None, filename_field=None, **kw)
-            url = 'http://ftp.updis.cn:8000/erpupload/%s' % (args['filename'])
+            url = 'http://file.updis.cn:81/erpupload/%s' % (args['filename'])
             args['url'] = url
         except Exception, e:
             args = {'error': e.message, 'filename': qqfile}

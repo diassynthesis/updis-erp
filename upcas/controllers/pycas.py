@@ -40,8 +40,8 @@ CAS_MSG = (
     "CAS server ticket invalid.",
     "CAS server returned without ticket while in gateway mode.",
 )
-CAS_SERVER = "https://cysnake4713-lenovo:8443"
-SERVICE_URL = "http://cysnake4713-lenovo:8069"
+CAS_SERVER = "http://sso.updis.cn:81"
+SERVICE_URL = "http://erp.updis.cn:81"
 
 ###Optional log file for debugging
 LOG_FILE = "/tmp/cas.log"
@@ -211,7 +211,7 @@ def validate_cas_2(cas_host, service_url, ticket, opt):
     f_validate = urllib.urlopen(cas_validate)
     #  Get first line - should be yes or no
     response = f_validate.read()
-    print response
+    # print response
     id = parse_tag(response, "cas:user")
     uid = parse_tag(response, "cas:id")
     db = parse_tag(response, "cas:db")

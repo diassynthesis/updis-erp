@@ -55,7 +55,7 @@ class CASController(openerpweb.Controller):
     @openerpweb.jsonrequest
     def cas_logout(self, req):
         return {
-            'logout_url':pycas.CAS_SERVER + "/cas/logout"
+            'logout_url':pycas.CAS_SERVER + "/cas/logout?service=%s" % pycas.SERVICE_URL
         }
         # response = urllib.urlopen(pycas.CAS_SERVER + "/cas/logout")
         # response = response.read()

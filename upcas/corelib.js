@@ -36,6 +36,7 @@ rpc: function (url, params, options) {
             if (response && response.redirect_url) {
                 window.location = response.redirect_url;
             } else {
+                self.set_cookie("session_id",response.session_id);
                 return self.do_rpc(url, params, options);
             }
         },

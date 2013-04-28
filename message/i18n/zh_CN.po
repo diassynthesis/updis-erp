@@ -198,6 +198,11 @@ msgstr "显示名字吗？"
 
 #. module: message
 #: view:message.message:0
+msgid "Message Detail Config"
+msgstr "消息详情设置"
+
+#. module: message
+#: view:message.message:0
 msgid "Message SMS Config"
 msgstr "消息手机短信设置"
 
@@ -468,3 +473,4 @@ msgstr "短标题"
 #: view:message.category:0
 msgid "Display In Department"
 msgstr "在部门中显示"
+
