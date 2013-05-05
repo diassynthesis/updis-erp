@@ -191,9 +191,9 @@ class Message(osv.Model):
         'category_id_is_allowed_edit_sms_text': fields.related('category_id', 'is_allowed_edit_sms_text',
                                                                type="boolean",
                                                                string="category is allowed edit sms text"),
-        'create_date_display': fields.function(_get_create_date_display, type="date", string="Create Date Display",
+        'create_date_display': fields.function(_get_create_date_display, type="datetime", string="Create Date Display",
                                                readonly=True),
-        'write_date_display': fields.function(_get_write_date_display, type="date", string="Write Date Display",
+        'write_date_display': fields.function(_get_write_date_display, type="datetime", string="Write Date Display",
                                               readonly=True),
     }
     _defaults = {
