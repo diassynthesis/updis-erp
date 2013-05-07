@@ -12,3 +12,5 @@ Steps
 
 #. Open **chrome.js** under addons/web/static/src/js/chrome.js.
 #. replace **on_logout: function() ** with **on_logout: function()** in addons/upcas/chrome.js
+
+need add CAS_SERVER and SERVICE_URL in openerp config file

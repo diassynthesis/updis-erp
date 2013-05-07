@@ -8,6 +8,8 @@
 #
 #  Secret used to produce hash.   This can be any string.  Hackers
 #  who know this string can forge this script's authentication cookie.
+from tools import config
+
 SECRET = "7e16162998eb7efafb1498f75190a937"
 
 #  Name field for pycas cookie
@@ -40,8 +42,8 @@ CAS_MSG = (
     "CAS server ticket invalid.",
     "CAS server returned without ticket while in gateway mode.",
 )
-CAS_SERVER = "http://sso.updis.cn"
-SERVICE_URL = "http://erp.updis.cn"
+CAS_SERVER = config.get('cas_server', 'http://localhost:8443')
+SERVICE_URL = config.get('service_url', 'http://localhost:8069')
 
 ###Optional log file for debugging
 LOG_FILE = "/tmp/cas.log"
