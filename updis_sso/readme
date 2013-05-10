@@ -21,3 +21,7 @@
     line 144:
     add  'domain=.updis.cn'
     如同本目录下的js文件
+
+4.
+erp 配置文件添加：
+    domain= .updis.cn
