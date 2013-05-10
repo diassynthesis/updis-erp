@@ -1,0 +1,23 @@
+1.
+修改web/http.py
+    中的 def dispatch(self, environ, start_response):
+        line 536:
+        response.set_cookie('sid', session.sid)->
+            from tools import config
+            response.set_cookie('sid', session.sid,domain=config.get('domain', None))
+
+2.
+修改web/controllers/main.py
+    中的 def set_cookie_and_redirect(req, redirect_url):
+        line 362:
+        redirect.set_cookie('instance0|session_id', cookie_val)
+        ->
+        from tools import config
+        redirect.set_cookie('instance0|session_id', cookie_val, domain=config.get('domain', None))
+
+3.
+修改web/static/src/js/coresetup.js
+    中的set_cookie: function (name, value, ttl) {
+    line 144:
+    add  'domain=.updis.cn'
+    如同本目录下的js文件
