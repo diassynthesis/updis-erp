@@ -38,7 +38,8 @@ class res_users(osv.osv):
                              'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone']
 
     OTHER_WRITEABLE_FIELDS = ['address_id', 'work_email', 'work_phone',
-                              'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone']
+                              'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone',
+                              'devices']
 
     def write(self, cr, uid, ids, values, context=None):
         if not hasattr(ids, '__iter__'):
