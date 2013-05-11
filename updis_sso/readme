@@ -25,3 +25,8 @@
 4.
 erp 配置文件添加：
     domain= .updis.cn
+
+5.
+修改web/static/src/js/chrome.js
+    中的 on_logout:
+    最后一行变成 window.location='http://cms.updis.cn';
