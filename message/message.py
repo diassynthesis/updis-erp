@@ -79,7 +79,7 @@ class Message(osv.Model):
     #TODO: turn off for data import only
     _log_access = True
     _name = "message.message"
-    _order = "sequence,write_date desc"
+    _order = "create_date desc,sequence"
     _description = 'UPDIS Message'
     _inherit = ['mail.thread', 'ir.needaction_mixin']
 

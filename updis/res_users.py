@@ -1,6 +1,17 @@
-from osv import osv, fields
-from openerp import SUPERUSER_ID
 from functools import partial
+
+from openerp import SUPERUSER_ID
+
+from osv import osv, fields
+
+
+class res_users(osv.osv):
+    _description = "User device Info"
+    _name = "updis.device"
+
+    _columns = {
+        'device_id': fields.char("Device Identify ID", size=200),
+    }
 
 
 class res_users(osv.osv):
@@ -18,8 +29,8 @@ class res_users(osv.osv):
         'practice': fields.text("Practice"),
         'person_resume': fields.text("Personal Resume"),
         'home_phone': fields.char('Home Phone', size=32, readonly=False),
-
-
+        'devices': fields.many2many("updis.device", "res_users_device_rel", "res_users_id", "device_id",
+                                    "User Device Relative"),
     }
 
     SELF_WRITEABLE_FIELDS = ['password', 'signature', 'action_id', 'company_id', 'email', 'name', 'image',
@@ -27,7 +38,8 @@ class res_users(osv.osv):
                              'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone']
 
     OTHER_WRITEABLE_FIELDS = ['address_id', 'work_email', 'work_phone',
-                              'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone']
+                              'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone',
+                              'devices']
 
     def write(self, cr, uid, ids, values, context=None):
         if not hasattr(ids, '__iter__'):

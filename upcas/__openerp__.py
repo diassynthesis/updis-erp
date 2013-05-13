@@ -11,7 +11,7 @@
     'installable': True,
     'auto_install': False,
     'js': [
-        'static/src/js/cas.js',
+        # 'static/src/js/cas.js',
     ],
     'css': [
     ],
