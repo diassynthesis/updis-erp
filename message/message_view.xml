@@ -185,7 +185,7 @@
                 </form>
             </field>
         </record>
-        <record id="form_message_message_manager" model="ir.ui.view">
+        <record id="form_message_message_manager_fix" model="ir.ui.view">
             <field name="name">message.message.form_manager</field>
             <field name="model">message.message</field>
             <field name="arch" type="xml">
@@ -233,7 +233,7 @@
                             </div>
                         </group>
                     </group>
-                    <group colspan="4" string="Message Content Detail">
+                    <group colspan="4" string="Message Content Detail Config">
                         <div class="oe_document_page">
                             <field name="message_meta_display" widget="html"/>
                         </div>
@@ -294,7 +294,7 @@
                             </div>
                         </group>
                     </group>
-                    <group colspan="4" string="Message Content Detail">
+                    <group colspan="4" string="Message Content Detail Config">
                         <div class="oe_document_page">
                             <field name="message_meta_display" widget="html"/>
                         </div>
@@ -422,20 +422,6 @@
             <field name="context">{'search_default_by-status':1}</field>
             <field name="search_view_id" ref="search_message_category"/>
         </record>
-        <record id="act_view_message_message_my_tree" model="ir.actions.act_window.view">
-            <field name="sequence">16</field>
-            <field name="view_id" ref="tree_message_message"/>
-            <field name="view_mode">tree</field>
-            <field name="act_window_id" ref="action_my_messages"/>
-        </record>
-        <record id="act_view_message_message_my_form" model="ir.actions.act_window.view">
-            <field name="sequence">17</field>
-            <field name="view_id" ref="form_message_message_my"/>
-            <field name="view_mode">form</field>
-            <field name="act_window_id" ref="action_my_messages"/>
-        </record>
-
-
         <record id="act_view_message_message_my_form_notice" model="ir.actions.act_window.view">
             <field name="sequence">18</field>
             <field name="view_id" ref="form_message_message_my"/>
@@ -480,6 +466,18 @@
         </record>
 
 
+        <record id="act_view_message_message_my_tree" model="ir.actions.act_window.view">
+            <field name="sequence">16</field>
+            <field name="view_id" ref="tree_message_message"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_my_messages"/>
+        </record>
+        <record id="act_view_message_message_my_form" model="ir.actions.act_window.view">
+            <field name="sequence">17</field>
+            <field name="view_id" ref="form_message_message_my"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_my_messages"/>
+        </record>
         <record id="act_view_message_message_manager_tree" model="ir.actions.act_window.view">
             <field name="sequence">16</field>
             <field name="view_id" ref="tree_message_message"/>
@@ -488,9 +486,21 @@
         </record>
         <record id="act_view_message_message_manager_form" model="ir.actions.act_window.view">
             <field name="sequence">17</field>
-            <field name="view_id" ref="form_message_message_manager"/>
+            <field name="view_id" ref="form_message_message_manager_fix"/>
             <field name="view_mode">form</field>
             <field name="act_window_id" ref="action_all_messages"/>
+        </record>
+        <record id="act_view_message_message_internal_manager_tree" model="ir.actions.act_window.view">
+            <field name="sequence">16</field>
+            <field name="view_id" ref="tree_message_message"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_internal_messages"/>
+        </record>
+        <record id="act_view_message_message_internal_manager_form" model="ir.actions.act_window.view">
+            <field name="sequence">17</field>
+            <field name="view_id" ref="form_message_message_manager_fix"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_internal_messages"/>
         </record>
         <record id="act_view_message_message_admin_tree" model="ir.actions.act_window.view">
             <field name="sequence">16</field>
