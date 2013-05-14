@@ -1,10 +1,13 @@
 #encoding:UTF-8
 import time
 import datetime
+import urllib2
+from openerp.tools import config
 from osv import osv, fields
 import tools
 import openerp.pooler as pooler
 from openerp.tools.safe_eval import safe_eval as eval
+import threading
 
 
 class Env(dict):
@@ -240,5 +243,73 @@ class Message(osv.Model):
                 sid = sms.create(cr, uid, {'to': to, 'content': content, 'model': 'message.message', 'res_id': mid},
                                  context=context)
         return mid
+
+    def write(self, cr, user, ids, vals, context=None):
+        #get message old position
+        TYPE = None
+        if not (len(vals) == 1 and 'read_times' in vals.keys()):
+            message_old = self.pool.get('message.message').browse(cr, user, ids, context=context)
+            if message_old[0].category_id.display_position == 'shortcut':
+                TYPE = '0'
+            if message_old[0].category_id.display_position == 'content_left':
+                TYPE = '1'
+            if message_old[0].category_id.display_position == 'content_right':
+                TYPE = '2'
+
+        mid = super(Message, self).write(cr, user, ids, vals, context)
+        NEW_TYPE = None
+        #refresh cms page
+        if not (len(vals) == 1 and 'read_times' in vals.keys()):
+            #get message new position
+            message = self.pool.get('message.message').browse(cr, user, ids, context=context)
+            if message[0].category_id.display_position == 'shortcut':
+                fresh = CMSFresh('0')
+                fresh.start()
+                NEW_TYPE = '0'
+            if message[0].category_id.display_position == 'content_left':
+                fresh = CMSFresh('1')
+                fresh.start()
+                NEW_TYPE = '1'
+            if message[0].category_id.display_position == 'content_right':
+                fresh = CMSFresh('2')
+                fresh.start()
+                NEW_TYPE = '2'
+
+            #if old and new position is different refresh both.
+            if TYPE and NEW_TYPE is not TYPE:
+                fresh_old = CMSFresh(TYPE)
+                fresh_old.start()
+
+        return True
+
+
+    def unlink(self, cr, uid, ids, context=None):
+        #get old position
+        TYPE = None
+        message_old = self.pool.get('message.message').browse(cr, uid, ids, context=context)
+        if message_old[0].category_id.display_position == 'shortcut':
+            TYPE = '0'
+        if message_old[0].category_id.display_position == 'content_left':
+            TYPE = '1'
+        if message_old[0].category_id.display_position == 'content_right':
+            TYPE = '2'
+        super(Message, self).unlink(cr, uid, ids, context=None)
+        #refresh
+        if TYPE:
+            fresh_old = CMSFresh(TYPE)
+            fresh_old.start()
+
+        return True
+
+
+class CMSFresh(threading.Thread):
+    def __init__(self, TYPE):
+        threading.Thread.__init__(self)
+        self.TYPE = TYPE
+
+    def run(self):
+        time.sleep(2)
+        connection = urllib2.urlopen(config.get('cms_home', 'http://localhost:8001') + '/message/reload/%s/' % self.TYPE)
+        connection.close()
 
 
