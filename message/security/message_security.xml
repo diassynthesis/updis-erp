@@ -45,7 +45,7 @@
         <record model="ir.rule" id="message_message_display_role">
             <field name="name">Message-Message Display Rule</field>
             <field model="ir.model" name="model_id" ref="model_message_message"/>
-            <field name="groups" eval="[(4, ref('message.message_internal_manager')`)]"/>
+            <field name="groups" eval="[(4, ref('message.message_internal_manager'))]"/>
             <field name="domain_force">[('department_id.id','in',[e.department_id.id for e in user.employee_ids])]</field>
         </record>
     </data>
