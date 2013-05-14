@@ -244,40 +244,38 @@ class Message(osv.Model):
                                  context=context)
         return mid
 
-    def write(self, cr, user, ids, vals, context=None):
+    def write(self, cr, uid, ids, vals, context=None):
         #get message old position
-        TYPE = None
+        TYPE = []
         if not (len(vals) == 1 and 'read_times' in vals.keys()):
-            message_old = self.pool.get('message.message').browse(cr, user, ids, context=context)
-            if message_old[0].category_id.display_position == 'shortcut':
-                TYPE = '0'
-            if message_old[0].category_id.display_position == 'content_left':
-                TYPE = '1'
-            if message_old[0].category_id.display_position == 'content_right':
-                TYPE = '2'
+            messages_old = self.pool.get('message.message').browse(cr, 1, ids, context=context)
+            for message_old in messages_old:
+                if message_old.category_id.display_position == 'shortcut':
+                    TYPE.append('0')
+                if message_old.category_id.display_position == 'content_left':
+                    TYPE.append('1')
+                if message_old.category_id.display_position == 'content_right':
+                    TYPE.append('2')
+            TYPE = set(TYPE)
 
-        mid = super(Message, self).write(cr, user, ids, vals, context)
-        NEW_TYPE = None
+        super(Message, self).write(cr, uid, ids, vals, context=context)
+        NEW_TYPE = []
         #refresh cms page
         if not (len(vals) == 1 and 'read_times' in vals.keys()):
             #get message new position
-            message = self.pool.get('message.message').browse(cr, user, ids, context=context)
-            if message[0].category_id.display_position == 'shortcut':
-                fresh = CMSFresh('0')
-                fresh.start()
-                NEW_TYPE = '0'
-            if message[0].category_id.display_position == 'content_left':
-                fresh = CMSFresh('1')
-                fresh.start()
-                NEW_TYPE = '1'
-            if message[0].category_id.display_position == 'content_right':
-                fresh = CMSFresh('2')
-                fresh.start()
-                NEW_TYPE = '2'
+            messages = self.pool.get('message.message').browse(cr, 1, ids, context=context)
+            for message in messages:
+                if message.category_id.display_position == 'shortcut':
+                    NEW_TYPE.append('0')
+                if message.category_id.display_position == 'content_left':
+                    NEW_TYPE.append('1')
+                if message.category_id.display_position == 'content_right':
+                    NEW_TYPE.append('2')
+            NEW_TYPE = set(NEW_TYPE)
 
             #if old and new position is different refresh both.
-            if TYPE and NEW_TYPE is not TYPE:
-                fresh_old = CMSFresh(TYPE)
+            for v in (TYPE | NEW_TYPE):
+                fresh_old = CMSFresh(v)
                 fresh_old.start()
 
         return True
@@ -285,18 +283,20 @@ class Message(osv.Model):
 
     def unlink(self, cr, uid, ids, context=None):
         #get old position
-        TYPE = None
-        message_old = self.pool.get('message.message').browse(cr, uid, ids, context=context)
-        if message_old[0].category_id.display_position == 'shortcut':
-            TYPE = '0'
-        if message_old[0].category_id.display_position == 'content_left':
-            TYPE = '1'
-        if message_old[0].category_id.display_position == 'content_right':
-            TYPE = '2'
+        TYPE = []
+        messages_old = self.pool.get('message.message').browse(cr, 1, ids, context=context)
+        for message_old in messages_old:
+            if message_old.category_id.display_position == 'shortcut':
+                TYPE.append('0')
+            if message_old.category_id.display_position == 'content_left':
+                TYPE.append('1')
+            if message_old.category_id.display_position == 'content_right':
+                TYPE.append('2')
         super(Message, self).unlink(cr, uid, ids, context=None)
+        TYPE = set(TYPE)
         #refresh
-        if TYPE:
-            fresh_old = CMSFresh(TYPE)
+        for v in TYPE:
+            fresh_old = CMSFresh(v)
             fresh_old.start()
 
         return True
@@ -309,7 +309,8 @@ class CMSFresh(threading.Thread):
 
     def run(self):
         time.sleep(2)
-        connection = urllib2.urlopen(config.get('cms_home', 'http://localhost:8001') + '/message/reload/%s/' % self.TYPE)
+        connection = urllib2.urlopen(
+            config.get('cms_home', 'http://localhost:8001') + '/message/reload/%s/' % self.TYPE)
         connection.close()
 
 
