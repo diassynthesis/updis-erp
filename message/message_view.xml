@@ -124,7 +124,7 @@
             </field>
         </record>
         <record id="form_message_message_my" model="ir.ui.view">
-            <field name="name">message.message.form</field>
+            <field name="name">message.message.form_my</field>
             <field name="model">message.message</field>
             <field name="arch" type="xml">
                 <form string="Message" version="7.0">
@@ -186,7 +186,7 @@
             </field>
         </record>
         <record id="form_message_message_manager" model="ir.ui.view">
-            <field name="name">message.message.form</field>
+            <field name="name">message.message.form_manager</field>
             <field name="model">message.message</field>
             <field name="arch" type="xml">
                 <form string="Message" version="7.0">
@@ -249,7 +249,7 @@
             </field>
         </record>
         <record id="form_message_message_admin" model="ir.ui.view">
-            <field name="name">message.message.form</field>
+            <field name="name">message.message.form_admin</field>
             <field name="model">message.message</field>
             <field name="arch" type="xml">
                 <form string="Message" version="7.0">
