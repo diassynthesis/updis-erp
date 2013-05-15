@@ -308,7 +308,7 @@ class CMSFresh(threading.Thread):
         self.TYPE = TYPE
 
     def run(self):
-        time.sleep(2)
+        time.sleep(1)
         connection = urllib2.urlopen(
             config.get('cms_home', 'http://localhost:8001') + '/message/reload/%s/' % self.TYPE)
         connection.close()
