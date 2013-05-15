@@ -27,7 +27,7 @@ class InternalHome(openerp.addons.web.http.Controller):
     _FTP_PASSWORD = 'updis_ftp_2013'
 
     def _get_salt(self, current_time, filename):
-        salt = str(random.random)
+        salt = str(random.random())
         h = hashlib.md5(current_time + salt).hexdigest()
         return h
 
