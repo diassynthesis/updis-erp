@@ -53,7 +53,7 @@ class hr_employee_updis(osv.osv):
                                    string="Interest"),
         'practice': fields.related('user_id', 'practice', type="char",
                                    string="Practice"),
-        'home_phone': fields.related('user_id', 'person_resume', type="char",
+        'home_phone': fields.related('user_id', 'home_phone', type="char",
                                      string="Home Phone"),
     }
 
