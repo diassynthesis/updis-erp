@@ -8,11 +8,10 @@
 UPDIS Project Module.""",
     'author': 'Shrek Zhou',
     'website': 'http://openerp.com',
-    'depends': ['base', 'mail', 'resource', 'hr'],
+    'depends': ['base', 'mail', 'resource', 'hr', 'project', 'oecn_base_fonts'],
     'init_xml': [],
     'update_xml': [
         'data/updis_data.xml',
-        'up_project_view.xml',
         'security/updis_security.xml',
         'security/ir.model.access.csv',
         'wizard/suozhangshenpi.xml',
