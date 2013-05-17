@@ -30,3 +30,8 @@ erp 配置文件添加：
 修改web/static/src/js/chrome.js
     中的 on_logout:
     最后一行变成 window.location='http://cms.updis.cn';
+
+6.翻译
+修改web/static/src/js/chrome.js
+252 line Your UpdisERP session expired. Please refresh the current web page.
+登录过期，请重新刷新页面！
