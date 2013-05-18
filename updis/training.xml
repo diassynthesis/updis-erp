@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+
+        <record id="action_view_employee_trainings" model="ir.actions.act_window">
+            <field name="name">View Trainings</field>
+            <field name="res_model">updis.hr.training</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Trainings" id="base.menu_employee_trainings" parent="hr.menu_hr_main"
+                  action="action_view_employee_trainings" groups="updis.group_training_manager"/>
+
+        <record id="view_employee_training_from" model="ir.ui.view">
+            <field name="name">updis.employee.training.from</field>
+            <field name="model">updis.hr.training</field>
+            <field name="arch" type="xml">
+                <form string="Trainings" version="7.0">
+                    <h1>
+                        <field name="name" placeholder="Please in put training name"/>
+                    </h1>
+                    <group string="Training Info" col="4">
+                        <field name="organizers"/>
+                        <field name="time"/>
+                    </group>
+                    <group string="Join Employees">
+                        <field name="record_ids" nolabel='1'/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="view_employee_training_tree" model="ir.ui.view">
+            <field name="name">updis.employee.training.tree</field>
+            <field name="model">updis.hr.training</field>
+            <field name="arch" type="xml">
+                <tree string="Trainings" version="7.0">
+                    <field name="name"/>
+                    <field name="organizers"/>
+                    <field name="time"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_employee_training_record_from" model="ir.ui.view">
+            <field name="name">updis.employee.training.record.from</field>
+            <field name="model">updis.hr.training.record</field>
+            <field name="arch" type="xml">
+                <form string="Trainings" version="7.0">
+                    <group string="Training Records Detail" col="4">
+                        <field name="employee"/>
+                        <field name="score"/>
+                        <field name="training_certificate"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_employee_training_record_tree" model="ir.ui.view">
+            <field name="name">updis.employee.training.record.tree</field>
+            <field name="model">updis.hr.training.record</field>
+            <field name="arch" type="xml">
+                <tree string="Trainings" version="7.0" editable="top">
+                    <field name="employee"/>
+                    <field name="score"/>
+                    <field name="training_certificate"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</openerp>

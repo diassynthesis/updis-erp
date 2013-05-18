@@ -99,8 +99,24 @@
                     <field name="user_id" on_change="onchange_user(user_id)" string="Related User"/>
                 </xpath>
                 <xpath expr="//field[@name='notes']" position="before">
+                    <group col="1" colspan="4" string="Training Record">
+                        <field name="trains" nolabel="1">
+                            <tree string="Training Records">
+                                <field name="training_id"/>
+                                <field name="training_organizers"/>
+                                <field name="training_time"/>
+                                <field name="score"/>
+                                <field name="training_certificate"/>
+                            </tree>
+                            <form string="Add Training Record">
+                                <field name="training_id" widget="many2one_list"/>
+                                <field name="score"/>
+                                <field name="training_certificate"/>
+                            </form>
+                        </field>
+                    </group>
                     <group col="2" colspan="4" string="Personal Resume">
-                        <field name="person_resume"/>
+                        <field name="person_resume" nolabel="1"/>
                     </group>
                 </xpath>
                 <xpath expr="//field[@name='notes']" position="replace"/>
@@ -111,7 +127,7 @@
             <field name="name">View Leaved Employees</field>
             <field name="res_model">hr.employee</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_mode">tree,form</field>
             <field name="domain">[('active','=',False)]</field>
             <field name="context">{'search_default_department':1}</field>
             <field name="view_id" eval="False"/>
@@ -119,7 +135,7 @@
         </record>
 
         <menuitem name="Leave Employee" id="base.menu_leave_employee" parent="hr.menu_hr_main"
-                  action="action_view_leave_employee" groups="base.group_hr_user"/>
+                  action="action_view_leave_employee" groups="base.group_user"/>
 
         <record id="view_employee_filter_inherit" model="ir.ui.view">
             <field name="name">Employees.inherit</field>
@@ -144,7 +160,7 @@
             <field name="name">Employees</field>
             <field name="res_model">hr.employee</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_mode">tree,form</field>
             <field name="domain">[]</field>
             <field name="context">{'search_default_department':1}</field>
             <field name="view_id" eval="False"/>
