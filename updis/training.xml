@@ -60,7 +60,7 @@
             <field name="name">updis.employee.training.record.tree</field>
             <field name="model">updis.hr.training.record</field>
             <field name="arch" type="xml">
-                <tree string="Trainings" version="7.0" editable="top">
+                <tree string="Trainings" version="7.0" editable="bottom">
                     <field name="employee"/>
                     <field name="score"/>
                     <field name="training_certificate"/>
