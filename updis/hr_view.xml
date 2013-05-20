@@ -120,6 +120,12 @@
                     </group>
                 </xpath>
                 <xpath expr="//field[@name='notes']" position="replace"/>
+                <xpath expr="//label[@for='category_ids']" position="replace"/>
+                <xpath expr="//field[@name='category_ids']" position="replace"/>
+                <xpath expr="//field[@name='active']" position="before">
+                    <field  name="category_ids" widget="many2many_tags" placeholder="e.g. Part Time"
+                           groups="base.group_hr_user"/>
+                </xpath>
             </field>
         </record>
 

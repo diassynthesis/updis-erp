@@ -53,7 +53,7 @@
                                 <page string="Default SMS Receivers"
                                       attrs="{'invisible':[('is_allow_send_sms','=',False)]}">
                                     <field name="default_sms_receiver_ids" nolabel="1">
-                                        <tree editable="bottom" string="SMS Receivers">
+                                        <tree string="SMS Receivers">
                                             <field name="name" string="人员"/>
                                             <field name="mobile_phone"/>
                                         </tree>
@@ -162,7 +162,7 @@
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
                                 <field name="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
-                                    <tree editable="bottom" string="SMS Receivers">
+                                    <tree string="SMS Receivers">
                                         <field name="name" string="人员"/>
                                         <field name="mobile_phone"/>
                                     </tree>
@@ -225,7 +225,7 @@
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
                                 <field name="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
-                                    <tree editable="bottom" string="SMS Receivers">
+                                    <tree string="SMS Receivers">
                                         <field name="name" string="人员"/>
                                         <field name="mobile_phone"/>
                                     </tree>
@@ -286,7 +286,7 @@
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
                                 <field name="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
-                                    <tree editable="bottom" string="SMS Receivers">
+                                    <tree string="SMS Receivers">
                                         <field name="name" string="人员"/>
                                         <field name="mobile_phone"/>
                                     </tree>
