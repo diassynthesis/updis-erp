@@ -81,7 +81,6 @@
                     <newline/>
                     <group col="2" colspan="4" string="Other Info">
                         <field name="insurance"/>
-                        <field name="study_list"/>
                         <field name="interest"/>
                         <field name="practice"/>
                         <field name="go_abroad_list"/>
@@ -114,6 +113,7 @@
                                 <field name="training_certificate"/>
                             </form>
                         </field>
+                        <field name="study_list"/>
                     </group>
                     <group col="2" colspan="4" string="Personal Resume">
                         <field name="person_resume" nolabel="1"/>

@@ -57,7 +57,8 @@ class MessageCategory(osv.Model):
                                                      "message_category_id", "hr_employee_id",
                                                      string='Default SMS Receivers'),
         'is_in_use': fields.boolean('Is in use?'),
-        'category_manager': fields.many2many('res.users', String="Category Manager"),
+        'category_manager': fields.many2many('hr.employee', "message_category_manager_hr_employee_rel",
+                                             "message_category_id", "hr_employee_id", String="Category Manager"),
         'is_public': fields.boolean('Is public category?'),
         'is_allowed_edit_sms_text': fields.boolean('Is Allowed Edit SMS Text?'),
     }
