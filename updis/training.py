@@ -1,3 +1,4 @@
+#encoding:UTF-8
 __author__ = 'cysnake4713'
 from osv import fields, osv
 
@@ -22,7 +23,7 @@ class updis_hr_training_record(osv.osv):
         'training_id': fields.many2one('updis.hr.training', 'Training Name', required=True),
         'employee': fields.many2one('hr.employee', 'Employee', required=True),
 
-        'score': fields.selection([(u'pass', u'Pass'), (u'fail', u'Fail')], 'Score'),
+        'score': fields.selection([(u'pass', u'通过'), (u'fail', u'未通过')], 'Score'),
         'training_certificate': fields.char(string='Certificate Number', size=100),
         'training_time': fields.related('training_id', 'time', type="date",
                                         string="Training Time", readonly=True),

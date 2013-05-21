@@ -9,7 +9,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem name="Trainings" id="base.menu_employee_trainings" parent="hr.menu_hr_main"
+        <menuitem name="培训" id="base.menu_employee_trainings" parent="hr.menu_hr_main"
                   action="action_view_employee_trainings" groups="updis.group_training_manager"/>
 
         <record id="view_employee_training_from" model="ir.ui.view">
