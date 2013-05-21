@@ -428,8 +428,8 @@ msgstr "允许匿名发布信息吗？"
 #: model:ir.actions.act_window,name:message.action_my_messages_notice
 #: model:ir.actions.act_window,name:message.action_my_messages_service
 #: model:ir.actions.act_window,name:message.action_my_messages_share
-msgid "My Messages Notice"
-msgstr "我的消息提示"
+msgid "My Messages Publish"
+msgstr "我的消息发布"
 
 #. module: message
 #: view:message.message:0
