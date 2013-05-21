@@ -1,20 +1,19 @@
 # Translation of OpenERP Server.
 # This file contains the translation of the following modules:
-# 	* updis
+#	* updis
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0-20130306-002055\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-24 05:47+0000\n"
-"PO-Revision-Date: 2013-04-24 14:48+0800\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2013-05-21 08:21+0000\n"
+"PO-Revision-Date: 2013-05-21 08:21+0000\n"
+"Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-"X-Generator: Poedit 1.5.4\n"
 
 #. module: updis
 #: view:hr.employee:0
@@ -22,14 +21,14 @@ msgid "selection"
 msgstr "选择"
 
 #. module: updis
+#: view:updis.hr.training:0
+msgid "Please in put training name"
+msgstr "请输入培训名称"
+
+#. module: updis
 #: help:hr.department,image_medium:0
-msgid ""
-"Medium-sized photo of the employee. It is automatically resized as a "
-"128x128px image, with aspect ratio preserved. Use this field in form views "
-"or some kanban views."
-msgstr ""
-"中号图片,上传的图片会自动缩小到128x128px,并保留原图的纵横比. 这些图片会在首页"
-"部门图片中显示."
+msgid "Medium-sized photo of the employee. It is automatically resized as a 128x128px image, with aspect ratio preserved. Use this field in form views or some kanban views."
+msgstr "中号图片,上传的图片会自动缩小到128x128px,并保留原图的纵横比. 这些图片会在首页部门图片中显示."
 
 #. module: updis
 #: view:hr.employee:0
@@ -42,7 +41,8 @@ msgid "Is in use"
 msgstr "使用中"
 
 #. module: updis
-#: view:hr.employee:0 model:ir.model,name:updis.model_hr_department
+#: view:hr.employee:0
+#: model:ir.model,name:updis.model_hr_department
 msgid "Department"
 msgstr "部门"
 
@@ -53,12 +53,8 @@ msgstr "工作邮件"
 
 #. module: updis
 #: help:hr.department,image:0
-msgid ""
-"This field holds the image used as photo for the employee, limited to "
-"1024x1024px."
-msgstr ""
-"This field holds the image used as photo for the employee, limited to "
-"1024x1024px."
+msgid "This field holds the image used as photo for the employee, limited to 1024x1024px."
+msgstr "用户头像，大小被限定为 1024x1024px."
 
 #. module: updis
 #: field:hr.employee,join_ploy:0
@@ -76,6 +72,11 @@ msgid "Personal Info"
 msgstr "个人信息"
 
 #. module: updis
+#: view:updis.hr.training:0
+msgid "Training Info"
+msgstr "培训信息"
+
+#. module: updis
 #: field:hr.employee,awards:0
 msgid "Award"
 msgstr "获奖记录"
@@ -83,12 +84,12 @@ msgstr "获奖记录"
 #. module: updis
 #: field:mail.message,is_anonymous:0
 msgid "Anonymous"
-msgstr "Anonymous"
+msgstr "匿名"
 
 #. module: updis
 #: model:ir.model,name:updis.model_internal_home_menu
 msgid "internal.home.menu"
-msgstr "internal.home.menu"
+msgstr "菜单"
 
 #. module: updis
 #: field:hr.employee,contract_date:0
@@ -98,7 +99,7 @@ msgstr "合同到期时间"
 #. module: updis
 #: field:internal.home.menu,icon:0
 msgid "Icon"
-msgstr "Icon"
+msgstr "图标"
 
 #. module: updis
 #: field:hr.employee,gra_date:0
@@ -106,9 +107,14 @@ msgid "Graduate Date"
 msgstr "毕业时间"
 
 #. module: updis
-#: selection:internal.home.menu,action:0
-msgid "ir.actions.server"
-msgstr "ir.actions.server"
+#: model:ir.model,name:updis.model_updis_device
+msgid "User device Info"
+msgstr "用户设备信息"
+
+#. module: updis
+#: model:res.groups,name:updis.group_training_manager
+msgid "Training Manager"
+msgstr "人员培训管理员"
 
 #. module: updis
 #: model:ir.actions.act_window,name:updis.grant_internal_home_menu_access
@@ -122,7 +128,8 @@ msgid "Short name"
 msgstr "简称"
 
 #. module: updis
-#: view:hr.employee:0 field:hr.employee,reg_tax:0
+#: view:hr.employee:0
+#: field:hr.employee,reg_tax:0
 msgid "Reg Tax"
 msgstr "专业资格"
 
@@ -134,10 +141,11 @@ msgstr "Web Icon Image (hover)"
 #. module: updis
 #: field:hr.employee,title_date:0
 msgid "Title Date"
-msgstr "任职时间"
+msgstr "职称时间"
 
 #. module: updis
-#: field:hr.employee,home_phone:0 field:res.users,home_phone:0
+#: field:hr.employee,home_phone:0
+#: field:res.users,home_phone:0
 msgid "Home Phone"
 msgstr "家庭电话"
 
@@ -145,6 +153,12 @@ msgstr "家庭电话"
 #: field:hr.employee,out_date:0
 msgid "Out Date"
 msgstr "离院时间"
+
+#. module: updis
+#: field:updis.hr.training,time:0
+#: field:updis.hr.training.record,training_time:0
+msgid "Training Time"
+msgstr "培训时间"
 
 #. module: updis
 #: field:hr.department,image_medium:0
@@ -158,14 +172,13 @@ msgstr "Target model uses the need action mechanism"
 
 #. module: updis
 #: help:internal.home.menu,needaction_enabled:0
-msgid ""
-"If the menu entry action is an act_window action, and if this action is "
-"related to a model that uses the need_action mechanism, this field is set to "
-"true. Otherwise, it is false."
-msgstr ""
-"If the menu entry action is an act_window action, and if this action is "
-"related to a model that uses the need_action mechanism, this field is set to "
-"true. Otherwise, it is false."
+msgid "If the menu entry action is an act_window action, and if this action is related to a model that uses the need_action mechanism, this field is set to true. Otherwise, it is false."
+msgstr "If the menu entry action is an act_window action, and if this action is related to a model that uses the need_action mechanism, this field is set to true. Otherwise, it is false."
+
+#. module: updis
+#: view:updis.hr.training:0
+msgid "Join Employees"
+msgstr "参与培训人员"
 
 #. module: updis
 #: field:internal.home.menu,child_id:0
@@ -188,6 +201,11 @@ msgid "ir.actions.report.xml"
 msgstr "ir.actions.report.xml"
 
 #. module: updis
+#: field:updis.device,device_id:0
+msgid "Device Identify ID"
+msgstr "设备识别码"
+
+#. module: updis
 #: field:res.users,work_phone:0
 msgid "Work Phone"
 msgstr "工作电话"
@@ -203,12 +221,14 @@ msgid "Office Location"
 msgstr "办公地点"
 
 #. module: updis
-#: field:hr.employee,interest:0 field:res.users,interest:0
+#: field:hr.employee,interest:0
+#: field:res.users,interest:0
 msgid "Interest"
 msgstr "兴趣爱好"
 
 #. module: updis
 #: model:ir.model,name:updis.model_hr_employee
+#: field:updis.hr.training.record,employee:0
 msgid "Employee"
 msgstr "员工"
 
@@ -223,14 +243,20 @@ msgid "Study List"
 msgstr "培训记录"
 
 #. module: updis
-#: field:hr.employee,practice:0 field:res.users,practice:0
+#: field:hr.employee,practice:0
+#: field:res.users,practice:0
 msgid "Practice"
-msgstr "社会实践"
+msgstr "代表性实践经历"
 
 #. module: updis
 #: view:hr.employee:0
 msgid "Title Information"
 msgstr "职务信息"
+
+#. module: updis
+#: field:updis.hr.training,record_ids:0
+msgid "Training Related employees"
+msgstr "培训参与人员"
 
 #. module: updis
 #: selection:internal.home.menu,action:0
@@ -240,12 +266,27 @@ msgstr "ir.actions.client"
 #. module: updis
 #: field:internal.home.menu,complete_name:0
 msgid "Full Path"
-msgstr "Full Path"
+msgstr "完整路径"
+
+#. module: updis
+#: view:hr.employee:0
+msgid "Add Training Record"
+msgstr "添加培训记录"
 
 #. module: updis
 #: view:hr.employee:0
 msgid "Work Information"
 msgstr "工作信息"
+
+#. module: updis
+#: model:res.groups,comment:updis.group_training_manager
+msgid "the user will be able to edit employee training records."
+msgstr "此用户可以管理编辑培训内容"
+
+#. module: updis
+#: selection:internal.home.menu,action:0
+msgid "ir.actions.server"
+msgstr "ir.actions.server"
 
 #. module: updis
 #: help:res.users,sign_image:0
@@ -258,6 +299,16 @@ msgid "Have Vacation Days"
 msgstr "已休假天数"
 
 #. module: updis
+#: view:hr.employee:0
+msgid "Training Records"
+msgstr "培训记录"
+
+#. module: updis
+#: view:hr.employee:0
+msgid "e.g. Part Time"
+msgstr "e.g. Part Time"
+
+#. module: updis
 #: field:hr.employee,strong_point:0
 msgid "Strong Point"
 msgstr "专业特长"
@@ -268,9 +319,14 @@ msgid "Smal-sized photo"
 msgstr "小图"
 
 #. module: updis
+#: model:ir.actions.act_window,name:updis.action_view_employee_trainings
+msgid "View Trainings"
+msgstr "查看培训信息"
+
+#. module: updis
 #: view:hr.department:0
 msgid "Group by..."
-msgstr "Group by..."
+msgstr "分组..."
 
 #. module: updis
 #: view:hr.employee:0
@@ -280,12 +336,12 @@ msgstr "相关用户"
 #. module: updis
 #: field:internal.home.menu,icon_pict:0
 msgid "unknown"
-msgstr "unknown"
+msgstr "未知"
 
 #. module: updis
-#: field:hr.employee,reg_tax_date:0
-msgid "RegTax Date"
-msgstr "具备时间"
+#: field:internal.home.menu,web_icon:0
+msgid "Web Icon File"
+msgstr "Web Icon File"
 
 #. module: updis
 #: model:ir.model,name:updis.model_mail_message
@@ -303,12 +359,23 @@ msgid "is department photo upload"
 msgstr "部门图片上传"
 
 #. module: updis
+#: model:ir.model,name:updis.model_updis_hr_training
+msgid "Employee Training"
+msgstr "员工培训"
+
+#. module: updis
 #: field:hr.employee,native_place:0
 msgid "Native Place"
 msgstr "籍贯"
 
 #. module: updis
-#: view:hr.employee:0 field:hr.employee,person_resume:0
+#: model:ir.model,name:updis.model_updis_hr_training_record
+msgid "Employee Training Record"
+msgstr "员工培训记录"
+
+#. module: updis
+#: view:hr.employee:0
+#: field:hr.employee,person_resume:0
 #: field:res.users,person_resume:0
 msgid "Personal Resume"
 msgstr "个人简历"
@@ -324,9 +391,21 @@ msgid "Business Date"
 msgstr "任职时间"
 
 #. module: updis
+#: view:updis.hr.training:0
+#: view:updis.hr.training.record:0
+msgid "Trainings"
+msgstr "培训"
+
+#. module: updis
 #: field:hr.employee,degree:0
 msgid "Degree"
 msgstr "学位"
+
+#. module: updis
+#: field:updis.hr.training,organizers:0
+#: field:updis.hr.training.record,training_organizers:0
+msgid "Training Organizers"
+msgstr "培训组织者"
 
 #. module: updis
 #: field:internal.home.menu,web_icon_data:0
@@ -337,6 +416,11 @@ msgstr "Web Icon Image"
 #: field:hr.employee,academy:0
 msgid "Academy"
 msgstr "毕业学校"
+
+#. module: updis
+#: view:hr.employee:0
+msgid "Training Record"
+msgstr "培训记录"
 
 #. module: updis
 #: model:ir.ui.menu,name:updis.internal_home_configuration
@@ -354,9 +438,10 @@ msgid "Work Mobile"
 msgstr "工作手机"
 
 #. module: updis
-#: view:internal.home.menu:0 field:internal.home.menu,groups_id:0
+#: view:internal.home.menu:0
+#: field:internal.home.menu,groups_id:0
 msgid "Groups"
-msgstr "Groups"
+msgstr "组"
 
 #. module: updis
 #: field:internal.home.menu,web_icon_hover:0
@@ -376,7 +461,7 @@ msgstr "隐藏部门"
 #. module: updis
 #: field:internal.home.menu,parent_id:0
 msgid "Parent Menu"
-msgstr "Parent Menu"
+msgstr "上级菜单"
 
 #. module: updis
 #: field:hr.employee,duty_date:0
@@ -392,6 +477,11 @@ msgstr "ir.actions.act_url"
 #: field:hr.department,display_in_front:0
 msgid "Display in Front Page"
 msgstr "在首页中显示"
+
+#. module: updis
+#: field:hr.employee,trains:0
+msgid "Trains"
+msgstr "培训"
 
 #. module: updis
 #: field:internal.home.menu,action:0
@@ -414,6 +504,12 @@ msgid "Code"
 msgstr "Code"
 
 #. module: updis
+#: field:updis.hr.training,name:0
+#: field:updis.hr.training.record,training_id:0
+msgid "Training Name"
+msgstr "培训名称"
+
+#. module: updis
 #: field:res.users,address_id:0
 msgid "Working Address"
 msgstr "工作地址"
@@ -425,13 +521,8 @@ msgstr "子菜单"
 
 #. module: updis
 #: help:hr.department,image_small:0
-msgid ""
-"Small-sized photo of the employee. It is automatically resized as a 64x64px "
-"image, with aspect ratio preserved. Use this field anywhere a small image is "
-"required."
-msgstr ""
-"员工的缩小图片，图片会自动缩小到64x64px,并保存原图纵横比，用在任何需要小图的"
-"地方。"
+msgid "Small-sized photo of the employee. It is automatically resized as a 64x64px image, with aspect ratio preserved. Use this field anywhere a small image is required."
+msgstr "员工的缩小图片，图片会自动缩小到64x64px,并保存原图纵横比，用在任何需要小图的地方"
 
 #. module: updis
 #: selection:internal.home.menu,action:0
@@ -442,6 +533,11 @@ msgstr "ir.actions.act_window"
 #: field:hr.employee,year_vac_days:0
 msgid "Year Vacation Days"
 msgstr "年可休假天数"
+
+#. module: updis
+#: field:res.users,devices:0
+msgid "User Device Relative"
+msgstr "用户相关设备"
 
 #. module: updis
 #: field:hr.employee,insurance:0
@@ -459,7 +555,8 @@ msgid "Other Info"
 msgstr "其他信息"
 
 #. module: updis
-#: view:internal.home.menu:0 field:internal.home.menu,name:0
+#: view:internal.home.menu:0
+#: field:internal.home.menu,name:0
 msgid "Menu"
 msgstr "菜单"
 
@@ -475,18 +572,13 @@ msgstr "Parent Left"
 
 #. module: updis
 #: model:ir.actions.act_window,help:updis.grant_internal_home_menu_access
-msgid ""
-"Manage and customize the items available and displayed in Internal Home "
-"Page. You can delete an item by clicking on the box at the beginning of each "
-"line and then delete it through the button that appeared. Items can be "
-"assigned to specific groups in order to make them accessible to some users "
-"within the system."
-msgstr ""
-"Manage and customize the items available and displayed in Internal Home "
-"Page. You can delete an item by clicking on the box at the beginning of each "
-"line and then delete it through the button that appeared. Items can be "
-"assigned to specific groups in order to make them accessible to some users "
-"within the system."
+msgid "Manage and customize the items available and displayed in Internal Home Page. You can delete an item by clicking on the box at the beginning of each line and then delete it through the button that appeared. Items can be assigned to specific groups in order to make them accessible to some users within the system."
+msgstr "Manage and customize the items available and displayed in Internal Home Page. You can delete an item by clicking on the box at the beginning of each line and then delete it through the button that appeared. Items can be assigned to specific groups in order to make them accessible to some users within the system."
+
+#. module: updis
+#: field:updis.hr.training.record,score:0
+msgid "Score"
+msgstr "成绩"
 
 #. module: updis
 #: field:hr.employee,title:0
@@ -495,14 +587,8 @@ msgstr "职称"
 
 #. module: updis
 #: help:internal.home.menu,groups_id:0
-msgid ""
-"If you have groups, the visibility of this menu will be based on these "
-"groups. If this field is empty, OpenERP will compute visibility based on the "
-"related object's read access."
-msgstr ""
-"If you have groups, the visibility of this menu will be based on these "
-"groups. If this field is empty, OpenERP will compute visibility based on the "
-"related object's read access."
+msgid "If you have groups, the visibility of this menu will be based on these groups. If this field is empty, OpenERP will compute visibility based on the related object's read access."
+msgstr "If you have groups, the visibility of this menu will be based on these groups. If this field is empty, OpenERP will compute visibility based on the related object's read access."
 
 #. module: updis
 #: model:ir.model,name:updis.model_res_users
@@ -525,14 +611,24 @@ msgid "Diploma"
 msgstr "学历"
 
 #. module: updis
+#: field:updis.hr.training.record,training_certificate:0
+msgid "Certificate Number"
+msgstr "证书编号"
+
+#. module: updis
+#: view:updis.hr.training.record:0
+msgid "Training Records Detail"
+msgstr "培训记录详情"
+
+#. module: updis
 #: view:hr.employee:0
 msgid "[('is_company','=',True)]"
 msgstr "[('is_company','=',True)]"
 
 #. module: updis
-#: field:internal.home.menu,web_icon:0
-msgid "Web Icon File"
-msgstr "Web Icon File"
+#: field:hr.employee,reg_tax_date:0
+msgid "RegTax Date"
+msgstr "资格具备时间"
 
 #. module: updis
 #: field:hr.employee,reg_tax_no:0
@@ -542,7 +638,7 @@ msgstr "专业资格认证号"
 #. module: updis
 #: view:hr.employee:0
 msgid "Public Personal Info"
-msgstr "公开个人信息"
+msgstr "个人公开信息"
 
 #. module: updis
 #: field:hr.department,sequence:0
@@ -568,3 +664,4 @@ msgstr "因公出国进修与考察"
 #: field:hr.department,image:0
 msgid "Department Photo"
 msgstr "部门照片"
+
