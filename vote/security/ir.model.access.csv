@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_updis_vote,access_updis_vote,model_updis_vote,,1,1,1,1
+access_updis_vote_record,access_updis_vote_record,model_updis_vote_record,,1,1,1,1
+access_updis_vote_log,access_updis_vote_log,model_updis_vote_log,,1,1,1,1

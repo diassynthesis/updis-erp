@@ -11,8 +11,7 @@ This is a complete vote management system.
     'data': [
         'vote_view.xml',
         # 'security/message_security.xml',
-        # 'security/ir.model.access.csv',
-        # 'message_view_publish.xml',
+        'security/ir.model.access.csv',
     ],
     'installable': True,
     'auto_install': False,

@@ -10,12 +10,16 @@ class VoteCategory(osv.osv):
     _columns = {
         'name': fields.char(size=100, required=True, string="Vote Name"),
         'description': fields.char(size=256, string='Vote Description'),
+        'is_display': fields.boolean('Vote is display in cms?'),
         'start_time': fields.date(string="Vote Start Time"),
         'end_time': fields.date(string='Vote End Time'),
         'allow_vote_time': fields.integer(string="Each one allowed vote times"),
+        'image': fields.binary("Vote Category Photo",
+                               help="This field holds the image used as photo for the vote, limited to 1024x1024px."),
     }
     _defaults = {
         'allow_vote_time': 1,
+        'is_display': False,
     }
 
 
