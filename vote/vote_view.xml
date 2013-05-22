@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="view_vote_category_from" model="ir.ui.view">
+            <field name="name">updis.vote.category.from</field>
+            <field name="model">updis.vote</field>
+            <field name="arch" type="xml">
+                <form string="Vote" version="7.0">
+                    <h1>
+                        <field name="name" placeholder="Please in put vote name"/>
+                    </h1>
+                    <group col="4">
+                        <field name="description"/>
+                    </group>
+                    <group string="Vote Info" col="4">
+                        <field name="start_time"/>
+                        <field name="end_time"/>
+                        <field name="allow_vote_time"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="view_vote_category_tree" model="ir.ui.view">
+            <field name="name">updis.vote.category.tree</field>
+            <field name="model">updis.vote</field>
+            <field name="arch" type="xml">
+                <tree string="Trainings" version="7.0">
+                    <field name="name"/>
+                    <field name="start_time"/>
+                    <field name="end_time"/>
+                    <field name="allow_vote_time"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="search_vote_record" model="ir.ui.view">
+            <field name="name">updis.vote.record.search</field>
+            <field name="model">updis.vote.record</field>
+            <field name="arch" type="xml">
+                <search string="Vote Record Filter">
+                    <field name="author"/>
+                    <group expand="0" string="Group by...">
+                        <filter name="by-category" string="Category" domain="[]"
+                                context="{'group_by':'vote_category'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="view_vote_record_from" model="ir.ui.view">
+            <field name="name">updis.vote.record.from</field>
+            <field name="model">updis.vote.record</field>
+            <field name="arch" type="xml">
+                <form string="Vote Record" version="7.0">
+                    <group string="Vote Record Info" col="4">
+                        <field name="vote_category"/>
+                        <field name="author"/>
+                    </group>
+                    <group string="Vote Content" col="1">
+                        <field name="content" widget="html" nolabel="1"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="view_vote_record_tree" model="ir.ui.view">
+            <field name="name">updis.vote.record.tree</field>
+            <field name="model">updis.vote.record</field>
+            <field name="arch" type="xml">
+                <tree string="Trainings" version="7.0">
+                    <field name="vote_category"/>
+                    <field name="author"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_view_vote_category" model="ir.actions.act_window">
+            <field name="name">View Vote Category</field>
+            <field name="res_model">updis.vote</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_view_vote_record" model="ir.actions.act_window">
+            <field name="name">View Vote Record</field>
+            <field name="res_model">updis.vote.record</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_by-category':1}</field>
+        </record>
+
+
+        <menuitem name="Vote Management" id="menu_vote_root" sequence="2"/>
+        <menuitem name="Vote Category" parent="menu_vote_root" id="menu_vote_category" sequence="80"/>
+        <menuitem name="Vote Category Management" action="action_view_vote_category" parent="menu_vote_category"
+                  id="menu_vote_category_management"/>
+        <menuitem name="Vote Record" parent="menu_vote_root" id="menu_vote_record" sequence="40"/>
+        <menuitem name="Vote Record Management" action="action_view_vote_record" parent="menu_vote_record"
+                  id="menu_vote_record_management"/>
+
+    </data>
+</openerp>
