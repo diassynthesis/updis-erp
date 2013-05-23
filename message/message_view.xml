@@ -158,7 +158,6 @@
                            string="Message SMS Config">
                         <group>
                             <div>
-                                <label for="sms"/>
                                 <field name="sms"
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
@@ -221,7 +220,6 @@
                            string="Message SMS Config">
                         <group>
                             <div>
-                                <label for="sms"/>
                                 <field name="sms"
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
@@ -282,7 +280,6 @@
                            string="Message SMS Config">
                         <group>
                             <div>
-                                <label for="sms"/>
                                 <field name="sms"
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
