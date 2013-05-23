@@ -118,5 +118,53 @@
             <field name="act_window_id" ref="action_my_messages_news"/>
         </record>
 
+         <record id="action_my_messages_sell" model="ir.actions.act_window">
+            <field name="name">My Messages Publish</field>
+            <field name="res_model">message.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('create_uid','=',uid),('category_id.is_public','=',True)]</field>
+            <field name="context">{'search_default_by-category':1,'default_category_id':294}</field>
+            <field name="search_view_id" ref="search_message_message"/>
+        </record>
+        <record id="act_view_message_message_my_form_sell" model="ir.actions.act_window.view">
+            <field name="sequence">18</field>
+            <field name="view_id" ref="form_message_message_my"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_my_messages_sell"/>
+        </record>
+
+        <record id="action_my_messages_recommend" model="ir.actions.act_window">
+            <field name="name">My Messages Publish</field>
+            <field name="res_model">message.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('create_uid','=',uid),('category_id.is_public','=',True)]</field>
+            <field name="context">{'search_default_by-category':1,'default_category_id':206}</field>
+            <field name="search_view_id" ref="search_message_message"/>
+        </record>
+        <record id="act_view_message_message_my_form_recommend" model="ir.actions.act_window.view">
+            <field name="sequence">18</field>
+            <field name="view_id" ref="form_message_message_my"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_my_messages_recommend"/>
+        </record>
+
+        <record id="action_my_messages_inner_connection" model="ir.actions.act_window">
+            <field name="name">My Messages Publish</field>
+            <field name="res_model">message.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('create_uid','=',uid),('category_id.is_public','=',True)]</field>
+            <field name="context">{'search_default_by-category':1,'default_category_id':197}</field>
+            <field name="search_view_id" ref="search_message_message"/>
+        </record>
+        <record id="act_view_message_message_my_form_inner_connection" model="ir.actions.act_window.view">
+            <field name="sequence">18</field>
+            <field name="view_id" ref="form_message_message_my"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_my_messages_inner_connection"/>
+        </record>
+
     </data>
 </openerp>
