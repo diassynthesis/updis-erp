@@ -35,8 +35,9 @@
                             <newline/>
                             <field name="message_meta" colspan="4"/>
                             <newline/>
-                            <field name="phone_message_list_meta"/>
-                            <field name="phone_message_detail_meta"/>
+                            <field name="phone_message_list_meta" colspan="4"/>
+                            <newline/>
+                            <field name="phone_message_detail_meta" colspan="4"/>
                         </group>
                         <newline/>
                         <group colspan="8" col="4" string="Category Config">
