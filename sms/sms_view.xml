@@ -1,16 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-	<data>
-		<record model="ir.cron" id="auto_send_sms">
-			<field name="name">Auto Send SMS</field>
-			<field name="active">True</field>
-			<field name="interval_number">1</field>
-			<field name="interval_type">minutes</field>
-			<field name="numbercall">-1</field>
-			<field name="doall">False</field>
-			<field name="model">sms.sms</field>
-			<field name="function">process_sms_queue</field>
-			<field name="args">()</field>
-		</record>
-	</data>
+    <data>
+        <record model="ir.cron" id="auto_send_sms">
+            <field name="name">Auto Send SMS</field>
+            <field name="active">True</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall">False</field>
+            <field name="model">sms.sms</field>
+            <field name="function">process_sms_queue</field>
+            <field name="args">()</field>
+        </record>
+
+
+        <record id="form_sms_view" model="ir.ui.view">
+            <field name="name">sms.sms.form</field>
+            <field name="model">sms.sms</field>
+            <field name="arch" type="xml">
+                <form string="Sms Detail">
+                    <field name="from"/>
+                    <field name="to"/>
+                    <field name="sent_date"/>
+                    <field name="model"/>
+                    <field name="res_id"/>
+                    <field name="sms_server_id"/>
+                    <field name="state"/>
+                    <field name="content"/>
+                </form>
+            </field>
+        </record>
+
+        <record id="tree_sms_view" model="ir.ui.view">
+            <field name="name">sms.sms.tree</field>
+            <field name="model">sms.sms</field>
+            <field name="arch" type="xml">
+                <tree string="sms List">
+                    <field name="from"/>
+                    <field name="to"/>
+                    <field name="sent_date"/>
+                    <field name="res_id"/>
+                    <field name="sms_server_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_view_sms" model="ir.actions.act_window">
+            <field name="name">View Sms</field>
+            <field name="res_model">sms.sms</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem name="Sms" id="sms.menu_sms" parent="message.menu_message_root"
+                  groups="base.group_system" sequence="200"/>
+        <menuitem name="Sms Management" id="sms.menu_sms_management" parent="sms.menu_sms"
+                  groups="base.group_system" action="action_view_sms"/>
+    </data>
 </openerp>
