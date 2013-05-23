@@ -61,6 +61,12 @@ class MessageCategory(osv.Model):
                                              "message_category_id", "hr_employee_id", String="Category Manager"),
         'is_public': fields.boolean('Is public category?'),
         'is_allowed_edit_sms_text': fields.boolean('Is Allowed Edit SMS Text?'),
+        'phone_message_list_meta': fields.char('Phone Message List Meta',
+                                               help="this meta is used to show the message meta info for a categor in cellphone, all message fields are available",
+                                               size=1024),
+        'phone_message_detail_meta': fields.char('Phone Message Detail Data',
+                                                help="This meta is used to display the message title in internal home page for a category,all message fields are available.",
+                                                size=1024),
     }
     _defaults = {
         #'is_display_fbbm':True,
@@ -161,12 +167,38 @@ class Message(osv.Model):
             result[obj.id] = title
         return result
 
+    def _get_message_list_meta_display(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            message_meta = ''
+            if obj.category_id.message_meta:
+                env = Env(cr, uid, 'message.message', [obj.id])
+                message_meta = eval(obj.category_id.phone_message_list_meta, env, nocopy=True)
+            result[obj.id] = message_meta
+        return result
+
+    def _get_message_detail_meta_display(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            category_message_title_meta = ''
+            if obj.category_id.category_message_title_meta:
+                env = Env(cr, uid, 'message.message', [obj.id])
+                category_message_title_meta = eval(obj.category_id.phone_message_detail_meta, env, nocopy=True)
+            result[obj.id] = category_message_title_meta
+        return result
+
     _columns = {
         'name': fields.char("Title", size=128, required=True),
         'shorten_name': fields.function(_get_shorten_name, type="char", size=256, string="Shorten title"),
         'message_meta_display': fields.function(_get_message_meta_display, type="char", size=256, string="Meta"),
         'category_message_title_meta_display': fields.function(_get_category_message_title_meta_display, type="char",
                                                                size=256, string="Category meta"),
+
+
+        'message_list_meta_display': fields.function(_get_message_list_meta_display, type="char", size=256,
+                                                     string="Phone Message List Meta"),
+        'message_detail_meta_display': fields.function(_get_message_detail_meta_display, type="char",
+                                                       size=256, string="Phone Message Detail meta"),
         'category_id': fields.many2one('message.category', 'Category', required=True, change_default=True),
         'content': fields.text("Content"),
         'sequence': fields.integer("Display Sequence"),
