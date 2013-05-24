@@ -7,6 +7,7 @@ from osv import fields, osv
 class updis_department(osv.osv):
     _description = "UPDIS Department"
     _inherit = "hr.department"
+    _order = "sequence"
 
     def _image_resize_image_medium(self, cr, uid, ids, name, args, context=None):
         result = dict.fromkeys(ids, False)

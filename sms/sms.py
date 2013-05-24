@@ -9,6 +9,7 @@ from osv import osv, fields
 class sms(osv.Model):
     _sms_gateway = "http://web.mobset.com/SDK/Sms_Send.asp?"
     _name = "sms.sms"
+    _order = "sent_date desc"
     _columns = {
         'content': fields.text("Content", size=128),
         'from': fields.char("From", size=200),
