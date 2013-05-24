@@ -1,4 +1,3 @@
-
 #!/usr/bin/python
 # Based on the pycas client from official site.
 # Author Shrek (zgwmike@hotmail.com)
@@ -9,6 +8,8 @@
 #
 #  Secret used to produce hash.   This can be any string.  Hackers
 #  who know this string can forge this script's authentication cookie.
+from tools import config
+
 SECRET = "7e16162998eb7efafb1498f75190a937"
 
 #  Name field for pycas cookie
@@ -27,6 +28,7 @@ COOKIE_AUTH = 0        #  PYCAS cookie is valid.
 COOKIE_NONE = 1        #  No PYCAS cookie found.
 COOKIE_GATEWAY = 2        #  PYCAS gateway cookie found.
 COOKIE_INVALID = 3        #  Invalid PYCAS cookie found.
+COOKIE_EXPIRED = 4
 
 #  Status codes returned internally by function get_ticket_status().
 TICKET_OK = 0        #  Valid CAS server ticket found.
@@ -40,11 +42,11 @@ CAS_MSG = (
     "CAS server ticket invalid.",
     "CAS server returned without ticket while in gateway mode.",
 )
-CAS_SERVER = "https://zhouguangwen-pc:8443"
-SERVICE_URL = "http://zhouguangwen-pc:8069"
+CAS_SERVER = config.get('cas_server', 'http://localhost:8443')
+SERVICE_URL = config.get('service_url', 'http://localhost:8069')
 
 ###Optional log file for debugging
-###LOG_FILE="/tmp/cas.log"
+LOG_FILE = "/tmp/cas.log"
 
 
 #-----------------------------------------------------------------------
@@ -65,8 +67,8 @@ import urlparse
 #  For debugging.
 def writelog(msg):
     f = open(LOG_FILE, "a")
-    timestr = time.strftime("%Y-%m-%d %H:%M:%S ");
-    f.write(timestr + msg + "\n");
+    timestr = time.strftime("%Y-%m-%d %H:%M:%S ")
+    f.write(timestr + msg + "\n")
     f.close()
 
 #  Used for parsing xml.  Search str for first occurance of
@@ -211,7 +213,7 @@ def validate_cas_2(cas_host, service_url, ticket, opt):
     f_validate = urllib.urlopen(cas_validate)
     #  Get first line - should be yes or no
     response = f_validate.read()
-    print response
+    # print response
     id = parse_tag(response, "cas:user")
     uid = parse_tag(response, "cas:id")
     db = parse_tag(response, "cas:db")

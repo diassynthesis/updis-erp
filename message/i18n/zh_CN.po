@@ -1,0 +1,476 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# 	* message
+# cysnake4713 <cysnake4713@gmail.com>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0-20130306-002055\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-04-16 04:00+0000\n"
+"PO-Revision-Date: 2013-04-16 12:13+0800\n"
+"Last-Translator: cysnake4713 <cysnake4713@gmail.com>\n"
+"Language-Team: Chinese <>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#. module: message
+#: help:message.category,category_message_title_size:0
+msgid "-1 means no shorten at all"
+msgstr "-1 表示完全显示"
+
+#. module: message
+#: field:message.category,category_message_title_size:0
+msgid "Message title length"
+msgstr "首页消息标题字数"
+
+#. module: message
+#: field:message.message,source:0
+msgid "Message Source"
+msgstr "来源"
+
+#. module: message
+#: field:message.message,create_uid:0
+msgid "Author"
+msgstr "作者"
+
+#. module: message
+#: model:ir.ui.menu,name:message.menu_message_category_detail_act
+msgid "Message categories detail"
+msgstr "应用中分类设置"
+
+#. module: message
+#: view:message.category:0
+msgid "Is in use"
+msgstr "是否在使用中"
+
+#. module: message
+#: field:message.message,department_id:0
+msgid "Department"
+msgstr "部门"
+
+#. module: message
+#: model:ir.actions.act_window,name:message.action_internal_messages
+#: model:ir.ui.menu,name:message.menu_message_message_internal_act
+msgid "Internal Messages"
+msgstr "内部消息管理"
+
+#. module: message
+#: field:message.category,name:0 field:message.message,name:0
+msgid "Title"
+msgstr "标题"
+
+#. module: message
+#: view:message.category:0
+msgid "Category Manager"
+msgstr "分类管理"
+
+#. module: message
+#: help:message.category,message_meta:0
+msgid ""
+"this meta is used to show the message meta info for a categor, all message "
+"fields are available"
+msgstr "本分类在消息详细页面内的发布人、发布部门等信息的显示设置"
+
+#. module: message
+#: model:ir.model,name:message.model_message_category
+msgid "UPDIS Message Category"
+msgstr "UPDIS 消息分类"
+
+#. module: message
+#: model:ir.ui.menu,name:message.menu_message_message_category
+#: view:message.category:0
+msgid "Message Category"
+msgstr "信息分类管理"
+
+#. module: message
+#: field:message.message,message_ids:0
+msgid "Messages"
+msgstr "消息"
+
+#. module: message
+#: view:message.category:0
+msgid "CMS Config"
+msgstr "短信设置"
+
+#. module: message
+#: help:message.message,message_unread:0
+msgid "If checked new messages require your attention."
+msgstr "If checked new messages require your attention."
+
+#. module: message
+#: model:res.groups,name:message.message_global_manager
+msgid "Global Manager"
+msgstr "全局消息管理员"
+
+#. module: message
+#: view:message.category:0
+msgid "Other Config"
+msgstr "其他设置"
+
+#. module: message
+#: help:message.message,message_summary:0
+msgid ""
+"Holds the Chatter summary (number of messages, ...). This summary is "
+"directly in html format in order to be inserted in kanban views."
+msgstr ""
+"Holds the Chatter summary (number of messages, ...). This summary is "
+"directly in html format in order to be inserted in kanban views."
+
+#. module: message
+#: model:res.groups,comment:message.message_admin
+msgid "the user will be able to admin every message stuff."
+msgstr "用户拥有对消息的管理员权限。"
+
+#. module: message
+#: view:message.category:0
+msgid "Message Category Search"
+msgstr "消息分类查询"
+
+#. module: message
+#: model:ir.ui.menu,name:message.menu_message_root
+msgid "Message Management"
+msgstr "内网信息管理"
+
+#. module: message
+#: field:message.message,sms_receiver_ids:0
+msgid "SMS Receiver"
+msgstr "短信接收人"
+
+#. module: message
+#: model:ir.actions.act_window,name:message.action_message_categories
+msgid "Message categories"
+msgstr "消息分类"
+
+#. module: message
+#: field:message.message,message_follower_ids:0
+msgid "Followers"
+msgstr "粉丝"
+
+#. module: message
+#: field:message.category,default_message_count:0
+msgid "Default message count"
+msgstr "首页显示条数"
+
+#. module: message
+#: model:ir.actions.act_window,name:message.action_admin_messages
+#: model:ir.ui.menu,name:message.menu_message_message_admin_act
+msgid "Admin Messages"
+msgstr "管理所有信息"
+
+#. module: message
+#: view:message.message:0
+msgid "Message Filter"
+msgstr "消息过滤器"
+
+#. module: message
+#: model:res.groups,name:message.message_internal_manager
+msgid "Internal Manager"
+msgstr "内部消息管理员"
+
+#. module: message
+#: field:message.category,is_allow_sms_receiver:0
+#: field:message.message,is_allow_sms_receiver:0
+msgid "Allow specify sms receiver?"
+msgstr "是否允许用户指定短信接收人?"
+
+#. module: message
+#: selection:message.category,display_position:0
+msgid "Content Left"
+msgstr "左边内容栏"
+
+#. module: message
+#: model:res.groups,comment:message.message_global_manager
+msgid "the user will be able to manage all message stuff ."
+msgstr "the user will be able to manage all message stuff ."
+
+#. module: message
+#: view:message.message:0 field:message.message,fbbm:0
+msgid "Publisher"
+msgstr "发布部门"
+
+#. module: message
+#: field:message.message,is_display_name:0
+msgid "Display name?"
+msgstr "显示名字吗？"
+
+#. module: message
+#: view:message.message:0
+msgid "Message Detail Config"
+msgstr "消息详情设置"
+
+#. module: message
+#: view:message.message:0
+msgid "Message SMS Config"
+msgstr "消息手机短信设置"
+
+#. module: message
+#: model:res.groups,comment:message.message_internal_manager
+msgid "the user will be able to manage message stuff in their own department."
+msgstr "the user will be able to manage message stuff in their own department."
+
+#. module: message
+#: field:message.message,expire_date:0
+msgid "Expire Date"
+msgstr "过期日期"
+
+#. module: message
+#: field:message.message,message_unread:0
+msgid "Unread Messages"
+msgstr "未读消息"
+
+#. module: message
+#: field:message.category,message_meta:0
+#: field:message.message,message_meta_display:0
+msgid "Meta"
+msgstr "消息详细页面发布信息显示设置"
+
+#. module: message
+#: model:ir.ui.menu,name:message.menu_message_message view:message.message:0
+msgid "Message"
+msgstr "信息发布管理"
+
+#. module: message
+#: view:message.message:0 field:message.message,category_id:0
+msgid "Category"
+msgstr "分类"
+
+#. module: message
+#: field:message.message,write_uid:0
+msgid "Last Contributor"
+msgstr "上次修改者"
+
+#. module: message
+#: view:message.message:0
+msgid "Message Content Detail Config"
+msgstr "消息正文"
+
+#. module: message
+#: field:message.message,sms:0
+msgid "SMS"
+msgstr "手机短信发送内容"
+
+#. module: message
+#: field:message.message,category_id_name:0
+msgid "category name"
+msgstr "分类名"
+
+#. module: message
+#: selection:message.category,display_position:0
+msgid "Content Right"
+msgstr "右边内容栏"
+
+#. module: message
+#: field:message.category,category_manager:0
+msgid "unknown"
+msgstr "未知"
+
+#. module: message
+#: view:message.category:0
+msgid "部门"
+msgstr "部门"
+
+#. module: message
+#: field:message.category,category_message_title_meta:0
+#: field:message.message,category_message_title_meta_display:0
+msgid "Category meta"
+msgstr "首页分类标题显示设置"
+
+#. module: message
+#: view:message.category:0
+msgid "Category Admins"
+msgstr "分类管理员"
+
+#. module: message
+#: field:message.message,message_is_follower:0
+msgid "Is a Follower"
+msgstr "是粉丝"
+
+#. module: message
+#: model:ir.actions.act_window,name:message.action_my_messages
+#: model:ir.ui.menu,name:message.menu_message_message_my_act
+msgid "My Messages"
+msgstr "我发布的信息"
+
+#. module: message
+#: field:message.message,read_times:0
+msgid "Read Times"
+msgstr "阅读次数"
+
+#. module: message
+#: field:message.category,is_allow_send_sms:0
+#: field:message.message,is_allow_send_sms:0
+msgid "Allow send SMS?"
+msgstr "是否允许发送手机短信?"
+
+#. module: message
+#: field:message.category,display_in_departments:0
+msgid "Display in Departments"
+msgstr "在下列部门中显示"
+
+#. module: message
+#: field:message.message,message_summary:0
+msgid "Summary"
+msgstr "总计"
+
+#. module: message
+#: view:message.category:0 view:message.message:0
+msgid "SMS Receivers"
+msgstr "默认手机短信接收人"
+
+#. module: message
+#: field:message.message,category_id_is_allowed_edit_sms_text:0
+msgid "category is allowed edit sms text"
+msgstr "此分类是否允许手动编辑短信内容"
+
+#. module: message
+#: field:message.category,is_in_use:0
+msgid "Is in use?"
+msgstr "是否在使用中？"
+
+#. module: message
+#: field:message.category,is_allowed_edit_sms_text:0
+msgid "Is Allowed Edit SMS Text?"
+msgstr "是否允许手动编辑短信内容？"
+
+#. module: message
+#: selection:message.category,display_position:0
+msgid "Shortcuts"
+msgstr "主消息显示区"
+
+#. module: message
+#: view:message.category:0 view:message.message:0
+msgid "人员"
+msgstr "人员"
+
+#. module: message
+#: field:message.message,write_date:0
+msgid "Modification date"
+msgstr "修改日期"
+
+#. module: message
+#: view:message.message:0
+msgid "消息标题"
+msgstr "消息标题"
+
+#. module: message
+#: field:message.message,content:0
+msgid "Content"
+msgstr "内容"
+
+#. module: message
+#: field:message.category,is_public:0
+msgid "Is public category?"
+msgstr "是否为公共分类"
+
+#. module: message
+#: view:message.category:0
+msgid "消息分类名称"
+msgstr "消息分类名称"
+
+#. module: message
+#: model:ir.model,name:message.model_message_message
+msgid "UPDIS Message"
+msgstr "UPDIS 消息"
+
+#. module: message
+#: view:message.category:0 view:message.message:0
+msgid "Group by..."
+msgstr "分组..."
+
+#. module: message
+#: view:message.category:0 field:message.category,default_sms_receiver_ids:0
+msgid "Default SMS Receivers"
+msgstr "默认短信接收人"
+
+#. module: message
+#: field:message.message,name_for_display:0
+msgid "Name"
+msgstr "名字"
+
+#. module: message
+#: field:message.message,category_id_is_anonymous_allowed:0
+msgid "category is anonymous allowed"
+msgstr "分类是否允许匿名发布？"
+
+#. module: message
+#: field:message.category,display_position:0
+msgid "Display Position"
+msgstr "显示位置"
+
+#. module: message
+#: model:res.groups,name:message.message_admin
+msgid "Admin"
+msgstr "消息系统管理员"
+
+#. module: message
+#: field:message.message,create_date:0
+msgid "Created on"
+msgstr "创建日期"
+
+#. module: message
+#: view:message.category:0
+msgid "Category Config"
+msgstr "分类设置"
+
+#. module: message
+#: field:message.category,is_anonymous_allowed:0
+msgid "Allow publish messages anonymously?"
+msgstr "允许匿名发布信息吗？"
+
+#. module: message
+#: model:ir.actions.act_window,name:message.action_my_messages_chat
+#: model:ir.actions.act_window,name:message.action_my_messages_food
+#: model:ir.actions.act_window,name:message.action_my_messages_life
+#: model:ir.actions.act_window,name:message.action_my_messages_news
+#: model:ir.actions.act_window,name:message.action_my_messages_notice
+#: model:ir.actions.act_window,name:message.action_my_messages_service
+#: model:ir.actions.act_window,name:message.action_my_messages_share
+msgid "My Messages Publish"
+msgstr "我的消息发布"
+
+#. module: message
+#: view:message.message:0
+msgid "Message CMS Detail Config"
+msgstr "消息详情设置"
+
+#. module: message
+#: help:message.category,category_message_title_meta:0
+msgid ""
+"This meta is used to display the message title in internal home page for a "
+"category,all message fields are available."
+msgstr "本分类在首页中的标题显示内容设置"
+
+#. module: message
+#: help:message.message,message_ids:0
+msgid "Messages and communication history"
+msgstr "消息和沟通历史"
+
+#. module: message
+#: help:message.category,default_message_count:0
+msgid "How many messages should be displayed in front door for this category?"
+msgstr "分类在首页的显示消息条数"
+
+#. module: message
+#: field:message.category,sequence:0 field:message.message,sequence:0
+msgid "Display Sequence"
+msgstr "显示顺序"
+
+#. module: message
+#: model:ir.actions.act_window,name:message.action_all_messages
+#: model:ir.ui.menu,name:message.menu_message_message_all_act
+msgid "All Messages"
+msgstr "所有信息"
+
+#. module: message
+#: field:message.message,shorten_name:0
+msgid "Shorten title"
+msgstr "短标题"
+
+#. module: message
+#: view:message.category:0
+msgid "Display In Department"
+msgstr "在部门中显示"
+

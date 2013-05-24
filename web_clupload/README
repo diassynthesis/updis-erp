@@ -1,0 +1,20 @@
+打开addon/web/static/src/js/view_form.js
+goto line 2648
+this.$textarea.cleditor({
+                width:      width, // width not including margins, borders or padding
+                height:     height, // height not including margins, borders or padding
+                controls:   // controls to add to the toolbar
+                            "bold italic underline strikethrough " +
+                            "| removeformat | bullets numbering | outdent " +
+                            "indent | link unlink | source",
+                bodyStyle:  // style to assign to document body contained within the editor
+                            "margin:4px; color:#4c4c4c; font-size:13px; font-family:\"Lucida Grande\",Helvetica,Verdana,Arial,sans-serif; cursor:text"
+            });
+[
+中的改成：
+
+controls:   // controls to add to the toolbar
+                            "bold italic underline strikethrough " +
+                            "| removeformat | bullets numbering | outdent " +
+                            "indent | link unlink | source" +
+                            " fileuploader imageuploader icon",

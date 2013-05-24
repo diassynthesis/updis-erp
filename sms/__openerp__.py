@@ -9,7 +9,8 @@
     'depends': ['base','hr'],
     'auto_install': False,
     'data':[
+        'security/ir.model.access.csv',
         'sms_view.xml',
-        'sms_workflow.xml',
+        # 'sms_workflow.xml',
     ]
 }

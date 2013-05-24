@@ -1,15 +1,42 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
-	<data>
-		<record id="updis_res_user_inherit" model="ir.ui.view">
-			<field name="name">res.users.form.inherit</field>
-			<field name="model">res.users</field>
-			<field name="inherit_id" ref="base.view_users_form" />
-			<field name="arch" type="xml">
-				<xpath expr="//field[@name='image']" position="after">
-					<field name="sign_image" widget="image" class="oe_avatar oe_left" groups="base.group_no_one"/>
-				</xpath>
-			</field>
-		</record>
-	</data>
+    <data>
+        <record id="updis_res_user_inherit" model="ir.ui.view">
+            <field name="name">res.users.form.inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='image']" position="after">
+                    <field name="sign_image" widget="image" class="oe_avatar oe_left" groups="base.group_no_one"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_users_form_simple_modif_inherit" model="ir.ui.view">
+            <field name="name">res.users.preferences.form.inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form_simple_modif"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@string='Email Preferences']" position="before">
+                    <group string="Personal Info" colspan="4" col="4">
+                        <field name="address_id" readonly="0"
+                               domain="[('is_company','=',True)]"
+                               widget="selection"
+                               context="{'show_address': 1}"
+                               options='{"always_reload": True, "highlight_first_line": True}'/>
+                        <field name="work_location" readonly="0"/>
+                        <field name="work_phone" readonly="0"/>
+                        <field name="mobile_phone" readonly="0"/>
+                        <field name="work_email" readonly="0"/>
+                        <field name="home_phone" readonly="0"/>
+                    </group>
+                    <group>
+                        <field name="interest" readonly="0"/>
+                        <field name="practice" readonly="0"/>
+                        <field name="person_resume" readonly="0"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
 </openerp>

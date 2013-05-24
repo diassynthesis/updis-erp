@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<report id="report_updis_renwuxiada" 
+				string="QRT7.2.2-1产品要求评审及任务下达记录"
+				model="project.project"
+				name="project.renwuxiada"
+				rml="up_project/report/renwuxiada.rml"
+				auto="False"
+				header="False" />
+	</data>
+</openerp>

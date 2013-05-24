@@ -1,0 +1,5 @@
+解决报表的中文乱码：从这里(http://v6apps.openerp.com/addon/8563)下载oecn_base_fonts.zip，
+解压后放在addons目录下（ubuntu 下为/usr/lib/pymodules/python2.7/openerp/addons和/usr/share/pyshared/openerp/addons下），
+然后执行“设置》模块|更新”和设置》模块|可安装的模块”搜索并安装oecn_base_fonts模块；“设置》设置|常规设置”，
+在Font Url后面输入C:\WINDOWS\Fonts\simsun.ttc（ubuntu为/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc，
+不过先用apt-get install ttf-wqy-zenhei安装），并勾选CJK Wrap。

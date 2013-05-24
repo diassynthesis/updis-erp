@@ -1,23 +1,188 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
-	<data>
-		<record id="view_employee_form_inherit" model="ir.ui.view">
-			<field name="name">hr.employee.form.inherit</field>
-			<field name="model">hr.employee</field>
-			<field name="inherit_id" ref="hr.view_employee_form" />
-			<field name="arch" type="xml">
-				<xpath expr="//group[@string='Contact Information']" position="after">
-					<group string="Education">
-						<field name="degree" />
-						<field name="diploma" />
-						<field name="academy" />
-						<field name="major" />
-					</group>
-				</xpath>
-				<xpath expr="//group[@string='Citizenship &amp; Other Info']" position="inside">
-					<field name="folk" />
-				</xpath>
-			</field>
-		</record>
-	</data>
+    <data>
+        <record id="view_employee_tree_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.tree.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_tree"/>
+            <field name="arch" type="xml">
+                <field name="department_id" position="replace"/>
+                <field name="work_phone" position="replace"/>
+                <field name="job_id" position="replace"/>
+                <field name="parent_id" position="replace"/>
+                <field name="name" position="after">
+                    <field name="department_id"/>
+                    <field name="business"/>
+                    <field name="mobile_phone"/>
+                    <field name="work_phone"/>
+                </field>
+            </field>
+        </record>
+        <record id="view_employee_form_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="replace"/>
+                <xpath expr="//group[@string='Position']/field[@name='coach_id']" position="replace"/>
+                <xpath expr="//group[@string='Status']/field[@name='gender']" position="replace"/>
+                <xpath expr="//group[@string='Birth']" position="replace"/>
+                <xpath expr="//group[@string='Citizenship &amp; Other Info']/field[@name='country_id']"
+                       position="replace"/>
+                <xpath expr="//page[@string='Public Information']/group/group[@string='Contact Information']"
+                       position="after">
+                    <group string="Education">
+                        <field name="degree" attrs="{'readonly':1}"/>
+                        <field name="diploma"/>
+                        <field name="academy"/>
+                        <field name="major"/>
+                        <field name="gra_date"/>
+                    </group>
+                </xpath>
+                <xpath expr="//group[@string='Contact Information']/field[@name='address_id']" position="attributes">
+                    <attribute name="domain">[('is_company','=',True)]</attribute>
+                    <attribute name="widget">selection</attribute>
+                </xpath>
+                <xpath expr="//group[@string='Contact Information']" position="before">
+                    <group string="Public Personal Info">
+                        <field name="folk"/>
+                        <field name="gender"/>
+                        <field name="birthday"/>
+                        <field name="country_id" options='{"no_open": True}'/>
+                        <field name="native_place"/>
+                    </group>
+                </xpath>
+                <xpath expr="//group[@string='Position']" position="after">
+                    <group string="Work Information">
+                        <field name="business"/>
+                        <field name="business_date"/>
+                        <field name="duty"/>
+                        <field name="duty_date"/>
+                        <field name="enter_date"/>
+                        <field name="out_date"/>
+                        <field name="contract_date"/>
+
+                    </group>
+                    <group string="Title Information">
+                        <field name="title"/>
+                        <field name="title_date"/>
+                        <field name="begin_work_date"/>
+
+                    </group>
+                    <group string="Reg Tax">
+                        <field name="reg_tax"/>
+                        <field name="reg_tax_date"/>
+                        <field name="reg_tax_no"/>
+                    </group>
+                    <group string="Vacation">
+                        <field name="year_vac_days"/>
+                        <field name="have_vac_days"/>
+                    </group>
+                    <newline/>
+                    <group col="2" colspan="4" string="Other Info">
+                        <field name="insurance"/>
+                        <field name="interest"/>
+                        <field name="practice"/>
+                        <field name="go_abroad_list"/>
+                        <field name="strong_point"/>
+                    </group>
+                </xpath>
+                <!--xpath expr="//group[@string='Citizenship &amp; Other Info']" position="inside">
+
+                </xpath-->
+                <xpath expr="//page[@string='Personal Information']/group/group[@string='Contact Information']/field[@name='address_home_id']"
+                       position="before">
+                    <field name="home_phone"/>
+                </xpath>
+                <xpath expr="//group[@string='Active']/field[@name='active']" position="after">
+                    <field name="user_id" on_change="onchange_user(user_id)" string="Related User"/>
+                </xpath>
+                <xpath expr="//field[@name='notes']" position="before">
+                    <group col="1" colspan="4" string="Training Record">
+                        <field name="trains" nolabel="1">
+                            <tree string="Training Records">
+                                <field name="training_id"/>
+                                <field name="training_organizers"/>
+                                <field name="training_time"/>
+                                <field name="score"/>
+                                <field name="training_certificate"/>
+                            </tree>
+                            <form string="Add Training Record">
+                                <field name="training_id" widget="many2one_list"/>
+                                <field name="score"/>
+                                <field name="training_certificate"/>
+                            </form>
+                        </field>
+                        <field name="study_list"/>
+                    </group>
+                    <group col="2" colspan="4" string="Personal Resume">
+                        <field name="person_resume" nolabel="1"/>
+                    </group>
+                </xpath>
+                <xpath expr="//field[@name='notes']" position="replace"/>
+                <xpath expr="//label[@for='category_ids']" position="replace"/>
+                <xpath expr="//field[@name='category_ids']" position="replace"/>
+                <xpath expr="//field[@name='active']" position="before">
+                    <field  name="category_ids" widget="many2many_tags" placeholder="e.g. Part Time"
+                           groups="base.group_hr_user"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_view_leave_employee" model="ir.actions.act_window">
+            <field name="name">View Leaved Employees</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('active','=',False)]</field>
+            <field name="context">{'search_default_department':1}</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="hr.view_employee_filter"/>
+        </record>
+
+        <menuitem name="Leave Employee" id="base.menu_leave_employee" parent="hr.menu_hr_main"
+                  action="action_view_leave_employee" groups="base.group_user"/>
+
+        <record id="view_employee_filter_inherit" model="ir.ui.view">
+            <field name="name">Employees.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@string='Group By...']" position="replace"/>
+                <xpath expr="//field[@name='category_ids']" position="after">
+                    <field name="business"/>
+                    <field name="mobile_phone"/>
+                    <field name="work_phone"/>
+                    <field name="work_email"/>
+                    <group expand="0" string="Group By...">
+                        <filter name="department" string="Department" icon="terp-personal+" domain="[]"
+                                context="{'group_by':'department_id'}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="hr.open_view_employee_list_my" model="ir.actions.act_window">
+            <field name="name">Employees</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_department':1}</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="hr.view_employee_filter"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add a new employee.
+                </p>
+                <p>
+                    With just a quick glance on the OpenERP employee screen, you
+                    can easily find all the information you need for each person;
+                    contact data, job position, availability, etc.
+                </p>
+            </field>
+        </record>
+
+
+    </data>
 </openerp>
