@@ -27,7 +27,7 @@ class InternalHome(openerp.addons.web.http.Controller):
     _FTP_PASSWORD = 'updis_ftp_2013'
 
     def _get_salt(self, current_time, filename):
-        salt = str(random.random)
+        salt = str(random.random())
         h = hashlib.md5(current_time + salt).hexdigest()
         return h
 
@@ -92,6 +92,7 @@ class InternalHome(openerp.addons.web.http.Controller):
             # model, id, field, **kw
             url = 'http://file.updis.cn:81/erpupload/%s' % (args['filename'])
             args['url'] = url
+            args['filename'] = qqfile
         except Exception, e:
             args = {'error': e.message, 'filename': qqfile}
         return req.make_response(simplejson.dumps(args))
@@ -103,6 +104,7 @@ class InternalHome(openerp.addons.web.http.Controller):
             # model, field, id=None, filename_field=None, **kw)
             url = 'http://file.updis.cn:81/erpupload/%s' % (args['filename'])
             args['url'] = url
+            args['filename'] = qqfile
         except Exception, e:
             args = {'error': e.message, 'filename': qqfile}
         return req.make_response(simplejson.dumps(args))

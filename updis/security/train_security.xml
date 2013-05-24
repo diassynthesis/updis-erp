@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+        <record id="updis.group_training_manager" model="res.groups">
+            <field name="name">Training Manager</field>
+            <field name="category_id" ref="base.module_category_human_resources"/>
+            <field name="comment">the user will be able to edit employee training records.</field>
+        </record>
+    </data>
+</openerp>

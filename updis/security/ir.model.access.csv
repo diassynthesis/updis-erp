@@ -2,4 +2,10 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 internal_home_all,internal.home.menu,model_internal_home_menu,,1,0,0,0
 hr_department_all,hr.department,model_hr_department,,1,0,0,0
 updis_res_user_modify,res.users,base.model_res_users,updis.group_res_user_manager,1,1,1,0
+updis_res_partner_modify,res.partner,base.model_res_partner,updis.group_res_user_manager,1,1,1,0
 access_edi_edi,access_edi_edi,edi.model_edi_edi,,1,1,1,1
+access_updis_device,access_updis_device,model_updis_device,,1,1,1,1
+access_updis_hr_training,access_updis_hr_training,model_updis_hr_training,,1,0,0,0
+access_updis_hr_training_record,access_updis_hr_training_record_manager,model_updis_hr_training_record,,1,0,0,0
+access_updis_hr_training_manager,access_updis_hr_training_record_manager,model_updis_hr_training,updis.group_training_manager,1,1,1,1
+access_updis_hr_training_record_manager,access_updis_hr_training_record_manager,model_updis_hr_training_record,updis.group_training_manager,1,1,1,1

@@ -53,8 +53,11 @@ class hr_employee_updis(osv.osv):
                                    string="Interest"),
         'practice': fields.related('user_id', 'practice', type="char",
                                    string="Practice"),
-        'home_phone': fields.related('user_id', 'person_resume', type="char",
+        'home_phone': fields.related('user_id', 'home_phone', type="char",
                                      string="Home Phone"),
+        'trains': fields.one2many('updis.hr.training.record', 'employee',
+                                  # 'employee_training_rel', 'employee_id', 'training_id',
+                                  'Trains'),
     }
 
     def onchange_address_id(self, cr, uid, ids, address, context=None):

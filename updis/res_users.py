@@ -5,7 +5,7 @@ from openerp import SUPERUSER_ID
 from osv import osv, fields
 
 
-class res_users(osv.osv):
+class user_device(osv.osv):
     _description = "User device Info"
     _name = "updis.device"
 

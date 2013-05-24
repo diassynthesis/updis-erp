@@ -34,6 +34,10 @@
                             <field name="category_message_title_meta" colspan="4"/>
                             <newline/>
                             <field name="message_meta" colspan="4"/>
+                            <newline/>
+                            <field name="phone_message_list_meta" colspan="4"/>
+                            <newline/>
+                            <field name="phone_message_detail_meta" colspan="4"/>
                         </group>
                         <newline/>
                         <group colspan="8" col="4" string="Category Config">
@@ -53,7 +57,7 @@
                                 <page string="Default SMS Receivers"
                                       attrs="{'invisible':[('is_allow_send_sms','=',False)]}">
                                     <field name="default_sms_receiver_ids" nolabel="1">
-                                        <tree editable="bottom" string="SMS Receivers">
+                                        <tree string="SMS Receivers">
                                             <field name="name" string="人员"/>
                                             <field name="mobile_phone"/>
                                         </tree>
@@ -124,12 +128,12 @@
             </field>
         </record>
         <record id="form_message_message_my" model="ir.ui.view">
-            <field name="name">message.message.form</field>
+            <field name="name">message.message.form_my</field>
             <field name="model">message.message</field>
             <field name="arch" type="xml">
                 <form string="Message" version="7.0">
                     <h1>
-                        <field name="name" on_change="onchange_name(name)" placeholder="消息标题"/>
+                        <field name="name" placeholder="消息标题"/>
                     </h1>
 
                     <group col="6" colspan="4" class="oe_edit_only" string="Message Detail Config">
@@ -151,18 +155,18 @@
                             <field name="category_id_is_allowed_edit_sms_text" invisible="1"/>
                         </group>
                     </group>
-                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only"
-                           string="Message SMS Config">
+                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
                         <group>
                             <div>
-                                <label for="sms"/>
-                                <field name="sms"
+                                <label for="sms"
+                                       attrs="{'invisible':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
+                                <field name="sms" placeholder="如果不填则自动发送消息标题"
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
                                 <field name="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
-                                    <tree editable="bottom" string="SMS Receivers">
+                                    <tree string="SMS Receivers">
                                         <field name="name" string="人员"/>
                                         <field name="mobile_phone"/>
                                     </tree>
@@ -185,19 +189,19 @@
                 </form>
             </field>
         </record>
-        <record id="form_message_message_manager" model="ir.ui.view">
-            <field name="name">message.message.form</field>
+        <record id="form_message_message_manager_fix" model="ir.ui.view">
+            <field name="name">message.message.form_manager</field>
             <field name="model">message.message</field>
             <field name="arch" type="xml">
                 <form string="Message" version="7.0">
                     <h1>
-                        <field name="name" on_change="onchange_name(name)" placeholder="消息标题"/>
+                        <field name="name" placeholder="消息标题"/>
                     </h1>
 
                     <group col="6" colspan="4" class="oe_edit_only" string="Message CMS Detail Config">
                         <group colspan="2" col="2">
                             <field colspan="2" name="category_id" widget="selection"
-                                   domain="[('category_manager.id','=',uid)]"
+                                   domain="[('category_manager.user_id.id','=',uid)]"
                                    on_change="onchange_category(category_id)"/>
                         </group>
                         <group col="2" colspan="4">
@@ -214,18 +218,18 @@
                             <field name="category_id_is_allowed_edit_sms_text" invisible="1"/>
                         </group>
                     </group>
-                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only"
-                           string="Message SMS Config">
+                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
                         <group>
                             <div>
-                                <label for="sms"/>
-                                <field name="sms"
+                                <label for="sms"
+                                       attrs="{'invisible':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
+                                <field name="sms" placeholder="如果不填则自动发送消息标题"
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
                                 <field name="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
-                                    <tree editable="bottom" string="SMS Receivers">
+                                    <tree string="SMS Receivers">
                                         <field name="name" string="人员"/>
                                         <field name="mobile_phone"/>
                                     </tree>
@@ -233,7 +237,7 @@
                             </div>
                         </group>
                     </group>
-                    <group colspan="4" string="Message Content Detail">
+                    <group colspan="4" string="Message Content Detail Config">
                         <div class="oe_document_page">
                             <field name="message_meta_display" widget="html"/>
                         </div>
@@ -249,7 +253,7 @@
             </field>
         </record>
         <record id="form_message_message_admin" model="ir.ui.view">
-            <field name="name">message.message.form</field>
+            <field name="name">message.message.form_admin</field>
             <field name="model">message.message</field>
             <field name="arch" type="xml">
                 <form string="Message" version="7.0">
@@ -275,18 +279,18 @@
                             <field name="category_id_is_allowed_edit_sms_text" invisible="1"/>
                         </group>
                     </group>
-                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only"
-                           string="Message SMS Config">
+                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
                         <group>
                             <div>
-                                <label for="sms"/>
-                                <field name="sms"
+                                <label for="sms"
+                                       attrs="{'invisible':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
+                                <field name="sms" placeholder="如果不填则自动发送消息标题"
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
                                 <field name="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
-                                    <tree editable="bottom" string="SMS Receivers">
+                                    <tree string="SMS Receivers">
                                         <field name="name" string="人员"/>
                                         <field name="mobile_phone"/>
                                     </tree>
@@ -294,7 +298,7 @@
                             </div>
                         </group>
                     </group>
-                    <group colspan="4" string="Message Content Detail">
+                    <group colspan="4" string="Message Content Detail Config">
                         <div class="oe_document_page">
                             <field name="message_meta_display" widget="html"/>
                         </div>
@@ -317,7 +321,7 @@
             <field name="res_model">message.message</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('category_id.category_manager.id','=',uid)]</field>
+            <field name="domain">[('category_id.category_manager.user_id.id','=',uid)]</field>
             <field name="context">{'search_default_by-category':1}</field>
             <field name="search_view_id" ref="search_message_message"/>
         </record>
@@ -326,7 +330,7 @@
             <field name="res_model">message.message</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('category_id.category_manager.id','=',uid)]</field>
+            <field name="domain">[('category_id.category_manager.user_id.id','=',uid)]</field>
             <field name="context">{'search_default_by-category':1}</field>
             <field name="search_view_id" ref="search_message_message"/>
         </record>
@@ -348,72 +352,6 @@
             <field name="search_view_id" ref="search_message_message"/>
         </record>
 
-
-        <record id="action_my_messages_notice" model="ir.actions.act_window">
-            <field name="name">My Messages Notice</field>
-            <field name="res_model">message.message</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="domain">[('create_uid','=',uid),('category_id.is_public','=',True)]</field>
-            <field name="context">{'search_default_by-category':1,'default_category_id':151}</field>
-            <field name="search_view_id" ref="search_message_message"/>
-        </record>
-        <record id="action_my_messages_food" model="ir.actions.act_window">
-            <field name="name">My Messages Notice</field>
-            <field name="res_model">message.message</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="domain">[('create_uid','=',uid),('category_id.is_public','=',True)]</field>
-            <field name="context">{'search_default_by-category':1,'default_category_id':291}</field>
-            <field name="search_view_id" ref="search_message_message"/>
-        </record>
-        <record id="action_my_messages_service" model="ir.actions.act_window">
-            <field name="name">My Messages Notice</field>
-            <field name="res_model">message.message</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="domain">[('create_uid','=',uid),('category_id.is_public','=',True)]</field>
-            <field name="context">{'search_default_by-category':1,'default_category_id':245}</field>
-            <field name="search_view_id" ref="search_message_message"/>
-        </record>
-        <record id="action_my_messages_chat" model="ir.actions.act_window">
-            <field name="name">My Messages Notice</field>
-            <field name="res_model">message.message</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="domain">[('create_uid','=',uid),('category_id.is_public','=',True)]</field>
-            <field name="context">{'search_default_by-category':1,'default_category_id':154}</field>
-            <field name="search_view_id" ref="search_message_message"/>
-        </record>
-        <record id="action_my_messages_life" model="ir.actions.act_window">
-            <field name="name">My Messages Notice</field>
-            <field name="res_model">message.message</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="domain">[('create_uid','=',uid),('category_id.is_public','=',True)]</field>
-            <field name="context">{'search_default_by-category':1,'default_category_id':194}</field>
-            <field name="search_view_id" ref="search_message_message"/>
-        </record>
-        <record id="action_my_messages_share" model="ir.actions.act_window">
-            <field name="name">My Messages Notice</field>
-            <field name="res_model">message.message</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="domain">[('create_uid','=',uid),('category_id.is_public','=',True)]</field>
-            <field name="context">{'search_default_by-category':1,'default_category_id':169}</field>
-            <field name="search_view_id" ref="search_message_message"/>
-        </record>
-        <record id="action_my_messages_news" model="ir.actions.act_window">
-            <field name="name">My Messages Notice</field>
-            <field name="res_model">message.message</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="domain">[('create_uid','=',uid),('category_id.is_public','=',True)]</field>
-            <field name="context">{'search_default_by-category':1,'default_category_id':156}</field>
-            <field name="search_view_id" ref="search_message_message"/>
-        </record>
-
-
         <record id="action_message_categories" model="ir.actions.act_window">
             <field name="name">Message categories</field>
             <field name="res_model">message.category</field>
@@ -422,6 +360,7 @@
             <field name="context">{'search_default_by-status':1}</field>
             <field name="search_view_id" ref="search_message_category"/>
         </record>
+
         <record id="act_view_message_message_my_tree" model="ir.actions.act_window.view">
             <field name="sequence">16</field>
             <field name="view_id" ref="tree_message_message"/>
@@ -434,52 +373,6 @@
             <field name="view_mode">form</field>
             <field name="act_window_id" ref="action_my_messages"/>
         </record>
-
-
-        <record id="act_view_message_message_my_form_notice" model="ir.actions.act_window.view">
-            <field name="sequence">18</field>
-            <field name="view_id" ref="form_message_message_my"/>
-            <field name="view_mode">form</field>
-            <field name="act_window_id" ref="action_my_messages_notice"/>
-        </record>
-        <record id="act_view_message_message_my_form_food" model="ir.actions.act_window.view">
-            <field name="sequence">18</field>
-            <field name="view_id" ref="form_message_message_my"/>
-            <field name="view_mode">form</field>
-            <field name="act_window_id" ref="action_my_messages_food"/>
-        </record>
-        <record id="act_view_message_message_my_form_service" model="ir.actions.act_window.view">
-            <field name="sequence">18</field>
-            <field name="view_id" ref="form_message_message_my"/>
-            <field name="view_mode">form</field>
-            <field name="act_window_id" ref="action_my_messages_service"/>
-        </record>
-        <record id="act_view_message_message_my_form_chat" model="ir.actions.act_window.view">
-            <field name="sequence">18</field>
-            <field name="view_id" ref="form_message_message_my"/>
-            <field name="view_mode">form</field>
-            <field name="act_window_id" ref="action_my_messages_chat"/>
-        </record>
-        <record id="act_view_message_message_my_form_life" model="ir.actions.act_window.view">
-            <field name="sequence">18</field>
-            <field name="view_id" ref="form_message_message_my"/>
-            <field name="view_mode">form</field>
-            <field name="act_window_id" ref="action_my_messages_life"/>
-        </record>
-        <record id="act_view_message_message_my_form_share" model="ir.actions.act_window.view">
-            <field name="sequence">18</field>
-            <field name="view_id" ref="form_message_message_my"/>
-            <field name="view_mode">form</field>
-            <field name="act_window_id" ref="action_my_messages_share"/>
-        </record>
-        <record id="act_view_message_message_my_form_news" model="ir.actions.act_window.view">
-            <field name="sequence">18</field>
-            <field name="view_id" ref="form_message_message_my"/>
-            <field name="view_mode">form</field>
-            <field name="act_window_id" ref="action_my_messages_news"/>
-        </record>
-
-
         <record id="act_view_message_message_manager_tree" model="ir.actions.act_window.view">
             <field name="sequence">16</field>
             <field name="view_id" ref="tree_message_message"/>
@@ -488,9 +381,21 @@
         </record>
         <record id="act_view_message_message_manager_form" model="ir.actions.act_window.view">
             <field name="sequence">17</field>
-            <field name="view_id" ref="form_message_message_manager"/>
+            <field name="view_id" ref="form_message_message_manager_fix"/>
             <field name="view_mode">form</field>
             <field name="act_window_id" ref="action_all_messages"/>
+        </record>
+        <record id="act_view_message_message_internal_manager_tree" model="ir.actions.act_window.view">
+            <field name="sequence">16</field>
+            <field name="view_id" ref="tree_message_message"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_internal_messages"/>
+        </record>
+        <record id="act_view_message_message_internal_manager_form" model="ir.actions.act_window.view">
+            <field name="sequence">17</field>
+            <field name="view_id" ref="form_message_message_manager_fix"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_internal_messages"/>
         </record>
         <record id="act_view_message_message_admin_tree" model="ir.actions.act_window.view">
             <field name="sequence">16</field>

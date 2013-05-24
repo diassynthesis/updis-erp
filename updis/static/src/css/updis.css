@@ -66,3 +66,7 @@
 .openerp .oe_dropdown_menu {
     z-index: 80;
 }
+
+.openerp .oe_login .oe_login_logo {
+    top: -100px !important;
+}
