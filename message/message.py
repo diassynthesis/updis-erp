@@ -65,8 +65,8 @@ class MessageCategory(osv.Model):
                                                help="this meta is used to show the message meta info for a categor in cellphone, all message fields are available",
                                                size=1024),
         'phone_message_detail_meta': fields.char('Phone Message Detail Data',
-                                                help="This meta is used to display the message title in internal home page for a category,all message fields are available.",
-                                                size=1024),
+                                                 help="This meta is used to display the message title in internal home page for a category,all message fields are available.",
+                                                 size=1024),
     }
     _defaults = {
         #'is_display_fbbm':True,
@@ -254,7 +254,7 @@ class Message(osv.Model):
         return ret
 
     #abandon
-    def onchange_name(self, cr, uid, ids, name,sms, context=None):
+    def onchange_name(self, cr, uid, ids, name, sms, context=None):
         ret = {'value': {}}
         if not sms:
             name_vals = {
@@ -266,52 +266,58 @@ class Message(osv.Model):
 
     def create(self, cr, uid, vals, context=None):
         context.update({'mail_create_nolog': True})
-        if not vals['category_id_is_allowed_edit_sms_text']:
-            vals['sms'] = vals['name']
-        mid = super(Message, self).create(cr, uid, vals, context)
-        sms = self.pool.get('sms.sms')
-        message = self.pool.get('message.message').browse(cr, uid, mid, context=context)
-        if message.is_allow_send_sms:
-            to = ','.join([rid.mobile_phone for rid in message.sms_receiver_ids if rid.mobile_phone])
-            if to:
-                content = message.sms and message.category_id.name + ':' + message.sms or message.category_id.name + ':' + message.name
-                sid = sms.create(cr, uid, {'to': to, 'content': content, 'model': 'message.message', 'res_id': mid},
-                                 context=context)
+        if self._log_access is True:
+            if not vals['category_id_is_allowed_edit_sms_text']:
+                vals['sms'] = vals['name']
+            mid = super(Message, self).create(cr, uid, vals, context)
+            sms = self.pool.get('sms.sms')
+            message = self.pool.get('message.message').browse(cr, uid, mid, context=context)
+            if message.is_allow_send_sms:
+                to = ','.join([rid.mobile_phone for rid in message.sms_receiver_ids if rid.mobile_phone])
+                if to:
+                    content = message.sms and message.category_id.name + ':' + message.sms or message.category_id.name + ':' + message.name
+                    sid = sms.create(cr, uid, {'to': to, 'content': content, 'model': 'message.message', 'res_id': mid},
+                                     context=context)
+        else:
+            mid = super(Message, self).create(cr, uid, vals, context)
         return mid
 
     def write(self, cr, uid, ids, vals, context=None):
         #get message old position
-        TYPE = []
-        if not (len(vals) == 1 and 'read_times' in vals.keys()):
-            messages_old = self.pool.get('message.message').browse(cr, 1, ids, context=context)
-            for message_old in messages_old:
-                if message_old.category_id.display_position == 'shortcut':
-                    TYPE.append('0')
-                if message_old.category_id.display_position == 'content_left':
-                    TYPE.append('1')
-                if message_old.category_id.display_position == 'content_right':
-                    TYPE.append('2')
-            TYPE = set(TYPE)
+        if self._log_access is True:
+            TYPE = []
+            if not (len(vals) == 1 and 'read_times' in vals.keys()):
+                messages_old = self.pool.get('message.message').browse(cr, 1, ids, context=context)
+                for message_old in messages_old:
+                    if message_old.category_id.display_position == 'shortcut':
+                        TYPE.append('0')
+                    if message_old.category_id.display_position == 'content_left':
+                        TYPE.append('1')
+                    if message_old.category_id.display_position == 'content_right':
+                        TYPE.append('2')
+                TYPE = set(TYPE)
 
-        super(Message, self).write(cr, uid, ids, vals, context=context)
-        NEW_TYPE = []
-        #refresh cms page
-        if not (len(vals) == 1 and 'read_times' in vals.keys()):
-            #get message new position
-            messages = self.pool.get('message.message').browse(cr, 1, ids, context=context)
-            for message in messages:
-                if message.category_id.display_position == 'shortcut':
-                    NEW_TYPE.append('0')
-                if message.category_id.display_position == 'content_left':
-                    NEW_TYPE.append('1')
-                if message.category_id.display_position == 'content_right':
-                    NEW_TYPE.append('2')
-            NEW_TYPE = set(NEW_TYPE)
+            super(Message, self).write(cr, uid, ids, vals, context=context)
+            NEW_TYPE = []
+            #refresh cms page
+            if not (len(vals) == 1 and 'read_times' in vals.keys()):
+                #get message new position
+                messages = self.pool.get('message.message').browse(cr, 1, ids, context=context)
+                for message in messages:
+                    if message.category_id.display_position == 'shortcut':
+                        NEW_TYPE.append('0')
+                    if message.category_id.display_position == 'content_left':
+                        NEW_TYPE.append('1')
+                    if message.category_id.display_position == 'content_right':
+                        NEW_TYPE.append('2')
+                NEW_TYPE = set(NEW_TYPE)
 
-            #if old and new position is different refresh both.
-            for v in (TYPE | NEW_TYPE):
-                fresh_old = CMSFresh(v)
-                fresh_old.start()
+                #if old and new position is different refresh both.
+                for v in (TYPE | NEW_TYPE):
+                    fresh_old = CMSFresh(v)
+                    fresh_old.start()
+        else:
+            super(Message, self).write(cr, uid, ids, vals, context=context)
 
         return True
 
