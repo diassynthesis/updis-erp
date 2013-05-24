@@ -155,10 +155,11 @@
                             <field name="category_id_is_allowed_edit_sms_text" invisible="1"/>
                         </group>
                     </group>
-                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only"
-                           string="Message SMS Config">
+                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
                         <group>
                             <div>
+                                <label for="sms"
+                                       attrs="{'invisible':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <field name="sms"
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
@@ -217,10 +218,11 @@
                             <field name="category_id_is_allowed_edit_sms_text" invisible="1"/>
                         </group>
                     </group>
-                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only"
-                           string="Message SMS Config">
+                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
                         <group>
                             <div>
+                                <label for="sms"
+                                       attrs="{'invisible':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <field name="sms"
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
@@ -277,10 +279,11 @@
                             <field name="category_id_is_allowed_edit_sms_text" invisible="1"/>
                         </group>
                     </group>
-                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only"
-                           string="Message SMS Config">
+                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
                         <group>
                             <div>
+                                <label for="sms"
+                                       attrs="{'invisible':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <field name="sms"
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
