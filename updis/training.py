@@ -8,7 +8,7 @@ class updis_hr_training(osv.osv):
     _name = "updis.hr.training"
 
     _columns = {
-        'name': fields.char(size=100, string='Training Name', required=True),
+        'name': fields.char(size=200, string='Training Name', required=True),
         'time': fields.date(string='Training Time'),
         'organizers': fields.char(size=100, string='Training Organizers'),
         'record_ids': fields.one2many('updis.hr.training.record', 'training_id', 'Training Related employees'),
