@@ -133,7 +133,7 @@
             <field name="arch" type="xml">
                 <form string="Message" version="7.0">
                     <h1>
-                        <field name="name" on_change="onchange_name(name)" placeholder="消息标题"/>
+                        <field name="name" placeholder="消息标题"/>
                     </h1>
 
                     <group col="6" colspan="4" class="oe_edit_only" string="Message Detail Config">
@@ -160,7 +160,7 @@
                             <div>
                                 <label for="sms"
                                        attrs="{'invisible':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
-                                <field name="sms"
+                                <field name="sms" placeholder="如果不填则自动发送消息标题"
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
@@ -195,7 +195,7 @@
             <field name="arch" type="xml">
                 <form string="Message" version="7.0">
                     <h1>
-                        <field name="name" on_change="onchange_name(name)" placeholder="消息标题"/>
+                        <field name="name" placeholder="消息标题"/>
                     </h1>
 
                     <group col="6" colspan="4" class="oe_edit_only" string="Message CMS Detail Config">
@@ -223,7 +223,7 @@
                             <div>
                                 <label for="sms"
                                        attrs="{'invisible':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
-                                <field name="sms"
+                                <field name="sms" placeholder="如果不填则自动发送消息标题"
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
@@ -284,7 +284,7 @@
                             <div>
                                 <label for="sms"
                                        attrs="{'invisible':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
-                                <field name="sms"
+                                <field name="sms" placeholder="如果不填则自动发送消息标题"
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>

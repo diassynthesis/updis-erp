@@ -12,11 +12,11 @@ class sms(osv.Model):
     _columns = {
         'content': fields.text("Content", size=128),
         'from': fields.char("From", size=200),
-        'to': fields.char('To', size=1000),
+        'to': fields.char('To', size=2000),
         'sent_date': fields.datetime("Send date"),
         'model': fields.char("Related Document Model", size=128, select=1),
         'res_id': fields.integer('Related Document ID', select=1),
-        'sms_server_id': fields.char("SMS ID From Gateway", size=1000),
+        'sms_server_id': fields.char("SMS ID From Gateway", size=2000),
         'state': fields.selection([('draft', 'Draft'), ('error', 'Error'), ('sent', 'Sent')], 'State', required=True,
                                   size=64),
     }

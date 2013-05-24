@@ -253,13 +253,15 @@ class Message(osv.Model):
             ret['value'].update(sms_vals)
         return ret
 
-    def onchange_name(self, cr, uid, ids, name, context=None):
+    #abandon
+    def onchange_name(self, cr, uid, ids, name,sms, context=None):
         ret = {'value': {}}
-        name_vals = {
-            'sms': name,
-        }
-        if not len(ids):
-            ret['value'].update(name_vals)
+        if not sms:
+            name_vals = {
+                'sms': name,
+            }
+            if not len(ids):
+                ret['value'].update(name_vals)
         return ret
 
     def create(self, cr, uid, vals, context=None):
