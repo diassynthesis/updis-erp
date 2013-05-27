@@ -35,7 +35,7 @@ class sms(osv.Model):
         for sms in self.browse(cr, uid, sms_ids, context):
             params['send_no'] = sms.to
             params['msg'] = sms.content.encode('gbk')
-            resp = urlopen(self._sms_gateway + urlencode(params))
+            resp = urlopen(self._sms_gateway + urlencode(params), timeout=60)
             # import pdb;pdb.set_trace()
             if resp.code == 200:
                 sms_server_id = resp.read()
