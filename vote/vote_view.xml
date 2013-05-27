@@ -19,7 +19,7 @@
                         <field name="allow_vote_time"/>
                         <field name="is_display"/>
                         <newline/>
-                        <field name="image" widget='image' colspan='4'/>
+                        <field name="image_fixed" widget='image' colspan='4'/>
                     </group>
                 </form>
             </field>
@@ -56,9 +56,14 @@
             <field name="model">updis.vote.record</field>
             <field name="arch" type="xml">
                 <form string="Vote Record" version="7.0">
+                    <h1>
+                        <field name="name" placeholder="Please in put vote record name"/>
+                    </h1>
                     <group string="Vote Record Info" col="4">
-                        <field name="vote_category"/>
+                        <field name="vote_category" />
                         <field name="author"/>
+                        <field name="description" colspan="4"/>
+                        <field name="record_image" widget='image' colspan='4'/>
                     </group>
                     <group string="Vote Content" col="1">
                         <field name="content" widget="html" nolabel="1"/>
@@ -71,6 +76,7 @@
             <field name="model">updis.vote.record</field>
             <field name="arch" type="xml">
                 <tree string="Trainings" version="7.0">
+                    <field name="name"/>
                     <field name="vote_category"/>
                     <field name="author"/>
                 </tree>
