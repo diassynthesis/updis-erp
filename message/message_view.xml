@@ -164,6 +164,7 @@
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
+                                <p style="color:red;">注意：同时发送不能超过50人</p>
                                 <field name="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
                                     <tree string="SMS Receivers">
@@ -227,6 +228,7 @@
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
+                                <p style="color:red;">注意：同时发送不能超过50人</p>
                                 <field name="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
                                     <tree string="SMS Receivers">
@@ -288,6 +290,7 @@
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
+                                <p style="color:red;">注意：同时发送不能超过50人</p>
                                 <field name="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
                                     <tree string="SMS Receivers">
