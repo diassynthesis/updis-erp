@@ -95,6 +95,7 @@ class VoteRecord(osv.osv):
                                         }),
         'content': fields.text("Content"),
         'description': fields.char(size=256, string='Vote Record Description'),
+        'vote_logs': fields.one2many('updis.vote.log', 'vote_record', "Vote History"),
     }
 
     _defaults = {
