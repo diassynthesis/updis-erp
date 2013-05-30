@@ -166,5 +166,21 @@
             <field name="act_window_id" ref="action_my_messages_inner_connection"/>
         </record>
 
+        <record id="action_internal_messages_incoming_project" model="ir.actions.act_window">
+            <field name="name">My Messages Publish</field>
+            <field name="res_model">message.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('create_uid','=',uid),('category_id.name','=',u'在谈项目')]</field>
+            <field name="context">{'search_default_by-category':1,'default_category_id':297}</field>
+            <field name="search_view_id" ref="search_message_message"/>
+        </record>
+        <record id="act_view_message_message_internal_form_incoming_project" model="ir.actions.act_window.view">
+            <field name="sequence">18</field>
+            <field name="view_id" ref="form_message_message_manager_fix"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_internal_messages_incoming_project"/>
+        </record>
+
     </data>
 </openerp>
