@@ -39,7 +39,7 @@ class InternalHome(openerp.addons.web.http.Controller):
         return '%s_%s%s' % (current_time, salt, os.path.splitext(s_file_name)[1])
 
 
-    def _upload_file_ftp(self, file_data, file_name):
+    def _upload_file_ftp(self, file_data, file_name, path):
         if os.getenv("HOME"):
             HOME = os.getenv("HOME") + '/tempfile'
         else:
@@ -52,9 +52,16 @@ class InternalHome(openerp.addons.web.http.Controller):
         output.close()
         host = None
         try:
-            host = ftputil.FTPHost(self._FTP_ADDRESS, self._FTP_USER_NAME, self._FTP_PASSWORD, port=self._FTP_PORT,
-                                   session_factory=MySession)
-            host.upload(HOME + '/' + str(new_file_name), '/erpupload/' + str(new_file_name))
+            # host = ftputil.FTPHost(self._FTP_ADDRESS, self._FTP_USER_NAME, self._FTP_PASSWORD, port=self._FTP_PORT,
+            #                        session_factory=MySession)
+            # host.upload(HOME + '/' + str(new_file_name), '/erpupload/' + str(new_file_name))
+
+            ftp = ftplib.FTP()
+            ftp.connect(self._FTP_ADDRESS, self._FTP_PORT, 60)
+            ftp.login(self._FTP_USER_NAME, self._FTP_PASSWORD)
+            ftp.cwd(path)
+            ftp.storbinary('STOR %s' % (new_file_name), open(HOME + '/' + new_file_name, 'rb'))
+
             args = {
                 'filename': new_file_name,
                 'success': True,
@@ -62,27 +69,16 @@ class InternalHome(openerp.addons.web.http.Controller):
         except Exception, e:
             args = {'error': e.message, 'filename': file_name}
         finally:
-            if host:
-                host.close()
+            if ftp:
+                ftp.quit()
             if os.path.isfile(HOME + '/' + new_file_name):
                 os.remove(HOME + '/' + new_file_name)
             return args
 
-    def _create_attachment(self, req, qqfile, resize_image=False):
-        # context = req.context
-        # Model = req.session.model('ir.attachment')
+    def _create_attachment(self, req, qqfile, resize_image=False, path="/erpupload"):
 
-        # datas = base64.encodestring(req.httprequest.data)
-        # if resize_image:
-        #     datas = tools.image_resize_image(datas, size=(700, 700))
+        args = self._upload_file_ftp(req.httprequest.data, qqfile, path)
 
-        args = self._upload_file_ftp(req.httprequest.data, qqfile)
-
-        # attachment_id = Model.create({
-        #                                  'name': qqfile,
-        #                                  'datas': datas,
-        #                                  'datas_fname': qqfile,
-        #                              }, context)
         return args
 
     @openerp.addons.web.http.httprequest
@@ -105,6 +101,20 @@ class InternalHome(openerp.addons.web.http.Controller):
             url = 'http://file.updis.cn:81/erpupload/%s' % (args['filename'])
             args['url'] = url
             args['filename'] = qqfile
+        except Exception, e:
+            args = {'error': e.message, 'filename': qqfile}
+        return req.make_response(simplejson.dumps(args))
+
+    @openerp.addons.web.http.httprequest
+    def upload_video(self, req, qqfile):
+        try:
+            args = self._create_attachment(req, qqfile, path="/mp4")
+            # model, field, id=None, filename_field=None, **kw)
+            url = 'http://file.updis.cn:81/mp4/%s' % (args['filename'])
+            args['url'] = url
+            args['id'] = args['filename'].split(".")[0][18:25]
+            args['filename'] = qqfile
+
         except Exception, e:
             args = {'error': e.message, 'filename': qqfile}
         return req.make_response(simplejson.dumps(args))

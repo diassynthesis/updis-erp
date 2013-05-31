@@ -84,6 +84,48 @@
         });
     };
 
+
+    // ======================== video uploader ============================
+    $.cleditor.buttons.videouploader = {
+        name: "videouploader",
+        // image: "imageuploader.gif",
+        stripIndex: 23,
+        title: "添加视频",
+        command: "inserthtml",
+        popupName: "videouploader",
+        popupClass: "cleditorPrompt",
+        popupContent: "<div id='videouploader' />",
+        buttonClick: videouploaderClick
+    };
+    // Add the button to the default controls before the bold button
+    $.cleditor.defaultOptions.controls = $.cleditor.defaultOptions.controls
+        .replace("video ", "video videouploader ");
+
+    // Handle the imageuploader button click event
+    function videouploaderClick(e, data) {
+        // Wire up the submit button click event
+        var uploader = new qq.FileUploader({
+            element: $(data.popup).find("#videouploader")[0],
+            action: '/web/clupload/upload_video',
+            params: {'session_id': openerp.instances.instance0.session.session_id},
+            uploadButtonText: "上传视频",
+            allowedExtensions: ['mp4'],
+
+            onComplete: function (id, imageName, responseJSON) {
+                if (responseJSON.success) {
+                    var html = responseJSON.filename + "<div id='" + responseJSON.id + "' class='video_block' src='" + responseJSON.url + "'/>";
+                    var editor = data.editor;
+                    editor.execCommand(data.command, html, null, data.button);
+                    editor.hidePopups();
+                    editor.focus();
+                } else {
+                    alert("FTP服务器出错！请联系管理员。\n" + responseJSON.error);
+                }
+            }
+        });
+    };
+
+
     $.cleditor.buttons.bold.title = "粗体";
     $.cleditor.buttons.italic.title = "斜体";
     $.cleditor.buttons.underline.title = "下划线";
