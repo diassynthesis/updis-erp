@@ -52,9 +52,17 @@ class InternalHome(openerp.addons.web.http.Controller):
         output.close()
         host = None
         try:
-            host = ftputil.FTPHost(self._FTP_ADDRESS, self._FTP_USER_NAME, self._FTP_PASSWORD, port=self._FTP_PORT,
-                                   session_factory=MySession)
-            host.upload(HOME + '/' + str(new_file_name), '/erpupload/' + str(new_file_name))
+            # host = ftputil.FTPHost(self._FTP_ADDRESS, self._FTP_USER_NAME, self._FTP_PASSWORD, port=self._FTP_PORT,
+            #                        session_factory=MySession)
+            # host.upload(HOME + '/' + str(new_file_name), '/erpupload/' + str(new_file_name))
+
+            ftp = ftplib.FTP()
+            ftp.connect(self._FTP_ADDRESS, self._FTP_PORT, 60)
+            ftp.login(self._FTP_USER_NAME, self._FTP_PASSWORD)
+            ftp.cwd("/erpupload")
+            ftp.storbinary('STOR %s' % (new_file_name), open(HOME + '/' + new_file_name, 'rb'))
+            ftp.quit()
+
             args = {
                 'filename': new_file_name,
                 'success': True,
