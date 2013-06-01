@@ -1,3 +1,5 @@
+from datetime import datetime
+
 __author__ = 'cysnake4713'
 from openerp import tools
 
@@ -46,6 +48,7 @@ class VoteCategory(osv.osv):
                                        store={
                                            'updis.vote': (lambda self, cr, uid, ids, c={}: ids, ['image'], 10),
                                        }),
+        'vote_logs': fields.one2many('updis.vote.log', 'vote_category', "Vote History"),
     }
 
 
@@ -95,7 +98,9 @@ class VoteRecord(osv.osv):
                                         }),
         'content': fields.text("Content"),
         'description': fields.char(size=256, string='Vote Record Description'),
-        'vote_logs': fields.one2many('updis.vote.log', 'vote_record', "Vote History"),
+        'vote_logs': fields.many2many("updis.vote.log", "vote_log_vote_record_rel",
+                                      "vote_record_id", "vote_log_id",
+                                      string='Vote Logs'),
     }
 
     _defaults = {
@@ -108,7 +113,14 @@ class VoteLog(osv.osv):
     _description = 'UPDIS Vote Log'
     _columns = {
         'voter': fields.many2one('res.users', string='Voter'),
-        'vote_record': fields.many2one('updis.vote.record', string='Vote record'),
+        'vote_category': fields.many2one('updis.vote', string='Vote Category'),
         'vote_time': fields.datetime('Vote Time'),
+        'vote_for': fields.many2many("updis.vote.record", "vote_log_vote_record_rel",
+                                     "vote_log_id", "vote_record_id",
+                                     string='Vote For'),
+    }
+
+    _defaults = {
+        'vote_time': datetime.now(),
     }
 
