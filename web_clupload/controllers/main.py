@@ -7,7 +7,6 @@ import os
 import time
 
 import openerp
-import ftputil
 from openerp.addons.web.controllers.main import manifest_list
 
 
@@ -112,7 +111,7 @@ class InternalHome(openerp.addons.web.http.Controller):
             # model, field, id=None, filename_field=None, **kw)
             url = 'http://file.updis.cn:81/mp4/%s' % (args['filename'])
             args['url'] = url
-            args['id'] = args['filename'].split(".")[0][18:25]
+            args['id'] = 'v' + args['filename'].split(".")[0][18:25]
             args['filename'] = qqfile
 
         except Exception, e:
