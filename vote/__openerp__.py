@@ -1,6 +1,6 @@
 {
     'name': 'Vote management',
-    'category': 'Vote Management',
+    'category': 'vote_management',
     'depends': ['hr', 'base'],
     'description': '''
 This is a complete vote management system.
@@ -9,8 +9,8 @@ This is a complete vote management system.
 	''',
     'author': 'matt.cai',
     'data': [
+        'security/vote_security.xml',
         'vote_view.xml',
-        # 'security/message_security.xml',
         'security/ir.model.access.csv',
     ],
     'installable': True,

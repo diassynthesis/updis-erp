@@ -124,7 +124,7 @@
         </record>
 
 
-        <menuitem name="Vote Management" id="menu_vote_root" sequence="2"/>
+        <menuitem name="Vote Management" id="menu_vote_root" sequence="2" groups="vote.vote_manager"/>
 
         <menuitem name="Vote Category" parent="menu_vote_root" id="menu_vote_category" sequence="80"/>
         <menuitem name="Vote Category Management" action="action_view_vote_category" parent="menu_vote_category"
@@ -134,9 +134,9 @@
         <menuitem name="Vote Record Management" action="action_view_vote_record" parent="menu_vote_record"
                   id="menu_vote_record_management"/>
 
-        <menuitem name="Vote log" parent="menu_vote_root" id="menu_vote_log" sequence="100"/>
+        <menuitem name="Vote log" parent="menu_vote_root" id="menu_vote_log" sequence="100" groups="vote.vote_admin"/>
         <menuitem name="Vote Log Management" action="action_view_vote_log" parent="menu_vote_log"
-                  id="menu_vote_log_management"/>
+                  id="menu_vote_log_management" groups="vote.vote_admin"/>
 
     </data>
 </openerp>

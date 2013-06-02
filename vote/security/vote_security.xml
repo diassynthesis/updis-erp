@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record model="res.groups" id="vote.vote_manager">
+            <field name="name">Vote Manager</field>
+            <field name="category_id" ref="base.module_category_vote_management"/>
+            <field name="comment">the user will be able to manage Vote stuff .</field>
+        </record>
+        <record model="res.groups" id="vote.vote_admin">
+            <field name="name">Vote Admin</field>
+            <field name="category_id" ref="base.module_category_vote_management"/>
+            <field name="implied_ids" eval="[(4, ref('vote.vote_manager'))]"/>
+            <field name="comment">the user will be able to manage all Vote stuff .</field>
+        </record>
+    </data>
+</openerp>

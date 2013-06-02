@@ -124,3 +124,5 @@ class VoteLog(osv.osv):
         'vote_time': datetime.now(),
     }
 
+    #TODO:add create previllage
+
