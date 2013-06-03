@@ -58,7 +58,7 @@ msgstr "投票标志图片"
 #. module: vote
 #: model:ir.ui.menu,name:vote.menu_vote_record_management
 msgid "Vote Record Management"
-msgstr "投票条目标志图片"
+msgstr "投票条目管理"
 
 #. module: vote
 #: view:updis.vote.record:0
