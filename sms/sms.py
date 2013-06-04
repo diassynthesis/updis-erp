@@ -1,13 +1,13 @@
 import logging
 import time
-from urllib2 import urlopen
+import urllib2
 from urllib import urlencode
 
 from osv import osv, fields
 
 
 class sms(osv.Model):
-    _sms_gateway = "http://web.mobset.com/SDK/Sms_Send.asp?"
+    _sms_gateway = "http://web.mobset.com/SDK/Sms_Send.asp"
     _name = "sms.sms"
     _order = "sent_date desc"
     _columns = {
@@ -33,21 +33,31 @@ class sms(osv.Model):
         }
         sms_ids = self.search(cr, uid, [('state', '=', 'draft')], context=context)
         for sms in self.browse(cr, uid, sms_ids, context):
-            params['send_no'] = sms.to
-            params['msg'] = sms.content.encode('gbk')
-            resp = urlopen(self._sms_gateway + urlencode(params))
-            # import pdb;pdb.set_trace()
-            if resp.code == 200:
-                sms_server_id = resp.read()
-                self.write(cr, uid, [sms.id], {
-                    'sms_server_id': sms_server_id,
-                    'state': 'sent',
-                    'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
-                })
-            else:
+            try:
+                params['send_no'] = sms.to
+                params['msg'] = sms.content.encode('gbk')
+                resp = urllib2.urlopen(self._sms_gateway, urlencode(params), timeout=60)
+
+                if resp.code == 200:
+                    sms_server_id = resp.read()
+                    self.write(cr, uid, [sms.id], {
+                        'sms_server_id': sms_server_id,
+                        'state': 'sent',
+                        'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
+                    })
+                else:
+                    logging.getLogger('sms.sms').warning("SENDING SMS!")
+                    self.write(cr, uid, [sms.id], {
+                        'state': 'error',
+                        'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
+                        'sms_server_id': 'response error ==>' + resp.code,
+                    })
+            except:
                 logging.getLogger('sms.sms').warning("SENDING SMS!")
                 self.write(cr, uid, [sms.id], {
                     'state': 'error',
                     'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
+                    'sms_server_id': 'request timeout',
                 })
+
         logging.getLogger('sms.sms').warning("SENDING SMS!")
