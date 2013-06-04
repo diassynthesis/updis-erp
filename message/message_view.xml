@@ -155,7 +155,7 @@
                             <field name="category_id_is_allowed_edit_sms_text" invisible="1"/>
                         </group>
                     </group>
-                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
+                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}">
                         <group>
                             <div>
                                 <label for="sms"
@@ -221,7 +221,7 @@
                             <field name="category_id_is_allowed_edit_sms_text" invisible="1"/>
                         </group>
                     </group>
-                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
+                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}">
                         <group>
                             <div>
                                 <label for="sms"
@@ -285,7 +285,7 @@
                             <field name="category_id_is_allowed_edit_sms_text" invisible="1"/>
                         </group>
                     </group>
-                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}" class="oe_edit_only">
+                    <group colspan="4" attrs="{'invisible':[('is_allow_send_sms','=',False)]}">
                         <group>
                             <div>
                                 <label for="sms"
