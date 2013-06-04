@@ -89,7 +89,7 @@
     $.cleditor.buttons.videouploader = {
         name: "videouploader",
         // image: "imageuploader.gif",
-        stripIndex: 23,
+        stripIndex: 24,
         title: "添加视频",
         command: "inserthtml",
         popupName: "videouploader",

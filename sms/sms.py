@@ -33,9 +33,9 @@ class sms(osv.Model):
         }
         sms_ids = self.search(cr, uid, [('state', '=', 'draft')], context=context)
         for sms in self.browse(cr, uid, sms_ids, context):
-            params['send_no'] = sms.to
-            params['msg'] = sms.content.encode('gbk')
             try:
+                params['send_no'] = sms.to
+                params['msg'] = sms.content.encode('gbk')
                 resp = urllib2.urlopen(self._sms_gateway, urlencode(params), timeout=60)
 
                 if resp.code == 200:
