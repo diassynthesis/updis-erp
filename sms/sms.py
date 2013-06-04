@@ -52,12 +52,20 @@ class sms(osv.Model):
                         'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
                         'sms_server_id': 'response error ==>' + resp.code,
                     })
-            except:
-                logging.getLogger('sms.sms').warning("SENDING SMS!")
+            except UnicodeEncodeError, e:
+                logging.getLogger('sms.sms').error("sending message error!")
                 self.write(cr, uid, [sms.id], {
                     'state': 'error',
                     'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
-                    'sms_server_id': 'request timeout',
+                    'sms_server_id': e.reason,
                 })
+            except Exception, e:
+                logging.getLogger('sms.sms').error("sending message error!")
+                self.write(cr, uid, [sms.id], {
+                    'state': 'error',
+                    'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
+                    'sms_server_id': e.reason,
+                })
+
 
         logging.getLogger('sms.sms').warning("SENDING SMS!")
