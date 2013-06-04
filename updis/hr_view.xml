@@ -24,6 +24,7 @@
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='user_id']" position="replace"/>
+                <xpath expr="//field[@name='parent_id']" position="replace"/>
                 <xpath expr="//group[@string='Position']/field[@name='coach_id']" position="replace"/>
                 <xpath expr="//group[@string='Status']/field[@name='gender']" position="replace"/>
                 <xpath expr="//group[@string='Birth']" position="replace"/>
@@ -32,7 +33,7 @@
                 <xpath expr="//page[@string='Public Information']/group/group[@string='Contact Information']"
                        position="after">
                     <group string="Education">
-                        <field name="degree" attrs="{'readonly':1}"/>
+                        <field name="degree"/>
                         <field name="diploma"/>
                         <field name="academy"/>
                         <field name="major"/>

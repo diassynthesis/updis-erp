@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <openerp>
-	<data>
+    <data>
         <!--message_category -->
         <record id="search_hr_department_inherit" model="ir.ui.view">
             <field name="inherit_id" ref="hr.view_department_filter"/>
@@ -15,21 +15,22 @@
             </field>
         </record>
 
-		<record id="view_department_form_inherit" model="ir.ui.view">
-			<field name="name">hr.department.form.inherit</field>
-			<field name="model">hr.department</field>
-			<field name="inherit_id" ref="hr.view_department_form"/>
-			<field name="arch" type="xml">
-				<xpath expr="//field[@name='parent_id']" position="after">
-					<field name="deleted" />
-					<field name="display_in_front"/>
-					<field name="sequence"/>
-					<field name="code" />
+        <record id="view_department_form_inherit" model="ir.ui.view">
+            <field name="name">hr.department.form.inherit</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='parent_id']" position="after">
+                    <field name="deleted"/>
+                    <field name="display_in_front"/>
+                    <field name="sequence"/>
+                    <field name="code"/>
                     <newline/>
                     <field name="image_medium" widget='image'/>
                 </xpath>
-			</field>
-		</record>
+                <xpath expr="//field[@name='manager_id']" position="replace"/>
+            </field>
+        </record>
 
         <record id="view_department_tree_inherit" model="ir.ui.view">
             <field name="name">hr.department.tree.inherit</field>
@@ -60,5 +61,5 @@
 				</xpath>				
 			</field>
 		</record> -->
-	</data>
+    </data>
 </openerp>
