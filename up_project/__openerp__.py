@@ -2,7 +2,7 @@
 {
     'name': 'UPDIS Project Module',
     'version': '0.2',
-    'category': 'UP Project Management',
+    'category': 'up_project_management',
     'complexity': "easy",
     'description': """
 UPDIS Project Module.""",
