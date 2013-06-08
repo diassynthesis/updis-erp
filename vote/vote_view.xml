@@ -20,6 +20,7 @@
                         <field name="is_display"/>
                         <newline/>
                         <field name="image_fixed" widget='image' colspan='4'/>
+                        <field name="have_image"/>
                     </group>
                     <group>
                         <field name="vote_logs" colspan="4" readonly="1"/>
@@ -68,6 +69,7 @@
                         <field name="author"/>
                         <field name="description" colspan="4"/>
                         <field name="record_image" widget='image' colspan='4'/>
+                        <field name="have_image"/>
                     </group>
                     <group string="Vote Content" col="1">
                         <field name="content" widget="html" nolabel="1"/>
@@ -126,11 +128,11 @@
 
         <menuitem name="Vote Management" id="menu_vote_root" sequence="2" groups="vote.vote_manager"/>
 
-        <menuitem name="Vote Category" parent="menu_vote_root" id="menu_vote_category" sequence="80"/>
+        <menuitem name="Vote Category" parent="menu_vote_root" id="menu_vote_category" sequence="40"/>
         <menuitem name="Vote Category Management" action="action_view_vote_category" parent="menu_vote_category"
                   id="menu_vote_category_management"/>
 
-        <menuitem name="Vote Record" parent="menu_vote_root" id="menu_vote_record" sequence="40"/>
+        <menuitem name="Vote Record" parent="menu_vote_root" id="menu_vote_record" sequence="80"/>
         <menuitem name="Vote Record Management" action="action_view_vote_record" parent="menu_vote_record"
                   id="menu_vote_record_management"/>
 
