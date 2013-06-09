@@ -49,6 +49,7 @@ class VoteCategory(osv.osv):
                                            'updis.vote': (lambda self, cr, uid, ids, c={}: ids, ['image'], 10),
                                        }),
         'vote_logs': fields.one2many('updis.vote.log', 'vote_category', "Vote History"),
+        'comment': fields.text(string='Vote Comment'),
     }
 
 
