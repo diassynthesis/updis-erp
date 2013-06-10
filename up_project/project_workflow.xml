@@ -15,14 +15,14 @@
 		</record> -->
 		<record id="act_open" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_up_project" />
-			<field name="name">任意人员填写申请单</field>
+			<field name="name">提出申请</field>
 			<field name="flow_start">True</field>
 			<field name="kind">function</field>
 			<field name="action">write({'state':'open'})</field>
 		</record>
 		<record id="act_suozhangshenpi" model="workflow.activity">
 			<field name="wkf_id" ref="wkf_up_project" />
-			<field name="name">所长审批申请单</field>
+			<field name="name">所长审批</field>
 			<field name="kind">function</field>
 			<field name="action">write({'state':'suozhangshenpi'})</field>
 		</record>

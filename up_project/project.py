@@ -62,7 +62,6 @@ class updis_project(osv.osv):
         "express_requirement": fields.selection([(u"有招标书", u"有招标书"), (u"有委托书", u"有委托书"),
                                                  (u"有协议/合同草案", u"有协议/合同草案"), (u"有口头要求记录", u"有口头要求记录")],
                                                 string="Express Requirement"),
-
         "yinhanyaoqiu": fields.selection([(u"有", u"有（需在评审记录一栏中标明记录）"), (u"无", u"无")], u"隐含要求"),
         "difangfagui": fields.selection([(u"有", u"有（需在评审记录一栏中标明记录）"), (u"无", u"无")], u"地方规范或特殊法律法规", ),
         "fujiayaoqiu": fields.selection([(u"有", u"有（需在评审记录一栏中标明记录）"), (u"无", u"无")], u"附加要求", ),
@@ -114,7 +113,7 @@ class updis_project(osv.osv):
         'assignment_ids': fields.one2many('project.assignment', 'project_id', 'Project Assignment', readonly=True),
         "state": fields.selection([
                                       # ("draft",u"New project"),
-                                      ("open", u"任意人员填写申请单"),
+                                      ("open", u"提出申请"),
                                       ("suozhangshenpi", u"所长审批"),
                                       ("zhidingbumen", u"经营室指定部门"),
                                       ("zhidingfuzeren", u"总师室指定负责人"),
