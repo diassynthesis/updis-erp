@@ -265,7 +265,10 @@ class Message(osv.Model):
         return ret
 
     def create(self, cr, uid, vals, context=None):
-        context.update({'mail_create_nolog': True})
+        if context is None:
+            context = {'mail_create_nolog': True}
+        else:
+            context.update({'mail_create_nolog': True})
         if self._log_access is True:
             if not vals['category_id_is_allowed_edit_sms_text']:
                 vals['sms'] = vals['name']
