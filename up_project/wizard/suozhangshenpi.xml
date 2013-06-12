@@ -7,25 +7,27 @@
             <field name="inherit_id" ref="edit_project_inherit"/>
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='basic_info']" position="after">
-                    <group string="Review">
-                        <field name="yaoqiuxingchengwenjian" readonly="1"/>
-                        <field name="hetongyizhi" readonly="1"/>
-                    </group>
-                    <newline/>
-                    <group string="设计要求是否达到规定">
-                        <field name="express_requirement" readonly="1"/>
-                        <field name="yinhanyaoqiu" readonly="1"/>
-                        <field name="difangfagui" readonly="1"/>
-                        <field name="fujiayaoqiu" readonly="1"/>
-                    </group>
-                    <group string="Attachment">
+                    <group colspan="2" attrs="{'invisible':[('state','=','open')]}">
+                        <group string="Review">
+                            <field name="yaoqiuxingchengwenjian" readonly="1"/>
+                            <field name="hetongyizhi" readonly="1"/>
+                        </group>
+                        <newline/>
+                        <group string="设计要求是否达到规定">
+                            <field name="express_requirement" readonly="1"/>
+                            <field name="yinhanyaoqiu" readonly="1"/>
+                            <field name="difangfagui" readonly="1"/>
+                            <field name="fujiayaoqiu" readonly="1"/>
+                        </group>
+                        <group string="Attachment">
 
-                    </group>
-                    <group string="本院是否有能力满足规定要求">
-                        <field name="ziyuan" readonly="1"/>
-                        <field name="shebei" readonly="1"/>
-                        <field name="gongqi" readonly="1"/>
-                        <field name="shejifei" readonly="1"/>
+                        </group>
+                        <group string="本院是否有能力满足规定要求">
+                            <field name="ziyuan" readonly="1"/>
+                            <field name="shebei" readonly="1"/>
+                            <field name="gongqi" readonly="1"/>
+                            <field name="shejifei" readonly="1"/>
+                        </group>
                     </group>
                 </xpath>
             </field>
@@ -59,88 +61,17 @@
                     <group>
                         <field name="reviewer_id"/>
                     </group>
-
+                    <field name="state" invisible="1"/>
                     <footer>
                         <button name="save" class="oe_highlight" string="Save" states=""/>
                         <button name="suozhangshenpi_review_submit" string="提交所长审批" states="" type="object"
-                                class="oe_highlight"/>
+                                class="oe_highlight" attrs="{'invisible':[('state','!=','open')]}"/>
+                        <button name="suozhangshenpi_review_accept" string="审批通过" states="" type="object"
+                                class="oe_highlight" attrs="{'invisible':[('state','=','open')]}"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
             </field>
         </record>
-        <!-- <record id="suozhangshenpi_form_view" model="ir.ui.view">
-            <field name="name">suozhangshenpi.form.view</field>
-            <field name="model">project.suozhangshenpi</field>
-            <field name="arch" type="xml">
-                <form string="suozhangshenpi" version="7.0">
-                    <group string="基本信息" col="4">
-                        <field name="guimo"/>
-                        <field name="jianyishejibumen_id"/>
-                        <field name="jianyixiangmufuzeren_id"/>
-                        <field name="jiafang_id"/>
-                        <field name="waibao"/>
-                        <field name="shizhenpeitao"/>
-                        <field name="duofanghetong"/>
-                    </group>
-                    <group string="Review Comment">
-                        <field name="comment" />
-                    </group>
-                    <footer>
-                        <button name="accept" string="提交" type="object" class="oe_highlight"/>
-                        <button name="reject" string="打回" type="object" class="oe_highlight"/>
-                        <button string="Cancel" class="oe_link" special="cancel"/>
-                    </footer>
-                </form>
-            </field>
-        </record>
-        <record id="suozhangshenpi_act" model="ir.actions.act_window">
-            <field name="name">所长审批</field>
-            <field name="res_model">project.suozhangshenpi</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">form</field>
-            <field name="view_id" ref="suozhangshenpi_form_view" />
-            <field name="target">new</field>
-        </record>
-        <record id="tijiaojingyingshi_form_view" model="ir.ui.view">
-            <field name="name">tijiaojingyingshi.form.view</field>
-            <field name="model">project.tijiaojingyingshi</field>
-            <field name="arch" type="xml">
-                <form string="tijiaojingyingshi" version="7.0">
-                    <group string="项目内容" col="4">
-                        <field name="yaoqiuxingchengwenjian"/>
-                        <field name="yinhanyaoqiu"/>
-                        <field name="difangfagui"/>
-                        <field name="fujiayaoqiu"/>
-                        <field name="hetongyizhi"/>
-                        <field name="ziyuan"/>
-                        <field name="shebei"/>
-                        <field name="gongqi"/>
-                        <field name="shejifei"/>
-                    </group>
-                    <group string="通知设置">
-                        <field name="send_email"/>
-                        <field name="send_sms"/>
-                    </group>
-                    <group string="Review Comment">
-                        <field name="reviewer_id" domain="[('groups_id','=',%(group_up_project_jingyingshi)d)]" />
-                        <field name="comment" />
-                    </group>
-                    <footer>
-                        <button name="submit" string="提交" type="object" class="oe_highlight"/>
-                        Or
-                        <button string="Cancel" class="oe_link" special="cancel"/>
-                    </footer>
-                </form>
-            </field>
-        </record>
-        <record id="tijiaojingyingshi_act" model="ir.actions.act_window">
-            <field name="name">提交经营室</field>
-            <field name="res_model">project.tijiaojingyingshi</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">form</field>
-            <field name="view_id" ref="tijiaojingyingshi_form_view" />
-            <field name="target">new</field>
-        </record> -->
     </data>
 </openerp>

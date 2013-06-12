@@ -82,7 +82,8 @@
                     <header>
                         <button name="action_suozhangshenpi" string="提交所长审批" states="open" type="object"/>
                         <button name="draft_reject" string="打回申请单" states="suozhangshenpi"/>
-                        <button name="action_jingyingshishenpi" string="经营室审批申请单" states="suozhangshenpi"
+                        <button name="action_suozhangshenpi" string="审批" states="suozhangshenpi" type="object"/>
+                        <button name="action_jingyingshishenpi" string="经营室审批申请单" states="zhidingbumen"
                                 type="object"/>
                         <button name="action_zongshishishenpi" string="总师室审批申请单" states="zhidingbumen" type="object"/>
                         <button name="action_suozhangqianzishenpi" string="所长签字审批申请单" states="zhidingfuzeren"

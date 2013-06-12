@@ -28,6 +28,7 @@ class suozhangshenpi_form(osv.osv):
         "shebei": fields.selection([(u'设备满足', '设备满足'), (u'设备不满足', u'设备不满足')], u"设备", ), #本院是否有能力满足规定要求
         "gongqi": fields.selection([(u'工期可接受', '工期可接受'), (u'工期太紧', u'工期太紧')], u"工期", ), #本院是否有能力满足规定要求
         "shejifei": fields.selection([(u'设计费合理', '设计费合理'), (u'设计费太低', u'设计费太低')], u'设计费', ), #本院是否有能力满足规定要求
+        "state": fields.related('project_id', 'state', type="char", string="State"),
     }
 
     def onchange_shifoutoubiao(self, cr, uid, ids, shifoutoubiao, context=None):
@@ -39,6 +40,15 @@ class suozhangshenpi_form(osv.osv):
         suozhangshenpi = self.browse(cr, uid, ids, context=None)
         if suozhangshenpi and suozhangshenpi[0].project_id:
             project._workflow_signal(cr, uid, [suozhangshenpi[0].project_id.id], 'draft_submit')
+            return True
+        else:
+            return False
+
+    def suozhangshenpi_review_accept(self, cr, uid, ids, context=None):
+        project = self.pool.get('project.project')
+        suozhangshenpi = self.browse(cr, uid, ids, context=None)
+        if suozhangshenpi and suozhangshenpi[0].project_id:
+            project._workflow_signal(cr, uid, [suozhangshenpi[0].project_id.id], 'suozhangshenpi_submit')
             return True
         else:
             return False
