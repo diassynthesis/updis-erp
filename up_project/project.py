@@ -135,18 +135,6 @@ class updis_project(osv.osv):
     def on_change_country(self, cr, uid, ids, country_id, context=None):
         return {}
 
-    def act_project_open(self, cr, uid, ids):
-        assert len(ids) == 1
-        project_id = self.browse(cr, uid, ids, context=None)
-        if project_id[0].suozhangshenpi_form_id:
-            self.write(cr, uid, ids, {'state': 'open'})
-            return project_id[0].suozhangshenpi_form_id.id
-        else:
-            suozhangshenpi = self.pool.get('project.review.suozhangshenpi.form')
-            suozhangshenpi_id = suozhangshenpi.create(cr, uid, {'project_id': ids[0]}, None)
-            self.write(cr, uid, ids, {'state': 'open', 'suozhangshenpi_form_id': suozhangshenpi_id})
-            return suozhangshenpi_id
-
 
 class project_profession(osv.Model):
     """Profession"""

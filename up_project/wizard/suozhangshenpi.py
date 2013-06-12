@@ -3,7 +3,7 @@
 from osv import osv, fields
 
 
-class suozhangshenpi_form(osv.Model):
+class suozhangshenpi_form(osv.osv):
     """所长审批单"""
     _name = "project.review.suozhangshenpi.form"
     _description = u"所长审批任意人员提交的申请单"
@@ -34,12 +34,17 @@ class suozhangshenpi_form(osv.Model):
         # if shifoutoubiao:
         return {'value': {}}
 
-    def update_project_suozhangshenpi_form(self, cr, uid, ids):
-        self._update_project_form(cr, uid, ids, 'suozhangshenpi_form_id')
-        return True
+    def suozhangshenpi_review_submit(self, cr, uid, ids, context=None):
+        project = self.pool.get('project.project')
+        suozhangshenpi = self.browse(cr, uid, ids, context=None)
+        if suozhangshenpi and suozhangshenpi[0].project_id:
+            project._workflow_signal(cr, uid, [suozhangshenpi[0].project_id.id], 'draft_submit')
+            return True
+        else:
+            return False
 
 
-class updis_project(osv.Model):
+class updis_project(osv.osv):
     _inherit = 'project.project'
     _columns = {
         'suozhangshenpi_form_id': fields.many2one('project.review.suozhangshenpi.form', u'所长审批单'),
@@ -65,8 +70,14 @@ class updis_project(osv.Model):
     def action_suozhangshenpi(self, cr, uid, ids, context=None):
         return self._get_action(cr, uid, ids, 'project.review.suozhangshenpi.form', u'所长审批单')
 
-    def test_suozhangform_accepted(self, cr, uid, ids, *args):
-        return self._test_accepted(cr, uid, ids, 'suozhangshenpi_form_id', *args)
-
-    def suozhangform_get(self, cr, uid, ids, *args):
-        return self._get_form(cr, uid, ids, 'suozhangshenpi_form_id', *args)
+    def suozhangshenpi_init(self, cr, uid, ids):
+        assert len(ids) == 1
+        project_id = self.browse(cr, uid, ids, context=None)
+        if project_id[0].suozhangshenpi_form_id:
+            self.write(cr, uid, ids, {'state': 'open'})
+            return project_id[0].suozhangshenpi_form_id.id
+        else:
+            suozhangshenpi = self.pool.get('project.review.suozhangshenpi.form')
+            suozhangshenpi_id = suozhangshenpi.create(cr, uid, {'project_id': ids[0]}, None)
+            self.write(cr, uid, ids, {'state': 'open', 'suozhangshenpi_form_id': suozhangshenpi_id})
+            return suozhangshenpi_id
