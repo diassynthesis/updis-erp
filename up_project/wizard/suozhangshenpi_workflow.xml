@@ -11,49 +11,24 @@
             <field name="wkf_id" ref="wkf_project_review_suozhangshenpi_form"/>
             <field name="name">draft</field>
             <field name="flow_start">True</field>
-            <field name="kind">function</field>
-            <field name="action">update_project_suozhangshenpi_form()</field>
+            <field name="kind">dummy</field>
+              <field name="action"></field>
         </record>
         <record id="act_suozhangshenpi_submitted" model="workflow.activity">
             <field name="wkf_id" ref="wkf_project_review_suozhangshenpi_form"/>
             <field name="name">submitted</field>
-            <field name="action_id" ref="suozhangshenpi_multi_submitted"/>
-            <field name="kind">function</field>
+            <field name="kind">dummy</field>
             <field name="action">write({'state':'submitted'})</field>
+            <field name="signal_send">subflow.draft_submit</field>
         </record>
-        <record id="act_suozhangshenpi_accepted" model="workflow.activity">
-            <field name="wkf_id" ref="wkf_project_review_suozhangshenpi_form"/>
-            <field name="name">accepted</field>
-            <field name="flow_stop">True</field>
-            <field name="kind">function</field>
-            <field name="action_id" ref="suozhangshenpi_multi_accepted"/>
-            <field name="action">write({'state':'accepted'})</field>
-        </record>
-        <record id="act_suozhangshenpi_rejected" model="workflow.activity">
-            <field name="wkf_id" ref="wkf_project_review_suozhangshenpi_form"/>
-            <field name="name">rejected</field>
-            <field name="flow_stop">True</field>
-            <field name="kind">function</field>
-            <field name="action">write({'state':'rejected'})
-                copy_rejected(default={'state':'draft'})
-            </field>
-        </record>
+
         <!-- Transitions -->
         <record id="trans_suozhenshenpi_1" model="workflow.transition">
             <field name="act_from" ref="act_suozhangshenpi_draft"/>
             <field name="act_to" ref="act_suozhangshenpi_submitted"/>
             <field name="signal">suozhangshenpi_review_submit</field>
         </record>
-        <record id="trans_suozhenshenpi_2" model="workflow.transition">
-            <field name="act_from" ref="act_suozhangshenpi_submitted"/>
-            <field name="act_to" ref="act_suozhangshenpi_accepted"/>
-            <field name="signal">suozhangshenpi_review_accept</field>
-        </record>
-        <record id="trans_suozhenshenpi_3" model="workflow.transition">
-            <field name="act_from" ref="act_suozhangshenpi_submitted"/>
-            <field name="act_to" ref="act_suozhangshenpi_rejected"/>
-            <field name="signal">suozhangshenpi_review_reject</field>
-        </record>
+
 
     </data>
 </openerp>

@@ -38,17 +38,10 @@ class review_abstract(osv.AbstractModel):
     'send_sms': fields.boolean(u"发送短信通知"),
     'review_log': fields.html(u"Review Comment", readonly=True),
     'comment': fields.function(_get_comment, fnct_inv=_add_comment, type="char", size=256, string=u"附注"),
-    'reviewer_id': fields.many2one("res.users", "Reviewer", required=True),
+    'reviewer_id': fields.many2one("res.users", "Reviewer"),
     'submitter_id': fields.many2one("res.users", "Submitter", required=True),
-    'state': fields.selection([
-                                  ('draft', 'Draft'),
-                                  ('submitted', 'Submitted'),
-                                  ('accepted', 'Accepted'),
-                                  ('rejected', 'Rejected'),
-                              ], "Status", readonly=True, select=True)
     }
     _defaults = {
-    'state': 'draft',
     'submitter_id': lambda self, cr, uid, c=None: uid,
     #'project_id':_get_project,
     }

@@ -36,38 +36,33 @@
             <field name="model">project.review.suozhangshenpi.form</field>
             <field name="arch" type="xml">
                 <form string="suozhangshenpi" version="7.0">
-                    <field name="state" widget="statusbar" readonly="1"/>
                     <group string="Review">
-                        <field name="yaoqiuxingchengwenjian" attrs="{'readonly':[('state','!=','draft')]}"/>
-                        <field name="hetongyizhi" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="yaoqiuxingchengwenjian"/>
+                        <field name="hetongyizhi"/>
                     </group>
                     <newline/>
                     <group string="设计要求是否达到规定">
-                        <field name="express_requirement" attrs="{'readonly':[('state','!=','draft')]}"/>
-                        <field name="yinhanyaoqiu" attrs="{'readonly':[('state','!=','draft')]}"/>
-                        <field name="difangfagui" attrs="{'readonly':[('state','!=','draft')]}"/>
-                        <field name="fujiayaoqiu" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="express_requirement"/>
+                        <field name="yinhanyaoqiu"/>
+                        <field name="difangfagui"/>
+                        <field name="fujiayaoqiu"/>
                     </group>
                     <group string="Attachment">
 
                     </group>
                     <group string="本院是否有能力满足规定要求">
-                        <field name="ziyuan" attrs="{'readonly':[('state','!=','draft')]}"/>
-                        <field name="shebei" attrs="{'readonly':[('state','!=','draft')]}"/>
-                        <field name="gongqi" attrs="{'readonly':[('state','!=','draft')]}"/>
-                        <field name="shejifei" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="ziyuan"/>
+                        <field name="shebei"/>
+                        <field name="gongqi"/>
+                        <field name="shejifei"/>
                     </group>
                     <group>
                         <field name="reviewer_id"/>
                     </group>
 
                     <footer>
-                        <button name="save"  class="oe_highlight" string="Save" states="draft"/>
-                        <button name="suozhangshenpi_review_submit" string="提交所长审批" states="draft"
-                                class="oe_highlight"/>
-                        <button name="suozhangshenpi_review_accept" string="审批通过" states="submitted"
-                                class="oe_highlight"/>
-                        <button name="suozhangshenpi_review_reject" string="打回" states="submitted"
+                        <button name="save" class="oe_highlight" string="Save" states=""/>
+                        <button name="suozhangshenpi_review_submit" string="提交所长审批" states=""
                                 class="oe_highlight"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>

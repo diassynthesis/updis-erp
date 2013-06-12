@@ -28,12 +28,6 @@ class suozhangshenpi_form(osv.Model):
         "shebei": fields.selection([(u'设备满足', '设备满足'), (u'设备不满足', u'设备不满足')], u"设备", ), #本院是否有能力满足规定要求
         "gongqi": fields.selection([(u'工期可接受', '工期可接受'), (u'工期太紧', u'工期太紧')], u"工期", ), #本院是否有能力满足规定要求
         "shejifei": fields.selection([(u'设计费合理', '设计费合理'), (u'设计费太低', u'设计费太低')], u'设计费', ), #本院是否有能力满足规定要求
-        'state': fields.selection([
-                                      ('draft', 'draft'),
-                                      ('submitted', 'submitted'),
-                                      ('accepted', 'accepted'),
-                                      ('rejected', 'rejected')], 'Stage', readonly=True),
-
     }
 
     def onchange_shifoutoubiao(self, cr, uid, ids, shifoutoubiao, context=None):
