@@ -49,9 +49,8 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='state']" position="before">
                     <button name="action_suozhangshenpi" string="提交所长审批" states="open" type="object"/>
-
-                    <button name="draft_reject" string="打回申请单" states="suozhangshenpi"/>
                     <button name="action_suozhangshenpi" string="审批" states="suozhangshenpi" type="object"/>
+                    <button name="draft_reject" string="打回申请单" states="suozhangshenpi"/>
                 </xpath>
                 <xpath expr="//group[@name='basic_info']" position="after">
                     <group colspan="2" attrs="{'invisible':[('state','=','open')]}">

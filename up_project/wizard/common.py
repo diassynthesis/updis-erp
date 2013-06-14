@@ -32,18 +32,18 @@ class review_abstract(osv.AbstractModel):
     #return context.get('default_project_id',None)
     _name = "project.review.abstract"
     _columns = {
-    'create_date': fields.datetime('Create Date'),
-    'project_id': fields.many2one('project.project', 'Project'),
-    'send_email': fields.boolean(u"发送邮件通知"),
-    'send_sms': fields.boolean(u"发送短信通知"),
-    'review_log': fields.html(u"Review Comment", readonly=True),
-    'comment': fields.function(_get_comment, fnct_inv=_add_comment, type="char", size=256, string=u"附注"),
-    'reviewer_id': fields.many2one("res.users", "Reviewer"),
-    'submitter_id': fields.many2one("res.users", "Submitter", required=True),
+        'create_date': fields.datetime('Create Date'),
+        'project_id': fields.many2one('project.project', 'Project'),
+        'send_email': fields.boolean(u"发送邮件通知"),
+        'send_sms': fields.boolean(u"发送短信通知"),
+        'review_log': fields.html(u"Review Comment", readonly=True),
+        'comment': fields.function(_get_comment, fnct_inv=_add_comment, type="char", size=256, string=u"附注"),
+        'reviewer_id': fields.many2one("res.users", "Reviewer"),
+        'submitter_id': fields.many2one("res.users", "Submitter", required=True),
     }
     _defaults = {
-    'submitter_id': lambda self, cr, uid, c=None: uid,
-    #'project_id':_get_project,
+        'submitter_id': lambda self, cr, uid, c=None: uid,
+        #'project_id':_get_project,
     }
 
     def copy_rejected(self, cr, uid, ids, default=None, context=None):
@@ -57,7 +57,7 @@ class review_abstract(osv.AbstractModel):
         project = self.pool.get('project.project')
         for f in self.browse(cr, uid, ids):
             project.write(cr, uid, f.project_id.id, {
-            form_field_name: f.id
+                form_field_name: f.id
             })
         return True
 
