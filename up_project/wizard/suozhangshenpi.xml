@@ -6,36 +6,59 @@
             <field name="model">project.review.suozhangshenpi.form</field>
             <field name="arch" type="xml">
                 <form string="suozhangshenpi" version="7.0">
-                    <group string="Review">
-                        <field name="yaoqiuxingchengwenjian"/>
-                        <field name="hetongyizhi"/>
-                    </group>
-                    <newline/>
-                    <group string="设计要求是否达到规定">
-                        <field name="express_requirement"/>
-                        <field name="yinhanyaoqiu"/>
-                        <field name="difangfagui"/>
-                        <field name="fujiayaoqiu"/>
-                    </group>
-                    <group string="Attachment">
+                    <group col="2">
+                        <group string="Basic Info" col="1">
+                            <group col="2">
+                                <field name="jianyishejibumen_id" required="1" class="oe_no_button"
+                                       options='{"no_open": True}'/>
+                                <field name="jianyixiangmufuzeren_id" required="1" class="oe_no_button"
+                                       options='{"no_open": True}'/>
+                                <field name="shifoutoubiao"/>
+                                <field name="toubiaoleibie" attrs="{'invisible':[('shifoutoubiao','=',False)]}"/>
+                            </group>
+                            <group col="4">
+                                <field name="waibao"/>
+                                <field name="shizhenpeitao"/>
+                                <field name="duofanghetong"/>
+                            </group>
+                        </group>
+                        <group string="Custom Require">
+                            <field name="yaoqiuxingchengwenjian" required="1" class="oe_no_button"/>
+                            <field name="hetongyizhi" required="1" class="oe_no_button"/>
+                        </group>
+                        <newline/>
+                        <group string="设计要求是否达到规定">
+                            <field name="express_requirement" required="1" class="oe_no_button"/>
+                            <field name="yinhanyaoqiu" required="1" class="oe_no_button"/>
+                            <field name="difangfagui" required="1" class="oe_no_button"/>
+                            <field name="fujiayaoqiu" required="1" class="oe_no_button"/>
+                        </group>
+                        <group string="Attachment">
 
+                        </group>
+                        <group string="本院是否有能力满足规定要求">
+                            <field name="ziyuan" required="1" class="oe_no_button"/>
+                            <field name="shebei" required="1" class="oe_no_button"/>
+                            <field name="gongqi" required="1" class="oe_no_button"/>
+                            <field name="shejifei" required="1" class="oe_no_button"/>
+                        </group>
+
+                        <group string="Reviewer">
+                            <field name="reviewer_id" required="1"
+                                   domain="[('groups_id','=',%(group_up_project_suozhang)d)]"
+                                   attrs="{'readonly':[('state','!=','open')]}" class="oe_no_button"
+                                   options='{"no_open": True}'/>
+                            <field name="state" invisible="1"/>
+                        </group>
                     </group>
-                    <group string="本院是否有能力满足规定要求">
-                        <field name="ziyuan"/>
-                        <field name="shebei"/>
-                        <field name="gongqi"/>
-                        <field name="shejifei"/>
-                    </group>
-                    <group>
-                        <field name="reviewer_id"/>
-                    </group>
-                    <field name="state" invisible="1"/>
                     <footer>
                         <button name="save" class="oe_highlight" string="Save"/>
                         <button name="suozhangshenpi_review_submit" string="提交所长审批" states="" type="object"
-                                class="oe_highlight" attrs="{'invisible':[('state','!=','open')]}"/>
+                                class="oe_highlight" confirm="Are you sure you want do this?"
+                                attrs="{'invisible':[('state','!=','open')]}"/>
                         <button name="suozhangshenpi_review_accept" string="审批通过" states="" type="object"
-                                class="oe_highlight" attrs="{'invisible':[('state','=','open')]}"/>
+                                class="oe_highlight" confirm="Are you sure you want do this?"
+                                attrs="{'invisible':[('state','=','open')]}"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
@@ -48,33 +71,59 @@
             <field name="inherit_id" ref="edit_project_inherit"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='state']" position="before">
-                    <button name="action_suozhangshenpi" string="提交所长审批" states="open" type="object"/>
-                    <button name="action_suozhangshenpi" string="审批" states="suozhangshenpi" type="object"/>
-                    <button name="draft_reject" string="打回申请单" states="suozhangshenpi"/>
+                    <button name="action_suozhangshenpi" class="oe_highlight" string="提交所长审批" states="open"
+                            type="object"
+                            groups="project.group_project_user"/>
+                    <button name="action_suozhangshenpi" class="oe_highlight" string="提交经营室审批"
+                            type="object"
+                            attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangshenpi')]}"
+                            groups="up_project.group_up_project_suozhang"/>
+                    <button name="draft_reject" string="打回申请单"
+                            attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangshenpi')]}"
+                            groups="up_project.group_up_project_suozhang" confirm="Are you sure you want do this?"/>
                 </xpath>
-                <xpath expr="//group[@name='basic_info']" position="after">
-                    <group colspan="2" attrs="{'invisible':[('state','=','open')]}">
-                        <group string="Review">
-                            <field name="yaoqiuxingchengwenjian" readonly="1"/>
-                            <field name="hetongyizhi" readonly="1"/>
-                        </group>
-                        <newline/>
-                        <group string="设计要求是否达到规定">
-                            <field name="express_requirement" readonly="1"/>
-                            <field name="yinhanyaoqiu" readonly="1"/>
-                            <field name="difangfagui" readonly="1"/>
-                            <field name="fujiayaoqiu" readonly="1"/>
-                        </group>
-                        <group string="Attachment">
+                <xpath expr="//page[@name='note']" position="before">
+                    <page string="Apply Info" attrs="{'invisible':[('state','=','open')]}">
+                        <group colspan="2">
+                            <group string="Basic Info" col="1">
+                                <group col="2">
+                                    <field name="jianyishejibumen_id" readonly="1"/>
+                                    <field name="jianyixiangmufuzeren_id" readonly="1"/>
+                                    <field name="shifoutoubiao" readonly="1"/>
+                                    <field name="toubiaoleibie" attrs="{'invisible':[('shifoutoubiao','=',False)]}"
+                                           readonly="1"/>
+                                </group>
+                                <group col="4">
+                                    <field name="waibao" readonly="1"/>
+                                    <field name="shizhenpeitao" readonly="1"/>
+                                    <field name="duofanghetong" readonly="1"/>
+                                </group>
+                            </group>
+                            <group string="Custom Require">
+                                <field name="yaoqiuxingchengwenjian" readonly="1"/>
+                                <field name="hetongyizhi" readonly="1"/>
+                            </group>
+                            <newline/>
+                            <group string="设计要求是否达到规定">
+                                <field name="express_requirement" readonly="1"/>
+                                <field name="yinhanyaoqiu" readonly="1"/>
+                                <field name="difangfagui" readonly="1"/>
+                                <field name="fujiayaoqiu" readonly="1"/>
+                            </group>
+                            <group string="Attachment">
 
+                            </group>
+                            <group string="本院是否有能力满足规定要求">
+                                <field name="ziyuan" readonly="1"/>
+                                <field name="shebei" readonly="1"/>
+                                <field name="gongqi" readonly="1"/>
+                                <field name="shejifei" readonly="1"/>
+                            </group>
+                            <group invisible="1">
+                                <field name="is_display_button"/>
+                            </group>
                         </group>
-                        <group string="本院是否有能力满足规定要求">
-                            <field name="ziyuan" readonly="1"/>
-                            <field name="shebei" readonly="1"/>
-                            <field name="gongqi" readonly="1"/>
-                            <field name="shejifei" readonly="1"/>
-                        </group>
-                    </group>
+                    </page>
                 </xpath>
             </field>
         </record>

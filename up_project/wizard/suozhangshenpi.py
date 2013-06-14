@@ -29,6 +29,16 @@ class suozhangshenpi_form(osv.osv):
         "gongqi": fields.selection([(u'工期可接受', '工期可接受'), (u'工期太紧', u'工期太紧')], u"工期", ), #本院是否有能力满足规定要求
         "shejifei": fields.selection([(u'设计费合理', '设计费合理'), (u'设计费太低', u'设计费太低')], u'设计费', ), #本院是否有能力满足规定要求
         "state": fields.related('project_id', 'state', type="char", string="State"),
+
+
+        # basic
+        "waibao": fields.boolean(u"是否外包"),
+        "shizhenpeitao": fields.boolean(u"市政配套"),
+        "duofanghetong": fields.boolean(u"多方合同"),
+        "jianyishejibumen_id": fields.many2one("hr.department", u"建议设计部门"),
+        "jianyixiangmufuzeren_id": fields.many2one("hr.employee", u"建议项目负责人"),
+        "shifoutoubiao": fields.boolean(u"是否投标项目"),
+        "toubiaoleibie": fields.selection([(u'商务标', u'商务标'), (u'技术标', u'技术标'), (u'综合标', u'综合标')], u"投标类别"),
     }
 
     def onchange_shifoutoubiao(self, cr, uid, ids, shifoutoubiao, context=None):
@@ -56,6 +66,17 @@ class suozhangshenpi_form(osv.osv):
 
 class updis_project(osv.osv):
     _inherit = 'project.project'
+
+    def _is_display_button(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            review_id = obj.suozhangshenpi_form_id.reviewer_id.id
+            if review_id == uid:
+                result[obj.id] = True
+            else:
+                result[obj.id] = False
+        return result
+
     _columns = {
         'suozhangshenpi_form_id': fields.many2one('project.review.suozhangshenpi.form', u'所长审批单'),
 
@@ -75,6 +96,21 @@ class updis_project(osv.osv):
         "shebei": fields.related('suozhangshenpi_form_id', 'shebei', type="char", string=u"设备"),
         "gongqi": fields.related('suozhangshenpi_form_id', 'gongqi', type="char", string=u"工期"),
         "shejifei": fields.related('suozhangshenpi_form_id', 'shejifei', type="char", string=u'设计费'),
+
+        # basic
+        "waibao": fields.related('suozhangshenpi_form_id', 'waibao', type="boolean", string=u'是否外包'),
+        "shizhenpeitao": fields.related('suozhangshenpi_form_id', 'shizhenpeitao', type="boolean", string=u'市政配套'),
+        "duofanghetong": fields.related('suozhangshenpi_form_id', 'duofanghetong', type="boolean", string=u'多方合同'),
+        "jianyishejibumen_id": fields.related('suozhangshenpi_form_id', 'jianyishejibumen_id', type="many2one",
+                                              relation="hr.department",
+                                              string=u'建议设计部门'),
+        "jianyixiangmufuzeren_id": fields.related('suozhangshenpi_form_id', 'jianyixiangmufuzeren_id', type="many2one",
+                                                  relation="hr.employee", string=u'建议项目负责人'),
+        "shifoutoubiao": fields.related('suozhangshenpi_form_id', 'shifoutoubiao', type="boolean", string=u'是否投标项目'),
+        "toubiaoleibie": fields.related('suozhangshenpi_form_id', 'toubiaoleibie', type="char", string=u'投标类别'),
+
+        'is_display_button': fields.function(_is_display_button, type="boolean",
+                                             string="Is Display Button"),
     }
 
     def action_suozhangshenpi(self, cr, uid, ids, context=None):

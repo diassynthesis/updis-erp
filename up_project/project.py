@@ -52,13 +52,6 @@ class updis_project(osv.osv):
         "xiangmubianhao": fields.char(u"项目编号", select=True, size=128, ),
 
 
-        "waibao": fields.boolean(u"是否外包", ),
-        "shizhenpeitao": fields.boolean(u"市政配套", ),
-        "duofanghetong": fields.boolean(u"多方合同", ),
-        "jianyishejibumen_id": fields.many2one("hr.department", u"建议设计部门", ),
-        "jianyixiangmufuzeren_id": fields.many2one("res.users", u"建议项目负责人", ),
-        "shifoutoubiao": fields.boolean(u"是否投标项目", ),
-        "jiafang_id": fields.many2one('res.partner', u"甲方", ),
         'gongzuodagang': fields.boolean(u'有工作大纲（保存归档）', ),
         'chuangyouxiangmu': fields.boolean(u'创优项目', ),
         'zhuantihuozixiang': fields.boolean(u'专题或子项（详见工作大纲）', ),
@@ -77,8 +70,6 @@ class updis_project(osv.osv):
         # 总师室
         "categories_id": fields.many2many("project.upcategory", "up_project_category_rel", "project_id", "category_id",
                                           u"项目类别", ),
-        "toubiaoleibie": fields.selection([(u'商务标', u'商务标'), (u'技术标', u'技术标'), (u'综合标', u'综合标')], u"投标类别",
-        ),
         "guanlijibie": fields.selection([
                                             (u'院级', u'院级'),
                                             (u'所级', u'所级')], u'项目管理级别', ),
@@ -119,6 +110,7 @@ class updis_project(osv.osv):
             'name': action_name,
             'type': 'ir.actions.act_window',
             'view_mode': 'form',
+            'view_type': 'form',
             'res_model': form_model_name,
             'res_id': shenpi_form_id,
             'target': 'new',
