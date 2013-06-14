@@ -1,38 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
-        <record id="project_prject_suozhangshenpi_form_inherit" model="ir.ui.view">
-            <field name="name">project.project.suozhangshenpi.form.inherit</field>
-            <field name="model">project.project</field>
-            <field name="inherit_id" ref="edit_project_inherit"/>
-            <field name="arch" type="xml">
-                <xpath expr="//group[@name='basic_info']" position="after">
-                    <group colspan="2" attrs="{'invisible':[('state','=','open')]}">
-                        <group string="Review">
-                            <field name="yaoqiuxingchengwenjian" readonly="1"/>
-                            <field name="hetongyizhi" readonly="1"/>
-                        </group>
-                        <newline/>
-                        <group string="设计要求是否达到规定">
-                            <field name="express_requirement" readonly="1"/>
-                            <field name="yinhanyaoqiu" readonly="1"/>
-                            <field name="difangfagui" readonly="1"/>
-                            <field name="fujiayaoqiu" readonly="1"/>
-                        </group>
-                        <group string="Attachment">
-
-                        </group>
-                        <group string="本院是否有能力满足规定要求">
-                            <field name="ziyuan" readonly="1"/>
-                            <field name="shebei" readonly="1"/>
-                            <field name="gongqi" readonly="1"/>
-                            <field name="shejifei" readonly="1"/>
-                        </group>
-                    </group>
-                </xpath>
-            </field>
-        </record>
-
         <record id="project_review_suozhangshenpi_form_form_view" model="ir.ui.view">
             <field name="name">project.review.suozhangshenpi.form.view</field>
             <field name="model">project.review.suozhangshenpi.form</field>
@@ -63,7 +31,7 @@
                     </group>
                     <field name="state" invisible="1"/>
                     <footer>
-                        <button name="save" class="oe_highlight" string="Save" states=""/>
+                        <button name="save" class="oe_highlight" string="Save"/>
                         <button name="suozhangshenpi_review_submit" string="提交所长审批" states="" type="object"
                                 class="oe_highlight" attrs="{'invisible':[('state','!=','open')]}"/>
                         <button name="suozhangshenpi_review_accept" string="审批通过" states="" type="object"
@@ -71,6 +39,44 @@
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
+            </field>
+        </record>
+
+        <record id="project_project_suozhangshenpi_form_inherit" model="ir.ui.view">
+            <field name="name">project.project.suozhangshenpi.form.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="edit_project_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="before">
+                    <button name="action_suozhangshenpi" string="提交所长审批" states="open" type="object"/>
+
+                    <button name="draft_reject" string="打回申请单" states="suozhangshenpi"/>
+                    <button name="action_suozhangshenpi" string="审批" states="suozhangshenpi" type="object"/>
+                </xpath>
+                <xpath expr="//group[@name='basic_info']" position="after">
+                    <group colspan="2" attrs="{'invisible':[('state','=','open')]}">
+                        <group string="Review">
+                            <field name="yaoqiuxingchengwenjian" readonly="1"/>
+                            <field name="hetongyizhi" readonly="1"/>
+                        </group>
+                        <newline/>
+                        <group string="设计要求是否达到规定">
+                            <field name="express_requirement" readonly="1"/>
+                            <field name="yinhanyaoqiu" readonly="1"/>
+                            <field name="difangfagui" readonly="1"/>
+                            <field name="fujiayaoqiu" readonly="1"/>
+                        </group>
+                        <group string="Attachment">
+
+                        </group>
+                        <group string="本院是否有能力满足规定要求">
+                            <field name="ziyuan" readonly="1"/>
+                            <field name="shebei" readonly="1"/>
+                            <field name="gongqi" readonly="1"/>
+                            <field name="shejifei" readonly="1"/>
+                        </group>
+                    </group>
+                </xpath>
             </field>
         </record>
     </data>

@@ -1,29 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-	<data>
-		<record id="project_review_suozhangqianzishenpi_form_form_view" model="ir.ui.view">
-			<field name="name">project.review.suozhangqianzishenpi.form.form.view</field>
-			<field name="model">project.review.suozhangqianzishenpi.form</field>
-			<field name="arch" type="xml">
-				<form string="suozhangqianzishenpishenpi" version="7.0">
-					<field name="state" widget="statusbar" readonly="1" statusbar_visible="submitted,draft"/>				
-					<!-- <group string="通知设置">
-						<field name="send_email" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
-						<field name="send_sms" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
-					</group> -->
-					<group string="Review Comment">
-						<field name="review_log" />
-						<field name="reviewer_id" domain="[('groups_id','=',%(group_up_project_suozhang)d)]"  attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
-						<field name="comment" />
-					</group>
-					<footer>
-						<button name="suozhangqianzishenpi_review_submit" string="提交所长签字" states="draft" class="oe_highlight"/>
-						<button name="suozhangqianzishenpi_review_accept" string="审批通过" states="submitted" class="oe_highlight"/>
-						<button name="suozhangqianzishenpi_review_reject" string="打回" states="submitted" class="oe_highlight"/>
-						<button string="Cancel" class="oe_link" special="cancel"/>
-					</footer>
-				</form>
-			</field>
-		</record>
-	</data>
+    <data>
+        <record id="project_review_suozhangqianzishenpi_form_form_view" model="ir.ui.view">
+            <field name="name">project.review.suozhangqianzishenpi.form.form.view</field>
+            <field name="model">project.review.suozhangqianzishenpi.form</field>
+            <field name="arch" type="xml">
+                <form string="suozhangqianzishenpishenpi" version="7.0">
+                    <!-- <group string="通知设置">
+                        <field name="send_email" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
+                        <field name="send_sms" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
+                    </group> -->
+                    <group string="Review Comment">
+                        <field name="review_log"/>
+                        <field name="reviewer_id" domain="[('groups_id','=',%(group_up_project_suozhang)d)]"/>
+                        <field name="comment"/>
+                    </group>
+                    <footer>
+                        <button name="save" class="oe_highlight" string="Save"/>
+                        <button name="suozhangqianzi_review_submit" string="审批通过" class="oe_highlight" type="object"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="project_project_suozhangqianzi_form_inherit" model="ir.ui.view">
+            <field name="name">project.project.suozhangqianzi.form.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="edit_project_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="before">
+                    <button name="action_suozhangqianzishenpi" string="所长签字审批申请单" states="suozhangqianzi"
+                            type="object"/>
+                    <button name="zongshishi_reject" string="打回申请单" states="suozhangqianzi"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
 </openerp>

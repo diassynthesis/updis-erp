@@ -1,36 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-	<data>
-		<record id="project_review_zongshishishenpi_form_form_view" model="ir.ui.view">
-			<field name="name">project.review.zongshishishenpi.form.form.view</field>
-			<field name="model">project.review.zongshishishenpi.form</field>
-			<field name="arch" type="xml">
-				<form string="zongshishishenpi" version="7.0">
-					<field name="state" widget="statusbar" readonly="1" statusbar_visible="submitted,draft"/>
-					<group string="总师室指定项目负责人">
-						<field name="toubiaoleibie" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
-						<field name="guanlijibie" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
-						<field name="chenjiefuzeren_id" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
-						<field name="zhuguanzongshi_id" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
-						<field name="categories_id" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
-					</group>
-					<!-- <group string="通知设置">
-						<field name="send_email" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>	
-						<field name="send_sms" attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
-					</group> -->
-					<group string="Review Comment">
-						<field name="review_log" />
-						<field name="reviewer_id" domain="[('groups_id','=',%(group_up_project_zongshishi)d)]"  attrs="{'readonly':[('state','&lt;&gt;','draft')]}"/>
-						<field name="comment" />
-					</group>
-					<footer>
-						<button name="zongshishishenpi_review_submit" string="提交总师室审批" states="draft" class="oe_highlight"/>
-						<button name="zongshishishenpi_review_accept" string="审批通过" states="submitted" class="oe_highlight"/>
-						<button name="zongshishishenpi_review_reject" string="打回" states="submitted" class="oe_highlight"/>
-						<button string="Cancel" class="oe_link" special="cancel"/>
-					</footer>
-				</form>
-			</field>
-		</record>
-	</data>
+    <data>
+        <record id="project_review_zongshishishenpi_form_form_view" model="ir.ui.view">
+            <field name="name">project.review.zongshishishenpi.form.form.view</field>
+            <field name="model">project.review.zongshishishenpi.form</field>
+            <field name="arch" type="xml">
+                <form string="zongshishishenpi" version="7.0">
+                    <group string="总师室指定项目负责人">
+                        <field name="toubiaoleibie" />
+                        <field name="guanlijibie" />
+                        <field name="chenjiefuzeren_id" />
+                        <field name="zhuguanzongshi_id" />
+                        <field name="categories_id" />
+                    </group>
+                    <!-- <group string="通知设置">
+                        <field name="send_email" />
+                        <field name="send_sms" />
+                    </group> -->
+                    <group string="Review Comment">
+                        <field name="review_log"/>
+                        <field name="reviewer_id" domain="[('groups_id','=',%(group_up_project_zongshishi)d)]"
+                               />
+                        <field name="comment"/>
+                    </group>
+                    <footer>
+                        <button name="save" class="oe_highlight" string="Save"/>
+                        <button name="zongshishi_review_submit" string="提交所长" type="object"
+                                class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="project_project_zongshishi_form_inherit" model="ir.ui.view">
+            <field name="name">project.project.zongshishi.form.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="edit_project_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="before">
+                    <button name="action_zongshishishenpi" string="总师室审批申请单" states="zhidingfuzeren" type="object"/>
+                    <button name="jingyinshi_reject" string="打回申请单" states="zhidingfuzeren"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
 </openerp>
