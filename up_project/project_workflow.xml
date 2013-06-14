@@ -39,7 +39,7 @@
             <field name="name">总师室指定负责人</field>
             <field name="kind">function</field>
             <field name="action">
-                init_form('zhidingfuzeren','project.review.zongshishishenpi.form','zongshishishenpi_form_id')
+                init_zongshishi_form('zhidingfuzeren','project.review.zongshishishenpi.form','zongshishishenpi_form_id')
             </field>
         </record>
         <record id="act_suozhangqianzi" model="workflow.activity">

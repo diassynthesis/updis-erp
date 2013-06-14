@@ -108,8 +108,8 @@ class updis_project(osv.osv):
                                               string=u'建议设计部门'),
         "jianyixiangmufuzeren_id": fields.related('suozhangshenpi_form_id', 'jianyixiangmufuzeren_id', type="many2one",
                                                   relation="hr.employee", string=u'建议项目负责人'),
-        "shifoutoubiao": fields.related('suozhangshenpi_form_id', 'shifoutoubiao', type="boolean", string=u'是否投标项目'),
-        "toubiaoleibie": fields.related('suozhangshenpi_form_id', 'toubiaoleibie', type="char", string=u'投标类别'),
+        # "shifoutoubiao": fields.related('suozhangshenpi_form_id', 'shifoutoubiao', type="boolean", string=u'是否投标项目'),
+        # "toubiaoleibie": fields.related('suozhangshenpi_form_id', 'toubiaoleibie', type="char", string=u'投标类别'),
 
         'is_display_button': fields.function(_is_display_button, type="boolean",
                                              string="Is Display Button"),

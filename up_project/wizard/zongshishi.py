@@ -13,7 +13,7 @@ class zongshishishenpi_form(osv.Model):
                                           "category_id", u"项目类别"),
         "toubiaoleibie": fields.selection([(u'商务标', u'商务标'), (u'技术标', u'技术标'), (u'综合标', u'综合标')], u"投标类别"),
         "guanlijibie": fields.selection([(u'院级', u'院级'), (u'所级', u'所级')], u'项目管理级别'),
-        "chenjiefuzeren_id": fields.many2one("res.users", u"承接项目负责人"),
+        "chenjiefuzeren_id": fields.many2one("hr.employee", u"承接项目负责人"),
         "zhuguanzongshi_id": fields.many2one("res.users", u"主管总师"),
     }
 
@@ -32,7 +32,37 @@ class updis_project(osv.Model):
     _inherit = 'project.project'
     _columns = {
         'zongshishishenpi_form_id': fields.many2one('project.review.zongshishishenpi.form', u'总师室审批单'),
+
+        "categories_id": fields.related('zongshishishenpi_form_id', 'categories_id', type="many2many",
+                                        relation='project.upcategory', string=u"项目类别"),
+        "toubiaoleibie": fields.related('zongshishishenpi_form_id', 'toubiaoleibie', type="char", string=u"投标类别"),
+        "guanlijibie": fields.related('zongshishishenpi_form_id', 'guanlijibie', type="char", string=u"项目管理级别"),
+        "chenjiefuzeren_id": fields.related('zongshishishenpi_form_id', 'chenjiefuzeren_id', type="many2one",
+                                            relation="hr.employee", string=u"承接项目负责人"),
+        "zhuguanzongshi_id": fields.related('zongshishishenpi_form_id', 'zhuguanzongshi_id', type="many2one",
+                                            relation="res.users", string=u"主管总师"),
+        "zongshishi_submitter_id": fields.related('zongshishishenpi_form_id', 'submitter_id', type="many2one",
+                                                  relation="res.users",
+                                                  string=u"Zongshishi Submitter"),
     }
 
     def action_zongshishishenpi(self, cr, uid, ids, context=None):
         return self._get_action(cr, uid, ids, 'project.review.zongshishishenpi.form', u'总师室审批单')
+
+    def init_zongshishi_form(self, cr, uid, ids, state, obj, object_field):
+        assert len(ids) == 1
+        project_id = self.browse(cr, uid, ids, context=None)
+        if project_id[0] and project_id[0][object_field]:
+            self.write(cr, uid, ids, {'state': state})
+            return project_id[0][object_field].id
+        else:
+            if project_id[0] and project_id[0].suozhangshenpi_form_id:
+                employee = project_id[0].suozhangshenpi_form_id.jianyixiangmufuzeren_id
+            else:
+                employee = None
+            suozhangshenpi = self.pool.get(obj)
+            suozhangshenpi_id = suozhangshenpi.create(cr, 1,
+                                                      {'project_id': ids[0], 'chenjiefuzeren_id': employee.id},
+                                                      None)
+            self.write(cr, uid, ids, {'state': state, object_field: suozhangshenpi_id})
+            return suozhangshenpi_id

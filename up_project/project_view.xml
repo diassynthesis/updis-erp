@@ -105,8 +105,10 @@
                                            on_change="on_change_country(country_id)" style="width: 15%%"
                                            options="{'no_open':True}" nolabel="1" placeholder="Country"
                                            attrs="{'readonly':[('state','!=','open')]}"/>
-                                    <field name="state_id" widget="selection" options="{'no_open':True}" placeholder="State"
-                                           nolabel="1" attrs="{'readonly':[('state','!=','open')]}"  style="width: 30%%"/>
+                                    <field name="state_id" widget="selection" options="{'no_open':True}"
+                                           placeholder="State"
+                                           nolabel="1" attrs="{'readonly':[('state','!=','open')]}"
+                                           style="width: 30%%"/>
                                     <field name="city" nolabel="1" placeholder="City"
                                            attrs="{'readonly':[('state','!=','open')]}" style="width: 50%%"/>
                                 </div>
@@ -121,6 +123,7 @@
                             </group>
                             <notebook>
                                 <page name="note" invisible="1"></page>
+                                <page name="note2" invisible="1"></page>
                             </notebook>
                         </group>
                     </sheet>
