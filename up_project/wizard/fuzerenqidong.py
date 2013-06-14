@@ -21,6 +21,7 @@ class fuzerenqidong_form(osv.Model):
     }
 
     def fuzerenqidong_review_submit(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'submitter_id': uid})
         project = self.pool.get('project.project')
         suozhangshenpi = self.browse(cr, uid, ids, context=None)
         if suozhangshenpi and suozhangshenpi[0].project_id:

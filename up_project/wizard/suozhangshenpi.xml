@@ -82,7 +82,7 @@
                             attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangshenpi')]}"
                             groups="up_project.group_up_project_suozhang" confirm="Are you sure you want do this?"/>
                 </xpath>
-                <xpath expr="//page[@name='note']" position="before">
+                <xpath expr="//page[@name='note']" position="before" priority="1">
                     <page string="Apply Info" attrs="{'invisible':[('state','=','open')]}">
                         <group colspan="2">
                             <group string="Basic Info" col="1">

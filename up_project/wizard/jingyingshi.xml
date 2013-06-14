@@ -7,25 +7,26 @@
             <field name="arch" type="xml">
                 <form string="jingyingshishenpishenpi" version="7.0">
                     <group string="经营室指定设计部门" col="4">
-                        <field name="xiangmubianhao"/>
-                        <field name="pingshenfangshi"/>
-                        <field name="yinfacuoshi"/>
-                        <field name="renwuyaoqiu"/>
-                        <field name="chenjiebumen_id"/>
+                        <field name="xiangmubianhao" required="1"/>
+                        <newline/>
+                        <field name="pingshenfangshi" required="1" class="oe_no_button"/>
+                        <field name="yinfacuoshi" required="1" class="oe_no_button"/>
+                        <field name="renwuyaoqiu" required="1" class="oe_no_button"/>
+                        <field name="chenjiebumen_id" required="1" class="oe_no_button"
+                               options='{"no_open": True}'/>
                     </group>
                     <!-- <group string="通知设置">
                         <field name="send_email" />
                         <field name="send_sms" />
-                    </group> -->
+                    </group> >
                     <group string="Review Comment">
-                        <field name="review_log"/>
-                        <field name="reviewer_id" domain="[('groups_id','=',%(group_up_project_jingyingshi)d)]"/>
+                        <field name="submitter_id" readonly="1"/>
                         <field name="comment"/>
-                    </group>
+                    </group-->
                     <footer>
                         <button name="save" class="oe_highlight" string="Save"/>
                         <button name="jingyinshi_review_submit" string="提交总师室审批" class="oe_highlight"
-                                type="object"/>
+                                type="object" confirm="Are you sure you want do this?"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
@@ -38,9 +39,31 @@
             <field name="inherit_id" ref="edit_project_inherit"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='state']" position="before">
-                    <button name="action_jingyingshishenpi" string="经营室审批申请单" states="zhidingbumen"
-                            type="object"/>
-                    <button name="suozhangshenpi_reject" string="打回申请单" states="zhidingbumen"/>
+                    <button name="action_jingyingshishenpi" class="oe_highlight" string="经营室审批申请单" states="zhidingbumen"
+                            type="object" groups="up_project.group_up_project_jingyingshi"/>
+                    <button name="suozhangshenpi_reject" string="打回申请单" states="zhidingbumen"
+                            groups="up_project.group_up_project_jingyingshi" confirm="Are you sure you want do this?"/>
+                </xpath>
+                <xpath expr="//group[@name='project_num']" position="replace">
+                    <group col="4" colspan="4">
+                        <field name="xiangmubianhao" readonly="1"
+                               attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}"/>
+                    </group>
+                </xpath>
+                <xpath expr="//page[@name='note']" position="after" priority="2">
+                    <page string="Jinyinshi Info"
+                          attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}" priority="80">
+                        <group colspan="2">
+                            <group string="经营室指定设计部门" col="4">
+                                <field name="pingshenfangshi" readonly="1"/>
+                                <field name="yinfacuoshi" readonly="1"/>
+                                <field name="renwuyaoqiu" readonly="1"/>
+                                <field name="chenjiebumen_id" readonly="1"/>
+                                <field name="jinyinshi_submitter_id" readonly="1"/>
+                            </group>
+                        </group>
+                    </page>
+
                 </xpath>
 
             </field>

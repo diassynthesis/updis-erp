@@ -46,6 +46,7 @@ class suozhangshenpi_form(osv.osv):
         return {'value': {}}
 
     def suozhangshenpi_review_submit(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'submitter_id': uid})
         project = self.pool.get('project.project')
         suozhangshenpi = self.browse(cr, uid, ids, context=None)
         if suozhangshenpi and suozhangshenpi[0].project_id:
@@ -55,6 +56,7 @@ class suozhangshenpi_form(osv.osv):
             return False
 
     def suozhangshenpi_review_accept(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'submitter_id': uid})
         project = self.pool.get('project.project')
         suozhangshenpi = self.browse(cr, uid, ids, context=None)
         if suozhangshenpi and suozhangshenpi[0].project_id:

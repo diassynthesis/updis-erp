@@ -49,23 +49,12 @@ class updis_project(osv.osv):
         "city": fields.char("City", size=128),
         "customer_contact": fields.many2one('res.partner', 'Customer Contact'),
         "guimo": fields.char(u"规模", size=64),
-        "xiangmubianhao": fields.char(u"项目编号", select=True, size=128, ),
-
 
         'gongzuodagang': fields.boolean(u'有工作大纲（保存归档）', ),
         'chuangyouxiangmu': fields.boolean(u'创优项目', ),
         'zhuantihuozixiang': fields.boolean(u'专题或子项（详见工作大纲）', ),
         'youfenbaofang': fields.boolean(u'有分包方（详见分包协议）', ),
 
-
-        # 经营室
-
-        "pingshenfangshi": fields.selection([(u'会议', u'会议'), (u'会签', u'会签'), (u'审批', u'审批')], u"评审方式", ),
-        "yinfacuoshi": fields.selection([(u'可以接受', u'可以接受'), (u'不接受', u'不接受'), (u'加班', u'加班'),
-                                         (u'院内调配', u'院内调配'), (u'外协', u'外协'), (u'其它', u'其它')], u"引发措施记录", ),
-        "renwuyaoqiu": fields.selection([(u'见委托书', u'见委托书'), (u'见合同草案', u'见合同草案'), (u'见洽谈记录', u'见洽谈记录'),
-                                         (u'见电话记录', u'见电话记录'), (u'招标文件', u'招标文件')], u"任务要求", ),
-        "chenjiebumen_id": fields.many2one("hr.department", u"承接部门", ),
 
         # 总师室
         "categories_id": fields.many2many("project.upcategory", "up_project_category_rel", "project_id", "category_id",
@@ -130,12 +119,13 @@ class updis_project(osv.osv):
     def init_form(self, cr, uid, ids, state, object, object_field):
         assert len(ids) == 1
         project_id = self.browse(cr, uid, ids, context=None)
-        if project_id[0].suozhangshenpi_form_id:
+        if project_id[0] and project_id[0][object_field]:
             self.write(cr, uid, ids, {'state': state})
-            return project_id[0].suozhangshenpi_form_id.id
+            return project_id[0][object_field].id
         else:
             suozhangshenpi = self.pool.get(object)
-            suozhangshenpi_id = suozhangshenpi.create(cr, uid, {'project_id': ids[0]}, None)
+            #by pass
+            suozhangshenpi_id = suozhangshenpi.create(cr, 1, {'project_id': ids[0]}, None)
             self.write(cr, uid, ids, {'state': state, object_field: suozhangshenpi_id})
             return suozhangshenpi_id
 

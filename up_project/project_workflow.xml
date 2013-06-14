@@ -31,7 +31,7 @@
             <field name="name">经营室指定设计部门</field>
             <field name="kind">function</field>
             <field name="action">
-                init_form('zhidingbumen','project.review.jingyingshishenpi.form','jingyingshishenpi_form_id')
+                init_jinyinshi_form('zhidingbumen','project.review.jingyingshishenpi.form','jingyingshishenpi_form_id')
             </field>
         </record>
         <record id="act_zhidingfuzeren" model="workflow.activity">

@@ -95,8 +95,7 @@
                             <button name="attachment_tree_view" string="Documents" type="object"/>
                         </div>
                         <group>
-                            <group col="4" colspan="4">
-                                <field name="xiangmubianhao" readonly="1"/>
+                            <group col="4" colspan="4" name="project_num">
                             </group>
                             <group col="4" colspan="4">
                                 <label string="Project Location" for="country_id"/>
@@ -121,7 +120,7 @@
                                        attrs="{'readonly':[('state','!=','open')],'invisible':[('state','not in',['fuzerenqidong'])]}"/>
                             </group>
                             <notebook>
-                                <page name="note"></page>
+                                <page name="note" invisible="1"></page>
                             </notebook>
                         </group>
                     </sheet>
