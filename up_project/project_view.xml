@@ -81,6 +81,7 @@
                 <form string="Project" version="7.0">
                     <header>
                         <field name="state" widget="statusbar" statusbar_colors='{"open":"blue"}' readonly="1"/>
+                        <field name="states" widget="statusbar" statusbar_colors='{"open":"red"}' readonly="1"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -170,7 +171,7 @@
                   parent="project.menu_project_management"
                   action="action_project_related_to_me_operating" sequence="3" groups="group_up_project_jingyingshi"/>
 
-          <!--Project related to Chief Engineer Room-->
+        <!--Project related to Chief Engineer Room-->
         <record id="action_project_related_to_me_engineer" model="ir.actions.act_window">
             <field name="name">Projects engineer</field>
             <field name="res_model">project.project</field>

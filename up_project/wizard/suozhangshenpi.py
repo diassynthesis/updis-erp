@@ -72,8 +72,8 @@ class updis_project(osv.osv):
     def _is_display_button(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            review_id = obj.suozhangshenpi_form_id.reviewer_id.id
-            if review_id == uid:
+            review_id = obj.suozhangshenpi_form_id.reviewer_id
+            if review_id and review_id.id == uid:
                 result[obj.id] = True
             else:
                 result[obj.id] = False
@@ -90,7 +90,7 @@ class updis_project(osv.osv):
         return result
 
     _columns = {
-        'suozhangshenpi_form_id': fields.many2one('project.review.suozhangshenpi.form', u'所长审批单',ondelete="cascade",),
+        'suozhangshenpi_form_id': fields.many2one('project.review.suozhangshenpi.form', u'所长审批单', ondelete="cascade", ),
 
 
         "yaoqiuxingchengwenjian": fields.related('suozhangshenpi_form_id', 'yaoqiuxingchengwenjian', type="char",
