@@ -36,7 +36,7 @@ class suozhangshenpi_form(osv.osv):
         "shizhenpeitao": fields.boolean(u"市政配套"),
         "duofanghetong": fields.boolean(u"多方合同"),
         "jianyishejibumen_id": fields.many2one("hr.department", u"建议设计部门"),
-        "jianyixiangmufuzeren_id": fields.many2one("hr.employee", u"建议项目负责人"),
+        "jianyixiangmufuzeren_id": fields.many2one("res.users", u"建议项目负责人"),
         # "shifoutoubiao": fields.boolean(u"是否投标项目"),
         # "toubiaoleibie": fields.selection([(u'商务标', u'商务标'), (u'技术标', u'技术标'), (u'综合标', u'综合标')], u"投标类别"),
     }
@@ -90,7 +90,7 @@ class updis_project(osv.osv):
         return result
 
     _columns = {
-        'suozhangshenpi_form_id': fields.many2one('project.review.suozhangshenpi.form', u'所长审批单'),
+        'suozhangshenpi_form_id': fields.many2one('project.review.suozhangshenpi.form', u'所长审批单',ondelete="cascade",),
 
 
         "yaoqiuxingchengwenjian": fields.related('suozhangshenpi_form_id', 'yaoqiuxingchengwenjian', type="char",
@@ -117,7 +117,7 @@ class updis_project(osv.osv):
                                               relation="hr.department",
                                               string=u'建议设计部门'),
         "jianyixiangmufuzeren_id": fields.related('suozhangshenpi_form_id', 'jianyixiangmufuzeren_id', type="many2one",
-                                                  relation="hr.employee", string=u'建议项目负责人'),
+                                                  relation="res.users", string=u'建议项目负责人'),
 
         # "shifoutoubiao": fields.related('suozhangshenpi_form_id', 'shifoutoubiao', type="boolean", string=u'是否投标项目'),
         # "toubiaoleibie": fields.related('suozhangshenpi_form_id', 'toubiaoleibie', type="char", string=u'投标类别'),

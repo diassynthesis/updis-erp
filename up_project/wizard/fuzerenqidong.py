@@ -36,7 +36,7 @@ class updis_project(osv.Model):
     _inherit = 'project.project'
     _columns = {
         'shizhengxietiaoren_id': fields.many2one("res.users", u"市政协调人"),
-        'fuzerenqidong_form_id': fields.many2one('project.review.fuzerenqidong.form', u'项目负责人启动项目'),
+        'fuzerenqidong_form_id': fields.many2one('project.review.fuzerenqidong.form', u'项目负责人启动项目',ondelete="cascade",),
     }
 
     def action_fuzerenqidong(self, cr, uid, ids, context=None):

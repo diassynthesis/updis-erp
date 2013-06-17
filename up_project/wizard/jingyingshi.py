@@ -33,7 +33,8 @@ class jingyingshishenpi_form(osv.Model):
 class updis_project(osv.Model):
     _inherit = 'project.project'
     _columns = {
-        'jingyingshishenpi_form_id': fields.many2one('project.review.jingyingshishenpi.form', u'经营室审批单'),
+        'jingyingshishenpi_form_id': fields.many2one('project.review.jingyingshishenpi.form', u'经营室审批单',
+                                                     ondelete="cascade", ),
 
         "xiangmubianhao": fields.related('jingyingshishenpi_form_id', 'xiangmubianhao', type="char",
                                          string=u"项目编号"),
@@ -47,8 +48,8 @@ class updis_project(osv.Model):
                                           relation="hr.department",
                                           string=u"承接部门"),
         "jinyinshi_submitter_id": fields.related('jingyingshishenpi_form_id', 'submitter_id', type="many2one",
-                                          relation="res.users",
-                                          string=u"Submitter"),
+                                                 relation="res.users",
+                                                 string=u"Submitter"),
     }
 
     def action_jingyingshishenpi(self, cr, uid, ids, context=None):
@@ -57,19 +58,24 @@ class updis_project(osv.Model):
     def init_jinyinshi_form(self, cr, uid, ids, state, obj, object_field):
         assert len(ids) == 1
         project_id = self.browse(cr, uid, ids, context=None)
+        if project_id[0] and project_id[0].suozhangshenpi_form_id:
+            department_id = project_id[0].suozhangshenpi_form_id.jianyishejibumen_id.id
+        else:
+            department_id = None
+
         if project_id[0] and project_id[0][object_field]:
+            jinyishi = self.pool.get(obj)
+            jinyishi_id = jinyishi.write(cr, 1, project_id[0].jingyingshishenpi_form_id.id,
+                                         {'chenjiebumen_id': department_id})
             self.write(cr, uid, ids, {'state': state})
             return project_id[0][object_field].id
         else:
             project_num = self.pool.get('ir.sequence').next_by_code(cr, uid, 'project.project')
-            if project_id[0] and project_id[0].suozhangshenpi_form_id:
-                department = project_id[0].suozhangshenpi_form_id.jianyishejibumen_id
-            else:
-                department = None
+
             suozhangshenpi = self.pool.get(obj)
             suozhangshenpi_id = suozhangshenpi.create(cr, 1,
                                                       {'project_id': ids[0], 'xiangmubianhao': project_num,
-                                                       'chenjiebumen_id': department.id},
+                                                       'chenjiebumen_id': department_id},
                                                       None)
             self.write(cr, uid, ids, {'state': state, object_field: suozhangshenpi_id})
             return suozhangshenpi_id

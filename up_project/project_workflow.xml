@@ -47,7 +47,7 @@
             <field name="name">所长签字</field>
             <field name="kind">function</field>
             <field name="action">
-                init_form('suozhangqianzi','project.review.suozhangqianzishenpi.form','suozhangqianzishenpi_form_id')
+                init_director_sign_form('suozhangqianzi','project.review.suozhangqianzishenpi.form','suozhangqianzishenpi_form_id')
             </field>
         </record>
         <record id="act_fuzerenqidong" model="workflow.activity">

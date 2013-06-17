@@ -45,7 +45,7 @@
                             groups="up_project.group_up_project_jingyingshi" confirm="Are you sure you want do this?"/>
                 </xpath>
                 <xpath expr="//group[@name='project_num']" position="replace">
-                    <group col="4" colspan="4">
+                    <group colspan="2"  name="project_num">
                         <field name="xiangmubianhao" readonly="1"
                                attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}"/>
                     </group>
