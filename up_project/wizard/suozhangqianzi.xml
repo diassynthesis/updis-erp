@@ -30,9 +30,12 @@
             <field name="inherit_id" ref="edit_project_inherit"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='state']" position="before">
-                    <button name="action_suozhangqianzishenpi" string="所长签字审批申请单" states="suozhangqianzi"
-                            type="object"/>
-                    <button name="zongshishi_reject" string="打回申请单" states="suozhangqianzi"/>
+                    <button name="action_suozhangqianzishenpi" class="oe_highlight" string="所长签字审批申请单"
+                            attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangqianzi')]}"
+                            type="object" groups="up_project.group_up_project_suozhang"/>
+                    <button name="zongshishi_reject" string="打回申请单"
+                            groups="up_project.group_up_project_suozhang"
+                            attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangqianzi')]}"/>
                 </xpath>
             </field>
         </record>
