@@ -37,8 +37,8 @@ class suozhangshenpi_form(osv.osv):
         "duofanghetong": fields.boolean(u"多方合同"),
         "jianyishejibumen_id": fields.many2one("hr.department", u"建议设计部门"),
         "jianyixiangmufuzeren_id": fields.many2one("hr.employee", u"建议项目负责人"),
-        "shifoutoubiao": fields.boolean(u"是否投标项目"),
-        "toubiaoleibie": fields.selection([(u'商务标', u'商务标'), (u'技术标', u'技术标'), (u'综合标', u'综合标')], u"投标类别"),
+        # "shifoutoubiao": fields.boolean(u"是否投标项目"),
+        # "toubiaoleibie": fields.selection([(u'商务标', u'商务标'), (u'技术标', u'技术标'), (u'综合标', u'综合标')], u"投标类别"),
     }
 
     def onchange_shifoutoubiao(self, cr, uid, ids, shifoutoubiao, context=None):
@@ -79,6 +79,16 @@ class updis_project(osv.osv):
                 result[obj.id] = False
         return result
 
+    def _is_project_creater(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            review_id = obj.create_uid.id
+            if review_id == uid:
+                result[obj.id] = True
+            else:
+                result[obj.id] = False
+        return result
+
     _columns = {
         'suozhangshenpi_form_id': fields.many2one('project.review.suozhangshenpi.form', u'所长审批单'),
 
@@ -108,11 +118,16 @@ class updis_project(osv.osv):
                                               string=u'建议设计部门'),
         "jianyixiangmufuzeren_id": fields.related('suozhangshenpi_form_id', 'jianyixiangmufuzeren_id', type="many2one",
                                                   relation="hr.employee", string=u'建议项目负责人'),
+
         # "shifoutoubiao": fields.related('suozhangshenpi_form_id', 'shifoutoubiao', type="boolean", string=u'是否投标项目'),
         # "toubiaoleibie": fields.related('suozhangshenpi_form_id', 'toubiaoleibie', type="char", string=u'投标类别'),
 
         'is_display_button': fields.function(_is_display_button, type="boolean",
                                              string="Is Display Button"),
+        'is_project_creater': fields.function(_is_project_creater, type="boolean",
+                                              string="Is Project Creater"),
+        'director_reviewer_id': fields.related('suozhangshenpi_form_id', 'reviewer_id', type="many2one",
+                                               relation='res.users', string=u'Review Director'),
     }
 
     def action_suozhangshenpi(self, cr, uid, ids, context=None):

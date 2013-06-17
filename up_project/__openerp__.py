@@ -11,11 +11,12 @@ UPDIS Project Module.""",
     'depends': ['base', 'mail', 'resource', 'hr', 'project', 'oecn_base_fonts'],
     'init_xml': [],
     'update_xml': [
+        'security/updis_security.xml',
+        'security/ir.model.access.csv',
         'project_view.xml',
 
         'data/updis_data.xml',
-        'security/updis_security.xml',
-        'security/ir.model.access.csv',
+
         'wizard/suozhangshenpi.xml',
         # 'wizard/suozhangshenpi_server_actions.xml',
         # 'wizard/suozhangshenpi_workflow.xml',

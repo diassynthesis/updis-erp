@@ -120,6 +120,10 @@
                                 <field name="guimo" attrs="{'readonly':[('state','!=','open')]}"/>
                                 <field name="user_id" string="Project Manager"
                                        attrs="{'readonly':[('state','!=','open')],'invisible':[('state','not in',['fuzerenqidong'])]}"/>
+                                <p colspan="2" attrs="{'invisible': [('analytic_account_id','=',False)]}">
+                                    To invoice or setup invoicing and renewal options, go to the related contract:<field
+                                        name="analytic_account_id" readonly="1" required="0" class="oe_inline"/>.
+                                </p>
                             </group>
                             <notebook>
                                 <page name="note" invisible="1"></page>
@@ -130,5 +134,30 @@
                 </form>
             </field>
         </record>
+
+
+        <!--Project related to me-->
+        <record id="action_project_related_to_me_normal" model="ir.actions.act_window">
+            <field name="name">Projects</field>
+            <field name="res_model">project.project</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('create_uid','=',uid)]</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+        <menuitem name="Project Related To Me--Normal" id="project_related_to_me_normal"
+                  parent="project.menu_project_management"
+                  action="action_project_related_to_me_normal" sequence="1" groups="group_up_project_common_user"/>
+
+        <!--Project related to Director-->
+        <record id="action_project_related_to_me_director" model="ir.actions.act_window">
+            <field name="name">Projects</field>
+            <field name="res_model">project.project</field>
+            <field name="view_type">form</field>
+            <field name="domain">['|','&amp;',('state','=','suozhangshenpi'),('director_reviewer_id','=',uid),('create_uid','=',uid)]</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+        <menuitem name="Project Related To Me--Director" id="project_related_to_me_director"
+                  parent="project.menu_project_management"
+                  action="action_project_related_to_me_director" sequence="2" groups="group_up_project_suozhang"/>
     </data>
 </openerp>

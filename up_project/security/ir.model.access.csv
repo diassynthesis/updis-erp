@@ -1,5 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_project_project,project.project,model_project_project,project.group_project_user,1,1,1,0
+access_account_analytic_account_user,account.analytic.account,analytic.model_account_analytic_account,project.group_project_user,1,1,1,0
 project_upcategory_all,project.project_upcategory,model_project_upcategory,project.group_project_user,1,0,0,0
 project_assignment_all,project.project_assignment,model_project_assignment,project.group_project_user,1,0,0,0
 project_suozhangshenpi_all,project.project_suozhangshenpi_all,model_project_review_suozhangshenpi_form,project.group_project_user,1,1,1,0

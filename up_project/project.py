@@ -41,9 +41,15 @@ class project_upcategory(osv.osv):
 
 
 class updis_project(osv.osv):
+    _log_access = True
     _inherit = "project.project"
     _columns = {
         # 基础信息
+        #  'analytic_account_id': fields.boolean("Over Ride"),
+        'create_date': fields.datetime('Created on', select=True),
+        'create_uid': fields.many2one('res.users', 'Author', select=True),
+        'write_date': fields.datetime('Modification date', select=True),
+        'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
         'country_id': fields.many2one('res.country', 'Country'),
         "state_id": fields.many2one('res.country.state', 'State', domain="[('country_id','=',country_id)]"),
         "city": fields.char("City", size=128),

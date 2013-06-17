@@ -13,8 +13,8 @@
                                        options='{"no_open": True}'/>
                                 <field name="jianyixiangmufuzeren_id" required="1" class="oe_no_button"
                                        options='{"no_open": True}'/>
-                                <field name="shifoutoubiao"/>
-                                <field name="toubiaoleibie" attrs="{'invisible':[('shifoutoubiao','=',False)]}"/>
+                                <!--field name="shifoutoubiao"/>
+                                <field name="toubiaoleibie" attrs="{'invisible':[('shifoutoubiao','=',False)]}"/-->
                             </group>
                             <group col="4">
                                 <field name="waibao"/>
@@ -71,8 +71,9 @@
             <field name="inherit_id" ref="edit_project_inherit"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='state']" position="before">
-                    <button name="action_suozhangshenpi" class="oe_highlight" string="提交所长审批" states="open"
+                    <button name="action_suozhangshenpi" class="oe_highlight" string="提交所长审批"
                             type="object"
+                            attrs="{'invisible':['|',('is_project_creater','!=',True),('state','!=','open')]}"
                             groups="project.group_project_user"/>
                     <button name="action_suozhangshenpi" class="oe_highlight" string="提交经营室审批"
                             type="object"
@@ -121,6 +122,7 @@
                             </group>
                             <group invisible="1">
                                 <field name="is_display_button"/>
+                                <field name="is_project_creater"/>
                             </group>
                         </group>
                     </page>
