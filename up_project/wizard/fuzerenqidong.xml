@@ -14,7 +14,6 @@
                     </group>
                     <group string="人员分配">
                         <field name="shizhengxietiaoren_id"/>
-                        <field name="project_assignment_ids"/>
                     </group>
                     <!-- <group string="通知设置">
                         <field name="send_email" />

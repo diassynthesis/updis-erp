@@ -13,8 +13,8 @@ class fuzerenqidong_form(osv.Model):
         'chuangyouxiangmu': fields.boolean(u'创优项目'),
         'zhuantihuozixiang': fields.boolean(u'专题或子项（详见工作大纲）'),
         'youfenbaofang': fields.boolean(u'有分包方（详见分包协议）'),
-        'project_assignment_ids': fields.many2many("project.assignment", 'fuzerenqidong_assignment_rel',
-                                                   "fuzerenqidong_form_id", "assignment_id", string="Assignments"),
+        # 'project_assignment_ids': fields.many2many("project.assignment", 'fuzerenqidong_assignment_rel',
+        #                                            "fuzerenqidong_form_id", "assignment_id", string="Assignments"),
         #'assignment_ids':fields.related('project_id','assignment_ids',relation="project.assignment", type="one2many",string="Assignment"),
     }
     _defaults = {

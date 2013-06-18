@@ -1,33 +1,32 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-        <record model="workflow" id="wkf_up_project_start">
+        <record model="workflow" id="wkf_up_project_active">
             <field name="name">项目启动流程</field>
             <field name="osv">project.project</field>
             <field name="on_create">True</field>
         </record>
         <!-- Activities -->
-        <!-- <record id="act_draft" model="workflow.activity">
-            <field name="wkf_id" ref="wkf_up_project_start" />
+        <record id="act_active_start" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_up_project_active"/>
+            <field name="name">Project Active Start Point</field>
             <field name="flow_start">True</field>
-            <field name="name">draft</field>
             <field name="kind">dummy</field>
-        </record> -->
+        </record>
         <record id="act_open" model="workflow.activity">
-            <field name="wkf_id" ref="wkf_up_project_start"/>
+            <field name="wkf_id" ref="wkf_up_project_active"/>
             <field name="name">提出申请</field>
-            <field name="flow_start">True</field>
             <field name="kind">function</field>
             <field name="action">init_form('open','project.review.suozhangshenpi.form','suozhangshenpi_form_id')</field>
         </record>
         <record id="act_suozhangshenpi" model="workflow.activity">
-            <field name="wkf_id" ref="wkf_up_project_start"/>
+            <field name="wkf_id" ref="wkf_up_project_active"/>
             <field name="name">所长审批</field>
             <field name="kind">function</field>
             <field name="action">write({'state':'suozhangshenpi'})</field>
         </record>
         <record id="act_zhidingbumen" model="workflow.activity">
-            <field name="wkf_id" ref="wkf_up_project_start"/>
+            <field name="wkf_id" ref="wkf_up_project_active"/>
             <field name="name">经营室指定设计部门</field>
             <field name="kind">function</field>
             <field name="action">
@@ -35,7 +34,7 @@
             </field>
         </record>
         <record id="act_zhidingfuzeren" model="workflow.activity">
-            <field name="wkf_id" ref="wkf_up_project_start"/>
+            <field name="wkf_id" ref="wkf_up_project_active"/>
             <field name="name">总师室指定负责人</field>
             <field name="kind">function</field>
             <field name="action">
@@ -43,7 +42,7 @@
             </field>
         </record>
         <record id="act_suozhangqianzi" model="workflow.activity">
-            <field name="wkf_id" ref="wkf_up_project_start"/>
+            <field name="wkf_id" ref="wkf_up_project_active"/>
             <field name="name">所长签字</field>
             <field name="kind">function</field>
             <field name="action">
@@ -51,17 +50,31 @@
             </field>
         </record>
         <record id="act_fuzerenqidong" model="workflow.activity">
-            <field name="wkf_id" ref="wkf_up_project_start"/>
+            <field name="wkf_id" ref="wkf_up_project_active"/>
             <field name="name">项目启动</field>
             <field name="kind">function</field>
-            <field name="flow_stop">True</field>
-            <field name="signal_send">subflow.project_start</field>
+            <field name="flow_stop" eval="True"/>
             <field name="action">
                 init_form('fuzerenqidong','project.review.fuzerenqidong.form','fuzerenqidong_form_id')
             </field>
         </record>
+        <record id="act_active_stop" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_up_project_active"/>
+            <field name="name">Project Active End Point</field>
+            <field name="kind">dummy</field>
+            <field name="flow_stop">True</field>
+            <field name="signal_send">subflow.project_start</field>
+        </record>
 
         <!-- Transitions -->
+        <record id="t0" model="workflow.transition">
+            <field name="act_from" ref="act_active_start"/>
+            <field name="act_to" ref="act_open"/>
+        </record>
+        <record id="t_end" model="workflow.transition">
+            <field name="act_from" ref="act_fuzerenqidong"/>
+            <field name="act_to" ref="act_active_stop"/>
+        </record>
         <record id="t1" model="workflow.transition">
             <field name="act_from" ref="act_open"/>
             <field name="act_to" ref="act_suozhangshenpi"/>
