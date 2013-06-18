@@ -28,7 +28,7 @@
         </record>
 
 
-        <record id="project_assignment_search" model="ir.ui.view">
+        <!--record id="project_assignment_search" model="ir.ui.view">
             <field name="name">project.assignment.search</field>
             <field name="model">project.assignment</field>
             <field name="arch" type="xml">
@@ -70,7 +70,7 @@
                     <field name="project_id"/>
                 </tree>
             </field>
-        </record>
+        </record-->
 
 
         <record id="edit_project_inherit" model="ir.ui.view">

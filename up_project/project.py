@@ -71,7 +71,7 @@ class updis_project(osv.osv):
         "chenjiefuzeren_id": fields.many2one("res.users", u"承接项目负责人", ),
         "zhuguanzongshi_id": fields.many2one("res.users", u"主管总师", ),
 
-        'assignment_ids': fields.one2many('project.assignment', 'project_id', 'Project Assignment', readonly=True),
+        # 'assignment_ids': fields.one2many('project.assignment', 'project_id', 'Project Assignment', readonly=True),
         "state": fields.selection([
                                       # ("draft",u"New project"),
                                       ("open", u"提出申请"),
@@ -83,7 +83,8 @@ class updis_project(osv.osv):
                                   ], "State", help='When project is created, the state is \'open\''),
 
         'states': fields.selection([("project_start", u"Project Start"),
-                                    ("project_stop", u"Project End"), ])
+                                    ("project_stop", u"Project End"), ]),
+        'project_log': fields.html(u"Project Log Info", readonly=True),
     }
 
     def _get_default_country(self, cr, uid, context):
@@ -144,46 +145,46 @@ class updis_project(osv.osv):
         return ids[0]
 
 
-class project_profession(osv.Model):
-    """Profession"""
-    _name = "project.profession"
-    _description = "Project Profession"
-    _columns = {
-        'name': fields.char("Name", size=64),
-        'active': fields.boolean("Active"),
-    }
-    _defaults = {
-        'active': True
-    }
+# class project_profession(osv.Model):
+#     """Profession"""
+#     _name = "project.profession"
+#     _description = "Project Profession"
+#     _columns = {
+#         'name': fields.char("Name", size=64),
+#         'active': fields.boolean("Active"),
+#     }
+#     _defaults = {
+#         'active': True
+#     }
 
 
-class project_duty(osv.Model):
-    """Duty"""
-    _name = "project.duty"
-    _description = "Project Duty"
-    _columns = {
-        'name': fields.char("Name", size=64),
-        'active': fields.boolean("Active"),
-    }
-    _defaults = {
-        'active': True
-    }
+# class project_duty(osv.Model):
+#     """Duty"""
+#     _name = "project.duty"
+#     _description = "Project Duty"
+#     _columns = {
+#         'name': fields.char("Name", size=64),
+#         'active': fields.boolean("Active"),
+#     }
+#     _defaults = {
+#         'active': True
+#     }
 
 
-class project_assignment(osv.Model):
-    """docstring for project_assignment"""
-    _name = "project.assignment"
-    _description = "Project Assignment"
-
-    def _get_project(self, cr, uid, *args, **kwargs):
-        #import pdb;pdb.set_trace()
-        pass
-
-    _columns = {
-        'duty_id': fields.many2one('project.duty', 'Duty'),
-        'profession_id': fields.many2one('project.profession', 'Profession'),
-        'project_id': fields.many2one('project.project', 'Project'),
-    }
-    _defaults = {
-        'project_id': _get_project,
-    }
+# class project_assignment(osv.Model):
+#     """docstring for project_assignment"""
+#     _name = "project.assignment"
+#     _description = "Project Assignment"
+#
+#     def _get_project(self, cr, uid, *args, **kwargs):
+#         #import pdb;pdb.set_trace()
+#         pass
+#
+#     _columns = {
+#         'duty_id': fields.many2one('project.duty', 'Duty'),
+#         'profession_id': fields.many2one('project.profession', 'Profession'),
+#         'project_id': fields.many2one('project.project', 'Project'),
+#     }
+#     _defaults = {
+#         'project_id': _get_project,
+#     }
