@@ -24,6 +24,10 @@ class zongshishishenpi_form(osv.Model):
         project = self.pool.get('project.project')
         suozhangshenpi = self.browse(cr, uid, ids, context=None)
         if suozhangshenpi and suozhangshenpi[0].project_id:
+            project.write(cr, uid, suozhangshenpi[0].project_id.id,
+                          {'project_logs': [(0, 0, {'project_id': suozhangshenpi[0].project_id.id,
+                                                    'log_user': uid,
+                                                    'log_info': u'总师室审批通过,提交请求到所长'})]})
             project._workflow_signal(cr, uid, [suozhangshenpi[0].project_id.id], 'zongshishi_submit')
             return True
         else:
@@ -74,3 +78,11 @@ class updis_project(osv.Model):
                                                       None)
             self.write(cr, uid, ids, {'state': state, object_field: suozhangshenpi_id})
             return suozhangshenpi_id
+
+    def jingyinshi_reject(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids,
+                   {'project_logs': [(0, 0, {'project_id': ids,
+                                             'log_user': uid,
+                                             'log_info': u'总师室打回申请单'})]})
+        self._workflow_signal(cr, uid, ids, 'jingyinshi_reject')
+        return True

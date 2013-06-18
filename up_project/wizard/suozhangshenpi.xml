@@ -79,7 +79,7 @@
                             type="object"
                             attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangshenpi')]}"
                             groups="up_project.group_up_project_suozhang"/>
-                    <button name="draft_reject" string="打回申请单"
+                    <button name="draft_reject" string="打回申请单" type="object"
                             attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangshenpi')]}"
                             groups="up_project.group_up_project_suozhang" confirm="Are you sure you want do this?"/>
                 </xpath>

@@ -54,7 +54,7 @@
                             groups="up_project.group_up_project_zongshishi" string="总师室审批申请单" states="zhidingfuzeren"
                             type="object"/>
                     <button name="jingyinshi_reject" string="打回申请单" groups="up_project.group_up_project_zongshishi"
-                            states="zhidingfuzeren"/>
+                            states="zhidingfuzeren" type="object"/>
                 </xpath>
                 <xpath expr="//group[@name='project_num']" position="after">
                     <group  colspan="2" >

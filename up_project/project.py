@@ -1,4 +1,5 @@
 # -*- encoding:utf-8 -*-
+import datetime
 from osv import osv, fields
 
 
@@ -40,12 +41,29 @@ class project_upcategory(osv.osv):
     ]
 
 
+class project_log(osv.osv):
+    _log_access = True
+    _name = "project.log"
+    _order = "log_date desc"
+    _columns = {
+        'log_date': fields.datetime('Created on'),
+        'project_id': fields.many2one('project.project', "related Project"),
+        'log_user': fields.many2one('res.users', 'Log User'),
+        'log_info': fields.char(size=256, string="Log Info"),
+    }
+
+    _defaults = {
+        'log_date': lambda *a: datetime.datetime.now()
+    }
+
+
 class updis_project(osv.osv):
     _log_access = True
     _inherit = "project.project"
     _columns = {
         # 基础信息
         #  'analytic_account_id': fields.boolean("Over Ride"),
+        'project_logs': fields.one2many('project.log', 'project_id', string='Project Logs'),
         'create_date': fields.datetime('Created on', select=True),
         'create_uid': fields.many2one('res.users', 'Author', select=True),
         'write_date': fields.datetime('Modification date', select=True),
@@ -116,13 +134,6 @@ class updis_project(osv.osv):
             'target': 'new',
             'context': ctx
         }
-
-    def _test_accepted(self, cr, uid, ids, form_field, *args):
-        return all([(getattr(proj, form_field) and getattr(proj, form_field).state == 'accepted') for proj in
-                    self.browse(cr, uid, ids)])
-
-    def _get_form(self, cr, uid, ids, form_field, *args):
-        return [getattr(proj, form_field) for proj in self.browse(cr, uid, ids) if getattr(proj, form_field)]
 
     def on_change_country(self, cr, uid, ids, country_id, context=None):
         return {}

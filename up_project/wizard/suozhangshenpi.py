@@ -50,6 +50,11 @@ class suozhangshenpi_form(osv.osv):
         project = self.pool.get('project.project')
         suozhangshenpi = self.browse(cr, uid, ids, context=None)
         if suozhangshenpi and suozhangshenpi[0].project_id:
+            project.write(cr, uid, suozhangshenpi[0].project_id.id,
+                          {'project_logs': [(0, 0, {'project_id': suozhangshenpi[0].project_id.id,
+                                                    'log_user': uid,
+                                                    'log_info': u'提交所长审批请求到--> %s' % suozhangshenpi[
+                                                        0].reviewer_id.name})]})
             project._workflow_signal(cr, uid, [suozhangshenpi[0].project_id.id], 'draft_submit')
             return True
         else:
@@ -60,6 +65,10 @@ class suozhangshenpi_form(osv.osv):
         project = self.pool.get('project.project')
         suozhangshenpi = self.browse(cr, uid, ids, context=None)
         if suozhangshenpi and suozhangshenpi[0].project_id:
+            project.write(cr, uid, suozhangshenpi[0].project_id.id,
+                          {'project_logs': [(0, 0, {'project_id': suozhangshenpi[0].project_id.id,
+                                                    'log_user': uid,
+                                                    'log_info': u'所长审批通过,提交请求到经营室'})]})
             project._workflow_signal(cr, uid, [suozhangshenpi[0].project_id.id], 'suozhangshenpi_submit')
             return True
         else:
@@ -132,3 +141,11 @@ class updis_project(osv.osv):
 
     def action_suozhangshenpi(self, cr, uid, ids, context=None):
         return self._get_action(cr, uid, ids, 'project.review.suozhangshenpi.form', u'所长审批单')
+
+    def draft_reject(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids,
+                   {'project_logs': [(0, 0, {'project_id': ids,
+                                             'log_user': uid,
+                                             'log_info': u'打回申请单'})]})
+        self._workflow_signal(cr, uid, ids, 'draft_reject')
+        return True

@@ -127,6 +127,15 @@
                             <notebook>
                                 <page name="note" invisible="1"></page>
                                 <page name="note2" invisible="1"></page>
+                                <page name="project_log" string="Project Logs">
+                                    <field name="project_logs" nolabel="1" readonly="1">
+                                        <tree>
+                                            <field name="log_date"/>
+                                            <field name="log_user"/>
+                                            <field name="log_info"/>
+                                        </tree>
+                                    </field>
+                                </page>
                             </notebook>
                         </group>
                     </sheet>
