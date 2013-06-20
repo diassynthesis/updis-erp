@@ -8,16 +8,26 @@ class zongshishishenpi_form(osv.Model):
     _description = u"总师室审批"
     _inherit = ['project.review.abstract']
     _columns = {
-        "categories_id": fields.many2many("project.upcategory", "up_zongshishishenpi_category_rel",
-                                          "zongshishishenpi_id",
-                                          "category_id", u"项目类别"),
-        "toubiaoleibie": fields.selection([(u'商务标', u'商务标'), (u'技术标', u'技术标'), (u'综合标', u'综合标')], u"投标类别"),
+        'is_tender_project': fields.related('project_id', 'shifoutoubiao', type='boolean', string=u'is Tender Project'),
+        "categories_id": fields.many2one("project.upcategory", u"项目类别"),
+        "category_name": fields.char(size=128, string="Category Name"),
         "guanlijibie": fields.selection([(u'院级', u'院级'), (u'所级', u'所级')], u'项目管理级别'),
         "chenjiefuzeren_id": fields.many2one("res.users", u"承接项目负责人"),
+        "categories_else": fields.char(size=128, string='Else Category'),
         # "chenjiefuzeren_id": fields.related("project_id", "user_id", type="many2one", relation="res.users",
         #                                     string=u"承接项目负责人"),
         "zhuguanzongshi_id": fields.many2one("res.users", u"主管总师"),
     }
+
+    def onchange_category_id(self, cr, uid, ids, category_id, context=None):
+        ret = {'value': {}}
+        if category_id:
+            category = self.pool.get('project.upcategory').browse(cr, uid, category_id)
+            sms_vals = {
+                'category_name': category.name,
+            }
+            ret['value'].update(sms_vals)
+        return ret
 
     def zongshishi_review_submit(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'submitter_id': uid})
@@ -40,9 +50,11 @@ class updis_project(osv.Model):
         'zongshishishenpi_form_id': fields.many2one('project.review.zongshishishenpi.form', u'总师室审批单',
                                                     ondelete="cascade", ),
 
-        "categories_id": fields.related('zongshishishenpi_form_id', 'categories_id', type="many2many",
+        "categories_id": fields.related('zongshishishenpi_form_id', 'categories_id', type="many2one",
                                         relation='project.upcategory', string=u"项目类别"),
-        "toubiaoleibie": fields.related('zongshishishenpi_form_id', 'toubiaoleibie', type="char", string=u"投标类别"),
+        "categories_else": fields.related('zongshishishenpi_form_id', 'categories_else', type='char',
+                                          string='Else Category'),
+        "category_name": fields.related("categories_id", "name", type="char", string="Category Name"),
         "guanlijibie": fields.related('zongshishishenpi_form_id', 'guanlijibie', type="char", string=u"项目管理级别"),
         # "chenjiefuzeren_id": fields.related('zongshishishenpi_form_id', 'chenjiefuzeren_id', type="many2one",
         #                                     relation="hr.employee", string=u"承接项目负责人"),
@@ -51,6 +63,7 @@ class updis_project(osv.Model):
         "zongshishi_submitter_id": fields.related('zongshishishenpi_form_id', 'submitter_id', type="many2one",
                                                   relation="res.users",
                                                   string=u"Zongshishi Submitter"),
+
     }
 
     def action_zongshishishenpi(self, cr, uid, ids, context=None):

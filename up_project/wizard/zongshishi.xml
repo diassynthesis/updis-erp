@@ -9,16 +9,22 @@
                     <group col="2">
                         <group colspan="2">
                             <group>
-                                <field name="toubiaoleibie" required="1"/>
                                 <field name="guanlijibie" required="1"/>
                                 <field name="chenjiefuzeren_id" required="1" class="oe_no_button"
                                        options="{'no_open':True}"/>
                                 <field name="zhuguanzongshi_id" required="1" class="oe_no_button"
                                        options='{"no_open": True}'
                                        domain="[('groups_id','=',%(group_up_project_zongshishi)d)]"/>
+
                             </group>
                             <group>
-                                <field name="categories_id"/>
+                                <field name="categories_id" class="oe_no_button" options='{"no_open": True}'
+                                       attrs="{'invisible':[('is_tender_project','=',True)],'required':[('is_tender_project','=',False)]}"
+                                       on_change="onchange_category_id(categories_id)"/>
+                                <field name="categories_else"
+                                       attrs="{'invisible':[('category_name','!=',u'其它')],'required':[('category_name','=',u'其它')]}"/>
+                                <field name="is_tender_project" invisible="1"/>
+                                <field name="category_name" invisible="1"/>
                             </group>
                         </group>
 
@@ -68,13 +74,16 @@
                               attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren'])]}">
                             <group colspan="2">
                                 <group>
-                                    <field name="toubiaoleibie" readonly="1"/>
                                     <field name="guanlijibie" readonly="1"/>
                                     <field name="zhuguanzongshi_id" readonly="1"/>
                                     <field name="zongshishi_submitter_id" readonly="1"/>
                                 </group>
                                 <group>
-                                    <field name="categories_id" readonly="1"/>
+                                    <field name="categories_id" readonly="1"
+                                           attrs="{'invisible':[('shifoutoubiao','=',True)]}"/>
+                                    <field name="categories_else" attrs="{'invisible':[('category_name','!=',u'其它')]}"
+                                           readonly="1"/>
+                                    <field name="category_name" invisible="1"/>
                                 </group>
                             </group>
                         </page>
