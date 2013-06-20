@@ -119,14 +119,26 @@
                                        domain="[('is_company','=',True)]" attrs="{'readonly':[('state','!=','open')]}"/>
                                 <field name="customer_contact" attrs="{'readonly':[('state','!=','open')]}"/>
                                 <field name="guimo" attrs="{'readonly':[('state','!=','open')]}"/>
+                                <field name="project_type" class="oe_no_button"
+                                       attrs="{'readonly':[('state','!=','open')]}">
+                                    <form>
+                                        <field name="name"/>
+                                    </form>
+                                </field>
                                 <p colspan="2" attrs="{'invisible': [('analytic_account_id','=',False)]}">
                                     To invoice or setup invoicing and renewal options, go to the related contract:<field
                                         name="analytic_account_id" readonly="1" required="0" class="oe_inline"/>.
                                 </p>
                             </group>
                             <notebook>
-                                <page name="note" invisible="1"></page>
-                                <page name="note2" invisible="1"></page>
+                                <page string="Director Review" attrs="{'invisible':[('state','=','open')]}">
+                                    <div id="director_prove"></div>
+                                    <div id="operator"></div>
+                                    <div id="engineer"></div>
+                                    <div id="director_sign"></div>
+                                </page>
+
+
                                 <page name="project_log" string="Project Logs">
                                     <field name="project_logs" nolabel="1" readonly="1">
                                         <tree>

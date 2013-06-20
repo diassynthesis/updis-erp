@@ -3,6 +3,14 @@ import datetime
 from osv import osv, fields
 
 
+class project_type(osv.osv):
+    _name = "project.type"
+    _description = "Project Type"
+    _columns = {
+        'name': fields.char(size=128, string="Project Type Name"),
+    }
+
+
 class project_upcategory(osv.osv):
     _name = "project.upcategory"
     _description = "Project Category"
@@ -63,6 +71,7 @@ class updis_project(osv.osv):
     _columns = {
         # 基础信息
         #  'analytic_account_id': fields.boolean("Over Ride"),
+        "project_type": fields.many2one("project.type", string="Project Type", required=True),
         'project_logs': fields.one2many('project.log', 'project_id', string='Project Logs'),
         'create_date': fields.datetime('Created on', select=True),
         'create_uid': fields.many2one('res.users', 'Author', select=True),

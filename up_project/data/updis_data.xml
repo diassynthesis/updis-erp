@@ -44,5 +44,23 @@
 		<record id="cat11" model="project.upcategory">
 			<field name="name">其它</field>
 		</record>
+
+
+        <!--project.type-->
+        <record id="project_type_planning" model="project.type">
+            <field name="name">规划类</field>
+        </record>
+        <record id="project_type_tender" model="project.type">
+            <field name="name">投标类</field>
+        </record>
+        <record id="project_type_engineering" model="project.type">
+            <field name="name">工程类</field>
+        </record>
+        <record id="project_type_consulting" model="project.type">
+            <field name="name">咨询类</field>
+        </record>
+        <record id="project_type_research" model="project.type">
+            <field name="name">研究项目</field>
+        </record>
 	</data>
 </openerp>

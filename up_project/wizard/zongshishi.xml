@@ -57,26 +57,28 @@
                             states="zhidingfuzeren" type="object"/>
                 </xpath>
                 <xpath expr="//group[@name='project_num']" position="after">
-                    <group  colspan="2" >
+                    <group colspan="2">
                         <field name="user_id" readonly="1"
                                attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren'])]}"/>
                     </group>
                 </xpath>
-                <xpath expr="//page[@name='note2']" position="after">
-                    <page string="Zongshishi Info"
-                          attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren'])]}">
-                        <group colspan="2">
-                            <group>
-                                <field name="toubiaoleibie" readonly="1"/>
-                                <field name="guanlijibie" readonly="1"/>
-                                <field name="zhuguanzongshi_id" readonly="1"/>
-                                <field name="zongshishi_submitter_id" readonly="1"/>
+                <xpath expr="//div[@id='engineer']" position="after">
+                    <notebook>
+                        <page string="Zongshishi Info"
+                              attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren'])]}">
+                            <group colspan="2">
+                                <group>
+                                    <field name="toubiaoleibie" readonly="1"/>
+                                    <field name="guanlijibie" readonly="1"/>
+                                    <field name="zhuguanzongshi_id" readonly="1"/>
+                                    <field name="zongshishi_submitter_id" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="categories_id" readonly="1"/>
+                                </group>
                             </group>
-                            <group>
-                                <field name="categories_id" readonly="1"/>
-                            </group>
-                        </group>
-                    </page>
+                        </page>
+                    </notebook>
                 </xpath>
 
             </field>

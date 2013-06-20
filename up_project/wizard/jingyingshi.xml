@@ -45,25 +45,26 @@
                             groups="up_project.group_up_project_jingyingshi" confirm="Are you sure you want do this?"/>
                 </xpath>
                 <xpath expr="//group[@name='project_num']" position="replace">
-                    <group colspan="2"  name="project_num">
+                    <group colspan="2" name="project_num">
                         <field name="xiangmubianhao" readonly="1"
                                attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}"/>
                     </group>
                 </xpath>
-                <xpath expr="//page[@name='note']" position="after" priority="2">
-                    <page string="Jinyinshi Info"
-                          attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}" priority="80">
-                        <group colspan="2">
-                            <group string="经营室指定设计部门" col="4">
-                                <field name="pingshenfangshi" readonly="1"/>
-                                <field name="yinfacuoshi" readonly="1"/>
-                                <field name="renwuyaoqiu" readonly="1"/>
-                                <field name="chenjiebumen_id" readonly="1"/>
-                                <field name="jinyinshi_submitter_id" readonly="1"/>
+                <xpath expr="//div[@id='operator']" position="after" priority="2">
+                    <notebook attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}">
+                        <page string="Jinyinshi Info"
+                              priority="80">
+                            <group colspan="2">
+                                <group string="经营室指定设计部门" col="4">
+                                    <field name="pingshenfangshi" readonly="1"/>
+                                    <field name="yinfacuoshi" readonly="1"/>
+                                    <field name="renwuyaoqiu" readonly="1"/>
+                                    <field name="chenjiebumen_id" readonly="1"/>
+                                    <field name="jinyinshi_submitter_id" readonly="1"/>
+                                </group>
                             </group>
-                        </group>
-                    </page>
-
+                        </page>
+                    </notebook>
                 </xpath>
 
             </field>
