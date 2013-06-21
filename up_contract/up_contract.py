@@ -8,7 +8,8 @@ class updis_contract_invoice(osv.osv):
     _name = 'project.contract.invoice'
     _description = 'Project Contract Invoice'
     _columns = {
-        'create_date': fields.date('Invoice Create Date'),
+        'number': fields.char('Invoice No.', size=64),
+        'obtain_date': fields.date('Invoice Create Date'),
         'price': fields.float(string='Price', digits=(16, 4)),
         'comment': fields.text(string="Comment"),
         'handler': fields.many2one('hr.employee', string='Handler'),
@@ -29,6 +30,23 @@ class updis_contract_income(osv.osv):
         'invoice_ids': fields.many2many('project.contract.invoice', 'contract_invoice_income_rels', 'income_id',
                                         'invoice_id', string='Invoices'),
     }
+
+    # def create(self, cr, uid, vals, context=None):
+    #     if vals['invoice_ids'][0][2]:
+    #         self.pool.get('project.contract.invoice').write(cr, uid, vals['invoice_ids'][0][2],
+    #                                                         {'contract_id': vals['contract_id']}, context=context);
+    #     mid = super(updis_contract_income, self).create(cr, uid, vals, context)
+    #     return mid
+    #
+    # def write(self, cr, uid, ids, vals, context=None):
+    #     if 'invoice_ids' in vals.keys():
+    #         ids = vals['invoice_ids'][0][2]
+    #         if ids:
+    #             self_income = self.browse(cr, uid, ids)
+    #             self.pool.get('project.contract.invoice').write(cr, uid, ids,
+    #                                                             {'contract_id': self_income[0].contract_id.id},
+    #                                                             context=context)
+    #     super(updis_contract_income, self).write(cr, uid, ids, vals, context=context)
 
 
 class updis_contract_contract(osv.osv):
@@ -62,8 +80,9 @@ class updis_contract_contract(osv.osv):
         'project_scale': fields.related('project_id', 'guimo', type='char', string="Project Scale"),
         'project_level': fields.related('project_id', 'guanlijibie', type='char', string='Project Level'),
 
-        'income_ids': fields.one2many('project.contract.income', 'contract_id', string='Incomes'),
-        'invoice_ids': fields.one2many('project.contract.invoice', 'contract_id', string='Invoices'),
+        'income_ids': fields.one2many('project.contract.income', 'contract_id', string='Incomes', ondelete="cascade"),
+        'invoice_ids': fields.one2many('project.contract.invoice', 'contract_id', string='Invoices',
+                                       ondelete="cascade"),
 
 
     }
@@ -93,9 +112,38 @@ class updis_contract_contract(osv.osv):
             ret['value'].update(values)
         return ret
 
+    def _update_related_contract_id(self, cr, uid, vals, first, second, second_obj, contract_id, context):
+        if first in vals.keys():
+            for i in vals[first]:
+                if len(i) == 3:
+                    second_dict = i[2]
+                    if second_dict and second in second_dict.keys():
+                        for j in second_dict[second]:
+                            if len(j) == 3:
+                                ids = j[2]
+                                self.pool.get(second_obj).write(cr, uid, ids, {'contract_id': contract_id}, context)
+
+    def _update_contract_id(self, cr, uid, vals, contract_id, context):
+        self._update_related_contract_id(cr, uid, vals, 'income_ids', 'invoice_ids', 'project.contract.invoice',
+                                         contract_id, context)
+        self._update_related_contract_id(cr, uid, vals, 'invoice_ids', 'income_ids', 'project.contract.income',
+                                         contract_id, context)
+
+    def create(self, cr, uid, vals, context=None):
+        mid = super(updis_contract_contract, self).create(cr, uid, vals, context)
+        self._update_contract_id(cr, uid, vals, mid, context)
+        return mid
+
+    def write(self, cr, uid, ids, vals, context=None):
+        if len(ids) == 1:
+            self._update_contract_id(cr, uid, vals, ids[0], context)
+        result = super(updis_contract_contract, self).write(cr, uid, ids, vals, context=context)
+        return result
+
 
 class updis_project_project(osv.osv):
     _inherit = "project.project"
     _columns = {
-        'contract_ids': fields.one2many('project.contract.contract', 'project_id', string='Project Contracts'),
+        'contract_ids': fields.one2many('project.contract.contract', 'project_id',
+                                        string='Project Contracts'),
     }

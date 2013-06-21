@@ -6,7 +6,8 @@
             <field name="model">project.contract.invoice</field>
             <field name="arch" type="xml">
                 <tree string="Project Contract Invoice">
-                    <field name="create_date"/>
+                    <field name="number"/>
+                    <field name="obtain_date"/>
                     <field name="price"/>
                     <field name="handler"/>
                 </tree>
@@ -27,16 +28,31 @@
         <record id="project_contract_invoice_form" model="ir.ui.view">
             <field name="name">project.contract.invoice.form</field>
             <field name="model">project.contract.invoice</field>
+            <field name="priority">30</field>
             <field name="arch" type="xml">
                 <form string="Project Contract Invoice">
                     <group>
                         <group colspan="2" col="4">
-                            <field name="create_date"/>
+                            <field name="number"/>
+                            <field name="obtain_date"/>
                             <field name="handler"/>
                         </group>
                         <newline/>
+                        <field name="contract_id" invisible="1"/>
                         <field name="price"/>
-                        <field name="income_ids"/>
+                        <field name="income_ids" domain="[('contract_id','=',contract_id)]">
+                            <form string="Project Contract Income">
+                                <group>
+                                    <group colspan="2" col="4">
+                                        <field name="obtain_date"/>
+                                        <field name="handler"/>
+                                    </group>
+                                    <newline/>
+                                    <field name="price"/>
+                                    <field name="comment"/>
+                                </group>
+                            </form>
+                        </field>
                         <field name="comment"/>
                     </group>
                 </form>
@@ -45,6 +61,7 @@
         <record id="project_contract_income_form" model="ir.ui.view">
             <field name="name">project.contract.income.form</field>
             <field name="model">project.contract.income</field>
+            <field name="priority">30</field>
             <field name="arch" type="xml">
                 <form string="Project Contract Income">
                     <group>
@@ -53,8 +70,21 @@
                             <field name="handler"/>
                         </group>
                         <newline/>
+                        <field name="contract_id" invisible="1"/>
                         <field name="price"/>
-                        <field name="invoice_ids"/>
+                        <field name="invoice_ids" domain="[('contract_id','=',contract_id)]">
+                            <form string="Project Contract Invoice">
+                                <group>
+                                    <group colspan="2" col="4">
+                                        <field name="obtain_date"/>
+                                        <field name="handler"/>
+                                    </group>
+                                    <newline/>
+                                    <field name="price"/>
+                                    <field name="comment"/>
+                                </group>
+                            </form>
+                        </field>
                         <field name="comment"/>
                     </group>
                 </form>
