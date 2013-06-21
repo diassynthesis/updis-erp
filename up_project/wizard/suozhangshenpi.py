@@ -84,15 +84,7 @@ class updis_project(osv.osv):
                 result[obj.id] = False
         return result
 
-    def _is_project_creater(self, cr, uid, ids, field_name, args, context=None):
-        result = dict.fromkeys(ids, False)
-        for obj in self.browse(cr, uid, ids, context=context):
-            review_id = obj.create_uid.id
-            if review_id == uid:
-                result[obj.id] = True
-            else:
-                result[obj.id] = False
-        return result
+
 
     _columns = {
         'suozhangshenpi_form_id': fields.many2one('project.review.suozhangshenpi.form', u'所长审批单', ondelete="cascade", ),
@@ -129,8 +121,6 @@ class updis_project(osv.osv):
 
         'is_display_button': fields.function(_is_display_button, type="boolean",
                                              string="Is Display Button"),
-        'is_project_creater': fields.function(_is_project_creater, type="boolean",
-                                              string="Is Project Creater"),
         'director_reviewer_id': fields.related('suozhangshenpi_form_id', 'reviewer_id', type="many2one",
                                                relation='res.users', string=u'Review Director'),
     }

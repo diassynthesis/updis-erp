@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="project_contract_invoice_tree" model="ir.ui.view">
+            <field name="name">project.contract.invoice.tree</field>
+            <field name="model">project.contract.invoice</field>
+            <field name="arch" type="xml">
+                <tree string="Project Contract Invoice">
+                    <field name="create_date"/>
+                    <field name="price"/>
+                    <field name="handler"/>
+                </tree>
+            </field>
+        </record>
+        <record id="project_contract_income_tree" model="ir.ui.view">
+            <field name="name">project.contract.income.tree</field>
+            <field name="model">project.contract.income</field>
+            <field name="arch" type="xml">
+                <tree string="Project Contract Income">
+                    <field name="obtain_date"/>
+                    <field name="price"/>
+                    <field name="handler"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="project_contract_invoice_form" model="ir.ui.view">
+            <field name="name">project.contract.invoice.form</field>
+            <field name="model">project.contract.invoice</field>
+            <field name="arch" type="xml">
+                <form string="Project Contract Invoice">
+                    <group>
+                        <group colspan="2" col="4">
+                            <field name="create_date"/>
+                            <field name="handler"/>
+                        </group>
+                        <newline/>
+                        <field name="price"/>
+                        <field name="income_ids"/>
+                        <field name="comment"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="project_contract_income_form" model="ir.ui.view">
+            <field name="name">project.contract.income.form</field>
+            <field name="model">project.contract.income</field>
+            <field name="arch" type="xml">
+                <form string="Project Contract Income">
+                    <group>
+                        <group colspan="2" col="4">
+                            <field name="obtain_date"/>
+                            <field name="handler"/>
+                        </group>
+                        <newline/>
+                        <field name="price"/>
+                        <field name="invoice_ids"/>
+                        <field name="comment"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="project_contract_from" model="ir.ui.view">
+            <field name="name">project.contract.form</field>
+            <field name="model">project.contract.contract</field>
+            <field name="arch" type="xml">
+                <form string="Project Contract" version="7.0">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Please Input Contract Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="customer" domain="[('is_company','=',True)]"/>
+                            <field name="customer_contact"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="project_id"/>
+                                <field name="project_category" readonly="1"/>
+                                <field name="design_department" readonly="1"/>
+                                <field name="project_scale" readonly="1"/>
+                                <field name="project_level" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="number"/>
+                                <field name="city_level_number"/>
+                                <field name="price"/>
+                                <field name="filed_date"/>
+                                <field name="project_start_date"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="income_ids"/>
+                            <field name="invoice_ids"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="project_contract_tree" model="ir.ui.view">
+            <field name="name">project.contract.tree</field>
+            <field name="model">project.contract.contract</field>
+            <field name="arch" type="xml">
+                <tree string="Project Contract" version="7.0">
+                    <field name="number"/>
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="price"/>
+                    <field name="filed_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="edit_project_inherit_contract_inherit" model="ir.ui.view">
+            <field name="name">project.project.form.contract.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="up_project.edit_project_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='project_log']" position="after">
+                    <page string="Project Contract">
+                        <field name="contract_ids"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_project_contract_management" model="ir.actions.act_window">
+            <field name="name">Projects Contract</field>
+            <field name="res_model">project.contract.contract</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+        <menuitem name="Contract" id="up_contract.project_contract" parent="base.menu_main_pm" sequence="50"
+                  groups="up_project.group_up_project_admin"/>
+        <menuitem name="Contract Management" id="up_contract.project_contract_management"
+                  parent="up_contract.project_contract"
+                  action="action_project_contract_management"/>
+    </data>
+</openerp>

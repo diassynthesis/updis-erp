@@ -11,7 +11,7 @@ UPDIS Project Contract Module.""",
     'depends': ['up_project'],
     'init_xml': [],
     'update_xml': [
-
+        'contract_view.xml',
     ],
     'demo_xml': [],
     'test': [],

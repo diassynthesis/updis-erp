@@ -125,7 +125,6 @@
                             </group>
                             <group invisible="1">
                                 <field name="is_display_button"/>
-                                <field name="is_project_creater"/>
                             </group>
                         </group>
                     </group>

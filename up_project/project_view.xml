@@ -88,7 +88,7 @@
                             <label for="name" class="oe_edit_only" string="Project Name"/>
                             <h1>
                                 <field name="name" string="Project Name"
-                                       attrs="{'readonly':['|',('is_project_creater','!=',True),('state','!=','open')]}"/>
+                                       attrs="{'readonly':[('state','!=','open')]}"/>
                             </h1>
                         </div>
                         <div class="oe_right oe_button_box" name="buttons" groups="base.group_user">
@@ -100,41 +100,37 @@
                             <group col="4" colspan="4" name="project_num">
                             </group>
                             <group col="4" colspan="4">
+                                <field name="is_project_creater" invisible="1"/>
                                 <label string="Project Location" for="country_id"/>
                                 <div class="address_format">
-
                                     <field name="country_id" class="oe_no_button" widget="selection"
                                            on_change="on_change_country(country_id)" style="width: 15%%"
                                            options="{'no_open':True}" nolabel="1" placeholder="Country"
-                                           attrs="{'readonly':['|',('is_project_creater','!=',True),('state','!=','open')]}"/>
+                                           attrs="{'readonly':[('state','!=','open')]}"/>
                                     <field name="state_id" widget="selection" options="{'no_open':True}"
                                            placeholder="State"
                                            nolabel="1"
-                                           attrs="{'readonly':['|',('is_project_creater','!=',True),('state','!=','open')]}"
+                                           attrs="{'readonly':[('state','!=','open')]}"
                                            style="width: 30%%"/>
                                     <field name="city" nolabel="1" placeholder="City"
-                                           attrs="{'readonly':['|',('is_project_creater','!=',True),('state','!=','open')]}"
+                                           attrs="{'readonly':[('state','!=','open')]}"
                                            style="width: 50%%"/>
                                 </div>
                             </group>
                             <group name="basic_info" string="Basic Info" colspan="2" col="4">
                                 <field name="partner_id" on_change="onchange_partner_id(partner_id)"
                                        domain="[('is_company','=',True)]"
-                                       attrs="{'readonly':['|',('is_project_creater','!=',True),('state','!=','open')]}"/>
+                                       attrs="{'readonly':[('state','!=','open')]}"/>
                                 <field name="customer_contact"
-                                       attrs="{'readonly':['|',('is_project_creater','!=',True),('state','!=','open')]}"/>
+                                       attrs="{'readonly':[('state','!=','open')]}"/>
                                 <field name="guimo"
-                                       attrs="{'readonly':['|',('is_project_creater','!=',True),('state','!=','open')]}"/>
+                                       attrs="{'readonly':[('state','!=','open')]}"/>
                                 <field name="project_type" class="oe_no_button"
-                                       attrs="{'readonly':['|',('is_project_creater','!=',True),('state','!=','open')]}">
+                                       attrs="{'readonly':[('state','!=','open')]}">
                                     <form>
                                         <field name="name"/>
                                     </form>
                                 </field>
-                                <p colspan="2" attrs="{'invisible': [('analytic_account_id','=',False)]}">
-                                    To invoice or setup invoicing and renewal options, go to the related contract:<field
-                                        name="analytic_account_id" readonly="1" required="0" class="oe_inline"/>.
-                                </p>
                             </group>
                             <notebook>
                                 <page string="Director Review" attrs="{'invisible':[('state','=','open')]}">
