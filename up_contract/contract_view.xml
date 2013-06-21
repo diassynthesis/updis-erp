@@ -74,24 +74,25 @@
                             </h1>
                         </div>
                         <group>
-                            <field name="customer" domain="[('is_company','=',True)]"/>
-                            <field name="customer_contact"/>
-                        </group>
-                        <group>
                             <group>
-                                <field name="project_id"/>
+                                <field name="project_id" on_change="on_change_project(project_id)"/>
                                 <field name="project_category" readonly="1"/>
                                 <field name="design_department" readonly="1"/>
                                 <field name="project_scale" readonly="1"/>
                                 <field name="project_level" readonly="1"/>
+                                <field name="project_start_date"/>
                             </group>
                             <group>
                                 <field name="number"/>
                                 <field name="city_level_number"/>
                                 <field name="price"/>
                                 <field name="filed_date"/>
-                                <field name="project_start_date"/>
+
                             </group>
+                        </group>
+                        <group>
+                            <field name="customer" domain="[('is_company','=',True)]"/>
+                            <field name="customer_contact"/>
                         </group>
                         <group>
                             <field name="income_ids"/>
@@ -123,7 +124,40 @@
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='project_log']" position="after">
                     <page string="Project Contract">
-                        <field name="contract_ids"/>
+                        <field name="contract_ids">
+                            <tree>
+                                <field name="number"/>
+                                <field name="name"/>
+                                <field name="price"/>
+                                <field name="filed_date"/>
+                            </tree>
+                            <form>
+                                <sheet>
+                                    <div class="oe_title">
+                                        <h1>
+                                            <field name="name" placeholder="Please Input Contract Name"/>
+                                        </h1>
+                                    </div>
+                                    <group>
+                                        <field name="customer" domain="[('is_company','=',True)]"/>
+                                        <field name="customer_contact"/>
+                                    </group>
+                                    <group>
+                                        <group>
+                                            <field name="number"/>
+                                            <field name="city_level_number"/>
+                                            <field name="price"/>
+                                            <field name="filed_date"/>
+                                            <field name="project_start_date"/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <field name="income_ids"/>
+                                        <field name="invoice_ids"/>
+                                    </group>
+                                </sheet>
+                            </form>
+                        </field>
                     </page>
                 </xpath>
             </field>

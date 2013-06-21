@@ -26,7 +26,7 @@
                     <footer>
                         <button name="save" class="oe_highlight" string="Save"/>
                         <button name="jingyinshi_review_submit" string="提交总师室审批" class="oe_highlight"
-                                type="object" confirm="Are you sure you want do this?"/>
+                                type="object" confirm="确定提交到总师室审批?"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
@@ -42,7 +42,7 @@
                     <button name="action_jingyingshishenpi" class="oe_highlight" string="经营室审批申请单" states="zhidingbumen"
                             type="object" groups="up_project.group_up_project_jingyingshi"/>
                     <button name="suozhangshenpi_reject" string="打回申请单" states="zhidingbumen" type="object"
-                            groups="up_project.group_up_project_jingyingshi" confirm="Are you sure you want do this?"/>
+                            groups="up_project.group_up_project_jingyingshi" confirm="确定打回所长申请?"/>
                 </xpath>
                 <xpath expr="//group[@name='project_num']" position="replace">
                     <group colspan="2" name="project_num">

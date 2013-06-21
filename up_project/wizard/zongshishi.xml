@@ -43,7 +43,7 @@
                     <footer>
                         <button name="save" class="oe_highlight" string="Save"/>
                         <button name="zongshishi_review_submit" string="提交所长" type="object"
-                                class="oe_highlight"/>
+                                class="oe_highlight" confirm="确定提交审批到所长?"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
@@ -60,7 +60,7 @@
                             groups="up_project.group_up_project_zongshishi" string="总师室审批申请单" states="zhidingfuzeren"
                             type="object"/>
                     <button name="jingyinshi_reject" string="打回申请单" groups="up_project.group_up_project_zongshishi"
-                            states="zhidingfuzeren" type="object"/>
+                            states="zhidingfuzeren" type="object" confirm="确定打回经营室申请?"/>
                 </xpath>
                 <xpath expr="//group[@name='project_num']" position="after">
                     <group colspan="2">

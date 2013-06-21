@@ -120,7 +120,7 @@
                             <group name="basic_info" string="Basic Info" colspan="2" col="4">
                                 <field name="partner_id" on_change="onchange_partner_id(partner_id)"
                                        domain="[('is_company','=',True)]"
-                                       attrs="{'readonly':[('state','!=','open')]}"/>
+                                       attrs="{'readonly':[('state','!=','open')]}" required="1"/>
                                 <field name="customer_contact"
                                        attrs="{'readonly':[('state','!=','open')]}"/>
                                 <field name="guimo"

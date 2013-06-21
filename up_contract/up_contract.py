@@ -68,6 +68,31 @@ class updis_contract_contract(osv.osv):
 
     }
 
+    def on_change_project(self, cr, uid, ids, project_id, context=None):
+        ret = {'value': {}}
+        if project_id:
+            project = self.pool.get('project.project').browse(cr, uid, project_id)
+            values = {
+                'number': project.xiangmubianhao,
+                'design_department': project.chenjiebumen_id.id,
+                'project_scale': project.guimo,
+                'project_level': project.guanlijibie,
+                'customer': project.partner_id and [project.partner_id.id] or [],
+                'customer_contact': project.customer_contact and [project.customer_contact.id] or [],
+            }
+            ret['value'].update(values)
+        else:
+            values = {
+                'number': None,
+                'design_department': None,
+                'project_scale': "",
+                'project_level': "",
+                'customer': [],
+                'customer_contact': [],
+            }
+            ret['value'].update(values)
+        return ret
+
 
 class updis_project_project(osv.osv):
     _inherit = "project.project"
