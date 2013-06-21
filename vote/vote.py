@@ -53,11 +53,11 @@ class VoteCategory(osv.osv):
     }
 
 
-_defaults = {
-    'allow_vote_time': 1,
-    'is_display': False,
-    'have_image': False,
-}
+    _defaults = {
+        'allow_vote_time': 1,
+        'is_display': False,
+        'have_image': False,
+    }
 
 
 class VoteRecord(osv.osv):
