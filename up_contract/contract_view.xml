@@ -7,9 +7,16 @@
             <field name="arch" type="xml">
                 <tree string="Project Contract Invoice">
                     <field name="number"/>
-                    <field name="obtain_date"/>
                     <field name="price"/>
                     <field name="handler"/>
+                    <field name="contract_id" invisible="1"/>
+                    <field name="income_ids" domain="[('contract_id','=',contract_id)]">
+                        <tree>
+                            <field name="obtain_date"/>
+                            <field name="price"/>
+                        </tree>
+                    </field>
+                    <field name="obtain_date"/>
                 </tree>
             </field>
         </record>
@@ -18,9 +25,17 @@
             <field name="model">project.contract.income</field>
             <field name="arch" type="xml">
                 <tree string="Project Contract Income">
-                    <field name="obtain_date"/>
                     <field name="price"/>
                     <field name="handler"/>
+                    <field name="contract_id" invisible="1"/>
+                    <field name="invoice_ids" domain="[('contract_id','=',contract_id)]">
+                        <tree>
+                            <field name="number"/>
+                            <field name="obtain_date"/>
+                            <field name="price"/>
+                        </tree>
+                    </field>
+                    <field name="obtain_date"/>
                 </tree>
             </field>
         </record>
@@ -40,19 +55,7 @@
                         <newline/>
                         <field name="contract_id" invisible="1"/>
                         <field name="price"/>
-                        <field name="income_ids" domain="[('contract_id','=',contract_id)]">
-                            <form string="Project Contract Income">
-                                <group>
-                                    <group colspan="2" col="4">
-                                        <field name="obtain_date"/>
-                                        <field name="handler"/>
-                                    </group>
-                                    <newline/>
-                                    <field name="price"/>
-                                    <field name="comment"/>
-                                </group>
-                            </form>
-                        </field>
+                        <field name="income_ids" domain="[('contract_id','=',contract_id)]"/>
                         <field name="comment"/>
                     </group>
                 </form>
@@ -72,19 +75,7 @@
                         <newline/>
                         <field name="contract_id" invisible="1"/>
                         <field name="price"/>
-                        <field name="invoice_ids" domain="[('contract_id','=',contract_id)]">
-                            <form string="Project Contract Invoice">
-                                <group>
-                                    <group colspan="2" col="4">
-                                        <field name="obtain_date"/>
-                                        <field name="handler"/>
-                                    </group>
-                                    <newline/>
-                                    <field name="price"/>
-                                    <field name="comment"/>
-                                </group>
-                            </form>
-                        </field>
+                        <field name="invoice_ids" domain="[('contract_id','=',contract_id)]"/>
                         <field name="comment"/>
                     </group>
                 </form>

@@ -1,3 +1,4 @@
+import datetime
 from openerp.osv import fields
 from openerp.osv import osv
 
@@ -7,9 +8,10 @@ __author__ = 'cysnake4713'
 class updis_contract_invoice(osv.osv):
     _name = 'project.contract.invoice'
     _description = 'Project Contract Invoice'
+    _rec_name = 'number'
     _columns = {
-        'number': fields.char('Invoice No.', size=64),
-        'obtain_date': fields.date('Invoice Create Date'),
+        'number': fields.char('Invoice No.', size=64, required=True),
+        'obtain_date': fields.date('Invoice Create Date', required=True),
         'price': fields.float(string='Price', digits=(16, 4)),
         'comment': fields.text(string="Comment"),
         'handler': fields.many2one('hr.employee', string='Handler'),
@@ -18,11 +20,16 @@ class updis_contract_invoice(osv.osv):
                                        'income_id', string='Incomes'),
     }
 
+    _defaults = {
+        'obtain_date': str(datetime.date.today()),
+    }
+
 
 class updis_contract_income(osv.osv):
     _name = 'project.contract.income'
+    _rec_name = 'price'
     _columns = {
-        'obtain_date': fields.date('Obtain Date'),
+        'obtain_date': fields.date('Obtain Date', required=True),
         'price': fields.float(string='Obtain Price', digits=(16, 4)),
         'comment': fields.text(string="Comment"),
         'handler': fields.many2one('hr.employee', string='Handler'),
@@ -31,22 +38,9 @@ class updis_contract_income(osv.osv):
                                         'invoice_id', string='Invoices'),
     }
 
-    # def create(self, cr, uid, vals, context=None):
-    #     if vals['invoice_ids'][0][2]:
-    #         self.pool.get('project.contract.invoice').write(cr, uid, vals['invoice_ids'][0][2],
-    #                                                         {'contract_id': vals['contract_id']}, context=context);
-    #     mid = super(updis_contract_income, self).create(cr, uid, vals, context)
-    #     return mid
-    #
-    # def write(self, cr, uid, ids, vals, context=None):
-    #     if 'invoice_ids' in vals.keys():
-    #         ids = vals['invoice_ids'][0][2]
-    #         if ids:
-    #             self_income = self.browse(cr, uid, ids)
-    #             self.pool.get('project.contract.invoice').write(cr, uid, ids,
-    #                                                             {'contract_id': self_income[0].contract_id.id},
-    #                                                             context=context)
-    #     super(updis_contract_income, self).write(cr, uid, ids, vals, context=context)
+    _defaults = {
+        'obtain_date': str(datetime.date.today()),
+    }
 
 
 class updis_contract_contract(osv.osv):
