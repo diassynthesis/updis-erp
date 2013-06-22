@@ -52,10 +52,14 @@ class updis_contract_income(osv.osv):
 class updis_contract_contract(osv.osv):
     _name = 'project.contract.contract'
 
-    def _get_project_category(self, cr, uid, ids, field_name, args, context=None):
+    def _get_project_category(self, cr, uid, ids, field_name=None, args=None, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            result[obj.id] = ""
+            if obj.project_id:
+                if obj.project_id.shifoutoubiao:
+                    result[obj.id] = obj.project_id.toubiaoleibie
+                else:
+                    result[obj.id] = obj.project_id.categories_id.name
         return result
 
     _columns = {
@@ -87,10 +91,20 @@ class updis_contract_contract(osv.osv):
 
     }
 
+    def _get_project_category_on_change(self, cr, uid, ids, project_id, context=None):
+        project = self.pool.get('project.project').browse(cr, uid, project_id, context)
+        if project:
+            if project.shifoutoubiao:
+                return project.toubiaoleibie
+            else:
+                return project.categories_id.name
+        else:
+            return ""
+
     def on_change_project(self, cr, uid, ids, project_id, context=None):
         ret = {'value': {}}
         if project_id:
-            project = self.pool.get('project.project').browse(cr, uid, project_id)
+            project = self.pool.get('project.project').browse(cr, uid, project_id, context)
             values = {
                 'number': project.xiangmubianhao,
                 'design_department': project.chenjiebumen_id.id,
@@ -98,6 +112,7 @@ class updis_contract_contract(osv.osv):
                 'project_level': project.guanlijibie,
                 'customer': project.partner_id and [project.partner_id.id] or [],
                 'customer_contact': project.customer_contact and [project.customer_contact.id] or [],
+                'project_category': self._get_project_category_on_change(cr, uid, ids, project_id, context)
             }
             ret['value'].update(values)
         else:
@@ -108,6 +123,7 @@ class updis_contract_contract(osv.osv):
                 'project_level': "",
                 'customer': [],
                 'customer_contact': [],
+                'project_category': "",
             }
             ret['value'].update(values)
         return ret
