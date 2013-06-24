@@ -7,7 +7,7 @@
             <field name="interval_number">2</field>
             <field name="interval_type">minutes</field>
             <field name="numbercall">-1</field>
-            <field name="doall">False</field>
+            <field name="doall" eval="False"/>
             <field name="model">sms.sms</field>
             <field name="function">process_sms_queue</field>
             <field name="args">()</field>
@@ -19,14 +19,16 @@
             <field name="model">sms.sms</field>
             <field name="arch" type="xml">
                 <form string="Sms Detail">
-                    <field name="from"/>
-                    <field name="to"/>
-                    <field name="sent_date"/>
-                    <field name="model"/>
-                    <field name="res_id"/>
-                    <field name="sms_server_id"/>
-                    <field name="state"/>
-                    <field name="content"/>
+                    <group col="2">
+                        <field name="state"/>
+                        <field name="sent_date"/>
+                        <field name="from"/>
+                        <field name="model"/>
+                        <field name="res_id"/>
+                        <field name="sms_server_id"/>
+                        <field name="to"/>
+                        <field name="content" colspan="2"/>
+                    </group>
                 </form>
             </field>
         </record>
@@ -36,12 +38,9 @@
             <field name="model">sms.sms</field>
             <field name="arch" type="xml">
                 <tree string="sms List">
-                    <field name="from"/>
-                    <field name="to"/>
-                    <field name="sent_date"/>
-                    <field name="res_id"/>
-                    <field name="sms_server_id"/>
                     <field name="state"/>
+                    <field name="content"/>
+                    <field name="sent_date"/>
                 </tree>
             </field>
         </record>

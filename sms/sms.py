@@ -36,7 +36,7 @@ class sms(osv.Model):
             try:
                 params['send_no'] = sms.to
                 params['msg'] = sms.content.encode('gbk')
-                resp = urllib2.urlopen(self._sms_gateway, urlencode(params), timeout=60)
+                resp = urllib2.urlopen(self._sms_gateway, urlencode(params), timeout=45)
 
                 if resp.code == 200:
                     sms_server_id = resp.read()
@@ -64,7 +64,7 @@ class sms(osv.Model):
                 self.write(cr, uid, [sms.id], {
                     'state': 'error',
                     'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
-                    'sms_server_id': e.reason,
+                    # 'sms_server_id': e.reason,
                 })
 
 
