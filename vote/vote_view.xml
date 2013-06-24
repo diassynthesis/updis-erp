@@ -18,6 +18,7 @@
                         <field name="end_time"/>
                         <field name="allow_vote_time"/>
                         <field name="is_display"/>
+                        <field name="show_result"/>
                         <newline/>
                         <field name="image_fixed" widget='image' colspan='4'/>
                         <field name="have_image"/>

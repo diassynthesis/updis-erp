@@ -51,6 +51,7 @@ class VoteCategory(osv.osv):
         'vote_logs': fields.one2many('updis.vote.log', 'vote_category', "Vote History"),
         'comment': fields.text(string='Vote Comment'),
         'vote_record_ids': fields.one2many('updis.vote.record', 'vote_category', string="Related Records"),
+        'show_result':fields.boolean(string='Showing Result in CMS?'),
     }
 
     _defaults = {
