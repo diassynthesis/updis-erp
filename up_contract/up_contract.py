@@ -21,7 +21,7 @@ class updis_contract_invoice(osv.osv):
     }
 
     _defaults = {
-        'obtain_date': str(datetime.date.today()),
+        'obtain_date': lambda *a: str(datetime.date.today()),
     }
 
 
@@ -39,7 +39,7 @@ class updis_contract_income(osv.osv):
     }
 
     _defaults = {
-        'obtain_date': str(datetime.date.today()),
+        'obtain_date': lambda *a: str(datetime.date.today()),
     }
 
 
