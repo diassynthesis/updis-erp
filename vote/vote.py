@@ -64,6 +64,7 @@ class VoteCategory(osv.osv):
 class VoteRecord(osv.osv):
     _name = "updis.vote.record"
     _description = 'UPDIS Vote Record'
+    _inherit = ['mail.thread']
 
     def _image_resize_image_fixed(self, cr, uid, ids, name, args, context=None):
         result = dict.fromkeys(ids, False)
@@ -120,6 +121,13 @@ class VoteRecord(osv.osv):
     _defaults = {
         'have_image': False,
     }
+
+    def create(self, cr, uid, vals, context=None):
+        if context is None:
+            context = {'mail_create_nolog': True}
+        else:
+            context.update({'mail_create_nolog': True})
+        return super(VoteRecord, self).create(cr, uid, vals, context)
 
 
 class VoteLog(osv.osv):
