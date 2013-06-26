@@ -1,3 +1,9 @@
 .openerp .separate {
     border: 1px solid gainsboro;
 }
+
+.openerp .oe_statusbar_header {
+    display: inline-block;
+    position: relative;
+    margin-left: 800px;
+}
