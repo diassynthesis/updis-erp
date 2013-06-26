@@ -12,8 +12,9 @@
                                 <field name="guanlijibie" required="1"/>
                                 <field name="chenjiefuzeren_id" required="1" class="oe_no_button"
                                        options="{'no_open':True}"/>
-                                <field name="zhuguanzongshi_id" required="1" class="oe_no_button"
+                                <field name="zhuguanzongshi_id" class="oe_no_button"
                                        options='{"no_open": True}'
+                                       attrs="{'invisible':[('guanlijibie','!=',u'院级')],'required':[('guanlijibie','=',u'院级')]}"
                                        domain="[('groups_id','=',%(group_up_project_zongshishi)d)]"/>
 
                             </group>
