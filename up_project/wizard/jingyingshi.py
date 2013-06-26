@@ -2,7 +2,7 @@
 from osv import osv, fields
 
 
-class jingyingshishenpi_form(osv.Model):
+class jingyingshishenpi_form(osv.osv):
     """经营室审批单"""
     _name = "project.review.jingyingshishenpi.form"
     _description = u"经营室审批"
@@ -27,12 +27,11 @@ class jingyingshishenpi_form(osv.Model):
             project.write(cr, uid, current_record[0].project_id.id,
                           {'project_logs': [(0, 0, {'project_id': current_record[0].project_id.id,
                                                     'log_user': uid,
-                                                    'log_info': u'经营室审批通过,提交申请到总师室' })]})
+                                                    'log_info': u'经营室审批通过,提交申请到总师室'})]})
             project._workflow_signal(cr, uid, [current_record[0].project_id.id], 'jingyinshi_submit')
             return True
         else:
             return False
-
 
 
 class updis_project(osv.Model):

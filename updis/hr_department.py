@@ -1,4 +1,3 @@
-from openerp.tools import image_resize_image, image_resize_image_big, image_resize_image_small
 from openerp import tools
 
 from osv import fields, osv
@@ -16,7 +15,6 @@ class updis_department(osv.osv):
             return_dict['image_medium'] = tools.image_resize_image_medium(obj.image, size=(275, 145))
             result[obj.id] = return_dict
 
-
         return result
 
     def _get_image(self, cr, uid, ids, name, args, context=None):
@@ -26,7 +24,8 @@ class updis_department(osv.osv):
         return result
 
     def _set_image(self, cr, uid, id, name, value, args, context=None):
-        return self.write(cr, uid, [id], {'image': tools.image_resize_image_big(value), 'have_image': True}, context=context)
+        return self.write(cr, uid, [id], {'image': tools.image_resize_image_big(value), 'have_image': True},
+                          context=context)
 
     _columns = {
         "deleted": fields.boolean("Removed"),
@@ -55,15 +54,23 @@ class updis_department(osv.osv):
                                        help="Small-sized photo of the employee. It is automatically " \
                                             "resized as a 64x64px image, with aspect ratio preserved. " \
                                             "Use this field anywhere a small image is required."),
+        'project_sequence': fields.integer(string="Project Sequence"),
     }
+
     _defaults = {
         "deleted": 0,
         'sequence': 10,
         'display_in_front': True,
         'is_in_use': True,
         'have_image': False,
+        'project_sequence': 1,
     }
     _order = 'sequence,id'
+
+    def reset_project_sequence(self, cr, uid, context=None):
+        all_hr_department = self._search(cr, uid, [], context=context)
+        self.write(cr, uid, all_hr_department, {'project_sequence': 1}),
+        return True
 
 
 updis_department()
