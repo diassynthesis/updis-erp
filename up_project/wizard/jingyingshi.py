@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 from osv import osv, fields
 
 
@@ -8,7 +9,7 @@ class jingyingshishenpi_form(osv.osv):
     _description = u"经营室审批"
     _inherit = ['project.review.abstract']
     _columns = {
-        "xiangmubianhao": fields.char(u"项目编号", select=True, size=128, readonly=True),
+        "xiangmubianhao": fields.char(u"项目编号", select=True, size=128, ),
         "pingshenfangshi": fields.selection([(u'会议', u'会议'), (u'会签', u'会签'), (u'审批', u'审批')], u"评审方式"),
         "yinfacuoshi": fields.selection([(u'可以接受', u'可以接受'), (u'不接受', u'不接受'), (u'加班', u'加班'),
                                          (u'院内调配', u'院内调配'), (u'外协', u'外协'), (u'其它', u'其它')], u"引发措施记录"),
@@ -19,10 +20,22 @@ class jingyingshishenpi_form(osv.osv):
     _defaults = {
     }
 
+    _sql_constraints = [('xiangmubianhao_uniq', 'unique(xiangmubianhao)', 'xiangmubianhao must be unique !')]
+
     def jingyinshi_review_submit(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'submitter_id': uid})
         project = self.pool.get('project.project')
-        current_record = self.browse(cr, uid, ids, context=None)
+        current_record = self.browse(cr, uid, ids, context=context)
+
+        # for record in current_record:
+        #     if record.chenjiebumen_id:
+        #         hr_department = self.pool.get('hr.department')
+        #         department_sequence = hr_department.browse(cr, 1, record.chenjiebumen_id.id,
+        #                                                    context=context).project_sequence
+        #         department_sequence += 1
+        #         hr_department.write(cr, 1, record.chenjiebumen_id.id,
+        #                             {'project_sequence': department_sequence})
+
         if current_record and current_record[0].project_id:
             project.write(cr, uid, current_record[0].project_id.id,
                           {'project_logs': [(0, 0, {'project_id': current_record[0].project_id.id,
@@ -32,6 +45,26 @@ class jingyingshishenpi_form(osv.osv):
             return True
         else:
             return False
+
+    def on_change_department(self, cr, uid, ids, department_id, context=None):
+        ret = {'value': {}}
+        if department_id:
+            department = self.pool.get('hr.department').browse(cr, uid, department_id)
+
+            department_code = department.code
+            department_sequence = department.project_sequence
+            year = datetime.date.today().year
+            jinyinshi = self.browse(cr, uid, ids, context=context)
+            if jinyinshi:
+                is_tender = jinyinshi[0].project_id.suozhangshenpi_form_id.shifoutoubiao
+            else:
+                is_tender = False
+            project_num = "%d%s%s%d" % (year, (is_tender and "T" or ""), department_code, department_sequence)
+            sms_vals = {
+                'xiangmubianhao': project_num,
+            }
+            ret['value'].update(sms_vals)
+        return ret
 
 
 class updis_project(osv.Model):
@@ -64,8 +97,10 @@ class updis_project(osv.Model):
         project_id = self.browse(cr, uid, ids, context=None)
         if project_id[0] and project_id[0].suozhangshenpi_form_id:
             department_id = project_id[0].suozhangshenpi_form_id.jianyishejibumen_id.id
+            is_tender = project_id[0].suozhangshenpi_form_id.shifoutoubiao
         else:
             department_id = None
+            is_tender = False
 
         if project_id[0] and project_id[0][object_field]:
             jinyishi = self.pool.get(obj)
@@ -74,8 +109,19 @@ class updis_project(osv.Model):
             self.write(cr, uid, ids, {'state': state})
             return project_id[0][object_field].id
         else:
-            project_num = self.pool.get('ir.sequence').next_by_code(cr, uid, 'project.project')
-
+            if department_id:
+                department_code = project_id[0].suozhangshenpi_form_id.jianyishejibumen_id.code
+                department_sequence = project_id[0].suozhangshenpi_form_id.jianyishejibumen_id.project_sequence
+                year = datetime.date.today().year
+                if department_code:
+                    project_num = "%d%s%s%d" % (year, (is_tender and "T" or ""), department_code, department_sequence)
+                    department_sequence += 1
+                    self.pool.get('hr.department').write(cr, 1, department_id,
+                                                         {'project_sequence': department_sequence})
+                else:
+                    project_num = None
+            else:
+                project_num = None
             suozhangshenpi = self.pool.get(obj)
             suozhangshenpi_id = suozhangshenpi.create(cr, 1,
                                                       {'project_id': ids[0], 'xiangmubianhao': project_num,

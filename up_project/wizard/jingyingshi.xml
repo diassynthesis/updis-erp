@@ -13,7 +13,7 @@
                         <field name="yinfacuoshi" required="1" class="oe_no_button"/>
                         <field name="renwuyaoqiu" required="1" class="oe_no_button"/>
                         <field name="chenjiebumen_id" required="1" class="oe_no_button"
-                               options='{"no_open": True}'/>
+                               options='{"no_open": True}' />
                     </group>
                     <!-- <group string="通知设置">
                         <field name="send_email" />
