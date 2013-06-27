@@ -118,7 +118,7 @@ class updis_project(osv.osv):
                                       ("zhidingbumen", u"经营室审批"),
                                       ("zhidingfuzeren", u"总师室审批"),
                                       ("suozhangqianzi", u"所长签字"),
-                                      ("fuzerenqidong", u"启动项目"),
+                                      ("end",'end'),
                                   ], "State", help='When project is created, the state is \'open\''),
 
         'states': fields.selection([("project_start", u"Project Start"),
