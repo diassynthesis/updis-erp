@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from osv import osv, fields
 
 
@@ -39,12 +40,18 @@ class review_abstract(osv.AbstractModel):
         'review_log': fields.html(u"Review Comment", readonly=True),
         'comment': fields.function(_get_comment, fnct_inv=_add_comment, type="char", size=256, string=u"附注"),
         'reviewer_id': fields.many2one("res.users", "Reviewer"),
-        'submitter_id': fields.many2one("res.users", "Submitter", required=True),
+        'submitter_id': fields.many2one("res.users", "Submitter",),
+        'submit_date': fields.datetime(string="Submit Datetime"),
     }
     _defaults = {
-        'submitter_id': lambda self, cr, uid, c=None: uid,
         #'project_id':_get_project,
     }
+
+    def sign_form(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'submitter_id': uid, 'submit_date': datetime.now()}, context=context)
+
+    def clean_submit(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'submitter_id': None, 'submit_date': None}, context=context)
 
     def copy_rejected(self, cr, uid, ids, default=None, context=None):
         ret = []

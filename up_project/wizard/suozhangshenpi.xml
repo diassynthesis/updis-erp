@@ -98,7 +98,8 @@
                                     <td>
                                         <field name="yaoqiuxingchengwenjian" readonly="1"/>
                                     </td>
-                                    <td rowspan="7">
+                                    <td rowspan="8">
+                                        <field name="director_apply_submitter_id"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -147,23 +148,37 @@
                                         <field name="shejifei" readonly="1"/>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td colspan="2">其它</td>
+                                    <td>
+                                        <div class="inline-item"
+                                             attrs="{'invisible':[('state','not in',['open','suozhangshenpi','zhidingbumen'])]}">
+                                            建议设计部门:
+                                            <field name="jianyishejibumen_id" readonly="1"/>
+                                        </div>
+                                        <div class="inline-item"
+                                             attrs="{'invisible':[('state','not in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren'])]}">
+                                            建议项目负责人:
+                                            <field name="jianyixiangmufuzeren_id" readonly="1"/>
+                                        </div>
+                                        <div class="inline-item">
+                                            是否外包:
+                                            <field name="waibao" readonly="1"/>
+                                        </div>
+                                        <div class="inline-item">
+                                            市政配套:
+                                            <field name="shizhenpeitao" readonly="1"/>
+                                        </div>
+                                        <div class="inline-item">
+                                            多方合同:
+                                            <field name="duofanghetong" readonly="1"/>
+                                        </div>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
-
-
-                    <group>
-                        <field name="jianyishejibumen_id" readonly="1"
-                               attrs="{'invisible':[('state','not in',['open','suozhangshenpi','zhidingbumen'])]}"/>
-                        <field name="jianyixiangmufuzeren_id" readonly="1"
-                               attrs="{'invisible':[('state','not in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren'])]}"/>
-                        <field name="shifoutoubiao" readonly="1"/>
-                        <field name="toubiaoleibie" attrs="{'invisible':[('shifoutoubiao','=',False)]}"
-                               readonly="1"/>
-                        <field name="waibao" readonly="1"/>
-                        <field name="shizhenpeitao" readonly="1"/>
-                        <field name="duofanghetong" readonly="1"/>
-                    </group>
 
                     <group invisible="1">
                         <field name="is_display_button"/>

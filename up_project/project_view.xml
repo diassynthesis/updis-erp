@@ -140,15 +140,8 @@
                         </group>
                         <div id="director_prove"></div>
                         <div id="operator"></div>
+                        <div id="engineer"></div>
                         <notebook>
-                            <page string="Director Review" attrs="{'invisible':[('state','=','open')]}">
-
-
-                                <div id="engineer"></div>
-                                <div id="director_sign"></div>
-                            </page>
-
-
                             <page name="project_log" string="Project Logs">
                                 <field name="project_logs" nolabel="1" readonly="1">
                                     <tree>

@@ -63,32 +63,61 @@
                     <button name="jingyinshi_reject" string="打回申请单" groups="up_project.group_up_project_zongshishi"
                             states="zhidingfuzeren" type="object" confirm="确定打回经营室申请?"/>
                 </xpath>
-                <xpath expr="//group[@name='project_num']" position="after">
-                    <group colspan="2">
-                        <field name="user_id" readonly="1"
-                               attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren'])]}"/>
+                <xpath expr="//div[@id='engineer']" position="replace">
+                    <div attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren'])]}">
+                        <table class="oe_form_group activetable">
+                            <tbody>
+                                <tr>
+                                    <td rowspan="3">
+                                        <div class="inline-item">类别:
+                                            <field name="categories_id" readonly="1"
+                                                   attrs="{'invisible':[('shifoutoubiao','=',True)]}"/>
+                                            <field name="categories_else"
+                                                   attrs="{'invisible':[('category_name','!=',u'其它')]}"
+                                                   readonly="1"/>
+                                        </div>
+                                        <div class="inline-item">投标类别:
+
+                                            <field name="toubiaoleibie"
+                                                   attrs="{'invisible':[('shifoutoubiao','=',False)]}"
+                                                   readonly="1"/>
+                                        </div>
+                                        <div class="inline-item">项目管理级别:
+                                            <field name="guanlijibie" readonly="1"/>
+                                        </div>
+                                        <div class="inline-item">项目负责人:
+                                            <field name="user_id" readonly="1"
+                                                   attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren'])]}"/>
+                                        </div>
+                                        <div class="inline-item">主管总师:
+                                            <field name="zhuguanzongshi_id" readonly="1"/>
+                                        </div>
+                                    </td>
+                                    <td colspan="2">会签栏</td>
+                                </tr>
+                                <tr>
+                                    <td>总师室</td>
+                                    <td>
+                                        <field name="zongshishi_submitter_id" readonly="1"/>
+                                        <field name="zongshishi_submit_datetime" readonly="1"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>承接部门负责人</td>
+                                    <td>
+                                        <field name="director_approve"/>
+                                        <field name="director_approve_time"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                    <group>
+                        <field name="category_name" invisible="1"/>
+                        <field name="shifoutoubiao" readonly="1" invisible="1"/>
                     </group>
-                </xpath>
-                <xpath expr="//div[@id='engineer']" position="after">
-                    <notebook>
-                        <page string="Zongshishi Info"
-                              attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren'])]}">
-                            <group colspan="2">
-                                <group>
-                                    <field name="guanlijibie" readonly="1"/>
-                                    <field name="zhuguanzongshi_id" readonly="1"/>
-                                    <field name="zongshishi_submitter_id" readonly="1"/>
-                                </group>
-                                <group>
-                                    <field name="categories_id" readonly="1"
-                                           attrs="{'invisible':[('shifoutoubiao','=',True)]}"/>
-                                    <field name="categories_else" attrs="{'invisible':[('category_name','!=',u'其它')]}"
-                                           readonly="1"/>
-                                    <field name="category_name" invisible="1"/>
-                                </group>
-                            </group>
-                        </page>
-                    </notebook>
                 </xpath>
 
             </field>

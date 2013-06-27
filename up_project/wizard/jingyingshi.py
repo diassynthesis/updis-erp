@@ -23,7 +23,7 @@ class jingyingshishenpi_form(osv.osv):
     _sql_constraints = [('xiangmubianhao_uniq', 'unique(xiangmubianhao)', 'xiangmubianhao must be unique !')]
 
     def jingyinshi_review_submit(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'submitter_id': uid})
+        self.sign_form(cr, uid, ids, context)
         project = self.pool.get('project.project')
         current_record = self.browse(cr, uid, ids, context=context)
 
@@ -87,6 +87,8 @@ class updis_project(osv.Model):
         "jinyinshi_submitter_id": fields.related('jingyingshishenpi_form_id', 'submitter_id', type="many2one",
                                                  relation="res.users",
                                                  string=u"Submitter"),
+        "jinyinshi_submitter_datetime": fields.related('jingyingshishenpi_form_id', 'submit_date', type="datetime",
+                                                       string=u"Submit Date"),
     }
 
     def action_jingyingshishenpi(self, cr, uid, ids, context=None):
@@ -131,6 +133,10 @@ class updis_project(osv.Model):
             return suozhangshenpi_id
 
     def suozhangshenpi_reject(self, cr, uid, ids, context=None):
+        projects = self.browse(cr, uid, ids, context)
+        for project in projects:
+            self.pool.get('project.review.suozhangshenpi.form').clean_submit(cr, uid, project.suozhangshenpi_form_id.id)
+
         self.write(cr, uid, ids,
                    {'project_logs': [(0, 0, {'project_id': ids,
                                              'log_user': uid,

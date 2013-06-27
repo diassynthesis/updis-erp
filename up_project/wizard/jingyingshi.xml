@@ -13,7 +13,7 @@
                         <field name="yinfacuoshi" required="1" class="oe_no_button"/>
                         <field name="renwuyaoqiu" required="1" class="oe_no_button"/>
                         <field name="chenjiebumen_id" required="1" class="oe_no_button"
-                               options='{"no_open": True}' />
+                               options='{"no_open": True}'/>
                     </group>
                     <!-- <group string="通知设置">
                         <field name="send_email" />
@@ -50,21 +50,19 @@
                                attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}"/>
                     </group>
                 </xpath>
-                <xpath expr="//div[@id='operator']" position="after" priority="2">
-                    <notebook attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}">
-                        <page string="Jinyinshi Info"
-                              priority="80">
-                            <group colspan="2">
-                                <group string="经营室指定设计部门" col="4">
-                                    <field name="pingshenfangshi" readonly="1"/>
-                                    <field name="yinfacuoshi" readonly="1"/>
-                                    <field name="renwuyaoqiu" readonly="1"/>
-                                    <field name="chenjiebumen_id" readonly="1"/>
-                                    <field name="jinyinshi_submitter_id" readonly="1"/>
-                                </group>
-                            </group>
-                        </page>
-                    </notebook>
+                <xpath expr="//div[@id='operator']" position="replace">
+                    <group class="activetable" col="6"
+                           attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}">
+                        <field name="pingshenfangshi" readonly="1" colspan="3"/>
+                        <field name="yinfacuoshi" readonly="1" colspan="3"/>
+                        <field name="renwuyaoqiu" readonly="1" colspan="6"/>
+                        <field name="chenjiebumen_id" readonly="1" colspan="3"/>
+                        <field name="jinyinshi_submitter_id" readonly="1" colspan="2"/>
+                        <div>
+                            <field name="jinyinshi_submitter_datetime" readonly="1" colspan="1"/>
+                        </div>
+
+                    </group>
                 </xpath>
 
             </field>

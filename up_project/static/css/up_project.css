@@ -29,3 +29,7 @@
     height: 24px;
     padding-top: 7px !important;
 }
+
+.openerp div.inline-item span {
+    width: auto !important;
+}

@@ -30,12 +30,13 @@ class zongshishishenpi_form(osv.Model):
         return ret
 
     def zongshishi_review_submit(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'submitter_id': uid})
+        self.sign_form(cr, uid, ids, context)
         project = self.pool.get('project.project')
         suozhangshenpi = self.browse(cr, uid, ids, context=None)
         if suozhangshenpi and suozhangshenpi[0].project_id:
             project.write(cr, uid, suozhangshenpi[0].project_id.id,
-                          {'project_logs': [(0, 0, {'project_id': suozhangshenpi[0].project_id.id,
+                          {'user_id': suozhangshenpi[0].chenjiefuzeren_id.id,
+                           'project_logs': [(0, 0, {'project_id': suozhangshenpi[0].project_id.id,
                                                     'log_user': uid,
                                                     'log_info': u'总师室审批通过,提交请求到所长'})]})
             project._workflow_signal(cr, uid, [suozhangshenpi[0].project_id.id], 'zongshishi_submit')
@@ -63,7 +64,8 @@ class updis_project(osv.Model):
         "zongshishi_submitter_id": fields.related('zongshishishenpi_form_id', 'submitter_id', type="many2one",
                                                   relation="res.users",
                                                   string=u"Zongshishi Submitter"),
-
+        "zongshishi_submit_datetime": fields.related('zongshishishenpi_form_id', 'submit_date', type="datetime",
+                                                     string=u"Zongshishi Submit Date"),
     }
 
     def action_zongshishishenpi(self, cr, uid, ids, context=None):

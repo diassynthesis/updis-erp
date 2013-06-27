@@ -14,14 +14,6 @@
                             groups="up_project.group_up_project_suozhang" type="object"
                             attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangqianzi')]}"/>
                 </xpath>
-                <xpath expr="//div[@id='director_sign']" position="after">
-                    <notebook>
-                        <page string="Director Sign"
-                              attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren','suozhangqianzi'])]}">
-                            <field name="director_approve"/>
-                        </page>
-                    </notebook>
-                </xpath>
             </field>
         </record>
     </data>

@@ -42,7 +42,6 @@ class suozhangshenpi_form(osv.osv):
     }
 
     def suozhangshenpi_review_submit(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'submitter_id': uid})
         project = self.pool.get('project.project')
         suozhangshenpi = self.browse(cr, uid, ids, context=None)
         if suozhangshenpi and suozhangshenpi[0].project_id:
@@ -57,9 +56,9 @@ class suozhangshenpi_form(osv.osv):
             return False
 
     def suozhangshenpi_review_accept(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'submitter_id': uid})
+        self.sign_form(cr, uid, ids, context)
         project = self.pool.get('project.project')
-        suozhangshenpi = self.browse(cr, uid, ids, context=None)
+        suozhangshenpi = self.browse(cr, uid, ids, context)
         if suozhangshenpi and suozhangshenpi[0].project_id:
             project.write(cr, uid, suozhangshenpi[0].project_id.id,
                           {'project_logs': [(0, 0, {'project_id': suozhangshenpi[0].project_id.id,
@@ -83,7 +82,6 @@ class updis_project(osv.osv):
             else:
                 result[obj.id] = False
         return result
-
 
 
     _columns = {
@@ -123,6 +121,8 @@ class updis_project(osv.osv):
                                              string="Is Display Button"),
         'director_reviewer_id': fields.related('suozhangshenpi_form_id', 'reviewer_id', type="many2one",
                                                relation='res.users', string=u'Review Director'),
+        'director_apply_submitter_id': fields.related('suozhangshenpi_form_id', 'submitter_id', type="many2one",
+                                                      relation='res.users', string=u'Review Submitter'),
     }
 
     def action_suozhangshenpi(self, cr, uid, ids, context=None):
