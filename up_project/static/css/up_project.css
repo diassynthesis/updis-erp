@@ -7,3 +7,7 @@
     position: relative;
     margin-left: 800px;
 }
+
+.openerp table.activetable, .openerp table.activetable td, .openerp table.activetable  tr {
+    border: 1px solid #000000;
+}

@@ -87,7 +87,8 @@
                                statusbar_colors='{"project_start":"red","project_stop":"red"}' readonly="1"/>
 
                         <field name="state" widget="statusbar"
-                               statusbar_colors='{"open":"blue","suozhangshenpi":"blue","zhidingbumen":"blue","zhidingfuzeren":"blue","suozhangqianzi":"blue","fuzerenqidong":"blue"}'
+                               statusbar_visible="open,suozhangshenpi,zhidingbumen,zhidingfuzeren,suozhangqianzi"
+                               statusbar_colors='{"open":"blue","suozhangshenpi":"blue","zhidingbumen":"blue","zhidingfuzeren":"blue","suozhangqianzi":"blue"}'
                                readonly="1" attrs="{'invisible':[('states','!=','project_start')]}"/>
                     </header>
                     <sheet>
