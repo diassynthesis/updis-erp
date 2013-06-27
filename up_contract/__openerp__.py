@@ -11,6 +11,7 @@ UPDIS Project Contract Module.""",
     'depends': ['up_project'],
     'init_xml': [],
     'update_xml': [
+        'security/ir.model.access.csv',
         'contract_view.xml',
     ],
     'demo_xml': [],
