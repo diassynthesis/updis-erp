@@ -82,47 +82,91 @@
                             attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangshenpi')]}"
                             groups="up_project.group_up_project_suozhang" confirm="确定打回申请到发起人?"/>
                 </xpath>
-                <xpath expr="//div[@id='director_prove']" position="after" priority="1">
-                    <group attrs="{'invisible':[('state','=','open')]}">
-                        <group colspan="2">
-                            <group string="Basic Info" col="1">
-                                <group col="2">
-                                    <field name="jianyishejibumen_id" readonly="1"
-                                           attrs="{'invisible':[('state','not in',['open','suozhangshenpi','zhidingbumen'])]}"/>
-                                    <field name="jianyixiangmufuzeren_id" readonly="1"
-                                           attrs="{'invisible':[('state','not in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren'])]}"/>
-                                    <field name="shifoutoubiao" readonly="1"/>
-                                    <field name="toubiaoleibie" attrs="{'invisible':[('shifoutoubiao','=',False)]}"
-                                           readonly="1"/>
-                                    <field name="waibao" readonly="1"/>
-                                    <field name="shizhenpeitao" readonly="1"/>
-                                    <field name="duofanghetong" readonly="1"/>
-                                </group>
-                            </group>
-                            <group string="Custom Require">
-                                <field name="yaoqiuxingchengwenjian" readonly="1"/>
-                                <field name="hetongyizhi" readonly="1"/>
-                            </group>
-                            <newline/>
-                            <group string="设计要求是否达到规定">
-                                <field name="express_requirement" readonly="1"/>
-                                <field name="yinhanyaoqiu" readonly="1"/>
-                                <field name="difangfagui" readonly="1"/>
-                                <field name="fujiayaoqiu" readonly="1"/>
-                            </group>
-                            <group string="Attachment">
+                <xpath expr="//div[@id='director_prove']" position="replace" priority="1">
+                    <div attrs="{'invisible':[('state','=','open')]}">
+                        <table class="oe_form_group activetable" col="5">
+                            <thead class="oe_form_group_row">
+                                <th class="oe_form_group_cell">序号</th>
+                                <th class="oe_form_group_cell" colspan="2">评审内容</th>
+                                <th class="oe_form_group_cell">评审意见</th>
+                                <th class="oe_form_group_cell">评审人</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td colspan="2">顾客要求形成文件否</td>
+                                    <td>
+                                        <field name="yaoqiuxingchengwenjian" readonly="1"/>
+                                    </td>
+                                    <td rowspan="7">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="4">2</td>
+                                    <td rowspan="4">设计要求是否得到规定</td>
+                                    <td>明示要求</td>
+                                    <td>
+                                        <field name="express_requirement" readonly="1"/>
+                                        <group string="Attachment">
 
-                            </group>
-                            <group string="本院是否有能力满足规定要求">
-                                <field name="ziyuan" readonly="1"/>
-                                <field name="shebei" readonly="1"/>
-                                <field name="gongqi" readonly="1"/>
-                                <field name="shejifei" readonly="1"/>
-                            </group>
-                            <group invisible="1">
-                                <field name="is_display_button"/>
-                            </group>
-                        </group>
+                                        </group>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>隐含要求</td>
+                                    <td>
+                                        <field name="yinhanyaoqiu" readonly="1"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>地方规范或特殊法律法规</td>
+                                    <td>
+                                        <field name="difangfagui" readonly="1"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>附加要求</td>
+                                    <td>
+                                        <field name="fujiayaoqiu" readonly="1"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td colspan="2">与以前表述不一致的合同/协议要求是否解决</td>
+                                    <td>
+                                        <field name="hetongyizhi" readonly="1"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td colspan="2">本院是否有能力满足规定要求</td>
+                                    <td>
+                                        <field name="ziyuan" readonly="1"/>
+                                        <field name="shebei" readonly="1"/>
+                                        <field name="gongqi" readonly="1"/>
+                                        <field name="shejifei" readonly="1"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <group>
+                        <field name="jianyishejibumen_id" readonly="1"
+                               attrs="{'invisible':[('state','not in',['open','suozhangshenpi','zhidingbumen'])]}"/>
+                        <field name="jianyixiangmufuzeren_id" readonly="1"
+                               attrs="{'invisible':[('state','not in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren'])]}"/>
+                        <field name="shifoutoubiao" readonly="1"/>
+                        <field name="toubiaoleibie" attrs="{'invisible':[('shifoutoubiao','=',False)]}"
+                               readonly="1"/>
+                        <field name="waibao" readonly="1"/>
+                        <field name="shizhenpeitao" readonly="1"/>
+                        <field name="duofanghetong" readonly="1"/>
+                    </group>
+
+                    <group invisible="1">
+                        <field name="is_display_button"/>
                     </group>
                 </xpath>
             </field>

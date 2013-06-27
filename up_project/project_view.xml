@@ -92,23 +92,17 @@
                                readonly="1" attrs="{'invisible':[('states','!=','project_start')]}"/>
                     </header>
                     <sheet>
-                        <div class="oe_title">
-                            <label for="name" class="oe_edit_only" string="Project Name"/>
-                            <h1>
-                                <field name="name" string="Project Name"
-                                       attrs="{'readonly':[('state','!=','open')]}"/>
-                            </h1>
-                        </div>
                         <div class="oe_right oe_button_box" name="buttons" groups="base.group_user">
                             <button name="%(project.act_project_project_2_project_task_all)d" string="Tasks"
                                     type="action"/>
                             <button name="attachment_tree_view" string="Documents" type="object"/>
                         </div>
+                        <group col="4" colspan="4" name="project_num">
+                        </group>
                         <group>
-                            <group col="4" colspan="4" name="project_num">
-                            </group>
+                            <field name="is_project_creater" invisible="1"/>
                             <group col="4" colspan="4">
-                                <field name="is_project_creater" invisible="1"/>
+
                                 <label string="Project Location" for="country_id"/>
                                 <div class="address_format">
                                     <field name="country_id" class="oe_no_button" widget="selection"
@@ -125,41 +119,46 @@
                                            style="width: 50%%"/>
                                 </div>
                             </group>
-                            <group name="basic_info" string="Basic Info" colspan="2" col="4">
-                                <field name="partner_id" on_change="onchange_partner_id(partner_id)"
-                                       domain="[('is_company','=',True)]"
-                                       attrs="{'readonly':[('state','!=','open')]}" required="1"/>
-                                <field name="customer_contact"
-                                       attrs="{'readonly':[('state','!=','open')]}"/>
-                                <field name="guimo"
-                                       attrs="{'readonly':[('state','!=','open')]}"/>
-                                <field name="project_type" class="oe_no_button"
-                                       attrs="{'readonly':[('state','!=','open')]}">
-                                    <form>
-                                        <field name="name"/>
-                                    </form>
-                                </field>
-                            </group>
-                            <notebook>
-                                <page string="Director Review" attrs="{'invisible':[('state','=','open')]}">
-                                    <div id="director_prove"></div>
-                                    <div id="operator"></div>
-                                    <div id="engineer"></div>
-                                    <div id="director_sign"></div>
-                                </page>
 
-
-                                <page name="project_log" string="Project Logs">
-                                    <field name="project_logs" nolabel="1" readonly="1">
-                                        <tree>
-                                            <field name="log_date"/>
-                                            <field name="log_user"/>
-                                            <field name="log_info"/>
-                                        </tree>
-                                    </field>
-                                </page>
-                            </notebook>
                         </group>
+                        <group class="activetable" col="4">
+                            <field name="name" string="Project Name"
+                                   attrs="{'readonly':[('state','!=','open')]}" colspan="4"/>
+                            <field name="project_type" class="oe_no_button"
+                                   attrs="{'readonly':[('state','!=','open')]}">
+                                <form>
+                                    <field name="name"/>
+                                </form>
+                            </field>
+                            <field name="partner_id" on_change="onchange_partner_id(partner_id)"
+                                   domain="[('is_company','=',True)]"
+                                   attrs="{'readonly':[('state','!=','open')]}" required="1"/>
+                            <field name="guimo"
+                                   attrs="{'readonly':[('state','!=','open')]}"/>
+                            <field name="customer_contact"
+                                   attrs="{'readonly':[('state','!=','open')]}"/>
+                        </group>
+                        <div id="director_prove"></div>
+                        <div id="operator"></div>
+                        <notebook>
+                            <page string="Director Review" attrs="{'invisible':[('state','=','open')]}">
+
+
+                                <div id="engineer"></div>
+                                <div id="director_sign"></div>
+                            </page>
+
+
+                            <page name="project_log" string="Project Logs">
+                                <field name="project_logs" nolabel="1" readonly="1">
+                                    <tree>
+                                        <field name="log_date"/>
+                                        <field name="log_user"/>
+                                        <field name="log_info"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
