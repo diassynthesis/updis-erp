@@ -79,9 +79,12 @@
             <field name="priority">10</field>
             <field name="arch" type="xml">
                 <form string="Project" version="7.0">
+                    <header name="project_header">
+                        <field name="state" widget="statusbar"
+                               readonly="1"/>
+                    </header>
                     <sheet>
                         <group>
-
                             <field name="name"/>
                             <field name="project_type" class="oe_no_button">
                                 <form>
@@ -98,9 +101,13 @@
                                 <field name="city" nolabel="1" placeholder="City" style="width: 50%%"/>
                             </div>
                             <div>
-                                <div name="related_forms"/>
+
+
                             </div>
 
+                        </group>
+                        <group>
+                            <div name="related_forms"/>
                         </group>
                     </sheet>
 

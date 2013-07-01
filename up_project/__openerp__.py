@@ -18,24 +18,15 @@ UPDIS Project Module.""",
         'project_view.xml',
         'wizard/active/project_active_view.xml',
 
-        'wizard/active/project_active_tasking_workflow.xml',
-        # 'wizard/suozhangshenpi.xml',
-        # 'wizard/suozhangshenpi_server_actions.xml',
-        # 'wizard/suozhangshenpi_workflow.xml',
-        # 'wizard/jingyingshi.xml',
-        # 'wizard/jingyingshi_server_actions.xml',
-        # 'wizard/jingyingshi_workflow.xml',
-        # 'wizard/zongshishi.xml',
-        # 'wizard/zongshishi_server_actions.xml',
-        # 'wizard/zongshishi_workflow.xml',
-        # 'wizard/suozhangqianzi.xml',
-        # 'wizard/suozhangqianzi_server_actions.xml',
-        # 'wizard/suozhangqianzi_workflow.xml',
-        # 'wizard/fuzerenqidong.xml',
-        # 'wizard/fuzerenqidong_server_actions.xml',
-        # 'wizard/fuzerenqidong_workflow.xml',
-        # 'project_workflow_active.xml',
-        # 'project_workflow.xml',
+        'wizard/active/tasking/project_active_tasking_view.xml',
+        'wizard/active/tasking/project_active_tasking_workflow.xml',
+
+
+
+        'wizard/active/project_active_workflow.xml',
+
+        'project_workflow.xml',
+
         # 'report/renwuxiada.xml',
 
     ],

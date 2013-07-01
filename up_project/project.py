@@ -95,9 +95,9 @@ class updis_project(osv.osv):
         "city": fields.char("City", size=128),
 
 
-
-        'state': fields.selection([("project_start", u"Project Start"),
-                                    ("project_stop", u"Project End"), ]),
+        'state': fields.selection([("project_active", u"Project Active"),
+                                   ("project_processing", u"Project Processing"),
+                                   ("project_filed", u"Project Filed"), ]),
         'project_log': fields.html(u"Project Log Info", readonly=True),
         'is_project_creater': fields.function(_is_project_creater, type="boolean",
                                               string="Is Project Creater"),
@@ -108,7 +108,7 @@ class updis_project(osv.osv):
         return id
 
     _defaults = {
-        'state': lambda *a: 'project_start',
+        'state': lambda *a: 'project_active',
         'user_id': None,
         'country_id': _get_default_country,
         # 'xiangmubianhao':lambda self, cr, uid, c=None: self.pool.get('ir.sequence').next_by_code(cr, uid, 'project.project', context=c)
@@ -135,23 +135,17 @@ class updis_project(osv.osv):
     def on_change_country(self, cr, uid, ids, country_id, context=None):
         return {}
 
-    def init_form(self, cr, uid, ids, state, object, object_field):
+    def init_form(self, cr, uid, ids, form_name, project_form_field):
         assert len(ids) == 1
         project_id = self.browse(cr, uid, ids, context=None)
-        if project_id[0] and project_id[0][object_field]:
-            self.write(cr, uid, ids, {'state': state})
-            return project_id[0][object_field].id
+        if project_id[0] and project_id[0][project_form_field]:
+            return project_id[0][project_form_field].id
         else:
-            suozhangshenpi = self.pool.get(object)
+            suozhangshenpi = self.pool.get(form_name)
             #by pass
             suozhangshenpi_id = suozhangshenpi.create(cr, 1, {'project_id': ids[0]}, None)
-            self.write(cr, uid, ids, {'state': state, object_field: suozhangshenpi_id})
+            self.write(cr, uid, ids, {project_form_field: suozhangshenpi_id})
             return suozhangshenpi_id
-
-    def act_project_start(self, cr, uid, ids):
-        self.write(cr, uid, ids, {'state': "project_start"})
-        return ids[0]
-
 
 # class project_profession(osv.Model):
 #     """Profession"""
