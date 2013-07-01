@@ -1,0 +1,35 @@
+.openerp .separate {
+    border: 1px solid gainsboro;
+}
+
+.openerp .oe_statusbar_header {
+    display: inline-block;
+    position: relative;
+    margin-left: 800px;
+}
+
+.openerp table.activetable {
+    border: 2px solid #000000;
+}
+
+.openerp table.activetable  tr {
+    border: 1px solid #000000;
+}
+
+.openerp table.activetable td {
+    border: 1px solid #000000;
+    border-right: 1px solid #000000 !important;
+    height: 24px;
+    padding-top: 7px !important;
+}
+
+.openerp table.activetable th {
+    border: 1px solid #000000;
+    border-right: 1px solid #000000 !important;
+    height: 24px;
+    padding-top: 7px !important;
+}
+
+.openerp div.inline-item span {
+    width: auto !important;
+}

@@ -68,7 +68,6 @@ class project_log(osv.osv):
 class updis_project(osv.osv):
     _log_access = True
     _inherit = "project.project"
-    _name = "project.project"
 
     def _is_project_creater(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
@@ -108,7 +107,8 @@ class updis_project(osv.osv):
         return id
 
     _defaults = {
-        'state': lambda *a: 'project_start',
+        'state': lambda *a: 'open',
+        'states': lambda *a: 'project_start',
         'user_id': None,
         'country_id': _get_default_country,
         # 'xiangmubianhao':lambda self, cr, uid, c=None: self.pool.get('ir.sequence').next_by_code(cr, uid, 'project.project', context=c)
@@ -149,7 +149,7 @@ class updis_project(osv.osv):
             return suozhangshenpi_id
 
     def act_project_start(self, cr, uid, ids):
-        self.write(cr, uid, ids, {'state': "project_start"})
+        self.write(cr, uid, ids, {'states': "project_start"})
         return ids[0]
 
 

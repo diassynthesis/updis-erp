@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <record id="sequence_code_xiangmubianhao" model="ir.sequence.type">
+            <field name="name">项目编号</field>
+            <field name="code">project.project</field>
+        </record>
+        <record id="sequence_xiangmubianhao" model="ir.sequence">
+            <field name="name">项目编号</field>
+            <field name="code">project.project</field>
+            <field name="prefix">%(year)s</field>
+            <field name="padding">2</field>
+        </record>
+        <record id="cat1" model="project.upcategory">
+            <field name="name">区域\城镇体系\总体规划</field>
+        </record>
+        <record id="cat2" model="project.upcategory">
+            <field name="name">专项规划(研究)</field>
+        </record>
+        <record id="cat3" model="project.upcategory">
+            <field name="name">分区规划</field>
+        </record>
+        <record id="cat4" model="project.upcategory">
+            <field name="name">法定图则</field>
+        </record>
+        <record id="cat5" model="project.upcategory">
+            <field name="name">控规</field>
+        </record>
+        <record id="cat6" model="project.upcategory">
+            <field name="name">修规(详细蓝图)</field>
+        </record>
+        <record id="cat7" model="project.upcategory">
+            <field name="name">旧改项目</field>
+        </record>
+        <record id="cat8" model="project.upcategory">
+            <field name="name">城市设计</field>
+        </record>
+        <record id="cat9" model="project.upcategory">
+            <field name="name">工程项目</field>
+        </record>
+        <record id="cat10" model="project.upcategory">
+            <field name="name">市政专项</field>
+        </record>
+        <record id="cat11" model="project.upcategory">
+            <field name="name">其它</field>
+        </record>
+
+
+        <!--project.type-->
+        <record id="project_type_planning" model="project.type">
+            <field name="name">规划类</field>
+        </record>
+        <record id="project_type_tender" model="project.type">
+            <field name="name">投标类</field>
+        </record>
+        <record id="project_type_engineering" model="project.type">
+            <field name="name">工程类</field>
+        </record>
+        <record id="project_type_consulting" model="project.type">
+            <field name="name">咨询类</field>
+        </record>
+        <record id="project_type_research" model="project.type">
+            <field name="name">研究项目</field>
+        </record>
+    </data>
+</openerp>

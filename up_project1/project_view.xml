@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <record id="project.open_view_project_all" model="ir.actions.act_window">
+            <field name="name">Projects</field>
+            <field name="res_model">project.project</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="project.view_project"/>
+            <field name="search_view_id" ref="project.view_project_project_filter"/>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to start a new project.
+                </p>
+                <p>
+                    Projects are used to organize your activities; plan
+                    tasks, track issues, invoice timesheets. You can define
+                    internal projects (R&amp;D, Improve Sales Process),
+                    private projects (My Todos) or customer ones.
+                </p>
+                <p>
+                    You will be able collaborate with internal users on
+                    projects or invite customers to share your activities.
+                </p>
+            </field>
+        </record>
+
+
+        <!--record id="project_assignment_search" model="ir.ui.view">
+            <field name="name">project.assignment.search</field>
+            <field name="model">project.assignment</field>
+            <field name="arch" type="xml">
+                <search string="Project Assignment">
+                    <field name="project_id" string="Project"/>
+                    <field name="duty_id" string="Duty"/>
+                    <field name="profession_id" string="Profession"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Project" icon="terp-folder-orange" domain=""
+                                context="{'group_by':'project_id'}"/>
+                        <filter string="Profession" icon="terp-folder-orange" domain=""
+                                context="{'group_by':'profession_id'}"/>
+                        <filter string="Duty" icon="terp-folder-orange" domain="" context="{'group_by':'duty_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="project_assignment_form" model="ir.ui.view">
+            <field name="name">project.assignment.form</field>
+            <field name="model">project.assignment</field>
+            <field name="arch" type="xml">
+                <form version="7.0" string="Project Assignment Form">
+                    <group col="4">
+                        <field name="duty_id"/>
+                        <field name="profession_id"/>
+                        <field name="project_id"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="project_assignment_tree" model="ir.ui.view">
+            <field name="name">project.assignment.tree</field>
+            <field name="model">project.assignment</field>
+            <field name="arch" type="xml">
+                <tree string="项目分工">
+                    <field name="duty_id"/>
+                    <field name="profession_id"/>
+                    <field name="project_id"/>
+                </tree>
+            </field>
+        </record-->
+
+
+        <record id="edit_project_inherit" model="ir.ui.view">
+            <field name="name">project.project.form.replace</field>
+            <field name="model">project.project</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <form string="Project" version="7.0">
+                    <header>
+                        <!--div class="oe_statusbar_header">
+                            <p>项目总进度</p>
+                        </div-->
+                        <field name="states" widget="statusbar"
+                               statusbar_colors='{"project_start":"red","project_stop":"red"}' readonly="1"/>
+
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="open,suozhangshenpi,zhidingbumen,zhidingfuzeren,suozhangqianzi"
+                               statusbar_colors='{"open":"blue","suozhangshenpi":"blue","zhidingbumen":"blue","zhidingfuzeren":"blue","suozhangqianzi":"blue"}'
+                               readonly="1" attrs="{'invisible':[('states','!=','project_start')]}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_right oe_button_box" name="buttons" groups="base.group_user">
+                            <button name="%(project.act_project_project_2_project_task_all)d" string="Tasks"
+                                    type="action"/>
+                            <button name="attachment_tree_view" string="Documents" type="object"/>
+                        </div>
+                        <group col="4" colspan="4" name="project_num">
+                        </group>
+                        <group>
+                            <field name="is_project_creater" invisible="1"/>
+                            <group col="4" colspan="4">
+
+                                <label string="Project Location" for="country_id"/>
+                                <div class="address_format">
+                                    <field name="country_id" class="oe_no_button" widget="selection"
+                                           on_change="on_change_country(country_id)" style="width: 15%%"
+                                           options="{'no_open':True}" nolabel="1" placeholder="Country"
+                                           attrs="{'readonly':[('state','!=','open')]}"/>
+                                    <field name="state_id" widget="selection" options="{'no_open':True}"
+                                           placeholder="State"
+                                           nolabel="1"
+                                           attrs="{'readonly':[('state','!=','open')]}"
+                                           style="width: 30%%"/>
+                                    <field name="city" nolabel="1" placeholder="City"
+                                           attrs="{'readonly':[('state','!=','open')]}"
+                                           style="width: 50%%"/>
+                                </div>
+                            </group>
+
+                        </group>
+                        <group class="activetable" col="4">
+                            <field name="name" string="Project Name"
+                                   attrs="{'readonly':[('state','!=','open')]}" colspan="4"/>
+                            <field name="project_type" class="oe_no_button"
+                                   attrs="{'readonly':[('state','!=','open')]}">
+                                <form>
+                                    <field name="name"/>
+                                </form>
+                            </field>
+                            <field name="partner_id" on_change="onchange_partner_id(partner_id)"
+                                   domain="[('is_company','=',True)]"
+                                   attrs="{'readonly':[('state','!=','open')]}" required="1"/>
+                            <field name="guimo"
+                                   attrs="{'readonly':[('state','!=','open')]}"/>
+                            <field name="customer_contact"
+                                   attrs="{'readonly':[('state','!=','open')]}"/>
+                        </group>
+                        <div id="director_prove"></div>
+                        <div id="operator"></div>
+                        <div id="engineer"></div>
+                        <notebook>
+                            <page name="project_log" string="Project Logs">
+                                <field name="project_logs" nolabel="1" readonly="1">
+                                    <tree>
+                                        <field name="log_date"/>
+                                        <field name="log_user"/>
+                                        <field name="log_info"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <!--Project related to me-->
+        <record id="action_project_related_to_me_normal" model="ir.actions.act_window">
+            <field name="name">Projects normal</field>
+            <field name="res_model">project.project</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('create_uid','=',uid)]</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+        <menuitem name="Project Related To Me--Normal" id="project_related_to_me_normal"
+                  parent="project.menu_project_management"
+                  action="action_project_related_to_me_normal" sequence="1" groups="group_up_project_common_user"/>
+
+        <!--Project related to Director-->
+        <record id="action_project_related_to_me_director" model="ir.actions.act_window">
+            <field name="name">Projects director</field>
+            <field name="res_model">project.project</field>
+            <field name="view_type">form</field>
+            <field name="domain">['|','&amp;',('state','in',['suozhangshenpi','suozhangqianzi']),('director_reviewer_id','=',uid),('create_uid','=',uid)]</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+        <menuitem name="Project Related To Me--Director" id="project_related_to_me_director"
+                  parent="project.menu_project_management"
+                  action="action_project_related_to_me_director" sequence="2" groups="group_up_project_suozhang"/>
+
+        <!--Project related to Operating Room-->
+        <record id="action_project_related_to_me_operating" model="ir.actions.act_window">
+            <field name="name">Projects operating</field>
+            <field name="res_model">project.project</field>
+            <field name="view_type">form</field>
+            <field name="domain">['|',('state','=','zhidingbumen'),('create_uid','=',uid)]</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+        <menuitem name="Project Related To Me--Operating" id="project_related_to_me_operating"
+                  parent="project.menu_project_management"
+                  action="action_project_related_to_me_operating" sequence="3" groups="group_up_project_jingyingshi"/>
+
+        <!--Project related to Chief Engineer Room-->
+        <record id="action_project_related_to_me_engineer" model="ir.actions.act_window">
+            <field name="name">Projects engineer</field>
+            <field name="res_model">project.project</field>
+            <field name="view_type">form</field>
+            <field name="domain">['|',('state','=','zhidingfuzeren'),('create_uid','=',uid)]</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+        <menuitem name="Project Related To Me--Chief Engineer" id="project_related_to_me_engineer"
+                  parent="project.menu_project_management"
+                  action="action_project_related_to_me_engineer" sequence="4" groups="group_up_project_zongshishi"/>
+    </data>
+</openerp>
