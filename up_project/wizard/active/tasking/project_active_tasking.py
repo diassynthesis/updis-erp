@@ -24,6 +24,28 @@ class project_active_tasking(osv.osv):
                 result[obj.id] = False
         return result
 
+    def _is_user_in_operator_group(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            result[obj.id] = self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context)
+        return result
+
+    def _is_user_in_engineer_group(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            result[obj.id] = self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context)
+        return result
+
+    def _is_user_is_project_manager(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            if obj.user_id:
+                result[obj.id] = (obj.user_id.id == uid)
+            else:
+                result[obj.id] = False
+        return result
+
+
     _columns = {
         'is_display_button': fields.function(_is_display_button, type="boolean",
                                              string="Is Display Button"),
@@ -36,7 +58,7 @@ class project_active_tasking(osv.osv):
                                       ("suozhangshenpi", u"所长审批"),
                                       ("zhidingbumen", u"经营室审批"),
                                       ("zhidingfuzeren", u"总师室审批"),
-                                      ("suozhangqianzi", u"所长签字"),
+                                      ("suozhangqianzi", u"负责人签字"),
                                       ("end", u'归档'),
                                   ], "State", help='When project is created, the state is \'open\''),
 
@@ -91,6 +113,8 @@ class project_active_tasking(osv.osv):
 
         "jinyinshi_submitter_id": fields.many2one('res.users', string=u"Operator Room Submitter"),
         "jinyinshi_submitter_datetime": fields.datetime(string=u"Operator Room Submit Date"),
+        'is_user_in_operator_group': fields.function(_is_user_in_operator_group, type="boolean",
+                                                     string="Is User In Operator Room"),
 
         #Engineer Room
         # 'is_tender_project': fields.related('project_id', 'shifoutoubiao', type='boolean', string=u'is Tender Project'),
@@ -99,11 +123,17 @@ class project_active_tasking(osv.osv):
         "guanlijibie": fields.selection([(u'院级', u'院级'), (u'所级', u'所级')], u'项目管理级别'),
         "chenjiefuzeren_id": fields.many2one("res.users", u"承接项目负责人"),
         "categories_else": fields.char(size=128, string='Else Category'),
+        "tender_category": fields.selection([(u'商务标', u'商务标'), (u'技术标', u'技术标'), (u'综合标', u'综合标')], u"投标类别"),
         # "chenjiefuzeren_id": fields.related("project_id", "user_id", type="many2one", relation="res.users",
         #                                     string=u"承接项目负责人"),
         "zhuguanzongshi_id": fields.many2one("res.users", u"主管总师"),
         "zongshishi_submitter_id": fields.many2one("res.users", string=u"Zongshishi Submitter"),
         "zongshishi_submit_datetime": fields.datetime(string=u"Zongshishi Submit Date"),
+        'is_user_in_engineer_group': fields.function(_is_user_in_engineer_group, type="boolean",
+                                                     string="Is User In Engineer Room"),
+
+        'is_user_is_project_manager': fields.function(_is_user_is_project_manager, type="boolean",
+                                                      string="Is User is The Project Manager"),
     }
 
     _defaults = {
@@ -145,33 +175,72 @@ class project_active_tasking(osv.osv):
         else:
             return False
 
+
     def director_review_submit(self, cr, uid, ids, context=None):
         suozhangshenpi = self.browse(cr, uid, ids, context=None)
         log_info = u'提交所长审批请求到--> %s' % suozhangshenpi[0].director_reviewer_id.name
         return self._send_workflow_signal(cr, uid, ids, log_info, 'draft_submit')
 
     def director_review_accept(self, cr, uid, ids, context=None):
-        self._sign_form(cr, uid, ids, 'director_reviewer_apply_id', 'director_reviewer_apply_time', context)
+        self._sign_form(cr, uid, ids, 'director_reviewer_apply_id', 'director_reviewer_apply_time', context=context)
         log_info = u'所长审批通过,提交请求到经营室'
         return self._send_workflow_signal(cr, uid, ids, log_info, 'suozhangshenpi_submit')
 
     def draft_reject(self, cr, uid, ids, context=None):
-        self._sign_form(cr, uid, ids, 'director_reviewer_apply_id', 'director_reviewer_apply_time', is_clean=True,
-                        context=context)
-        log_info = u'打回申请单'
+        # self._sign_form(cr, uid, ids, 'director_reviewer_apply_id', 'director_reviewer_apply_time', is_clean=True,
+        #                 context=context)
+        log_info = u'所长打回申请单'
         return self._send_workflow_signal(cr, uid, ids, log_info, 'draft_reject')
 
-# def onchange_partner_id(self, cr, uid, ids, part=False, context=None):
-#     partner_obj = self.pool.get('res.partner')
-#     if not part:
-#         return {'value': {}}
-#     val = {}
-#     if 'pricelist_id' in self.fields_get(cr, uid, context=context):
-#         pricelist = partner_obj.read(cr, uid, part, ['property_product_pricelist'], context=context)
-#         pricelist_id = pricelist.get('property_product_pricelist', False) and
-#                        pricelist.get('property_product_pricelist')[0] or False
-#         val['pricelist_id'] = pricelist_id
-#     return {'value': val}
+
+    def operator_review_accept(self, cr, uid, ids, context=None):
+        self._sign_form(cr, uid, ids, 'jinyinshi_submitter_id', 'jinyinshi_submitter_datetime', context=context)
+        log_info = u'经营室审批通过,提交申请到总师室'
+        return self._send_workflow_signal(cr, uid, ids, log_info, 'jingyinshi_submit')
+
+    def operator_reject(self, cr, uid, ids, context=None):
+        self._sign_form(cr, uid, ids, 'director_reviewer_apply_id', 'director_reviewer_apply_time', is_clean=True,
+                        context=context)
+        log_info = u'经营室打回申请单'
+        return self._send_workflow_signal(cr, uid, ids, log_info, 'suozhangshenpi_reject')
+
+
+    def engineer_review_accept(self, cr, uid, ids, context=None):
+        self._sign_form(cr, uid, ids, 'zongshishi_submitter_id', 'zongshishi_submit_datetime', context=context)
+        log_info = u'总师室审批通过,提交请求到负责人'
+        return self._send_workflow_signal(cr, uid, ids, log_info, 'zongshishi_submit')
+
+    def engineer_reject(self, cr, uid, ids, context=None):
+        self._sign_form(cr, uid, ids, 'jinyinshi_submitter_id', 'jinyinshi_submitter_datetime', is_clean=True,
+                        context=context)
+        log_info = u'总师室打回申请单'
+        return self._send_workflow_signal(cr, uid, ids, log_info, 'jingyinshi_reject')
+
+
+    def manager_review_accept(self, cr, uid, ids, context=None):
+        self._sign_form(cr, uid, ids, 'director_approve', 'director_approve_time', context=context)
+        log_info = u'负责人确认,启动项目'
+        return self._send_workflow_signal(cr, uid, ids, log_info, 'fuzeren_submit')
+
+    def manager_reject(self, cr, uid, ids, context=None):
+        self._sign_form(cr, uid, ids, 'zongshishi_submitter_id', 'zongshishi_submit_datetime', is_clean=True,
+                        context=context)
+        log_info = u'负责人打回申请单'
+        return self._send_workflow_signal(cr, uid, ids, log_info, 'zongshishi_reject')
+
+
+    def workflow_operator_room(self, cr, uid, ids, context=None):
+        tasking = self.browse(cr, 1, ids[0], context=context)
+        self.write(cr, 1, ids, {'chenjiebumen_id': tasking.jianyishejibumen_id.id, 'state': 'zhidingbumen'},
+                   context=context)
+        return True
+
+    def workflow_engineer_room(self, cr, uid, ids, context=None):
+        tasking = self.browse(cr, 1, ids[0], context=context)
+        self.write(cr, 1, ids, {'tender_category': tasking.toubiaoleibie,
+                                'user_id': tasking.jianyixiangmufuzeren_id.id, 'state': 'zhidingfuzeren'},
+                   context=context)
+        return True
 
 
 class project_project_inherit(osv.osv):

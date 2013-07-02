@@ -64,6 +64,17 @@
                         <group>
                             <div name="related_forms"/>
                         </group>
+                        <notebook>
+                            <page name="project_log" string="Project Logs">
+                                <field name="project_logs" nolabel="1" readonly="1">
+                                    <tree>
+                                        <field name="log_date"/>
+                                        <field name="log_user"/>
+                                        <field name="log_info"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
 
                 </form>

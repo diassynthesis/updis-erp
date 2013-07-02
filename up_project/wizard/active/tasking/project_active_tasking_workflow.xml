@@ -18,6 +18,7 @@
             <field name="name">提出申请</field>
             <field name="kind">function</field>
             <field name="action">write({'state':'open'})</field>
+            <field name="action_id" ref="project_active_tasking_open_send_sms"/>
         </record>
         <record id="act_active_tasking_director_apply" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
@@ -29,21 +30,17 @@
             <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
             <field name="name">经营室指定设计部门</field>
             <field name="kind">function</field>
-            <field name="action">
-                init_jinyinshi_form('zhidingbumen','project.review.jingyingshishenpi.form','jingyingshishenpi_form_id')
-            </field>
+            <field name="action">workflow_operator_room()</field>
         </record>
         <record id="act_active_tasking_engineer_room" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
             <field name="name">总师室指定负责人</field>
             <field name="kind">function</field>
-            <field name="action">
-                init_zongshishi_form('zhidingfuzeren','project.review.zongshishishenpi.form','zongshishishenpi_form_id')
-            </field>
+            <field name="action">workflow_engineer_room()</field>
         </record>
         <record id="act_active_tasking_director_approve" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
-            <field name="name">所长签字</field>
+            <field name="name">负责人签字</field>
             <field name="kind">function</field>
             <field name="action">write({'state':'suozhangqianzi'})</field>
         </record>
