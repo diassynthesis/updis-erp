@@ -1,4 +1,5 @@
 # -*- encoding:utf-8 -*-
+from datetime import datetime
 from openerp.osv import fields
 from openerp.osv import osv
 
@@ -24,6 +25,8 @@ class project_active_tasking(osv.osv):
         return result
 
     _columns = {
+        'is_display_button': fields.function(_is_display_button, type="boolean",
+                                             string="Is Display Button"),
         'form_name': fields.char(size=128, string="Form Name"),
         "project_id": fields.many2one('project.project', string='Related Project', ondelete="cascade",
                                       required=True),
@@ -57,7 +60,6 @@ class project_active_tasking(osv.osv):
         "hetongyizhi": fields.selection([(u"合同/协议要求表述不一致已解决", u"合同/协议要求表述不一致已解决"),
                                          (u"没有出现不一致", u"没有出现不一致")], u"不一致是否解决", ),
         "ziyuan": fields.selection([(u'人力资源满足', u'人力资源满足'), (u'人力资源不足', u'人力资源不足')], u'人力资源', ),
-        #本院是否有能力满足规定要求
         "shebei": fields.selection([(u'设备满足', '设备满足'), (u'设备不满足', u'设备不满足')], u"设备", ), #本院是否有能力满足规定要求
         "gongqi": fields.selection([(u'工期可接受', '工期可接受'), (u'工期太紧', u'工期太紧')], u"工期", ), #本院是否有能力满足规定要求
         "shejifei": fields.selection([(u'设计费合理', '设计费合理'), (u'设计费太低', u'设计费太低')], u'设计费', ), #本院是否有能力满足规定要求
@@ -70,10 +72,11 @@ class project_active_tasking(osv.osv):
         "shifoutoubiao": fields.boolean(u"是否投标项目"),
         "toubiaoleibie": fields.selection([(u'商务标', u'商务标'), (u'技术标', u'技术标'), (u'综合标', u'综合标')], u"投标类别"),
 
-        'is_display_button': fields.function(_is_display_button, type="boolean",
-                                             string="Is Display Button"),
         'director_reviewer_id': fields.many2one('res.users', string=u'Review Director'),
-        'director_apply_submitter_id': fields.many2one('res.users', string=u'Review Submitter'),
+
+        'director_reviewer_apply_id': fields.many2one('res.users', string=u'Review Apply By'),
+        'director_reviewer_apply_time': fields.datetime(string="Director Reviewer Approve Time"),
+
         'director_approve': fields.many2one('res.users', string="Director Approve"),
         'director_approve_time': fields.datetime(string="Director Approve Time"),
 
@@ -121,6 +124,43 @@ class project_active_tasking(osv.osv):
             ret['value'].update(sms_vals)
         return ret
 
+    def _sign_form(self, cr, uid, ids, submitter_id_field_name, submit_date_field_name, is_clean=False, context=None):
+        if not is_clean:
+            self.write(cr, uid, ids, {submitter_id_field_name: uid, submit_date_field_name: datetime.now()},
+                       context=context)
+        else:
+            self.write(cr, uid, ids, {submitter_id_field_name: None, submit_date_field_name: None},
+                       context=context)
+
+    def _send_workflow_signal(self, cr, uid, ids, log_info, signal, context=None):
+        project = self.pool.get('project.project')
+        suozhangshenpi = self.browse(cr, uid, ids, context=None)
+        if suozhangshenpi and suozhangshenpi[0].project_id:
+            project.write(cr, uid, suozhangshenpi[0].project_id.id,
+                          {'project_logs': [(0, 0, {'project_id': suozhangshenpi[0].project_id.id,
+                                                    'log_user': uid,
+                                                    'log_info': log_info})]})
+            self._workflow_signal(cr, uid, ids, signal)
+            return True
+        else:
+            return False
+
+    def director_review_submit(self, cr, uid, ids, context=None):
+        suozhangshenpi = self.browse(cr, uid, ids, context=None)
+        log_info = u'提交所长审批请求到--> %s' % suozhangshenpi[0].director_reviewer_id.name
+        return self._send_workflow_signal(cr, uid, ids, log_info, 'draft_submit')
+
+    def director_review_accept(self, cr, uid, ids, context=None):
+        self._sign_form(cr, uid, ids, 'director_reviewer_apply_id', 'director_reviewer_apply_time', context)
+        log_info = u'所长审批通过,提交请求到经营室'
+        return self._send_workflow_signal(cr, uid, ids, log_info, 'suozhangshenpi_submit')
+
+    def draft_reject(self, cr, uid, ids, context=None):
+        self._sign_form(cr, uid, ids, 'director_reviewer_apply_id', 'director_reviewer_apply_time', is_clean=True,
+                        context=context)
+        log_info = u'打回申请单'
+        return self._send_workflow_signal(cr, uid, ids, log_info, 'draft_reject')
+
 # def onchange_partner_id(self, cr, uid, ids, part=False, context=None):
 #     partner_obj = self.pool.get('res.partner')
 #     if not part:
@@ -146,4 +186,5 @@ class project_project_inherit(osv.osv):
     def act_active_tasking(self, cr, uid, ids):
         self.write(cr, uid, ids, {'state': 'project_active', 'state_active': 'project_active_tasking'})
         return self.init_form(cr, uid, ids, "project.project.active.tasking", 'active_tasking')
+
 
