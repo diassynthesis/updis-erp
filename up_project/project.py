@@ -135,7 +135,7 @@ class updis_project(osv.osv):
     def on_change_country(self, cr, uid, ids, country_id, context=None):
         return {}
 
-    def init_form(self, cr, uid, ids, form_name, project_form_field):
+    def init_form(self, cr, uid, ids, form_name, project_form_field, context=None):
         assert len(ids) == 1
         project_id = self.browse(cr, 1, ids, context=None)
         if project_id[0] and project_id[0][project_form_field]:
@@ -143,7 +143,7 @@ class updis_project(osv.osv):
         else:
             suozhangshenpi = self.pool.get(form_name)
             #by pass
-            suozhangshenpi_id = suozhangshenpi.create(cr, 1, {'project_id': ids[0]}, None)
+            suozhangshenpi_id = suozhangshenpi.create(cr, 1, {'project_id': ids[0]}, context=context)
             self.write(cr, 1, ids, {project_form_field: suozhangshenpi_id})
             return suozhangshenpi_id
 

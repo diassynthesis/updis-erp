@@ -62,7 +62,7 @@ class project_active_tasking(osv.osv):
                                       ("end", u'归档'),
                                   ], "State", help='When project is created, the state is \'open\''),
 
-
+        "partner_address": fields.related('partner_id', "street", type="char", string='Custom Address'),
         "customer_contact": fields.many2one('res.partner', 'Customer Contact'),
         "guimo": fields.char(u"规模", size=64),
 
@@ -141,8 +141,30 @@ class project_active_tasking(osv.osv):
         'state': 'open',
 
     }
-
     _sql_constraints = [('xiangmubianhao_uniq', 'unique(xiangmubianhao)', 'xiangmubianhao must be unique !')]
+
+    def onchange_partner_id(self, cr, uid, ids, partner_id, context=None):
+        ret = {'value': {}}
+        if partner_id:
+            partner = self.pool.get('res.partner').browse(cr, uid, partner_id, context=context)
+            state_name = partner.state_id and partner.state_id.name or ""
+            country_name = partner.country_id and partner.country_id.name or ""
+            city = partner.city and partner.city or ""
+            street = partner.street and partner.street or ""
+            street2 = partner.street2 and partner.street2 or ""
+            if country_name == "China":
+                country_name = u"中国"
+
+            sms_vals = {
+                'partner_address': "%s" % (street)
+            }
+            ret['value'].update(sms_vals)
+        else:
+            sms_vals = {
+                'partner_address': ""
+            }
+            ret['value'].update(sms_vals)
+        return ret
 
     def onchange_category_id(self, cr, uid, ids, category_id, context=None):
         ret = {'value': {}}
@@ -249,11 +271,11 @@ class project_project_inherit(osv.osv):
 
     _columns = {
         'active_tasking': fields.many2one("project.project.active.tasking", string='Active Tasking Form',
-                                          ondelete="cascade", ),
+                                          ondelete="cascade" ),
     }
 
-    def act_active_tasking(self, cr, uid, ids):
+    def act_active_tasking(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'state': 'project_active', 'state_active': 'project_active_tasking'})
-        return self.init_form(cr, uid, ids, "project.project.active.tasking", 'active_tasking')
+        return self.init_form(cr, uid, ids, "project.project.active.tasking", 'active_tasking', context=context)
 
 

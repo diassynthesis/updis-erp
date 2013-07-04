@@ -34,7 +34,7 @@
 		<record id="rule_delete_project" model="ir.rule">
 			<field name="name">Only admin can delete project</field>
 			<field name="model_id" ref="model_project_project"/>
-			<field name="domain_force">[('fuzeren_id','=',user.id)]</field>
+			<field name="domain_force">[('user_id','=',user.id)]</field>
 			<field name="perm_unlink" eval="True" />
 			<field name="perm_read" eval="False" />
 			<field name="perm_write" eval="False" />

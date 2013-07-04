@@ -28,11 +28,13 @@
                         <group class="activetable" col="4">
                             <field name="name" string="Project Name" readonly="1" colspan="4"/>
                             <field name="partner_id" domain="[('is_company','=',True)]"
+                                   on_change="onchange_partner_id(partner_id)"
                                    attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
                                    required="1"/>
                             <field name="guimo" required="1"
                                    attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
                                     />
+                            <field name="partner_address" readonly="1"/>
                             <field name="customer_contact" required="1"
                                    attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
                         </group>
@@ -205,10 +207,10 @@
                                 <field name="jinyinshi_submitter_id" readonly="1" colspan="2"/>
                                 <div>
                                     <field name="jinyinshi_submitter_datetime" readonly="1" colspan="1"/>
-                                    <button name="operator_review_accept" class="oe_highlight" string="经营室审批申请单"
+                                    <button name="operator_review_accept" class="oe_highlight" string="提交总师室审批"
                                             states="zhidingbumen" confirm="确定提交到总师室审批?"
                                             type="object" groups="up_project.group_up_project_jingyingshi"/>
-                                    <button name="operator_reject" string="打回申请单" states="zhidingbumen"
+                                    <button name="operator_reject" string="打回申请" states="zhidingbumen"
                                             type="object"
                                             groups="up_project.group_up_project_jingyingshi" confirm="确定打回所长申请?"/>
                                 </div>
@@ -258,8 +260,8 @@
                                             <field name="zongshishi_submitter_id" readonly="1"/>
                                             <field name="zongshishi_submit_datetime" readonly="1"/>
                                             <button name="engineer_review_accept" class="oe_highlight"
-                                                    groups="up_project.group_up_project_zongshishi" string="总师室审批申请单"
-                                                    states="zhidingfuzeren" confirm="确定发送申请到所长?"
+                                                    groups="up_project.group_up_project_zongshishi" string="审批通过"
+                                                    states="zhidingfuzeren" confirm="确定审批通过,并且发送申请到项目负责人?"
                                                     type="object"/>
                                             <button name="engineer_reject" string="打回申请单"
                                                     groups="up_project.group_up_project_zongshishi"

@@ -37,6 +37,7 @@
             <field name="name">总师室指定负责人</field>
             <field name="kind">function</field>
             <field name="action">workflow_engineer_room()</field>
+
         </record>
         <record id="act_active_tasking_director_approve" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
@@ -49,7 +50,7 @@
             <field name="name">Project Active End Point</field>
             <field name="kind">function</field>
             <field name="flow_stop">True</field>
-            <field name="signal_send">subflow.project_active_tasking_end</field>
+            <field name="signal_send">subflow.pro_act_task_end</field>
             <field name="action">write({'state':'end'})</field>
         </record>
 
