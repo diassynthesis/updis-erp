@@ -6,6 +6,145 @@ from openerp.osv import osv
 __author__ = 'cysnake4713'
 
 
+class project_active_tasking_engineer(osv.osv_memory):
+    _name = "project.project.active.tasking.engineer"
+
+    def default_get(self, cr, uid, fields, context=None):
+        """
+        This function gets default values
+        """
+        res = super(project_active_tasking_engineer, self).default_get(cr, uid, fields, context=context)
+        if context is None:
+            context = {}
+        record_id = context and context.get('active_id', False) or False
+        if not record_id:
+            return res
+        tasking_pool = self.pool.get('project.project.active.tasking')
+        tasking = tasking_pool.browse(cr, uid, record_id, context=context)
+
+        if 'categories_id' in fields:
+            res['categories_id'] = tasking.categories_id.id if tasking.categories_id else None
+            # if 'category_name' in fields:
+        #     res['category_name'] = tasking.category_name
+        if 'guanlijibie' in fields:
+            res['guanlijibie'] = tasking.guanlijibie
+        if 'chenjiefuzeren_id' in fields:
+            res['chenjiefuzeren_id'] = tasking.chenjiefuzeren_id.id if tasking.chenjiefuzeren_id else None
+        if 'categories_else' in fields:
+            res['categories_else'] = tasking.categories_else
+        if 'tender_category' in fields:
+            res['tender_category'] = tasking.tender_category
+        if 'zhuguanzongshi_id' in fields:
+            res['zhuguanzongshi_id'] = tasking.zhuguanzongshi_id.id if tasking.zhuguanzongshi_id else None
+        if 'shifoutoubiao' in fields:
+            res['shifoutoubiao'] = tasking.shifoutoubiao
+        if 'user_id' in fields:
+            res['user_id'] = tasking.user_id.id if tasking.user_id else None
+
+        return res
+
+
+    _columns = {
+        "shifoutoubiao": fields.boolean(string="is Tender?"),
+        "categories_id": fields.many2one("project.upcategory", u"项目类别"),
+        "category_name": fields.related('categories_id', 'name', type='char', string="Project Category Name"),
+        "guanlijibie": fields.selection([(u'院级', u'院级'), (u'所级', u'所级')], u'项目管理级别'),
+        "chenjiefuzeren_id": fields.many2one("res.users", u"承接项目负责人"),
+        "categories_else": fields.char(size=128, string='Else Category'),
+        "tender_category": fields.selection([(u'商务标', u'商务标'), (u'技术标', u'技术标'), (u'综合标', u'综合标')], u"投标类别"),
+        # "chenjiefuzeren_id": fields.related("project_id", "user_id", type="many2one", relation="res.users",
+        #                                     string=u"承接项目负责人"),
+        'user_id': fields.many2one('res.users', string='Project Manager'),
+        "zhuguanzongshi_id": fields.many2one("res.users", u"主管总师"),
+    }
+
+    def engineer_review_accept(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        record_id = context and context.get('active_id', False) or False
+        tasking = self.pool.get("project.project.active.tasking").browse(cr, uid, record_id, context)
+        self_record = self.browse(cr, uid, ids[0], context)
+        tasking.write({
+            'categories_id': self_record.categories_id.id if self_record.categories_id else None,
+            # 'category_name': self_record.category_name,
+            'guanlijibie': self_record.guanlijibie,
+            'chenjiefuzeren_id': self_record.chenjiefuzeren_id.id if self_record.chenjiefuzeren_id else None,
+            'categories_else': self_record.categories_else,
+            'tender_category': self_record.tender_category,
+            'zhuguanzongshi_id': self_record.zhuguanzongshi_id.id if self_record.zhuguanzongshi_id else None,
+
+        })
+        return tasking.engineer_review_accept()
+
+    def onchange_category_id(self, cr, uid, ids, category_id, context=None):
+        ret = {'value': {}}
+        if category_id:
+            category = self.pool.get('project.upcategory').browse(cr, uid, category_id)
+            sms_vals = {
+                'category_name': category.name,
+            }
+            ret['value'].update(sms_vals)
+        return ret
+
+
+class project_active_tasking_operator(osv.osv_memory):
+    _name = "project.project.active.tasking.operator"
+
+    def default_get(self, cr, uid, fields, context=None):
+        """
+        This function gets default values
+        """
+        res = super(project_active_tasking_operator, self).default_get(cr, uid, fields, context=context)
+        if context is None:
+            context = {}
+        record_id = context and context.get('active_id', False) or False
+        if not record_id:
+            return res
+        tasking_pool = self.pool.get('project.project.active.tasking')
+        tasking = tasking_pool.browse(cr, uid, record_id, context=context)
+
+        if 'xiangmubianhao' in fields:
+            res['xiangmubianhao'] = tasking.xiangmubianhao
+        if 'pingshenfangshi' in fields:
+            res['pingshenfangshi'] = tasking.pingshenfangshi
+        if 'yinfacuoshi' in fields:
+            res['yinfacuoshi'] = tasking.yinfacuoshi
+        if 'renwuyaoqiu' in fields:
+            res['renwuyaoqiu'] = tasking.renwuyaoqiu
+        if 'chenjiebumen_id' in fields:
+            res['chenjiebumen_id'] = tasking.chenjiebumen_id.id if tasking.chenjiebumen_id else None
+
+        return res
+
+
+    _columns = {
+        ##Operator Room
+        "xiangmubianhao": fields.char(u"项目编号", select=True, size=128, ),
+        "pingshenfangshi": fields.selection([(u'会议', u'会议'), (u'会签', u'会签'), (u'审批', u'审批')], u"评审方式"),
+        "yinfacuoshi": fields.selection([(u'可以接受', u'可以接受'), (u'不接受', u'不接受'), (u'加班', u'加班'),
+                                         (u'院内调配', u'院内调配'), (u'外协', u'外协'), (u'其它', u'其它')], u"引发措施记录"),
+        "renwuyaoqiu": fields.selection([(u'见委托书', u'见委托书'), (u'见合同草案', u'见合同草案'), (u'见洽谈记录', u'见洽谈记录'),
+                                         (u'见电话记录', u'见电话记录'), (u'招标文件', u'招标文件')], u"任务要求"),
+        "chenjiebumen_id": fields.many2one("hr.department", u"承接部门"),
+    }
+
+    def operator_review_accept(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        record_id = context and context.get('active_id', False) or False
+        tasking = self.pool.get("project.project.active.tasking").browse(cr, uid, record_id, context)
+        self_record = self.browse(cr, uid, ids[0], context)
+        tasking.write({
+            'xiangmubianhao': self_record.xiangmubianhao,
+            'pingshenfangshi': self_record.pingshenfangshi,
+            'yinfacuoshi': self_record.yinfacuoshi,
+            'renwuyaoqiu': self_record.renwuyaoqiu,
+            'chenjiebumen_id': self_record.chenjiebumen_id.id if self_record.chenjiebumen_id else None,
+
+        })
+        return tasking.operator_review_accept()
+
+
 class project_active_tasking(osv.osv):
     _log_access = True
     _name = "project.project.active.tasking"
@@ -119,7 +258,7 @@ class project_active_tasking(osv.osv):
         #Engineer Room
         # 'is_tender_project': fields.related('project_id', 'shifoutoubiao', type='boolean', string=u'is Tender Project'),
         "categories_id": fields.many2one("project.upcategory", u"项目类别"),
-        "category_name": fields.char(size=128, string="Category Name"),
+        "category_name": fields.related("categories_id", 'name', type="char", string="Category Name"),
         "guanlijibie": fields.selection([(u'院级', u'院级'), (u'所级', u'所级')], u'项目管理级别'),
         "chenjiefuzeren_id": fields.many2one("res.users", u"承接项目负责人"),
         "categories_else": fields.char(size=128, string='Else Category'),
@@ -265,13 +404,18 @@ class project_active_tasking(osv.osv):
         return True
 
 
+    def action_operator_wizard(self, cr, uid, ids, context=None):
+        ctx = (context or {}).copy()
+        ctx['default_project_id'] = ids[0]
+
+
 class project_project_inherit(osv.osv):
     _inherit = 'project.project'
     _name = 'project.project'
 
     _columns = {
         'active_tasking': fields.many2one("project.project.active.tasking", string='Active Tasking Form',
-                                          ondelete="cascade" ),
+                                          ondelete="cascade"),
     }
 
     def act_active_tasking(self, cr, uid, ids, context=None):
