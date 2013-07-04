@@ -33,3 +33,16 @@
 .openerp div.inline-item span {
     width: auto !important;
 }
+
+.openerp div.area-header {
+    margin: 30px;
+}
+
+.openerp div.area-header h3 {
+    border-bottom: solid 1px grey;
+    margin-bottom: 20px;
+}
+
+.openerp div.sheet-title {
+    text-align: center;
+}

@@ -18,25 +18,28 @@
             <field name="name">提出申请</field>
             <field name="kind">function</field>
             <field name="action">write({'state':'open'})</field>
-            <field name="action_id" ref="project_active_tasking_open_send_sms"/>
+            <!--field name="action_id" ref="project_active_tasking_open_send_sms"/-->
         </record>
         <record id="act_active_tasking_director_apply" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
             <field name="name">所长审批</field>
             <field name="kind">function</field>
             <field name="action">write({'state':'suozhangshenpi'})</field>
+            <field name="action_id" ref="project_active_tasking_director_apply_send_sms"/>
         </record>
         <record id="act_active_tasking_operator_room" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
             <field name="name">经营室指定设计部门</field>
             <field name="kind">function</field>
             <field name="action">workflow_operator_room()</field>
+            <field name="action_id" ref="project_active_tasking_operator_room_send_sms"/>
         </record>
         <record id="act_active_tasking_engineer_room" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
             <field name="name">总师室指定负责人</field>
             <field name="kind">function</field>
             <field name="action">workflow_engineer_room()</field>
+            <field name="action_id" ref="project_active_tasking_engineer_room_send_sms"/>
 
         </record>
         <record id="act_active_tasking_director_approve" model="workflow.activity">
@@ -44,6 +47,7 @@
             <field name="name">负责人签字</field>
             <field name="kind">function</field>
             <field name="action">write({'state':'suozhangqianzi'})</field>
+            <field name="action_id" ref="project_active_tasking_manager_send_sms"/>
         </record>
         <record id="act_active_tasking_stop" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
@@ -62,6 +66,7 @@
         <record id="t_project_active_tasking_end" model="workflow.transition">
             <field name="act_from" ref="act_active_tasking_director_approve"/>
             <field name="act_to" ref="act_active_tasking_stop"/>
+            <field name="group_id" ref="project.group_project_user"/>
             <field name="signal">fuzeren_submit</field>
         </record>
         <record id="t_project_active_tasking_1" model="workflow.transition">
@@ -112,7 +117,7 @@
         <record id="t_project_active_tasking_8" model="workflow.transition">
             <field name="act_from" ref="act_active_tasking_director_approve"/>
             <field name="act_to" ref="act_active_tasking_engineer_room"/>
-            <field name="group_id" ref="up_project.group_up_project_suozhang"/>
+            <field name="group_id" ref="project.group_project_user"/>
             <field name="signal">zongshishi_reject</field>
         </record>
     </data>

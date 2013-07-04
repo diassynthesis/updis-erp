@@ -39,9 +39,21 @@
                                readonly="1"/>
                     </header>
                     <sheet>
+                        <group invisible="1">
+                            <field name="is_project_created"/>
+                            <field name="is_project_creater"/>
+                        </group>
+                        <div>
+                            <h1>
+                                <field name="name" placeholder="Project Name"
+                                       attrs="{'readonly':[('is_project_created','=',True),('is_project_creater','=',False)]}"
+                                        />
+                            </h1>
+                        </div>
                         <group>
-                            <field name="name"/>
-                            <field name="project_type" class="oe_no_button">
+
+                            <field name="project_type" class="oe_no_button"
+                                   attrs="{'readonly':[('is_project_created','=',True),('is_project_creater','=',False)]}">
                                 <form>
                                     <field name="name"/>
                                 </form>
@@ -50,21 +62,36 @@
                             <div class="address_format">
                                 <field name="country_id" class="oe_no_button" widget="selection"
                                        on_change="on_change_country(country_id)" style="width: 15%%"
-                                       options="{'no_open':True}" nolabel="1" placeholder="Country"/>
+                                       options="{'no_open':True}" nolabel="1" placeholder="Country"
+                                       attrs="{'readonly':[('is_project_created','=',True),('is_project_creater','=',False)]}"/>
                                 <field name="state_id" widget="selection" options="{'no_open':True}" placeholder="State"
-                                       nolabel="1" style="width: 30%%"/>
-                                <field name="city" nolabel="1" placeholder="City" style="width: 50%%"/>
-                            </div>
-                            <div>
-
-
+                                       nolabel="1" style="width: 30%%"
+                                       attrs="{'readonly':[('is_project_created','=',True),('is_project_creater','=',False)]}"/>
+                                <field name="city" nolabel="1" placeholder="City" style="width: 50%%"
+                                       attrs="{'readonly':[('is_project_created','=',True),('is_project_creater','=',False)]}"/>
                             </div>
 
-                        </group>
-                        <group>
-                            <div name="related_forms"/>
                         </group>
                         <notebook>
+                            <page name="project_related_info" string="Project Info">
+                                <div>
+                                    <div name="project_active_area">
+                                        <div class="area-header">
+                                            <h3>项目启动文档</h3>
+                                            <table class="oe_form_group">
+                                                <thead>
+                                                    <th>文档名</th>
+                                                    <th>状态</th>
+                                                    <th>提示</th>
+                                                </thead>
+                                                <tbody>
+                                                    <div name="related_forms"/>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </page>
                             <page name="project_log" string="Project Logs">
                                 <field name="project_logs" nolabel="1" readonly="1">
                                     <tree>

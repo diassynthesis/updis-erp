@@ -64,8 +64,25 @@ class sms(osv.Model):
                 self.write(cr, uid, [sms.id], {
                     'state': 'error',
                     'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
-                    'sms_server_id': e.reason,
+                    'sms_server_id': str(e),
                 })
-
-
         logging.getLogger('sms.sms').warning("SENDING SMS!")
+
+
+    def send_sms_to_group(self, cr, uid, from_rec, content, model, res_id, group_id, context=None):
+
+        model_pool = self.pool.get('ir.model.data')
+        model_ids = model_pool.search(cr, 1, [('model', '=', 'res.groups'), ('name', '=', group_id)],
+                                      context=context)
+
+        models = model_pool.browse(cr, 1, model_ids, context=context)
+        if models:
+            groups_pool = self.pool.get("res.groups")
+            group = groups_pool.browse(cr, 1, models[0].res_id, context=context)
+            to = ','.join([rid.mobile_phone.strip() for rid in group.users if rid.mobile_phone.strip()])
+
+            if to:
+                sms = self.pool.get('sms.sms')
+                sid = sms.create(cr, uid, {'from': from_rec, 'to': to, 'content': content,
+                                           'model': model, 'res_id': res_id},
+                                 context=context)

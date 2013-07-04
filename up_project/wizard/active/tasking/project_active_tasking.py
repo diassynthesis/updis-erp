@@ -72,6 +72,7 @@ class project_active_tasking_engineer(osv.osv_memory):
             'categories_else': self_record.categories_else,
             'tender_category': self_record.tender_category,
             'zhuguanzongshi_id': self_record.zhuguanzongshi_id.id if self_record.zhuguanzongshi_id else None,
+            'user_id': self_record.user_id.id if self_record.user_id.id else None
 
         })
         return tasking.engineer_review_accept()
@@ -404,11 +405,6 @@ class project_active_tasking(osv.osv):
         return True
 
 
-    def action_operator_wizard(self, cr, uid, ids, context=None):
-        ctx = (context or {}).copy()
-        ctx['default_project_id'] = ids[0]
-
-
 class project_project_inherit(osv.osv):
     _inherit = 'project.project'
     _name = 'project.project'
@@ -416,6 +412,15 @@ class project_project_inherit(osv.osv):
     _columns = {
         'active_tasking': fields.many2one("project.project.active.tasking", string='Active Tasking Form',
                                           ondelete="cascade"),
+        'active_tasking_state': fields.related('active_tasking', 'state', type='selection', selection=[
+            # ("draft",u"New project"),
+            ("open", u"提出申请"),
+            ("suozhangshenpi", u"所长审批"),
+            ("zhidingbumen", u"经营室审批"),
+            ("zhidingfuzeren", u"总师室审批"),
+            ("suozhangqianzi", u"负责人签字"),
+            ("end", u'归档'),
+        ], string='Tasking State'),
     }
 
     def act_active_tasking(self, cr, uid, ids, context=None):

@@ -81,6 +81,12 @@ class updis_project(osv.osv):
 
         return result
 
+    def _is_project_created(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            result[obj.id] = True
+        return result
+
     _columns = {
         # 基础信息
         #  'analytic_account_id': fields.boolean("Over Ride"),
@@ -101,6 +107,8 @@ class updis_project(osv.osv):
         'project_log': fields.html(u"Project Log Info", readonly=True),
         'is_project_creater': fields.function(_is_project_creater, type="boolean",
                                               string="Is Project Creater"),
+        'is_project_created': fields.function(_is_project_created, type="boolean",
+                                              string="Is Project Created"),
     }
 
     def _get_default_country(self, cr, uid, context):

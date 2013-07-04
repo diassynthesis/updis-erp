@@ -17,7 +17,8 @@
                                     <td rowspan="3">
                                         <div class="inline-item">类别:
                                             <field name="categories_id" class="oe_no_button"
-                                                   options='{"no_open": True}' on_change="onchange_category_id(categories_id)"
+                                                   options='{"no_open": True}'
+                                                   on_change="onchange_category_id(categories_id)"
                                                    attrs="{'invisible':[('shifoutoubiao','=',True)]}"/>
                                             <field name="categories_else"
                                                    attrs="{'invisible':[('category_name','!=',u'其它')]}"/>
@@ -107,6 +108,9 @@
                                readonly="1"/>
                     </header>
                     <sheet>
+                        <div class="sheet-title">
+                            <h1>产品要求评审及任务下达记录</h1>
+                        </div>
                         <group invisible="1">
                             <field name="is_project_creater"/>
                             <field name="is_display_button"/>
@@ -121,7 +125,9 @@
                                     />
                         </group>
                         <group class="activetable" col="4">
-                            <field name="name" string="Project Name" readonly="1" colspan="4"/>
+                            <field name="name" string="Project Name"
+                                   attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
+                                   colspan="4"/>
                             <field name="partner_id" domain="[('is_company','=',True)]"
                                    on_change="onchange_partner_id(partner_id)"
                                    attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
@@ -402,7 +408,16 @@
                             string="产品要求评审及任务下达记录"
                             type="object"
                             groups="project.group_project_user"/-->
-                    <field name="active_tasking" readonly="1" required="0" class="oe_inline" nolabel="1" target="new"/>
+                    <tr>
+                        <td>
+                            <field name="active_tasking" readonly="1" required="0" class="oe_inline" nolabel="1"
+                                   target="new"/>
+                        </td>
+                        <td>
+                            <field name="active_tasking_state" readonly="1"/>
+                        </td>
+                        <td></td>
+                    </tr>
                 </xpath>
             </field>
         </record>
