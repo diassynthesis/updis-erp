@@ -152,8 +152,7 @@ pool.get('sms.sms').send_sms_to_group(cr,uid,from_rec,content,model,res_id,group
         </record>
         <record id="lines_suozhangshenpi_model" model="ir.server.object.lines">
             <field name="server_id" ref="project_active_tasking_manager_send_sms"/>
-            <field name="col1" rUPDIS-231 项目管理模块的归正
-终于,有些成功了!!!现在担心导入数据没有workflow的问题ef="sms.field_sms_sms_model"/>
+            <field name="col1" ref="sms.field_sms_sms_model"/>
             <field name="type">value</field>
             <field name="value">project.project.active.tasking</field>
         </record>
