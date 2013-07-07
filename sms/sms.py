@@ -86,3 +86,27 @@ class sms(osv.Model):
                 sid = sms.create(cr, uid, {'from': from_rec, 'to': to, 'content': content,
                                            'model': model, 'res_id': res_id},
                                  context=context)
+
+    def send_sms_to_users(self, cr, uid, users, from_rec, content, model, res_id, context=None):
+        to = ','.join(
+            [rid.mobile_phone.strip() for rid in users if rid.mobile_phone.strip()])
+        if to:
+            sid = self.create(cr, uid, {'to': to, 'content': content, 'model': model, 'res_id': res_id},
+                              context=context)
+
+
+    def send_sms_to_config_group(self, cr, uid, config_group_id, from_rec, content, model, res_id, context=None):
+        model_pool = self.pool.get('ir.model.data')
+        model_ids = model_pool.search(cr, 1, [('model', '=', 'project.config.sms'), ('name', '=', config_group_id)],
+                                      context=context)
+        models = model_pool.browse(cr, 1, model_ids, context=context)
+        if models:
+            groups_pool = self.pool.get("project.config.sms")
+            group = groups_pool.browse(cr, 1, models[0].res_id, context=context)
+            to = ','.join([rid.mobile_phone.strip() for rid in group.users if rid.mobile_phone.strip()])
+
+            if to:
+                sms = self.pool.get('sms.sms')
+                sid = sms.create(cr, uid, {'from': from_rec, 'to': to, 'content': content,
+                                           'model': model, 'res_id': res_id},
+                                 context=context)

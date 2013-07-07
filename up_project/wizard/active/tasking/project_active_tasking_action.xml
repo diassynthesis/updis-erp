@@ -5,8 +5,7 @@
         <!-- Project Creater Get SMS-->
         <record id="project_active_tasking_open_send_sms" model="ir.actions.server">
             <field name="name">发送项目起始短信</field>
-            <field name="condition">object.create_uid and object.create_uid.mobile_phone and
-                object.director_reviewer_id
+            <field name="condition">object.create_uid and object.create_uid.mobile_phone and object.director_reviewer_id
             </field>
             <field name="state">object_create</field>
             <field name="model_id" ref="up_project.model_project_project_active_tasking"/>
@@ -113,7 +112,8 @@ content = u"项目[%s]需要您的审批,请及时处理项目和跟进项目进
 model = 'project.project.active.tasking'
 res_id = object.id
 group_id = 'group_up_project_zongshishi'
-pool.get('sms.sms').send_sms_to_group(cr,uid,from_rec,content,model,res_id,group_id,context)
+sms_config_id = 'project_config_sms_active_tasking_engineer'
+pool.get('sms.sms').send_sms_to_config_group(cr, uid, sms_config_id, from_rec, content, model, res_id, context=None)
             </field>
         </record>
 

@@ -18,6 +18,7 @@
             <field name="name">提出申请</field>
             <field name="kind">function</field>
             <field name="action">write({'state':'open'})</field>
+            <field name="action_id" eval="False"/>
             <!--field name="action_id" ref="project_active_tasking_open_send_sms"/-->
         </record>
         <record id="act_active_tasking_director_apply" model="workflow.activity">
