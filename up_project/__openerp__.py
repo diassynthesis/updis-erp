@@ -10,9 +10,10 @@ UPDIS Project Module.""",
     'website': 'http://openerp.com',
     'depends': ['base', 'project', 'oecn_base_fonts'],
     'init_xml': [
-        'data/updis_data.xml',
+
     ],
     'update_xml': [
+
         'security/updis_security.xml',
         'security/ir.model.access.csv',
         'project_view.xml',
@@ -28,7 +29,7 @@ UPDIS Project Module.""",
         'project_workflow.xml',
 
         # 'report/renwuxiada.xml',
-
+        'data/updis_data.xml',
     ],
     'css': [
         'static/css/up_project.css'

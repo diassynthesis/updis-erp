@@ -62,5 +62,10 @@
         <record id="project_type_research" model="project.type">
             <field name="name">研究项目</field>
         </record>
+
+        <!--project.config.sms-->
+        <record id="project_config_sms_active_tasking_engineer" model="project.config.sms">
+            <field name="name">项目启动--总师室--短信接受人</field>
+        </record>
     </data>
 </openerp>

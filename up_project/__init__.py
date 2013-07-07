@@ -1,2 +1,3 @@
 import project
-from . import  wizard
+import project_sms
+from . import wizard
