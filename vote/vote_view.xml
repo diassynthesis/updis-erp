@@ -11,15 +11,28 @@
                         <field name="name" placeholder="Please in put vote name"/>
                     </h1>
                     <group col="4">
-                        <field name="description"/>
+                        <field name="description" colspan="4"/>
                     </group>
                     <group string="Vote Info" col="4">
                         <field name="start_time"/>
                         <field name="end_time"/>
                         <field name="allow_vote_time"/>
                         <field name="is_display"/>
+                        <field name="show_result"/>
                         <newline/>
                         <field name="image_fixed" widget='image' colspan='4'/>
+                        <field name="have_image"/>
+                    </group>
+                    <group>
+                        <field name="comment" widget="html" colspan="4"/>
+                    </group>
+                    <group string="Result">
+                        <field name="vote_record_ids" readonly="1" nolabel="1">
+                            <tree>
+                                <field name="name"/>
+                                <field name="vote_number"/>
+                            </tree>
+                        </field>
                     </group>
                     <group>
                         <field name="vote_logs" colspan="4" readonly="1"/>
@@ -68,6 +81,7 @@
                         <field name="author"/>
                         <field name="description" colspan="4"/>
                         <field name="record_image" widget='image' colspan='4'/>
+                        <field name="have_image"/>
                     </group>
                     <group string="Vote Content" col="1">
                         <field name="content" widget="html" nolabel="1"/>
@@ -75,6 +89,10 @@
                     <group col="1">
                         <field name="vote_logs"/>
                     </group>
+                    <div class="oe_chatter">
+                        <!--<field name="message_follower_ids" widget="mail_followers" help="Follow this project to automatically follow all related update and comments."/>-->
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                 </form>
             </field>
         </record>
@@ -126,11 +144,11 @@
 
         <menuitem name="Vote Management" id="menu_vote_root" sequence="2" groups="vote.vote_manager"/>
 
-        <menuitem name="Vote Category" parent="menu_vote_root" id="menu_vote_category" sequence="80"/>
+        <menuitem name="Vote Category" parent="menu_vote_root" id="menu_vote_category" sequence="40"/>
         <menuitem name="Vote Category Management" action="action_view_vote_category" parent="menu_vote_category"
                   id="menu_vote_category_management"/>
 
-        <menuitem name="Vote Record" parent="menu_vote_root" id="menu_vote_record" sequence="40"/>
+        <menuitem name="Vote Record" parent="menu_vote_root" id="menu_vote_record" sequence="80"/>
         <menuitem name="Vote Record Management" action="action_view_vote_record" parent="menu_vote_record"
                   id="menu_vote_record_management"/>
 

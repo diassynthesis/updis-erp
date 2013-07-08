@@ -76,3 +76,9 @@ class res_users(osv.osv):
                     del self._uid_cache[db][id]
         self.context_get.clear_cache(self)
         return res
+
+    def create(self, cr, uid, vals, context=None):
+        if self.user_has_groups(cr, uid, 'updis.group_res_user_manager'):
+            return super(res_users, self).create(cr, 1, vals, context)
+        else:
+            return super(res_users, self).create(cr, uid, vals, context)
