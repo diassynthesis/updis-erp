@@ -416,7 +416,14 @@
                         <td>
                             <field name="active_tasking_state" readonly="1"/>
                         </td>
-                        <td></td>
+                        <td>
+                            <field name="active_tasking_is_wait_user_process" invisible="1"/>
+                            <div attrs="{'invisible':[('active_tasking_is_wait_user_process','=',False)]}">
+                                <span class="hint-red">
+                                    等待处理
+                                </span>
+                            </div>
+                        </td>
                     </tr>
                 </xpath>
             </field>

@@ -46,3 +46,7 @@
 .openerp div.sheet-title {
     text-align: center;
 }
+
+.openerp span.hint-red {
+    color: red;
+}

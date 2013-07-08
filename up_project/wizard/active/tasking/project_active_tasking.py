@@ -185,6 +185,28 @@ class project_active_tasking(osv.osv):
                 result[obj.id] = False
         return result
 
+    def _is_wait_user_process(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            result_flag = False
+            if obj.state == 'open':
+                if obj.create_uid and uid == obj.create_uid.id:
+                    result_flag = True
+            if obj.state == 'suozhangshenpi':
+                if obj.director_reviewer_id and uid == obj.director_reviewer_id.id:
+                    result_flag = True
+            if obj.state == 'zhidingbumen':
+                if self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context):
+                    result_flag = True
+            if obj.state == 'zhidingfuzeren':
+                if self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context):
+                    result_flag = True
+            if obj.state == 'suozhangqianzi':
+                if obj.user_id and obj.user_id.id == uid:
+                    result_flag = True
+
+            result[obj.id] = result_flag
+        return result
 
     _columns = {
         'is_display_button': fields.function(_is_display_button, type="boolean",
@@ -203,8 +225,6 @@ class project_active_tasking(osv.osv):
                                   ], "State", help='When project is created, the state is \'open\''),
 
         "partner_address": fields.related('partner_id', "street", type="char", string='Custom Address'),
-
-
 
 
         #Director apply
@@ -231,7 +251,6 @@ class project_active_tasking(osv.osv):
         "duofanghetong": fields.boolean(u"多方合同"),
         "jianyishejibumen_id": fields.many2one("hr.department", u"建议设计部门"),
         "jianyixiangmufuzeren_id": fields.many2one("res.users", u"建议项目负责人"),
-
 
 
         'director_reviewer_id': fields.many2one('res.users', string=u'Review Director'),
@@ -274,6 +293,9 @@ class project_active_tasking(osv.osv):
 
         'is_user_is_project_manager': fields.function(_is_user_is_project_manager, type="boolean",
                                                       string="Is User is The Project Manager"),
+        'is_wait_user_process': fields.function(_is_wait_user_process, type="boolean",
+                                                string="Is User is The Project Manager"),
+
     }
 
     _defaults = {
@@ -412,6 +434,8 @@ class project_project_inherit(osv.osv):
     _columns = {
         'active_tasking': fields.many2one("project.project.active.tasking", string='Active Tasking Form',
                                           ondelete="cascade"),
+        'active_tasking_is_wait_user_process': fields.related('active_tasking', 'is_wait_user_process', type='boolean',
+                                                              string="Active Tasking Is Waiting User"),
         'active_tasking_state': fields.related('active_tasking', 'state', type='selection', selection=[
             # ("draft",u"New project"),
             ("open", u"提出申请"),
