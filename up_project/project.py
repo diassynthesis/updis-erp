@@ -155,6 +155,11 @@ class updis_project(osv.osv):
             self.write(cr, 1, ids, {project_form_field: suozhangshenpi_id})
             return suozhangshenpi_id
 
+    def create(self, cr, uid, args, context=None):
+        ids = super(updis_project, self).create(cr, uid, args, context=None)
+        self._workflow_signal(cr, uid, [ids], 'start_to_active', context=context)
+        return ids
+
 # class project_profession(osv.Model):
 #     """Profession"""
 #     _name = "project.profession"

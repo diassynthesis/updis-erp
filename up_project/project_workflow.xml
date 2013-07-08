@@ -43,6 +43,7 @@
         <record id="t_project_start" model="workflow.transition">
             <field name="act_from" ref="activity_project_start"/>
             <field name="act_to" ref="activity_project_active"/>
+            <field name="signal">start_to_active</field>
         </record>
         <record id="t_project_end" model="workflow.transition">
             <field name="act_from" ref="acitivity_project_filed"/>
