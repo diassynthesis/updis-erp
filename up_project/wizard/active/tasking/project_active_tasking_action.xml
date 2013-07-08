@@ -2,7 +2,7 @@
 <openerp>
     <data>
         <!-- 短信 -->
-        <!-- Project Creater Get SMS-->
+        <!-- Project Creater Get SMS
         <record id="project_active_tasking_open_send_sms" model="ir.actions.server">
             <field name="name">发送项目起始短信</field>
             <field name="condition">object.create_uid and object.create_uid.mobile_phone and object.director_reviewer_id
@@ -40,49 +40,25 @@
             <field name="col1" ref="sms.field_sms_sms_model"/>
             <field name="type">value</field>
             <field name="value">project.project.active.tasking</field>
-        </record>
+        </record>-->
 
 
         <!-- Project Director Get SMS-->
         <record id="project_active_tasking_director_apply_send_sms" model="ir.actions.server">
             <field name="name">发送所长审批通知短信</field>
-            <field name="condition">object.director_reviewer_id and object.director_reviewer_id.mobile_phone</field>
-            <field name="state">object_create</field>
+            <field name="condition" eval="True"/>
+           <field name="state">code</field>
             <field name="model_id" ref="up_project.model_project_project_active_tasking"/>
-            <field name="srcmodel_id" ref="sms.model_sms_sms"/>
-        </record>
-        <record id="lines_suozhangshenpi_content" model="ir.server.object.lines">
-            <field name="server_id" ref="project_active_tasking_director_apply_send_sms"/>
-            <field name="col1" ref="sms.field_sms_sms_content"/>
-            <field name="type">equation</field>
-            <field name="value">u"项目[%s]需要您的审批,请及时处理项目和跟进项目进度"%(object.name)
+            <field name="code">
+from_rec = object.name
+content = u"项目[%s]需要您的审批,请及时处理项目和跟进项目进度" % (object.name)
+model = 'project.project.active.tasking'
+res_id = object.id
+to = object.director_reviewer_id.id
+users = pool.get('res.users').browse(cr,1,[to],context=context)
+pool.get('sms.sms').send_sms_to_users( cr, 1, users, from_rec, content, model, res_id, context=None)
             </field>
         </record>
-        <record id="lines_suozhangshenpi_to" model="ir.server.object.lines">
-            <field name="server_id" ref="project_active_tasking_director_apply_send_sms"/>
-            <field name="col1" ref="sms.field_sms_sms_to"/>
-            <field name="type">equation</field>
-            <field name="value">object.director_reviewer_id.mobile_phone</field>
-        </record>
-        <record id="lines_suozhangshenpi_from" model="ir.server.object.lines">
-            <field name="server_id" ref="project_active_tasking_director_apply_send_sms"/>
-            <field name="col1" ref="sms.field_sms_sms_from"/>
-            <field name="type">equation</field>
-            <field name="value">object.name</field>
-        </record>
-        <record id="lines_suozhangshenpi_res_id" model="ir.server.object.lines">
-            <field name="server_id" ref="project_active_tasking_director_apply_send_sms"/>
-            <field name="col1" ref="sms.field_sms_sms_res_id"/>
-            <field name="type">equation</field>
-            <field name="value">object.id</field>
-        </record>
-        <record id="lines_suozhangshenpi_model" model="ir.server.object.lines">
-            <field name="server_id" ref="project_active_tasking_director_apply_send_sms"/>
-            <field name="col1" ref="sms.field_sms_sms_model"/>
-            <field name="type">value</field>
-            <field name="value">project.project.active.tasking</field>
-        </record>
-
 
         <!-- Project Operator Room Get SMS-->
         <record id="project_active_tasking_operator_room_send_sms" model="ir.actions.server">
@@ -120,42 +96,18 @@ pool.get('sms.sms').send_sms_to_config_group(cr, uid, sms_config_id, from_rec, c
         <!-- Project Director Get SMS-->
         <record id="project_active_tasking_manager_send_sms" model="ir.actions.server">
             <field name="name">发送项目负责人审批通知短信</field>
-            <field name="condition">object.user_id and object.user_id.mobile_phone</field>
-            <field name="state">object_create</field>
+            <field name="condition" eval="True"/>
+            <field name="state">code</field>
             <field name="model_id" ref="up_project.model_project_project_active_tasking"/>
-            <field name="srcmodel_id" ref="sms.model_sms_sms"/>
-        </record>
-        <record id="lines_suozhangshenpi_content" model="ir.server.object.lines">
-            <field name="server_id" ref="project_active_tasking_manager_send_sms"/>
-            <field name="col1" ref="sms.field_sms_sms_content"/>
-            <field name="type">equation</field>
-            <field name="value">u"项目[%s]需要您的签字以启动项目,请及时处理项目和跟进项目进度"%(object.name)
+            <field name="code">
+from_rec = object.name
+content = u"项目[%s]需要您的审批启动,请及时处理项目和跟进项目进度" % (object.name)
+model = 'project.project.active.tasking'
+res_id = object.id
+to = object.user_id.id
+users = pool.get('res.users').browse(cr,1,[to],context=context)
+pool.get('sms.sms').send_sms_to_users( cr, 1, users, from_rec, content, model, res_id, context=None)
             </field>
         </record>
-        <record id="lines_suozhangshenpi_to" model="ir.server.object.lines">
-            <field name="server_id" ref="project_active_tasking_manager_send_sms"/>
-            <field name="col1" ref="sms.field_sms_sms_to"/>
-            <field name="type">equation</field>
-            <field name="value">object.user_id.mobile_phone</field>
-        </record>
-        <record id="lines_suozhangshenpi_from" model="ir.server.object.lines">
-            <field name="server_id" ref="project_active_tasking_manager_send_sms"/>
-            <field name="col1" ref="sms.field_sms_sms_from"/>
-            <field name="type">equation</field>
-            <field name="value">object.name</field>
-        </record>
-        <record id="lines_suozhangshenpi_res_id" model="ir.server.object.lines">
-            <field name="server_id" ref="project_active_tasking_manager_send_sms"/>
-            <field name="col1" ref="sms.field_sms_sms_res_id"/>
-            <field name="type">equation</field>
-            <field name="value">object.id</field>
-        </record>
-        <record id="lines_suozhangshenpi_model" model="ir.server.object.lines">
-            <field name="server_id" ref="project_active_tasking_manager_send_sms"/>
-            <field name="col1" ref="sms.field_sms_sms_model"/>
-            <field name="type">value</field>
-            <field name="value">project.project.active.tasking</field>
-        </record>
-
     </data>
 </openerp>
