@@ -90,6 +90,7 @@ class updis_project(osv.osv):
     _columns = {
         # 基础信息
         #  'analytic_account_id': fields.boolean("Over Ride"),
+        "shifoutoubiao": fields.boolean(u"是否投标项目"),
         "project_type": fields.many2one("project.type", string="Project Type", required=True),
         'project_logs': fields.one2many('project.log', 'project_id', string='Project Logs'),
         'create_date': fields.datetime('Created on', select=True),
@@ -105,6 +106,13 @@ class updis_project(osv.osv):
                                    ("project_processing", u"Project Processing"),
                                    ("project_filed", u"Project Filed"), ]),
         'project_log': fields.html(u"Project Log Info", readonly=True),
+        "xiangmubianhao": fields.char(u"项目编号", select=True, size=128, ),
+        "chenjiebumen_id": fields.many2one("hr.department", u"承接部门"),
+        "guimo": fields.char(u"规模", size=64),
+        "categories_id": fields.many2one("project.upcategory", u"项目类别"),
+        "customer_contact": fields.many2one('res.partner', 'Customer Contact'),
+        "guanlijibie": fields.selection([(u'院级', u'院级'), (u'所级', u'所级')], u'项目管理级别'),
+        "toubiaoleibie": fields.selection([(u'商务标', u'商务标'), (u'技术标', u'技术标'), (u'综合标', u'综合标')], u"投标类别"),
         'is_project_creater': fields.function(_is_project_creater, type="boolean",
                                               string="Is Project Creater"),
         'is_project_created': fields.function(_is_project_created, type="boolean",

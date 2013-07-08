@@ -79,7 +79,8 @@ class sms(osv.Model):
         if models:
             groups_pool = self.pool.get("res.groups")
             group = groups_pool.browse(cr, 1, models[0].res_id, context=context)
-            to = ','.join([rid.mobile_phone.strip() for rid in group.users if rid.mobile_phone.strip()])
+            to = ','.join(
+                [rid.mobile_phone.strip() for rid in group.users if rid.mobile_phone and rid.mobile_phone.strip()])
 
             if to:
                 sms = self.pool.get('sms.sms')
@@ -89,7 +90,7 @@ class sms(osv.Model):
 
     def send_sms_to_users(self, cr, uid, users, from_rec, content, model, res_id, context=None):
         to = ','.join(
-            [rid.mobile_phone.strip() for rid in users if rid.mobile_phone.strip()])
+            [rid.mobile_phone.strip() for rid in users if rid.mobile_phone and rid.mobile_phone.strip()])
         if to:
             sid = self.create(cr, uid, {'to': to, 'content': content, 'model': model, 'res_id': res_id},
                               context=context)
@@ -103,7 +104,8 @@ class sms(osv.Model):
         if models:
             groups_pool = self.pool.get("project.config.sms")
             group = groups_pool.browse(cr, 1, models[0].res_id, context=context)
-            to = ','.join([rid.mobile_phone.strip() for rid in group.users if rid.mobile_phone.strip()])
+            to = ','.join(
+                [rid.mobile_phone.strip() for rid in group.users if rid.mobile_phone and rid.mobile_phone.strip()])
 
             if to:
                 sms = self.pool.get('sms.sms')
