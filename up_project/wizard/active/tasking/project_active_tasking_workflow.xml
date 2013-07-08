@@ -17,7 +17,7 @@
             <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
             <field name="name">提出申请</field>
             <field name="kind">function</field>
-            <field name="action">write({'state':'open'})</field>
+            <field name="action">write({'state':'open','status_code':10101})</field>
             <field name="action_id" eval="False"/>
             <!--field name="action_id" ref="project_active_tasking_open_send_sms"/-->
         </record>
@@ -25,7 +25,7 @@
             <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
             <field name="name">所长审批</field>
             <field name="kind">function</field>
-            <field name="action">write({'state':'suozhangshenpi'})</field>
+            <field name="action">workflow_director_submit()</field>
             <field name="action_id" ref="project_active_tasking_director_apply_send_sms"/>
         </record>
         <record id="act_active_tasking_operator_room" model="workflow.activity">
@@ -47,7 +47,7 @@
             <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
             <field name="name">负责人签字</field>
             <field name="kind">function</field>
-            <field name="action">write({'state':'suozhangqianzi'})</field>
+            <field name="action">write({'state':'suozhangqianzi','status_code':10105})</field>
             <field name="action_id" ref="project_active_tasking_manager_send_sms"/>
         </record>
         <record id="act_active_tasking_stop" model="workflow.activity">
@@ -56,7 +56,7 @@
             <field name="kind">function</field>
             <field name="flow_stop">True</field>
             <field name="signal_send">subflow.pro_act_task_end</field>
-            <field name="action">write({'state':'end'})</field>
+            <field name="action">write({'state':'end','status_code':10106})</field>
         </record>
 
         <!-- Transitions -->

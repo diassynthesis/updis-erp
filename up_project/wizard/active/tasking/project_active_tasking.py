@@ -187,13 +187,16 @@ class project_active_tasking(osv.osv):
 
     def _is_wait_user_process(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
+        if context is None:
+            context = {}
+        current_uid = context and context.get('uid', False) or False
         for obj in self.browse(cr, uid, ids, context=context):
             result_flag = False
             if obj.state == 'open':
-                if obj.create_uid and uid == obj.create_uid.id:
+                if obj.create_uid and current_uid == obj.create_uid.id:
                     result_flag = True
             if obj.state == 'suozhangshenpi':
-                if obj.director_reviewer_id and uid == obj.director_reviewer_id.id:
+                if obj.director_reviewer_id and current_uid == obj.director_reviewer_id.id:
                     result_flag = True
             if obj.state == 'zhidingbumen':
                 if self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context):
@@ -202,7 +205,7 @@ class project_active_tasking(osv.osv):
                 if self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context):
                     result_flag = True
             if obj.state == 'suozhangqianzi':
-                if obj.user_id and obj.user_id.id == uid:
+                if obj.user_id and obj.user_id.id == current_uid:
                     result_flag = True
 
             result[obj.id] = result_flag
@@ -413,16 +416,26 @@ class project_active_tasking(osv.osv):
         return self._send_workflow_signal(cr, uid, ids, log_info, 'zongshishi_reject')
 
 
+    def workflow_director_submit(self, cr, uid, ids, context=None):
+        tasking = self.browse(cr, 1, ids[0], context=context)
+        self.write(cr, 1, ids,
+                   {'state': 'suozhangshenpi', 'status_code': 10102, 'related_user_id': tasking.director_reviewer_id.id},
+                   context=context)
+        return True
+
+
     def workflow_operator_room(self, cr, uid, ids, context=None):
         tasking = self.browse(cr, 1, ids[0], context=context)
-        self.write(cr, 1, ids, {'chenjiebumen_id': tasking.jianyishejibumen_id.id, 'state': 'zhidingbumen'},
+        self.write(cr, 1, ids,
+                   {'chenjiebumen_id': tasking.jianyishejibumen_id.id, 'state': 'zhidingbumen', 'status_code': 10103, },
                    context=context)
         return True
 
     def workflow_engineer_room(self, cr, uid, ids, context=None):
         tasking = self.browse(cr, 1, ids[0], context=context)
         self.write(cr, 1, ids, {'tender_category': tasking.toubiaoleibie,
-                                'user_id': tasking.jianyixiangmufuzeren_id.id, 'state': 'zhidingfuzeren'},
+                                'user_id': tasking.jianyixiangmufuzeren_id.id, 'state': 'zhidingfuzeren',
+                                'status_code': 10104},
                    context=context)
         return True
 

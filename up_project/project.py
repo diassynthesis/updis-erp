@@ -90,6 +90,8 @@ class updis_project(osv.osv):
     _columns = {
         # 基础信息
         #  'analytic_account_id': fields.boolean("Over Ride"),
+        'related_user_id': fields.many2one('res.users', string="Related Users ID"),
+        'status_code': fields.integer(string='Status Code'),
         "shifoutoubiao": fields.boolean(u"是否投标项目"),
         "project_type": fields.many2one("project.type", string="Project Type", required=True),
         'project_logs': fields.one2many('project.log', 'project_id', string='Project Logs'),
@@ -168,46 +170,71 @@ class updis_project(osv.osv):
         self._workflow_signal(cr, uid, [ids], 'start_to_active', context=context)
         return ids
 
-# class project_profession(osv.Model):
-#     """Profession"""
-#     _name = "project.profession"
-#     _description = "Project Profession"
-#     _columns = {
-#         'name': fields.char("Name", size=64),
-#         'active': fields.boolean("Active"),
-#     }
-#     _defaults = {
-#         'active': True
-#     }
+
+    def related_to_me_action(self, cr, uid, context=None):
+        domain = [('create_uid', '=', uid)]
+        status_code = []
+        if self.user_has_groups(cr, uid, 'up_project.group_up_project_suozhang', context=context):
+            domain = ['|', '&', ('status_code', '=', 10102), ('related_user_id', '=', uid)] + domain
+        if self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context):
+            status_code += [10103]
+        if self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context):
+            status_code += [10104]
+        domain = ['|', ('status_code', 'in', status_code)] + domain
+
+        other_domain = ['|', '&', ('status_code', '=', 10105), ('user_id', '=', uid)]
+        domain = other_domain + domain
+
+        return {
+            'name': 'project test',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree,form,kanban',
+            'view_type': 'form',
+            'res_model': 'project.project',
+            'target': 'current',
+            'domain': domain,
+            'context': context,
+        }
+        # class project_profession(osv.Model):
+        #     """Profession"""
+        #     _name = "project.profession"
+        #     _description = "Project Profession"
+        #     _columns = {
+        #         'name': fields.char("Name", size=64),
+        #         'active': fields.boolean("Active"),
+        #     }
+        #     _defaults = {
+        #         'active': True
+        #     }
 
 
-# class project_duty(osv.Model):
-#     """Duty"""
-#     _name = "project.duty"
-#     _description = "Project Duty"
-#     _columns = {
-#         'name': fields.char("Name", size=64),
-#         'active': fields.boolean("Active"),
-#     }
-#     _defaults = {
-#         'active': True
-#     }
+        # class project_duty(osv.Model):
+        #     """Duty"""
+        #     _name = "project.duty"
+        #     _description = "Project Duty"
+        #     _columns = {
+        #         'name': fields.char("Name", size=64),
+        #         'active': fields.boolean("Active"),
+        #     }
+        #     _defaults = {
+        #         'active': True
+        #     }
 
 
-# class project_assignment(osv.Model):
-#     """docstring for project_assignment"""
-#     _name = "project.assignment"
-#     _description = "Project Assignment"
-#
-#     def _get_project(self, cr, uid, *args, **kwargs):
-#         #import pdb;pdb.set_trace()
-#         pass
-#
-#     _columns = {
-#         'duty_id': fields.many2one('project.duty', 'Duty'),
-#         'profession_id': fields.many2one('project.profession', 'Profession'),
-#         'project_id': fields.many2one('project.project', 'Project'),
-#     }
-#     _defaults = {
-#         'project_id': _get_project,
-#     }
+        # class project_assignment(osv.Model):
+        #     """docstring for project_assignment"""
+        #     _name = "project.assignment"
+        #     _description = "Project Assignment"
+        #
+        #     def _get_project(self, cr, uid, *args, **kwargs):
+        #         #import pdb;pdb.set_trace()
+        #         pass
+        #
+        #     _columns = {
+        #         'duty_id': fields.many2one('project.duty', 'Duty'),
+        #         'profession_id': fields.many2one('project.profession', 'Profession'),
+        #         'project_id': fields.many2one('project.project', 'Project'),
+        #     }
+        #     _defaults = {
+        #         'project_id': _get_project,
+        #     }
