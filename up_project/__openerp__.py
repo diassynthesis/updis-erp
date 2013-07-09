@@ -28,7 +28,7 @@ UPDIS Project Module.""",
 
         'project_workflow.xml',
 
-        # 'report/renwuxiada.xml',
+        'report/active/renwuxiada.xml',
         'data/updis_data.xml',
     ],
     'css': [

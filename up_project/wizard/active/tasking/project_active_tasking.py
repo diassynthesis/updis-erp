@@ -8,6 +8,7 @@ __author__ = 'cysnake4713'
 
 class project_active_tasking_engineer(osv.osv_memory):
     _name = "project.project.active.tasking.engineer"
+    _description = "Project Active Tasking"
 
     def default_get(self, cr, uid, fields, context=None):
         """
@@ -419,7 +420,8 @@ class project_active_tasking(osv.osv):
     def workflow_director_submit(self, cr, uid, ids, context=None):
         tasking = self.browse(cr, 1, ids[0], context=context)
         self.write(cr, 1, ids,
-                   {'state': 'suozhangshenpi', 'status_code': 10102, 'related_user_id': tasking.director_reviewer_id.id},
+                   {'state': 'suozhangshenpi', 'status_code': 10102,
+                    'related_user_id': tasking.director_reviewer_id.id},
                    context=context)
         return True
 

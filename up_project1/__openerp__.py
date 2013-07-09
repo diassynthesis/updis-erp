@@ -34,7 +34,7 @@ UPDIS Project Module.""",
         # 'wizard/fuzerenqidong_workflow.xml',
         'project_workflow_active.xml',
         'project_workflow.xml',
-        # 'report/renwuxiada.xml',
+        'report/renwuxiada.xml',
 
     ],
     'css': [

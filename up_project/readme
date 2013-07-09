@@ -1,0 +1,13 @@
+3.使用openerp report design + openoffice 3.4 + openerp 7.0
+在send to server的时候会提示UnicodeDecodeError: 'ascii' codec can't decode byte
+通过在addons\base_report_designer\base_report_designer.py添加如下三行代码解决
+注意默认使用空格缩进。如果增加的代码使用tab缩进会产生unexpected indent错误
+import sys
+
+
+def upload_report(self, cr, uid, report_id, file_sxw, file_type, context=None):
+'''
+Untested function
+'''
+reload(sys)
+sys.setdefaultencoding('utf8')
