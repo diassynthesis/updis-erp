@@ -163,7 +163,7 @@
 下
 达</para></td>
 			<td><para style="Value">任务要求：[[o.renwuyaoqiu==u'见委托书' and '【√】' or '【 】']]见委托书		[[o.renwuyaoqiu==u'见合同草案' and '【√】' or '【 】']]见合同草案			[[o.renwuyaoqiu==u'见洽谈记录' and '【√】' or '【 】']]见洽谈记录			[[o.renwuyaoqiu==u'见电话记录' and '【√】' or '【 】']]见电话记录			[[o.renwuyaoqiu==u'招标文件' and '【√】' or '【 】']]招标文件</para>
-			<blockTable colWidths="60,74,60,37,80">
+			<blockTable colWidths="60,74,60,37,140">
 				<tr>
 					<td><para style="Label">承接部门：</para></td>
 					<td><para style="Value">[[o.chenjiebumen_id.name]]</para></td>
@@ -172,7 +172,7 @@
 						<para style="Value">[[o.jinyinshi_submitter_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[o.jinyinshi_submitter_id.sign_image]]
                        </para>
 					</td>
-                    <td><para style="Value"> [[o.jinyinshi_submitter_datetime]]</para></td>
+                    <td><para style="Value"> [[date_format(o.jinyinshi_submitter_datetime)]]</para></td>
 				</tr>
 			</blockTable>
 		</td>
@@ -209,7 +209,7 @@
                 <blockTable colWidths="60,110">
                     <tr>
                         <td><para style="Label">[[o.zongshishi_submitter_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[o.zongshishi_submitter_id.sign_image]]</para></td>
-                        <td><para style="Value">[[o.zongshishi_submit_datetime]]</para> </td>
+                        <td><para style="Value">[[date_format(o.zongshishi_submit_datetime)]]</para> </td>
                     </tr>
                 </blockTable>
 
@@ -224,7 +224,7 @@
                 <blockTable colWidths="60,110">
                     <tr>
                         <td><para style="Label">[[o.director_approve.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]][[o.director_approve.sign_image]]</para></td>
-                        <td><para style="Value">[[o.director_approve_time]]</para></td>
+                        <td><para style="Value">[[date_format(o.director_approve_time)]]</para></td>
                     </tr>
                 </blockTable>
             </td>
