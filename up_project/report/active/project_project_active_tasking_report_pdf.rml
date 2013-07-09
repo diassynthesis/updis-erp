@@ -206,9 +206,11 @@
 			<td><para style="Label"></para></td>
 			<td><para style="Label">总师室</para></td>
 			<td>
-                <blockTable colWidths="60,110">
+                <blockTable colWidths="150">
                     <tr>
                         <td><para style="Label">[[o.zongshishi_submitter_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[o.zongshishi_submitter_id.sign_image]]</para></td>
+                    </tr>
+                    <tr>
                         <td><para style="Value">[[date_format(o.zongshishi_submit_datetime)]]</para> </td>
                     </tr>
                 </blockTable>
@@ -221,9 +223,11 @@
 			<td><para style="Label">承接部门
 				负责人</para></td>
 			<td>
-                <blockTable colWidths="60,110">
+                <blockTable colWidths="150">
                     <tr>
                         <td><para style="Label">[[o.director_approve.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]][[o.director_approve.sign_image]]</para></td>
+                    </tr>
+                    <tr>
                         <td><para style="Value">[[date_format(o.director_approve_time)]]</para></td>
                     </tr>
                 </blockTable>

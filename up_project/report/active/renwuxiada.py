@@ -15,12 +15,12 @@ class renwuxiada(report_sxw.rml_parse):
         })
 
     def date_format(self, current_date):
-        if current_date:
+        if current_date.split('.')[0] != 'False':
             create_date_display = datetime.datetime.strptime(current_date.split('.')[0],
                                                              '%Y-%m-%d %H:%M:%S') + datetime.timedelta(hours=8)
             return create_date_display.strftime('%Y/%m/%d %p %I:%M:%S')
         else:
-            return current_date
+            return ""
 
     def _get_category_names(self, pid):
         # import pdb;pdb.set_trace()
