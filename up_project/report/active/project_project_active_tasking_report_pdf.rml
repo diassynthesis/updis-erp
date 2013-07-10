@@ -3273,29 +3273,6 @@ s8AZsVf/2Q==
 			<td><para style="Label"></para></td>
 		</tr>
 	</blockTable>
-    <blockTable colWidths="22.0,170.0">
-        <tr>
-            <td>
-                <illustration height="18.0" width="22.0">
-                    <image x="0" y="0" file="1000000000000A3E00000846522C7E7B.jpg" height="18.0" width="22.0"/>
-                </illustration>
-            </td>
-            <td>
-                <blockTable colWidths="170">
-                    <tr>
-                        <td><para style="P11">深圳市城市规划设计研究院</para></td>
-                    </tr>
-                    <tr>
-                        <td><para style="P9"><font face="Helvetica" size="9.0">URBAN</font></para></td>
-                    </tr>
-
-                </blockTable>
-             </td>
-        </tr>
-    </blockTable>
-
-
-
   </story>
 </document>
 
