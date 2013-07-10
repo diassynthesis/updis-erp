@@ -5,6 +5,22 @@ from openerp.osv import osv
 __author__ = 'cysnake4713'
 
 
+class updis_contract_expenses(osv.osv):
+    _name = 'project.contract.expenses'
+    _rec_name = 'price'
+    _columns = {
+        'obtain_date': fields.date('Obtain Date', required=True),
+        'price': fields.float(string='Obtain Price', digits=(16, 4)),
+        'comment': fields.text(string="Comment"),
+        'handler': fields.many2one('hr.employee', string='Handler'),
+        'contract_id': fields.many2one('project.contract.contract', string="Contract"),
+    }
+
+    _defaults = {
+        'obtain_date': lambda *a: str(datetime.date.today()),
+    }
+
+
 class updis_contract_invoice(osv.osv):
     _name = 'project.contract.invoice'
     _description = 'Project Contract Invoice'
@@ -58,10 +74,19 @@ class updis_contract_contract(osv.osv):
 
     _columns = {
         'name': fields.char(size=128, string="Contract Name", required=True),
+        'type': fields.selection([('common', u'Common Contract'), ('third_party', u'Third Party')], required=True,
+                                 string='Contract Type'),
+        'third_party_sign_date': fields.date(string='Third Party Contract Sign Date'),
         'customer': fields.many2many('res.partner', 'contract_partner_rel', 'contract_id', 'partner_id',
                                      string='Customers'),
         'customer_contact': fields.many2many('res.partner', 'contract_contact_partner_rel', 'contract_contact_id',
                                              'partner_id', string="Customer Contacts"),
+        'third_party_company': fields.many2many('res.partner', 'contract_third_party_company_rel', 'contract_id',
+                                                'partner_id',
+                                                string='Third Party Company'),
+        'third_party_company_contact': fields.many2many('res.partner', 'contract_contact_third_party_company_rel',
+                                                        'contract_contact_id',
+                                                        'partner_id', string="Third Party Company Contacts"),
         'price': fields.float(string='Contract Price', digits=(16, 4)),
         'number': fields.char(string='Contract No.', size=128),
         'city_level_number': fields.char(string='City Contract No.', size=128),
@@ -81,7 +106,8 @@ class updis_contract_contract(osv.osv):
         'income_ids': fields.one2many('project.contract.income', 'contract_id', string='Incomes', ondelete="cascade"),
         'invoice_ids': fields.one2many('project.contract.invoice', 'contract_id', string='Invoices',
                                        ondelete="cascade"),
-
+        'expenses_ids': fields.one2many('project.contract.expenses', 'contract_id', string='Third Party Expenses',
+                                        ondelete="cascade"),
 
     }
 

@@ -39,6 +39,18 @@
                 </tree>
             </field>
         </record>
+        <record id="project_contract_expenses_tree" model="ir.ui.view">
+            <field name="name">project.contract.expenses.tree</field>
+            <field name="model">project.contract.expenses</field>
+            <field name="arch" type="xml">
+                <tree string="Project Contract Third Party Expenses">
+                    <field name="price"/>
+                    <field name="handler"/>
+                    <field name="contract_id" invisible="1"/>
+                    <field name="obtain_date"/>
+                </tree>
+            </field>
+        </record>
 
         <record id="project_contract_invoice_form" model="ir.ui.view">
             <field name="name">project.contract.invoice.form</field>
@@ -56,6 +68,25 @@
                         <field name="contract_id" invisible="1"/>
                         <field name="price"/>
                         <field name="income_ids" domain="[('contract_id','=',contract_id)]"/>
+                        <field name="comment"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="project_contract_expenses_form" model="ir.ui.view">
+            <field name="name">project.contract.expenses.form</field>
+            <field name="model">project.contract.expenses</field>
+            <field name="priority">30</field>
+            <field name="arch" type="xml">
+                <form string="Project Contract Expenses">
+                    <group>
+                        <group colspan="2" col="4">
+                            <field name="obtain_date"/>
+                            <field name="handler"/>
+                        </group>
+                        <newline/>
+                        <field name="contract_id" invisible="1"/>
+                        <field name="price"/>
                         <field name="comment"/>
                     </group>
                 </form>
@@ -94,33 +125,72 @@
                                 <field name="name" placeholder="Please Input Contract Name"/>
                             </h1>
                         </div>
-                        <group>
-                            <group>
-                                <field name="project_id" on_change="on_change_project(project_id)"/>
-                                <field name="project_category" readonly="1"/>
-                                <field name="design_department" readonly="1"/>
-                                <field name="project_scale" readonly="1"/>
-                                <field name="project_level" readonly="1"/>
-                                <field name="project_start_date"/>
-                            </group>
-                            <group>
-                                <field name="number"/>
-                                <field name="city_level_number"/>
-                                <field name="price"/>
-                                <field name="filed_date"/>
+                        <group string="Basic Info">
+                            <group col="1">
+                                <group>
+                                    <field name="type"/>
+                                    <field name="number"/>
+                                    <field name="price"/>
+                                </group>
+                                <group attrs="{'invisible':[('type','!=','common')]}">
+                                    <field name="city_level_number"/>
+                                    <field name="filed_date"/>
+                                </group>
+                                <group attrs="{'invisible':[('type','!=','third_party')]}">
+                                    <field name="third_party_sign_date"/>
+                                </group>
 
                             </group>
+                            <group col="1">
+                                <group>
+                                    <field name="project_id" class="oe_no_button"
+                                           options='{"no_open": True}' on_change="on_change_project(project_id)"/>
+                                    <field name="project_category" readonly="1"/>
+                                    <field name="design_department" readonly="1"/>
+                                    <field name="project_scale" readonly="1"/>
+                                    <field name="project_level" readonly="1"/>
+                                    <field name="project_start_date"/>
+                                </group>
+                            </group>
                         </group>
-                        <group>
-                            <field name="customer" domain="[('is_company','=',True)]"/>
-                            <field name="customer_contact"/>
+
+                        <group col="1" attrs="{'invisible':[('type','!=','common')]}">
+                            <group string="Customer Info">
+                                <field name="customer" domain="[('is_company','=',True)]"/>
+                                <field name="customer_contact"/>
+                            </group>
+                            <group string="Invoice Info">
+                                <field name="income_ids"/>
+                                <field name="invoice_ids"/>
+                            </group>
                         </group>
-                        <group>
-                            <field name="income_ids"/>
-                            <field name="invoice_ids"/>
+                        <group col="1" attrs="{'invisible':[('type','!=','third_party')]}">
+                            <group string="Third Party Info">
+                                <field name="third_party_company" domain="[('is_company','=',True)]"/>
+                                <field name="third_party_company_contact"/>
+                            </group>
+                            <group string="Third Party Expense">
+                                <field name="expenses_ids"/>
+                            </group>
                         </group>
+
                     </sheet>
                 </form>
+            </field>
+        </record>
+
+        <record id="project_contract_tree_search" model="ir.ui.view">
+            <field name="name">project.contract.contract.search</field>
+            <field name="model">project.contract.contract</field>
+            <field name="arch" type="xml">
+                <search string="Project Contract">
+                    <field name="name"/>
+                    <field name="number"/>
+                    <group expand="1" string="Group by...">
+                        <filter name="by-project-name" string="Project Name" domain="[]" context="{'group_by':'project_id'}"/>
+                        <filter name="by-project-type" string="Project Type" domain="[]" context="{'group_by':'type'}"/>
+                    </group>
+                </search>
             </field>
         </record>
 
@@ -131,9 +201,9 @@
                 <tree string="Project Contract" version="7.0">
                     <field name="number"/>
                     <field name="name"/>
+                    <field name="type"/>
                     <field name="project_id"/>
                     <field name="price"/>
-                    <field name="filed_date"/>
                 </tree>
             </field>
         </record>
@@ -149,8 +219,8 @@
                             <tree>
                                 <field name="number"/>
                                 <field name="name"/>
+                                <field name="type"/>
                                 <field name="price"/>
-                                <field name="filed_date"/>
                             </tree>
                             <form>
                                 <sheet>
@@ -159,23 +229,47 @@
                                             <field name="name" placeholder="Please Input Contract Name"/>
                                         </h1>
                                     </div>
-                                    <group>
-                                        <field name="customer" domain="[('is_company','=',True)]"/>
-                                        <field name="customer_contact"/>
-                                    </group>
-                                    <group>
-                                        <group>
-                                            <field name="number"/>
-                                            <field name="city_level_number"/>
-                                            <field name="price"/>
-                                            <field name="filed_date"/>
+                                    <group string="Basic Info">
+                                        <group col="1">
+                                            <group>
+                                                <field name="type"/>
+                                                <field name="number"/>
+                                                <field name="price"/>
+                                            </group>
+                                            <group attrs="{'invisible':[('type','!=','common')]}">
+                                                <field name="city_level_number"/>
+                                                <field name="filed_date"/>
+                                            </group>
+                                            <group attrs="{'invisible':[('type','!=','third_party')]}">
+                                                <field name="third_party_sign_date"/>
+                                            </group>
+
+                                        </group>
+                                        <group col="1">
                                             <field name="project_start_date"/>
                                         </group>
                                     </group>
-                                    <group>
-                                        <field name="income_ids"/>
-                                        <field name="invoice_ids"/>
+
+                                    <group col="1" attrs="{'invisible':[('type','!=','common')]}">
+                                        <group string="Customer Info">
+                                            <field name="customer" domain="[('is_company','=',True)]"/>
+                                            <field name="customer_contact"/>
+                                        </group>
+                                        <group string="Invoice Info">
+                                            <field name="income_ids"/>
+                                            <field name="invoice_ids"/>
+                                        </group>
                                     </group>
+                                    <group col="1" attrs="{'invisible':[('type','!=','third_party')]}">
+                                        <group string="Third Party Info">
+                                            <field name="third_party_company" domain="[('is_company','=',True)]"/>
+                                            <field name="third_party_company_contact"/>
+                                        </group>
+                                        <group string="Third Party Expense">
+                                            <field name="expenses_ids"/>
+                                        </group>
+                                    </group>
+
                                 </sheet>
                             </form>
                         </field>
@@ -188,7 +282,8 @@
             <field name="name">Projects Contract</field>
             <field name="res_model">project.contract.contract</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_by-project-name':1}</field>
         </record>
         <menuitem name="Contract" id="up_contract.project_contract" parent="base.menu_main_pm" sequence="50"
                   groups="up_project.group_up_project_admin"/>
