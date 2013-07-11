@@ -55,6 +55,11 @@ class hr_employee_updis(osv.osv):
                                    string="Practice"),
         'home_phone': fields.related('user_id', 'home_phone', type="char",
                                      string="Home Phone"),
+
+        'image': fields.related('user_id', 'image', type='binary', string='Employee Image'),
+        'image_medium':fields.related('user_id', 'image_medium', type='binary', string='Employee Image Medium'),
+        'image_small':fields.related('user_id', 'image_small', type='binary', string='Employee Image Small'),
+        'has_image': fields.related('user_id', 'has_image', type='boolean', string='Employee Have Image'),
         'trains': fields.one2many('updis.hr.training.record', 'employee',
                                   # 'employee_training_rel', 'employee_id', 'training_id',
                                   'Trains'),

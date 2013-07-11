@@ -37,7 +37,8 @@ class res_users(osv.osv):
                              'image_medium', 'image_small', 'lang', 'tz', 'address_id', 'work_email', 'work_phone',
                              'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone']
 
-    OTHER_WRITEABLE_FIELDS = ['address_id', 'work_email', 'work_phone',
+    OTHER_WRITEABLE_FIELDS = ['address_id', 'work_email', 'work_phone', 'image', 'image_medium', 'image_small',
+                              'has_image',
                               'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone',
                               'devices']
 
