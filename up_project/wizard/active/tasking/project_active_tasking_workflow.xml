@@ -70,6 +70,13 @@
             <field name="group_id" ref="project.group_project_user"/>
             <field name="signal">fuzeren_submit</field>
         </record>
+        <record id="t_project_active_tasking_start_end" model="workflow.transition">
+            <field name="act_from" ref="act_active_tasking_open"/>
+            <field name="act_to" ref="act_active_tasking_stop"/>
+            <field name="signal">temp_start_to_end</field>
+        </record>
+
+
         <record id="t_project_active_tasking_1" model="workflow.transition">
             <field name="act_from" ref="act_active_tasking_open"/>
             <field name="act_to" ref="act_active_tasking_director_apply"/>

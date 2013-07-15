@@ -155,6 +155,9 @@ class project_active_tasking(osv.osv):
 
     _rec_name = 'form_name'
 
+    def workflow_signal(self, cr, uid, ids, signal):
+        return self._workflow_signal(cr, uid, ids, signal)
+
     def _is_display_button(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
@@ -236,7 +239,8 @@ class project_active_tasking(osv.osv):
                                                        (u"已形成", u"已形成"),
                                                        (u"未形成，但已确认", u"未形成，但已确认")],
                                                    u"顾客要求形成文件否"),
-        "express_requirement": fields.selection([(u"有招标书", u"有招标书"), (u"有委托书", u"有委托书"),
+        "express_requirement":
+ fields.selection([(u"有招标书", u"有招标书"), (u"有委托书", u"有委托书"),
                                                  (u"有协议/合同草案", u"有协议/合同草案"), (u"有口头要求记录", u"有口头要求记录")],
                                                 string="Express Requirement"),
 
