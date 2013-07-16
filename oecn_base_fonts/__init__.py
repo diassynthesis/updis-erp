@@ -17,4 +17,5 @@
 #
 ##############################################################################
 
-import res_config
+import oecn_font_installer
+#import res_config
