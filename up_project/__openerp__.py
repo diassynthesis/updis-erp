@@ -24,8 +24,8 @@ UPDIS Project Module.""",
         'wizard/active/tasking/project_active_tasking_workflow.xml',
         'wizard/active/project_active_workflow.xml',
 
-        'wizard/temp_process/project_temp_process_view.xml',
-        'wizard/temp_process/project_temp_process_workflow.xml',
+        'wizard/process/project_process_view.xml',
+        'wizard/process/project_process_workflow.xml',
 
 
         'project_workflow.xml',
