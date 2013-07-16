@@ -187,7 +187,8 @@
                     <field name="name"/>
                     <field name="number"/>
                     <group expand="1" string="Group by...">
-                        <filter name="by-project-name" string="Project Name" domain="[]" context="{'group_by':'project_id'}"/>
+                        <filter name="by-project-name" string="Project Name" domain="[]"
+                                context="{'group_by':'project_id'}"/>
                         <filter name="by-project-type" string="Project Type" domain="[]" context="{'group_by':'type'}"/>
                     </group>
                 </search>
@@ -214,7 +215,7 @@
             <field name="inherit_id" ref="up_project.edit_project_inherit"/>
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='project_log']" position="after">
-                    <page string="Project Contract">
+                    <page string="Project Contract" groups="up_contract.group_up_contract_user">
                         <field name="contract_ids">
                             <tree>
                                 <field name="number"/>
@@ -286,9 +287,9 @@
             <field name="context">{'search_default_by-project-name':1}</field>
         </record>
         <menuitem name="Contract" id="up_contract.project_contract" parent="base.menu_main_pm" sequence="50"
-                  groups="up_project.group_up_project_admin"/>
+                  groups="up_contract.group_up_contract_manager"/>
         <menuitem name="Contract Management" id="up_contract.project_contract_management"
                   parent="up_contract.project_contract"
-                  action="action_project_contract_management"/>
+                  action="action_project_contract_management" groups="up_contract.group_up_contract_manager"/>
     </data>
 </openerp>
