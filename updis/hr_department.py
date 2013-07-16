@@ -54,7 +54,6 @@ class updis_department(osv.osv):
                                        help="Small-sized photo of the employee. It is automatically " \
                                             "resized as a 64x64px image, with aspect ratio preserved. " \
                                             "Use this field anywhere a small image is required."),
-        'project_sequence': fields.integer(string="Project Sequence"),
     }
 
     _defaults = {
@@ -63,14 +62,8 @@ class updis_department(osv.osv):
         'display_in_front': True,
         'is_in_use': True,
         'have_image': False,
-        'project_sequence': 1,
     }
     _order = 'sequence,id'
-
-    def reset_project_sequence(self, cr, uid, context=None):
-        all_hr_department = self._search(cr, uid, [], context=context)
-        self.write(cr, uid, all_hr_department, {'project_sequence': 1}),
-        return True
 
 
 updis_department()

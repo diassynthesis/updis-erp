@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <record id="edit_project_inherit_temp_process" model="ir.ui.view">
+            <field name="name">project.project.temp.process.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="edit_project_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header[@name='project_header']" position="after">
+                    <header attrs="{'invisible':[('state','!=','project_processing')]}">
+                        <button name="temp_process_add_member_finish"
+                                class="oe_highlight"
+                                string="项目归档"
+                                confirm="确定项目已经完结进入归档状态?进入归档状态的项目不可回退！"
+                                attrs="{'invisible':['|',('state','!=','project_processing'),('is_user_is_project_manager','=',False)]}"
+                                groups="project.group_project_user"/>
+                        <field name="state_temp_process" widget="statusbar" readonly="1"/>
+                    </header>
+                </xpath>
+                <xpath expr="//page[@name='project_related_info']" position="after">
+                    <page string="Project Members" attrs="{'invisible':[('state','=','project_active')]}">
+                        <field name="member_ids" attrs="{'readonly':['|',('is_user_is_project_manager','=',False),('state','!=','project_processing')]}">
+                            <tree>
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

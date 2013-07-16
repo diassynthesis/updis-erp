@@ -17,14 +17,16 @@ UPDIS Project Module.""",
         'security/updis_security.xml',
         'security/ir.model.access.csv',
         'project_view.xml',
-        'wizard/active/project_active_view.xml',
 
+        'wizard/active/project_active_view.xml',
         'wizard/active/tasking/project_active_tasking_action.xml',
         'wizard/active/tasking/project_active_tasking_view.xml',
         'wizard/active/tasking/project_active_tasking_workflow.xml',
-
-
         'wizard/active/project_active_workflow.xml',
+
+        'wizard/temp_process/project_temp_process_view.xml',
+        'wizard/temp_process/project_temp_process_workflow.xml',
+
 
         'project_workflow.xml',
 

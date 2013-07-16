@@ -168,27 +168,6 @@ class project_active_tasking(osv.osv):
                 result[obj.id] = False
         return result
 
-    def _is_user_in_operator_group(self, cr, uid, ids, field_name, args, context=None):
-        result = dict.fromkeys(ids, False)
-        for obj in self.browse(cr, uid, ids, context=context):
-            result[obj.id] = self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context)
-        return result
-
-    def _is_user_in_engineer_group(self, cr, uid, ids, field_name, args, context=None):
-        result = dict.fromkeys(ids, False)
-        for obj in self.browse(cr, uid, ids, context=context):
-            result[obj.id] = self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context)
-        return result
-
-    def _is_user_is_project_manager(self, cr, uid, ids, field_name, args, context=None):
-        result = dict.fromkeys(ids, False)
-        for obj in self.browse(cr, uid, ids, context=context):
-            if obj.user_id:
-                result[obj.id] = (obj.user_id.id == uid)
-            else:
-                result[obj.id] = False
-        return result
-
     def _is_wait_user_process(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         if context is None:
@@ -239,8 +218,7 @@ class project_active_tasking(osv.osv):
                                                        (u"已形成", u"已形成"),
                                                        (u"未形成，但已确认", u"未形成，但已确认")],
                                                    u"顾客要求形成文件否"),
-        "express_requirement":
- fields.selection([(u"有招标书", u"有招标书"), (u"有委托书", u"有委托书"),
+        "express_requirement": fields.selection([(u"有招标书", u"有招标书"), (u"有委托书", u"有委托书"),
                                                  (u"有协议/合同草案", u"有协议/合同草案"), (u"有口头要求记录", u"有口头要求记录")],
                                                 string="Express Requirement"),
 
@@ -280,8 +258,6 @@ class project_active_tasking(osv.osv):
 
         "jinyinshi_submitter_id": fields.many2one('res.users', string=u"Operator Room Submitter"),
         "jinyinshi_submitter_datetime": fields.datetime(string=u"Operator Room Submit Date"),
-        'is_user_in_operator_group': fields.function(_is_user_in_operator_group, type="boolean",
-                                                     string="Is User In Operator Room"),
 
         #Engineer Room
         # 'is_tender_project': fields.related('project_id', 'shifoutoubiao', type='boolean', string=u'is Tender Project'),
@@ -296,11 +272,7 @@ class project_active_tasking(osv.osv):
         "zhuguanzongshi_id": fields.many2one("res.users", u"主管总师"),
         "zongshishi_submitter_id": fields.many2one("res.users", string=u"Zongshishi Submitter"),
         "zongshishi_submit_datetime": fields.datetime(string=u"Zongshishi Submit Date"),
-        'is_user_in_engineer_group': fields.function(_is_user_in_engineer_group, type="boolean",
-                                                     string="Is User In Engineer Room"),
 
-        'is_user_is_project_manager': fields.function(_is_user_is_project_manager, type="boolean",
-                                                      string="Is User is The Project Manager"),
         'is_wait_user_process': fields.function(_is_wait_user_process, type="boolean",
                                                 string="Is User is The Project Manager"),
 
@@ -311,7 +283,7 @@ class project_active_tasking(osv.osv):
         'state': 'open',
 
     }
-    _sql_constraints = [('xiangmubianhao_uniq', 'unique(xiangmubianhao)', 'xiangmubianhao must be unique !')]
+
 
     def onchange_partner_id(self, cr, uid, ids, partner_id, context=None):
         ret = {'value': {}}

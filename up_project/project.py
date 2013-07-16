@@ -87,6 +87,28 @@ class updis_project(osv.osv):
             result[obj.id] = True
         return result
 
+
+    def _is_user_in_operator_group(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            result[obj.id] = self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context)
+        return result
+
+    def _is_user_in_engineer_group(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            result[obj.id] = self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context)
+        return result
+
+    def _is_user_is_project_manager(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            if obj.user_id:
+                result[obj.id] = (obj.user_id.id == uid)
+            else:
+                result[obj.id] = False
+        return result
+
     _columns = {
         # 基础信息
         #  'analytic_account_id': fields.boolean("Over Ride"),
@@ -119,6 +141,17 @@ class updis_project(osv.osv):
                                               string="Is Project Creater"),
         'is_project_created': fields.function(_is_project_created, type="boolean",
                                               string="Is Project Created"),
+        'member_ids': fields.many2many('hr.employee', 'project_hr_employee_rel', 'project_id',
+                                       'hr_id', string='project Members'),
+
+        'is_user_in_operator_group': fields.function(_is_user_in_operator_group, type="boolean",
+                                                     string="Is User In Operator Room"),
+
+        'is_user_in_engineer_group': fields.function(_is_user_in_engineer_group, type="boolean",
+                                                     string="Is User In Engineer Room"),
+
+        'is_user_is_project_manager': fields.function(_is_user_is_project_manager, type="boolean",
+                                                      string="Is User is The Project Manager"),
     }
 
     def _get_default_country(self, cr, uid, context):
@@ -131,6 +164,8 @@ class updis_project(osv.osv):
         'country_id': _get_default_country,
         # 'xiangmubianhao':lambda self, cr, uid, c=None: self.pool.get('ir.sequence').next_by_code(cr, uid, 'project.project', context=c)
     }
+
+    _sql_constraints = [('xiangmubianhao_uniq', 'unique(xiangmubianhao)', 'xiangmubianhao must be unique !')]
 
     def _get_action(self, cr, uid, ids, form_model_name, action_name, context=None):
         shenpi_form = self.pool.get(form_model_name)

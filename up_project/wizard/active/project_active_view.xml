@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="edit_project_inherit"/>
             <field name="arch" type="xml">
                 <xpath expr="//header[@name='project_header']" position="after">
-                    <header>
+                    <header attrs="{'invisible':[('state','!=','project_active')]}">
                         <field name="state_active" widget="statusbar" readonly="1"/>
                     </header>
                 </xpath>

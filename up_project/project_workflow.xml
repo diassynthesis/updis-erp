@@ -31,6 +31,13 @@
             <field name="subflow_id" ref="wkf_up_project_active"/>
             <field name="action">act_active_workflow()</field>
         </record>
+        <record id="activity_project_process" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_up_project"/>
+            <field name="name">Project Temp Process</field>
+             <field name="kind">subflow</field>
+            <field name="subflow_id" ref="wkf_up_project_temp_process"/>
+            <field name="action">act_temp_process_workflow()</field>
+        </record>
         <record id="acitivity_project_filed" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project"/>
             <field name="name">Project Filed</field>
@@ -53,8 +60,14 @@
 
         <record id="t_project_0" model="workflow.transition">
             <field name="act_from" ref="activity_project_active"/>
-            <field name="act_to" ref="acitivity_project_filed"/>
+            <field name="act_to" ref="activity_project_process"/>
             <field name="signal">subflow.pro_act_end</field>
+        </record>
+
+        <record id="t_project_1" model="workflow.transition">
+            <field name="act_from" ref="activity_project_process"/>
+            <field name="act_to" ref="acitivity_project_filed"/>
+            <field name="signal">subflow.pro_t_prc_end</field>
         </record>
 
 

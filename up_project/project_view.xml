@@ -42,6 +42,9 @@
                         <group invisible="1">
                             <field name="is_project_created"/>
                             <field name="is_project_creater"/>
+                            <field name="is_user_in_operator_group"/>
+                            <field name="is_user_in_engineer_group"/>
+                            <field name="is_user_is_project_manager"/>
                         </group>
                         <div>
                             <h1>

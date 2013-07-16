@@ -3096,7 +3096,7 @@ s8AZsVf/2Q==
 	  </tr>
 	  <tr>
 		<td><para style="Label">委托单位地址</para></td>
-		<td><para style="Value">[[o.partner_id.state_id.name]] [[o.partner_id.city]] [[o.partner_id.street]]</para></td>
+		<td><para style="Value">[[o.partner_id.state_id and o.partner_id.state_id.name or '']] [[o.partner_id.city]] [[o.partner_id.street]]</para></td>
 		<td><para style="Label">联系人及电话</para></td>
 		<td><para style="Value">[[o.customer_contact.name]]
             [[o.customer_contact.mobile]]</para></td>
