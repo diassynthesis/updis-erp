@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="workflow" id="wkf_up_project_filed">
+            <field name="name">Project Filed Workflow</field>
+            <field name="osv">project.project</field>
+            <field name="on_create">True</field>
+        </record>
+
+        <!-- Activities -->
+        <record id="activity_project_filed_start" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_up_project_filed"/>
+            <field name="name">Project Filed Start</field>
+            <field name="flow_start">True</field>
+            <field name="kind">dummy</field>
+            <field name="action" eval="False"/>
+        </record>
+        <record id="activity_project_filed_filing" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_up_project_filed"/>
+            <field name="name">Project Filed Filing</field>
+            <field name="kind">function</field>
+            <field name="action">write({'state_filed':'start_file'})</field>
+        </record>
+        <record id="acitivity_project_filed_stop" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_up_project_filed"/>
+            <field name="name">Project Filed Stop</field>
+            <field name="flow_stop">True</field>
+            <field name="kind">function</field>
+            <field name="signal_send">subflow.pro_filed_end</field>
+            <field name="action">write({'state_filed':'end_file'})</field>
+        </record>
+
+
+        <!-- Transitions -->
+        <record id="t_project_filed_start" model="workflow.transition">
+            <field name="act_from" ref="activity_project_filed_start"/>
+            <field name="act_to" ref="activity_project_filed_filing"/>
+        </record>
+        <record id="t_project_filed_0" model="workflow.transition">
+            <field name="act_from" ref="activity_project_filed_filing"/>
+            <field name="act_to" ref="acitivity_project_filed_stop"/>
+            <field name="signal">temp_filed_filing_finish</field>
+        </record>
+
+
+    </data>
+</openerp>

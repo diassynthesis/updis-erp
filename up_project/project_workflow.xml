@@ -33,16 +33,17 @@
         </record>
         <record id="activity_project_process" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project"/>
-            <field name="name">Project Temp Process</field>
-             <field name="kind">subflow</field>
+            <field name="name">Project Process</field>
+            <field name="kind">subflow</field>
             <field name="subflow_id" ref="wkf_up_project_temp_process"/>
-            <field name="action">act_temp_process_workflow()</field>
+            <field name="action">act_process_workflow()</field>
         </record>
         <record id="acitivity_project_filed" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project"/>
             <field name="name">Project Filed</field>
-            <field name="kind">function</field>
-            <field name="action">write({'state':'project_filed'})</field>
+            <field name="kind">subflow</field>
+            <field name="subflow_id" ref="wkf_up_project_filed"/>
+            <field name="action">act_filed_workflow()</field>
         </record>
 
 
@@ -55,6 +56,7 @@
         <record id="t_project_end" model="workflow.transition">
             <field name="act_from" ref="acitivity_project_filed"/>
             <field name="act_to" ref="acitivity_project_end"/>
+            <field name="signal">subflow.pro_filed_end</field>
         </record>
 
 

@@ -2,7 +2,7 @@
 <openerp>
     <data>
         <record model="workflow" id="wkf_up_project_temp_process">
-            <field name="name">Project Temp Process Workflow</field>
+            <field name="name">Project Process Workflow</field>
             <field name="osv">project.project</field>
             <field name="on_create">True</field>
         </record>
@@ -10,24 +10,24 @@
         <!-- Activities -->
         <record id="activity_project_temp_process_start" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project_temp_process"/>
-            <field name="name">Project Temp Process Start</field>
+            <field name="name">Project Process Start</field>
             <field name="flow_start">True</field>
             <field name="kind">dummy</field>
             <field name="action" eval="False"/>
         </record>
         <record id="activity_project_temp_process_add_member" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project_temp_process"/>
-            <field name="name">Project Temp Process Add Member</field>
+            <field name="name">Project Process Add Member</field>
             <field name="kind">function</field>
-            <field name="action">write({'state_temp_process':'project_temp_process_add_member'})</field>
+            <field name="action">write({'state_process':'add_member'})</field>
         </record>
         <record id="acitivity_project_temp_process_stop" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project_temp_process"/>
-            <field name="name">Project Temp Process Stop</field>
+            <field name="name">Project Process Stop</field>
             <field name="flow_stop">True</field>
             <field name="kind">function</field>
             <field name="signal_send">subflow.pro_t_prc_end</field>
-            <field name="action">write({'state_temp_process':'project_temp_process_filed'})</field>
+            <field name="action">write({'state_process':'process_filed'})</field>
         </record>
 
 

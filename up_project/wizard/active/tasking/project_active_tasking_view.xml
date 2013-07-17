@@ -104,6 +104,7 @@
             <field name="arch" type="xml">
                 <form string="Project" version="7.0">
                     <header>
+                        <button name="temp_start_to_end" string="结束启动流程" groups="base.group_system"/>
                         <field name="state" widget="statusbar"
                                readonly="1"/>
                     </header>

@@ -7,9 +7,9 @@ class project_project_inherit(osv.osv):
     _name = 'project.project'
 
     _columns = {
-        'state_process': fields.selection([
-            ("add_member", u"Project Add Member"),
-            ("process_filed", u"Project Process Filed"),
+        'state_filed': fields.selection([
+            ("start_file", u"Project Start File"),
+            ("end_file", u"Project End File"),
         ]),
     }
 
@@ -17,6 +17,6 @@ class project_project_inherit(osv.osv):
         # 'state_active': lambda *a: 'project_active_tasking',
     }
 
-    def act_process_workflow(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state': 'project_processing'}, context=context)
+    def act_filed_workflow(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'state': 'project_filed'}, context=context)
         return ids[0]

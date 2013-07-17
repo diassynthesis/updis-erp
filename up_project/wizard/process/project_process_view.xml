@@ -14,7 +14,7 @@
                                 confirm="确定项目已经完结进入归档状态?进入归档状态的项目不可回退！"
                                 attrs="{'invisible':['|',('state','!=','project_processing'),('is_user_is_project_manager','=',False)]}"
                                 groups="project.group_project_user"/>
-                        <field name="state_temp_process" widget="statusbar" readonly="1"/>
+                        <field name="state_process" widget="statusbar" readonly="1"/>
                     </header>
                 </xpath>
                 <xpath expr="//page[@name='project_related_info']" position="after">

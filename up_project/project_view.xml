@@ -73,6 +73,7 @@
                                 <field name="city" nolabel="1" placeholder="City" style="width: 50%%"
                                        attrs="{'readonly':[('is_project_created','=',True),('is_project_creater','=',False)]}"/>
                             </div>
+                            <field name="user_id"/>
 
                         </group>
                         <notebook>

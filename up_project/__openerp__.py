@@ -27,6 +27,9 @@ UPDIS Project Module.""",
         'wizard/process/project_process_view.xml',
         'wizard/process/project_process_workflow.xml',
 
+        'wizard/filed/project_filed_view.xml',
+        'wizard/filed/project_filed_workflow.xml',
+
 
         'project_workflow.xml',
 
