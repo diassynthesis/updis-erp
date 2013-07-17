@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//header[@name='project_header']" position="after">
                     <header attrs="{'invisible':[('state','!=','project_processing')]}">
-                        <button name="temp_process_add_member_finish"
+                        <button name="process_finish"
                                 class="oe_highlight"
                                 string="项目归档"
                                 confirm="确定项目已经完结进入归档状态?进入归档状态的项目不可回退！"
@@ -58,6 +58,30 @@
                             </tree>
                         </field>
                     </page>
+                </xpath>
+                <xpath expr="//div[@name='project_header']" position="after">
+                    <button name="action_process_stop" type="object"
+                            string="项目终止"
+                            confirm="确定项目中止?进入中止状态的项目不可回退！"
+                            attrs="{'invisible':['|',('state','!=','project_processing'),('is_user_is_project_manager','=',False)]}"
+                            groups="project.group_project_user"/>
+                    <button name="action_process_pause" type="object"
+                            string="项目停滞"
+                            confirm="确定项目停滞?"
+                            attrs="{'invisible':['|',('state','!=','project_processing'),('is_user_is_project_manager','=',False)]}"
+                            groups="project.group_project_user"/>
+                    <button name="action_process_pause_back" type="object"
+                            string="恢复项目"
+                            confirm="确定恢复项目到进行状态?"
+                            attrs="{'invisible':['|',('state','!=','project_pause'),('is_user_is_project_manager','=',False)]}"
+                            groups="project.group_project_user"/>
+                    <button name="process_finish"
+                            class="oe_highlight"
+                            string="项目归档"
+                            confirm="确定项目进入归档状态?进入归档状态的项目不可回退！"
+                            attrs="{'invisible':['|',('state','not in',['project_stop','project_pause']),('is_user_is_project_manager','=',False)]}"
+                            groups="project.group_project_user"/>
+
                 </xpath>
             </field>
         </record>

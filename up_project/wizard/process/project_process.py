@@ -20,3 +20,15 @@ class project_project_inherit(osv.osv):
     def act_process_workflow(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'state': 'project_processing'}, context=context)
         return ids[0]
+
+    def action_process_stop(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'state': 'project_stop'}, context=context)
+        return True
+
+    def action_process_pause(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'state': 'project_pause'}, context=context)
+        return True
+
+    def action_process_pause_back(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'state': 'project_processing'}, context=context)
+        return True

@@ -39,7 +39,7 @@
         <record id="t_project_temp_process_0" model="workflow.transition">
             <field name="act_from" ref="activity_project_temp_process_add_member"/>
             <field name="act_to" ref="acitivity_project_temp_process_stop"/>
-            <field name="signal">temp_process_add_member_finish</field>
+            <field name="signal">process_finish</field>
         </record>
 
 

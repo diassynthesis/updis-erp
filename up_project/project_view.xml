@@ -35,6 +35,7 @@
             <field name="arch" type="xml">
                 <form string="Project" version="7.0">
                     <header name="project_header">
+                        <div name="project_header"/>
                         <field name="state" widget="statusbar"
                                readonly="1"/>
                     </header>

@@ -128,6 +128,8 @@ class updis_project(osv.osv):
 
         'state': fields.selection([("project_active", u"Project Active"),
                                    ("project_processing", u"Project Processing"),
+                                   ("project_stop", u"Project Stop"),
+                                   ("project_pause", u"Project Pause"),
                                    ("project_filed", u"Project Filed"), ]),
         'project_log': fields.html(u"Project Log Info", readonly=True),
         "xiangmubianhao": fields.char(u"项目编号", select=True, size=128, ),
