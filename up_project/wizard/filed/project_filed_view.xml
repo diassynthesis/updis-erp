@@ -12,7 +12,8 @@
                                 class="oe_highlight"
                                 string="归档完成"
                                 confirm="确定项目已经归档完成?进入归档完成状态的项目不可回退！请谨慎处理"
-                                groups="project.group_project_user"/>
+                                groups="project.group_project_user"
+                                attrs="{'invisible':[('state_filed','!=','start_file')]}"/>
                         <field name="state_filed" widget="statusbar" readonly="1"/>
                     </header>
                 </xpath>
