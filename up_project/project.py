@@ -141,9 +141,7 @@ class updis_project(osv.osv):
                                               string="Is Project Creater"),
         'is_project_created': fields.function(_is_project_created, type="boolean",
                                               string="Is Project Created"),
-        'member_ids': fields.many2many('hr.employee', 'project_hr_employee_rel', 'project_id',
-                                       'hr_id', string='project Members'),
-
+        'member_ids': fields.one2many('project.members', 'project_id', string="Members"),
         'is_user_in_operator_group': fields.function(_is_user_in_operator_group, type="boolean",
                                                      string="Is User In Operator Room"),
 
@@ -230,46 +228,74 @@ class updis_project(osv.osv):
             'domain': domain,
             'context': context,
         }
-        # class project_profession(osv.Model):
-        #     """Profession"""
-        #     _name = "project.profession"
-        #     _description = "Project Profession"
-        #     _columns = {
-        #         'name': fields.char("Name", size=64),
-        #         'active': fields.boolean("Active"),
-        #     }
-        #     _defaults = {
-        #         'active': True
-        #     }
 
 
-        # class project_duty(osv.Model):
-        #     """Duty"""
-        #     _name = "project.duty"
-        #     _description = "Project Duty"
-        #     _columns = {
-        #         'name': fields.char("Name", size=64),
-        #         'active': fields.boolean("Active"),
-        #     }
-        #     _defaults = {
-        #         'active': True
-        #     }
+class project_profession(osv.Model):
+    """Profession"""
+    _name = "project.profession"
+    _description = "Project Profession"
+    _columns = {
+        'name': fields.char("Name", required=1, size=64),
+        'active': fields.boolean("Active"),
+    }
+    _defaults = {
+        'active': True
+    }
 
 
-        # class project_assignment(osv.Model):
-        #     """docstring for project_assignment"""
-        #     _name = "project.assignment"
-        #     _description = "Project Assignment"
-        #
-        #     def _get_project(self, cr, uid, *args, **kwargs):
-        #         #import pdb;pdb.set_trace()
-        #         pass
-        #
-        #     _columns = {
-        #         'duty_id': fields.many2one('project.duty', 'Duty'),
-        #         'profession_id': fields.many2one('project.profession', 'Profession'),
-        #         'project_id': fields.many2one('project.project', 'Project'),
-        #     }
-        #     _defaults = {
-        #         'project_id': _get_project,
-        #     }
+class project_members(osv.osv):
+    _name = "project.members"
+    _description = "Project Members"
+    _columns = {
+        'profession': fields.many2one('project.profession', required=True, string="Profession"),
+        'validation_user_ids': fields.many2many('hr.employee', 'project_members_vali_hr_employee', 'project_member_id',
+                                                'employee_id', string="Validation Members"),
+
+        'audit_user_ids': fields.many2many('hr.employee', 'project_members_audit_hr_employee', 'project_member_id',
+                                           'employee_id', string="Audit Members"),
+        'profession_manager_user_ids': fields.many2many('hr.employee', 'project_members_profession_manager_hr_employee',
+                                                        'project_member_id',
+                                                        'employee_id', string="Profession Manager Members"),
+        'design_user_ids': fields.many2many('hr.employee', 'project_members_design_hr_employee', 'project_member_id',
+                                            'employee_id', string="Design/Write Members"),
+        'proofread_user_ids': fields.many2many('hr.employee', 'project_members_proofread_hr_employee',
+                                               'project_member_id',
+                                               'employee_id', string="Proofread Members"),
+        'drawing_user_ids': fields.many2many('hr.employee', 'project_members_drawing_hr_employee', 'project_member_id',
+                                             'employee_id', string="Drawing/Writing Members"),
+        'project_id': fields.many2one('project.project', string="Project"),
+    }
+    _defaults = {
+    }
+
+
+    # class project_duty(osv.Model):
+    #     """Duty"""
+    #     _name = "project.duty"
+    #     _description = "Project Duty"
+    #     _columns = {
+    #         'name': fields.char("Name", size=64),
+    #         'active': fields.boolean("Active"),
+    #     }
+    #     _defaults = {
+    #         'active': True
+    #     }
+
+
+    # class project_assignment(osv.Model):
+    #     """docstring for project_assignment"""
+    #     _name = "project.assignment"
+    #     _description = "Project Assignment"
+    #
+    #     def _get_project(self, cr, uid, *args, **kwargs):
+    #         #import pdb;pdb.set_trace()
+    #         pass
+    #
+    #     _columns = {
+    #         'duty_id': fields.many2one('project.duty', 'Duty'),
+    #         'profession_id': fields.many2one('project.profession', 'Profession'),
+    #         'project_id': fields.many2one('project.project', 'Project'),
+    #     }
+    #     _defaults = {
+    #         'project_id': _get_project,
+    #     }

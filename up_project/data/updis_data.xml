@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
-    <data>
+    <data noupdate="1">
         <record id="sequence_code_xiangmubianhao" model="ir.sequence.type">
             <field name="name">项目编号</field>
             <field name="code">project.project</field>
