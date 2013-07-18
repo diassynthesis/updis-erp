@@ -8,6 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//header[@name='project_header']" position="after">
                     <header attrs="{'invisible':[('state','!=','project_active')]}">
+                        <button name="action_end_active" string="结束启动流程" confirm="确定要跳过启动流程么？" type="object" groups="base.group_system"/>
                         <field name="state_active" widget="statusbar" readonly="1"/>
                     </header>
                 </xpath>
