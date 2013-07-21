@@ -17,9 +17,9 @@
                                     <td rowspan="3">
                                         <div class="inline-item">类别:
                                             <field name="categories_id" class="oe_no_button"
-                                                   options='{"no_open": True}'
+                                                   options='{"no_open": True}' required="1"
                                                    on_change="onchange_category_id(categories_id)"
-                                                   attrs="{'invisible':[('shifoutoubiao','=',True)]}"/>
+                                                    />
                                             <field name="categories_else"
                                                    attrs="{'invisible':[('category_name','!=',u'其它')]}"/>
                                         </div>
@@ -334,7 +334,6 @@
                                             <div class="inline-item">类别:
                                                 <field name="categories_id" class="oe_no_button"
                                                        options='{"no_open": True}' readonly="1"
-                                                       attrs="{'invisible':[('shifoutoubiao','=',True)]}"
                                                         />
                                                 <field name="categories_else" readonly="1"
                                                        attrs="{'invisible':[('category_name','!=',u'其它')]}"
