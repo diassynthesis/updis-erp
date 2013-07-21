@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
     <data>
+        <record id="project.view_project" model="ir.ui.view">
+            <field name="name">project.project.tree.replace</field>
+            <field name="model">project.project</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <tree fonts="bold:message_unread==True"
+                      colors="red:date and (date&lt;current_date) and (state == 'open');blue:state in ('draft','pending');grey: state in ('close','cancelled')"
+                      string="Projects">
+                    <field name="sequence" invisible="1" widget="handle"/>
+                    <field name="message_unread" invisible="1"/>
+                    <field name="date" invisible="1"/>
+                    <field name="xiangmubianhao"/>
+                    <field name="name" string="Project Name"/>
+                    <field name="user_id" string="Project Manager"/>
+                    <field name="partner_id" string="Contact"/>
+                    <field name="state"/>
+                    <field name="create_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="project.view_project_project_filter" model="ir.ui.view">
+            <field name="name">project.project.select.replace</field>
+            <field name="model">project.project</field>
+            <field name="arch" type="xml">
+                <search string="Search Project">
+                    <field name="xiangmubianhao" string="Project Num"/>
+                    <field name="name" string="Project Name"/>
+                    <field name="partner_id" string="Customer"/>
+                    <separator/>
+                    <filter string="Project(s) Manager" domain="[('user_id','=',uid)]"
+                            help="Projects in which I am a manager" icon="terp-personal"/>
+                    <field name="user_id" string="Project Manager"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="state" name="Manager" icon="terp-personal" domain="[]"
+                                context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
         <record id="project.open_view_project_all" model="ir.actions.act_window">
             <field name="name">Projects</field>
             <field name="res_model">project.project</field>
@@ -120,7 +161,7 @@
             <field name="condition" eval="True"/>
             <field name="model_id" ref="project.model_project_project"/>
             <field name="code">
-action = self.related_to_me_action(cr,uid,context=context)
+                action = self.related_to_me_action(cr,uid,context=context)
             </field>
         </record>
         <menuitem name="Project Related To Me" id="project_related_to_me"

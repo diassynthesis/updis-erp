@@ -223,7 +223,7 @@ class updis_project(osv.osv):
         return {
             'name': 'project test',
             'type': 'ir.actions.act_window',
-            'view_mode': 'tree,form,kanban',
+            'view_mode': 'tree,form',
             'view_type': 'form',
             'res_model': 'project.project',
             'target': 'current',
