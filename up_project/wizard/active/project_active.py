@@ -21,6 +21,9 @@ class project_project_inherit(osv.osv):
         return ids[0]
 
     def action_end_active(self, cr, uid, ids, context=None):
-        self.pool.get('project.project.active.tasking')
-        self._workflow_signal(cr, uid, ids, 'temp_start_to_end', context=context)
+        tasking = self.pool.get('project.project.active.tasking').search(cr, uid, [('project_id', '=', ids[0])],
+                                                                         context=context)
+
+        self.pool.get('project.project.active.tasking')._workflow_signal(cr, uid, tasking, 'temp_start_to_end',
+                                                                         context=context)
         return True
