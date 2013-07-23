@@ -3,6 +3,42 @@ import datetime
 from osv import osv, fields
 
 
+class project_project_wizard(osv.osv_memory):
+    _name = "project.project.wizard"
+    _description = "Project Wizard"
+
+
+    def default_get(self, cr, uid, fields, context=None):
+        res = super(project_project_wizard, self).default_get(cr, uid, fields, context=context)
+        if context is None:
+            context = {}
+        record_id = context and context.get('active_id', False) or False
+        if not record_id:
+            return res
+        project_pool = self.pool.get('project.project')
+        project = project_pool.browse(cr, uid, record_id, context=context)
+
+        if 'user_id' in fields:
+            res['user_id'] = project.user_id.id if project.user_id else None
+
+        return res
+
+    _columns = {
+        "user_id": fields.many2one('res.users', string="Project Manager"),
+    }
+
+    def project_admin_change_accept(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        record_id = context and context.get('active_id', False) or False
+        project = self.pool.get("project.project").browse(cr, uid, record_id, context)
+        self_record = self.browse(cr, uid, ids[0], context)
+        project.write({
+            'user_id': self_record.user_id.id if self_record.user_id.id else None
+        })
+        return True
+
+
 class project_type(osv.osv):
     _name = "project.type"
     _description = "Project Type"

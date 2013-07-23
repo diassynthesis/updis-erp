@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
     <data>
+        <record id="project_project_wizard_form" model="ir.ui.view">
+            <field name="name">project.project.wizard.form</field>
+            <field name="model">project.project.wizard</field>
+            <field name="arch" type="xml">
+                <form version="7.0" string="Wizard Form">
+                    <group>
+                        <field name="user_id"/>
+                    </group>
+                    <div>
+                        <button name="project_admin_change_accept" class="oe_highlight"
+                                groups="up_project.group_up_project_admin" string="修改"
+                                type="object"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="project_project_wizard_action" model="ir.actions.act_window">
+            <field name="name">project.project.wizard.action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.project.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="project_project_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+
+
         <record id="project.view_project" model="ir.ui.view">
             <field name="name">project.project.tree.replace</field>
             <field name="model">project.project</field>
@@ -51,6 +79,9 @@
                 <form string="Project" version="7.0">
                     <header name="project_header">
                         <div name="project_header"/>
+                         <button name="%(project_project_wizard_action)d"
+                                string="修改项目基本属性"
+                                type="action" groups="up_project.group_up_project_admin"/>
                         <field name="state" widget="statusbar"
                                readonly="1"/>
                     </header>
@@ -152,7 +183,8 @@
                 action = self.all_projects_action(cr,uid,context=context)
             </field>
         </record>
-        <menuitem action="open_view_project_all" id="project.menu_projects" name="Projects" parent="project.menu_project_management" sequence="1"/>
+        <menuitem action="open_view_project_all" id="project.menu_projects" name="Projects"
+                  parent="project.menu_project_management" sequence="1"/>
 
         <!--project sms config-->
         <record id="project_config_sms_form" model="ir.ui.view">
