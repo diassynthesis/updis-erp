@@ -232,8 +232,7 @@ class project_active_tasking(osv.osv):
         "gongqi": fields.selection([(u'工期可接受', '工期可接受'), (u'工期太紧', u'工期太紧')], u"工期", ), #本院是否有能力满足规定要求
         "shejifei": fields.selection([(u'设计费合理', '设计费合理'), (u'设计费太低', u'设计费太低')], u'设计费', ), #本院是否有能力满足规定要求
 
-        "waibao": fields.boolean(u"是否外包"),
-        "shizhenpeitao": fields.boolean(u"市政配套"),
+
         "duofanghetong": fields.boolean(u"多方合同"),
         "jianyishejibumen_id": fields.many2one("hr.department", u"建议设计部门"),
         "jianyixiangmufuzeren_id": fields.many2one("res.users", u"建议项目负责人"),

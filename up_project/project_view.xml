@@ -118,37 +118,37 @@
                             <field name="user_id"/>
 
                         </group>
-                        <notebook>
-                            <page name="project_related_info" string="Project Info">
-                                <div>
-                                    <div name="project_active_area">
-                                        <div class="area-header">
-                                            <h3>项目启动文档</h3>
-                                            <table class="oe_form_group">
-                                                <thead>
-                                                    <th>文档名</th>
-                                                    <th>状态</th>
-                                                    <th>提示</th>
-                                                </thead>
-                                                <tbody>
-                                                    <div name="related_forms"/>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                    </sheet>
+                    <notebook>
+                        <page name="project_related_info" string="Project Info">
+                            <div>
+                                <div name="project_active_area">
+                                    <div class="area-header">
+                                        <h3>项目启动文档</h3>
+                                        <table class="oe_form_group">
+                                            <thead>
+                                                <th>文档名</th>
+                                                <th>状态</th>
+                                                <th>提示</th>
+                                            </thead>
+                                            <tbody>
+                                                <div name="related_forms"/>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                            </page>
-                            <page name="project_log" string="Project Logs">
-                                <field name="project_logs" nolabel="1" readonly="1">
-                                    <tree>
-                                        <field name="log_date"/>
-                                        <field name="log_user"/>
-                                        <field name="log_info"/>
-                                    </tree>
-                                </field>
-                            </page>
-                        </notebook>
-                    </sheet>
+                            </div>
+                        </page>
+                        <page name="project_log" string="Project Logs">
+                            <field name="project_logs" nolabel="1" readonly="1">
+                                <tree>
+                                    <field name="log_date"/>
+                                    <field name="log_user"/>
+                                    <field name="log_info"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
 
                 </form>
             </field>

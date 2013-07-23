@@ -66,7 +66,7 @@ class project_log(osv.osv):
 
 
 class updis_project(osv.osv):
-    _log_access = True
+    _log_access = False
     _inherit = "project.project"
     _name = "project.project"
 
@@ -114,8 +114,8 @@ class updis_project(osv.osv):
         #  'analytic_account_id': fields.boolean("Over Ride"),
         'related_user_id': fields.many2one('res.users', string="Related Users ID"),
         'status_code': fields.integer(string='Status Code'),
-        "shifoutoubiao": fields.boolean(u"是否投标项目"),
-        "project_type": fields.many2one("project.type", string="Project Type", required=True),
+        "shifoutoubiao": fields.boolean("Is Tender"),
+        "project_type": fields.many2one("project.type", string="Project Type", ),
         'project_logs': fields.one2many('project.log', 'project_id', string='Project Logs'),
         'create_date': fields.datetime('Created on', select=True),
         'create_uid': fields.many2one('res.users', 'Author', select=True),
@@ -132,13 +132,15 @@ class updis_project(osv.osv):
                                    ("project_pause", u"Project Pause"),
                                    ("project_filed", u"Project Filed"), ]),
         'project_log': fields.html(u"Project Log Info", readonly=True),
-        "xiangmubianhao": fields.char(u"项目编号", select=True, size=128, ),
-        "chenjiebumen_id": fields.many2one("hr.department", u"承接部门"),
-        "guimo": fields.char(u"规模", size=64),
+        "xiangmubianhao": fields.char(u"Project Num", select=True, size=128, ),
+        "chenjiebumen_id": fields.many2one("hr.department", u"In Charge Department"),
+        "guimo": fields.char(u"Scale", size=64),
         "categories_id": fields.many2one("project.upcategory", u"项目类别"),
         "customer_contact": fields.many2one('res.partner', 'Customer Contact'),
-        "guanlijibie": fields.selection([(u'院级', u'院级'), (u'所级', u'所级')], u'项目管理级别'),
-        "toubiaoleibie": fields.selection([(u'商务标', u'商务标'), (u'技术标', u'技术标'), (u'综合标', u'综合标')], u"投标类别"),
+        "guanlijibie": fields.selection([('LH200307240001', u'院级'), ('LH200307240002', u'所级')], u'Project Level'),
+        "toubiaoleibie": fields.selection([('business', u'商务标'), ('technology', u'技术标'), ('complex', u'综合标')],
+                                          "Tender Type"),
+        "waibao": fields.boolean("Is Outsourcing"),
         'is_project_creater': fields.function(_is_project_creater, type="boolean",
                                               string="Is Project Creater"),
         'is_project_created': fields.function(_is_project_created, type="boolean",
@@ -152,6 +154,27 @@ class updis_project(osv.osv):
 
         'is_user_is_project_manager': fields.function(_is_user_is_project_manager, type="boolean",
                                                       string="Is User is The Project Manager"),
+        'temp_status': fields.char(size=56, string="Temp Status"),
+        'is_import': fields.boolean(string="Is import Data"),
+        'comment': fields.text(string='Project Comment'),
+        'begin_date': fields.date(string='Begin Date'),
+        'plan_finish_date': fields.date(string='Plan Finish Date'),
+        "shizhenpeitao": fields.boolean("Is City"),
+        'city_comment': fields.char(size=128, string="City Comment"),
+        'questions': fields.text(string="Questions"),
+        'next_work_plan': fields.text(string="Next Work Plan"),
+        'primary_work': fields.text(string="Primary Work"),
+        'city_type': fields.selection(
+            [('CC200511210001', u'直辖市'), ('CC200511210002', u'省会城市'), ('CC200511210003', u'地级市'),
+             ('CC200511210004', u'县级市'), ('CC200511210005', u'其它')], string="City Type"),
+        'import_is_hidden': fields.char(size=8, string="Import Is Hidden"),
+        'import_sum_up_flag': fields.char(size=8, string="Import Sum Up Flag"),
+        'import_flag': fields.char(size=8, string="Import Flag"),
+        'import_schedule': fields.char(size=64, string='Import Schedule'),
+        'import_proxy_name': fields.char(size=256, string='Import Proxy Name'),
+        'import_aaddress': fields.char(size=256, string='Import AAddress'),
+        'import_alinkman': fields.char(size=256, string='Import Alinkman'),
+
     }
 
     def _get_default_country(self, cr, uid, context):
@@ -162,6 +185,7 @@ class updis_project(osv.osv):
         'state': lambda *a: 'project_active',
         'user_id': None,
         'country_id': _get_default_country,
+        'is_import': False,
         # 'xiangmubianhao':lambda self, cr, uid, c=None: self.pool.get('ir.sequence').next_by_code(cr, uid, 'project.project', context=c)
     }
 
