@@ -79,7 +79,7 @@
                 <form string="Project" version="7.0">
                     <header name="project_header">
                         <div name="project_header"/>
-                         <button name="%(project_project_wizard_action)d"
+                        <button name="%(project_project_wizard_action)d"
                                 string="修改项目基本属性"
                                 type="action" groups="up_project.group_up_project_admin"/>
                         <field name="state" widget="statusbar"
@@ -93,34 +93,47 @@
                             <field name="is_user_in_engineer_group"/>
                             <field name="is_user_is_project_manager"/>
                         </group>
-                        <div>
+                        <div class="oe_title">
                             <h1>
                                 <field name="name" placeholder="Project Name"
                                        attrs="{'readonly':[('is_project_created','=',True),('is_project_creater','=',False)]}"
                                         />
                             </h1>
                         </div>
-                        <group>
-
-                            <field name="project_type" class="oe_no_button"
-                                   attrs="{'readonly':[('is_project_created','=',True),('is_project_creater','=',False)]}">
-                                <form>
-                                    <field name="name"/>
-                                </form>
-                            </field>
+                        <div class="oe_right inline-item">
+                            <span>项目编号:</span>
+                            <field name="xiangmubianhao"/>
+                        </div>
+                        <group col="2">
                             <label string="Project Location" for="country_id"/>
                             <div class="address_format">
                                 <field name="country_id" class="oe_no_button" widget="selection"
                                        on_change="on_change_country(country_id)" style="width: 15%%"
                                        options="{'no_open':True}" nolabel="1" placeholder="Country"
                                        attrs="{'readonly':[('is_project_created','=',True),('is_project_creater','=',False)]}"/>
-                                <field name="state_id" widget="selection" options="{'no_open':True}" placeholder="State"
-                                       nolabel="1" style="width: 30%%"
+                                <field name="state_id" widget="selection" options="{'no_open':True}"
+                                       placeholder="State"
+                                       nolabel="1" style="width: 20%%"
                                        attrs="{'readonly':[('is_project_created','=',True),('is_project_creater','=',False)]}"/>
-                                <field name="city" nolabel="1" placeholder="City" style="width: 50%%"
+                                <field name="city" nolabel="1" placeholder="City" style="width: 20%%"
                                        attrs="{'readonly':[('is_project_created','=',True),('is_project_creater','=',False)]}"/>
+                                <field name="city_type" nolabel="1" placeholder="City Type" style="width: 20%%"/>
                             </div>
-                            <field name="user_id"/>
+                        </group>
+                        <group string="Basic Info">
+                            <group>
+                                <field name="project_type" class="oe_no_button"
+                                       attrs="{'readonly':[('is_project_created','=',True),('is_project_creater','=',False)]}">
+                                    <form>
+                                        <field name="name"/>
+                                    </form>
+                                </field>
+                                <field name="categories_id"/>
+
+                            </group>
+                            <group>
+                                <field name="user_id"/>
+                            </group>
 
                         </group>
                     </sheet>
