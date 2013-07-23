@@ -42,32 +42,6 @@
             </field>
         </record>
 
-        <record id="project.open_view_project_all" model="ir.actions.act_window">
-            <field name="name">Projects</field>
-            <field name="res_model">project.project</field>
-            <field name="view_type">form</field>
-            <field name="domain">[]</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="project.view_project"/>
-            <field name="search_view_id" ref="project.view_project_project_filter"/>
-            <field name="context">{}</field>
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">
-                    Click to start a new project.
-                </p>
-                <p>
-                    Projects are used to organize your activities; plan
-                    tasks, track issues, invoice timesheets. You can define
-                    internal projects (R&amp;D, Improve Sales Process),
-                    private projects (My Todos) or customer ones.
-                </p>
-                <p>
-                    You will be able collaborate with internal users on
-                    projects or invite customers to share your activities.
-                </p>
-            </field>
-        </record>
-
 
         <record id="edit_project_inherit" model="ir.ui.view">
             <field name="name">project.project.form.replace</field>
@@ -168,6 +142,17 @@
                   parent="project.menu_project_management"
                   action="action_project_related_to_me" sequence="4"/>
 
+
+        <record id="open_view_project_all" model="ir.actions.server">
+            <field name="name">Action Projects</field>
+            <field name="state">code</field>
+            <field name="condition" eval="True"/>
+            <field name="model_id" ref="project.model_project_project"/>
+            <field name="code">
+                action = self.all_projects_action(cr,uid,context=context)
+            </field>
+        </record>
+        <menuitem action="open_view_project_all" id="project.menu_projects" name="Projects" parent="project.menu_project_management" sequence="1"/>
 
         <!--project sms config-->
         <record id="project_config_sms_form" model="ir.ui.view">

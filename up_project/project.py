@@ -66,7 +66,7 @@ class project_log(osv.osv):
 
 
 class updis_project(osv.osv):
-    _log_access = False
+    _log_access = True
     _inherit = "project.project"
     _name = "project.project"
 
@@ -112,6 +112,7 @@ class updis_project(osv.osv):
     _columns = {
         # 基础信息
         #  'analytic_account_id': fields.boolean("Over Ride"),
+        'director_reviewer_id': fields.many2one('res.users', string=u'Review Director'),
         'related_user_id': fields.many2one('res.users', string="Related Users ID"),
         'status_code': fields.integer(string='Status Code'),
         "shifoutoubiao": fields.boolean("Is Tender"),
@@ -130,7 +131,8 @@ class updis_project(osv.osv):
                                    ("project_processing", u"Project Processing"),
                                    ("project_stop", u"Project Stop"),
                                    ("project_pause", u"Project Pause"),
-                                   ("project_filed", u"Project Filed"), ]),
+                                   ("project_filed", u"Project Filed"),
+                                   ("project_cancelled", u"Project Cancelled"), ]),
         'project_log': fields.html(u"Project Log Info", readonly=True),
         "xiangmubianhao": fields.char(u"Project Num", select=True, size=128, ),
         "chenjiebumen_id": fields.many2one("hr.department", u"In Charge Department"),
@@ -245,7 +247,28 @@ class updis_project(osv.osv):
         domain = other_domain + domain
 
         return {
-            'name': 'project test',
+            'name': 'project Related To Me',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'res_model': 'project.project',
+            'target': 'current',
+            'domain': domain,
+            'context': context,
+        }
+
+    def all_projects_action(self, cr, uid, context=None):
+        domain = ['|', ('state', 'not in', ['project_active', 'project_cancelled']), ('create_uid', '=', uid)]
+        if self.user_has_groups(cr, uid, 'up_project.group_up_project_suozhang', context=context):
+            domain = ['|', '&', ('state', 'in', ['project_active', 'project_cancelled']),
+                      ('director_reviewer_id', '=', uid)] + domain
+        if self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context):
+            domain = ['|', ('state', 'in', ['project_active', 'project_cancelled'])] + domain
+        if self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context):
+            domain = ['|', ('state', 'in', ['project_active', 'project_cancelled'])] + domain
+
+        return {
+            'name': 'All Project',
             'type': 'ir.actions.act_window',
             'view_mode': 'tree,form',
             'view_type': 'form',

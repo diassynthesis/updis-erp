@@ -238,8 +238,6 @@ class project_active_tasking(osv.osv):
         "jianyixiangmufuzeren_id": fields.many2one("res.users", u"建议项目负责人"),
 
 
-        'director_reviewer_id': fields.many2one('res.users', string=u'Review Director'),
-
         'director_reviewer_apply_id': fields.many2one('res.users', string=u'Review Apply By'),
         'director_reviewer_apply_time': fields.datetime(string="Director Reviewer Approve Time"),
 
