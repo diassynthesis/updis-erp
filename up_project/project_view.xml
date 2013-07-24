@@ -136,6 +136,7 @@
 
                             </group>
                             <group>
+                                <field name="zhuguanzongshi_id"/>
                                 <field name="user_id"/>
                                 <field name="chenjiebumen_id"/>
                             </group>

@@ -102,7 +102,7 @@ class project_log(osv.osv):
 
 
 class updis_project(osv.osv):
-    _log_access = True
+    _log_access = False
     _inherit = "project.project"
     _name = "project.project"
 
@@ -209,6 +209,7 @@ class updis_project(osv.osv):
         'city_type': fields.selection(
             [('CC200511210001', u'直辖市'), ('CC200511210002', u'省会城市'), ('CC200511210003', u'地级市'),
              ('CC200511210004', u'县级市'), ('CC200511210005', u'其它')], string="City Type"),
+        "zhuguanzongshi_id": fields.many2one("res.users", u"主管总师"),
         'import_is_hidden': fields.char(size=8, string="Import Is Hidden"),
         'import_sum_up_flag': fields.char(size=8, string="Import Sum Up Flag"),
         'import_flag': fields.char(size=8, string="Import Flag"),

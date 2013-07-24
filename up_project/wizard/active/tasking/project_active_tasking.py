@@ -266,7 +266,6 @@ class project_active_tasking(osv.osv):
         "tender_category": fields.selection([(u'商务标', u'商务标'), (u'技术标', u'技术标'), (u'综合标', u'综合标')], u"投标类别"),
         # "chenjiefuzeren_id": fields.related("project_id", "user_id", type="many2one", relation="res.users",
         #                                     string=u"承接项目负责人"),
-        "zhuguanzongshi_id": fields.many2one("res.users", u"主管总师"),
         "zongshishi_submitter_id": fields.many2one("res.users", string=u"Zongshishi Submitter"),
         "zongshishi_submit_datetime": fields.datetime(string=u"Zongshishi Submit Date"),
 
