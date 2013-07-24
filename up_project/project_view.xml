@@ -122,6 +122,9 @@
                         </group>
                         <group string="Basic Info">
                             <group>
+                                <field name="partner_type"/>
+                                <field name="partner_id"/>
+                                <field name="customer_contact"/>
                                 <field name="project_type" class="oe_no_button"
                                        attrs="{'readonly':[('is_project_created','=',True),('is_project_creater','=',False)]}">
                                     <form>
@@ -129,10 +132,12 @@
                                     </form>
                                 </field>
                                 <field name="categories_id"/>
+                                <field name="guimo"/>
 
                             </group>
                             <group>
                                 <field name="user_id"/>
+                                <field name="chenjiebumen_id"/>
                             </group>
 
                         </group>

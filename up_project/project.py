@@ -168,7 +168,7 @@ class updis_project(osv.osv):
                                    ("project_stop", u"Project Stop"),
                                    ("project_pause", u"Project Pause"),
                                    ("project_filed", u"Project Filed"),
-                                   ("project_cancelled", u"Project Cancelled"), ]),
+                                   ("project_cancelled", u"Project Cancelled"), ], string="State"),
         'project_log': fields.html(u"Project Log Info", readonly=True),
         "xiangmubianhao": fields.char(u"Project Num", select=True, size=128, ),
         "chenjiebumen_id": fields.many2one("hr.department", u"In Charge Department"),
@@ -193,6 +193,10 @@ class updis_project(osv.osv):
         'is_user_is_project_manager': fields.function(_is_user_is_project_manager, type="boolean",
                                                       string="Is User is The Project Manager"),
         'temp_status': fields.char(size=56, string="Temp Status"),
+        'partner_type': fields.selection([("WT200508180001", u"深圳规划局"),
+                                          ("WT200508180002", u"深圳市其他"),
+                                          ("WT200508180003", u"市外"),
+                                          ("WT200509020001", u"其它"), ], string="Partner Type"),
         'is_import': fields.boolean(string="Is import Data"),
         'comment': fields.text(string='Project Comment'),
         'begin_date': fields.date(string='Begin Date'),
@@ -212,6 +216,7 @@ class updis_project(osv.osv):
         'import_proxy_name': fields.char(size=256, string='Import Proxy Name'),
         'import_aaddress': fields.char(size=256, string='Import AAddress'),
         'import_alinkman': fields.char(size=256, string='Import Alinkman'),
+        'import_proejct_number': fields.char(size=256, string='Import Project Num'),
 
     }
 
