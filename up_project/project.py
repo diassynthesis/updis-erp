@@ -192,7 +192,7 @@ class updis_project(osv.osv):
 
         'is_user_is_project_manager': fields.function(_is_user_is_project_manager, type="boolean",
                                                       string="Is User is The Project Manager"),
-        'temp_status': fields.char(size=56, string="Temp Status"),
+
         'partner_type': fields.selection([("WT200508180001", u"深圳规划局"),
                                           ("WT200508180002", u"深圳市其他"),
                                           ("WT200508180003", u"市外"),
@@ -218,6 +218,7 @@ class updis_project(osv.osv):
         'import_aaddress': fields.char(size=256, string='Import AAddress'),
         'import_alinkman': fields.char(size=256, string='Import Alinkman'),
         'import_proejct_number': fields.char(size=256, string='Import Project Num'),
+        'temp_status': fields.char(size=56, string="Temp Status"),
 
     }
 
@@ -319,6 +320,10 @@ class updis_project(osv.osv):
             'domain': domain,
             'context': context,
         }
+
+    def workflow_signal(self, cr, uid, ids, signal):
+        self._workflow_signal(cr, uid, ids, signal)
+        return True
 
 
 class project_profession(osv.Model):
