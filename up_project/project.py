@@ -325,8 +325,12 @@ class project_profession(osv.Model):
     """Profession"""
     _name = "project.profession"
     _description = "Project Profession"
+    _order = 'order_num'
     _columns = {
         'name': fields.char("Name", required=1, size=64),
+        'order_num': fields.integer(size=10, string="Profession Order Num"),
+        'short_name': fields.char("Short Name", size=64),
+        'code': fields.char("Code", size=64),
         'active': fields.boolean("Active"),
     }
     _defaults = {

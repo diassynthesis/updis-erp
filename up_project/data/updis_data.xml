@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
     <data noupdate="1">
-        <record id="sequence_code_xiangmubianhao" model="ir.sequence.type">
+        <!--record id="sequence_code_xiangmubianhao" model="ir.sequence.type">
             <field name="name">项目编号</field>
             <field name="code">project.project</field>
         </record>
@@ -10,7 +10,9 @@
             <field name="code">project.project</field>
             <field name="prefix">%(year)s</field>
             <field name="padding">2</field>
-        </record>
+        </record-->
+
+
         <record id="cat1" model="project.upcategory">
             <field name="name">区域\城镇体系\总体规划</field>
         </record>
@@ -63,77 +65,6 @@
             <field name="name">研究项目</field>
         </record>
 
-
-        <!--project.profession-->
-        <record id="project_profession_1" model="project.profession">
-            <field name="name">规划研究</field>
-        </record>
-        <record id="project_profession_2" model="project.profession">
-            <field name="name">规划设计</field>
-        </record>
-        <record id="project_profession_3" model="project.profession">
-            <field name="name">建筑工程设计</field>
-        </record>
-        <record id="project_profession_4" model="project.profession">
-            <field name="name">市政工程设计</field>
-        </record>
-        <record id="project_profession_16" model="project.profession">
-            <field name="name">道路交通</field>
-        </record>
-        <record id="project_profession_5" model="project.profession">
-            <field name="name">给水</field>
-        </record>
-        <record id="project_profession_6" model="project.profession">
-            <field name="name">排水</field>
-        </record>
-        <record id="project_profession_7" model="project.profession">
-            <field name="name">防洪防潮</field>
-        </record>
-        <record id="project_profession_8" model="project.profession">
-            <field name="name">通信</field>
-        </record>
-        <record id="project_profession_9" model="project.profession">
-            <field name="name">电力</field>
-        </record>
-        <record id="project_profession_10" model="project.profession">
-            <field name="name">强弱电</field>
-        </record>
-        <record id="project_profession_11" model="project.profession">
-            <field name="name">供热</field>
-        </record>
-        <record id="project_profession_12" model="project.profession">
-            <field name="name">燃气</field>
-        </record>
-        <record id="project_profession_13" model="project.profession">
-            <field name="name">暖通</field>
-        </record>
-        <record id="project_profession_14" model="project.profession">
-            <field name="name">环境卫生</field>
-        </record>
-        <record id="project_profession_15" model="project.profession">
-            <field name="name">消防</field>
-        </record>
-        <record id="project_profession_17" model="project.profession">
-            <field name="name">人防</field>
-        </record>
-        <record id="project_profession_18" model="project.profession">
-            <field name="name">综合防灾</field>
-        </record>
-        <record id="project_profession_19" model="project.profession">
-            <field name="name">规划环评</field>
-        </record>
-        <record id="project_profession_20" model="project.profession">
-            <field name="name">建筑</field>
-        </record>
-        <record id="project_profession_21" model="project.profession">
-            <field name="name">结构</field>
-        </record>
-        <record id="project_profession_22" model="project.profession">
-            <field name="name">桥梁</field>
-        </record>
-        <record id="project_profession_23" model="project.profession">
-            <field name="name">概预算</field>
-        </record>
 
 
         <!--project.config.sms-->

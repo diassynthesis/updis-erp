@@ -242,8 +242,11 @@
             <field name="model">project.profession</field>
             <field name="arch" type="xml">
                 <form version="7.0" string="Project Profession Config">
-                    <group>
+                    <group col="4">
                         <field name="name"/>
+                        <field name="short_name"/>
+                        <field name="order_num"/>
+                        <field name="code"/>
                         <field name="active"/>
                     </group>
                 </form>
