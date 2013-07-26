@@ -1,3 +1,4 @@
+# -*- encoding:utf-8 -*-
 import datetime
 from openerp.osv import fields
 from openerp.osv import osv
@@ -79,6 +80,9 @@ class updis_contract_contract(osv.osv):
         'third_party_sign_date': fields.date(string='Third Party Contract Sign Date'),
         'customer': fields.many2many('res.partner', 'contract_partner_rel', 'contract_id', 'partner_id',
                                      string='Customers'),
+        'customer_type': fields.selection([('JC200511210001', u"规划部门"),
+                                           ('JC200511210002', u"其他政府部门"),
+                                           ('JC200511210003', u"企业")], string="Customer Type"),
         'customer_contact': fields.many2many('res.partner', 'contract_contact_partner_rel', 'contract_contact_id',
                                              'partner_id', string="Customer Contacts"),
         'third_party_company': fields.many2many('res.partner', 'contract_third_party_company_rel', 'contract_id',
@@ -93,22 +97,40 @@ class updis_contract_contract(osv.osv):
         'filed_date': fields.date(string='Contract Filed Date'),
         'project_start_date': fields.date(string="Project Start Date"),
         'comment': fields.text(string="Comment"),
-
-
+        "change": fields.selection([(u"转让", u"转让"), (u"正常", u"正常"), (u"变更", u"变更")], string="Contract Change"),
         'project_id': fields.many2one('project.project', string="Project"),
+
         'project_category': fields.function(_get_project_category, type="char",
                                             string="Project Category"),
         'design_department': fields.related('project_id', 'chenjiebumen_id', type="many2one",
                                             relation="hr.department", string='Design Department'),
         'project_scale': fields.related('project_id', 'guimo', type='char', string="Project Scale"),
-        'project_level': fields.related('project_id', 'guanlijibie', type='char', string='Project Level'),
+        'project_level': fields.related('project_id', 'guanlijibie', type='selection',
+                                        selection=[('LH200307240001', u'院级'), ('LH200307240002', u'所级')],
+                                        string='Project Level'),
 
         'income_ids': fields.one2many('project.contract.income', 'contract_id', string='Incomes', ondelete="cascade"),
         'invoice_ids': fields.one2many('project.contract.invoice', 'contract_id', string='Invoices',
                                        ondelete="cascade"),
         'expenses_ids': fields.one2many('project.contract.expenses', 'contract_id', string='Third Party Expenses',
                                         ondelete="cascade"),
+        'entrust_type': fields.selection(
+            [('WT200508180001', u'深圳规划局'), ('WT200508180002', u"深圳市其他"), ('WT200508180003', u"市外"),
+             ('WT200509020001', u"其他")], string="Entrust Type"),
+        ##Tender
+        "import_tender_type": fields.char(size=128, string="Import Tender Type"),
+        "import_tender_result": fields.char(size=128, string="Import Tender Result"),
+        "import_contin": fields.char(size=128, string="Import Tender Contin"),
+        "tender_phone": fields.char(size=128, string="Tender Phone"),
+        "import_number": fields.char(size=128, string="Import Number"),
+        "is_import": fields.boolean(string="Is Import"),
 
+
+    }
+    _sql_constraints = [('contract_num_unique', 'unique(number)', 'number must be unique !')]
+
+    _defaults = {
+        'type': 'common',
     }
 
     def _get_project_category_on_change(self, cr, uid, ids, project_id, context=None):
