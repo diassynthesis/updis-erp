@@ -20,6 +20,10 @@ class project_project_inherit(osv.osv):
     def act_active_workflow(self, cr, uid, ids, context=None):
         return ids[0]
 
+    def action_active_cancel(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'state': 'project_cancelled'}, context=context)
+        return True
+
     def action_end_active(self, cr, uid, ids, context=None):
         tasking = self.pool.get('project.project.active.tasking').search(cr, uid, [('project_id', '=', ids[0])],
                                                                          context=context)

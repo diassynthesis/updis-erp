@@ -184,7 +184,7 @@ class project_log(osv.osv):
 
 
 class updis_project(osv.osv):
-    _log_access = False
+    _log_access = True
     _inherit = "project.project"
     _name = "project.project"
 
@@ -244,11 +244,12 @@ class updis_project(osv.osv):
         "state_id": fields.many2one('res.country.state', string='State', domain="[('country_id','=',country_id)]"),
         "city": fields.char(size=128, string="City"),
         'state': fields.selection([("project_active", u"Project Active"),
+                                   ("project_cancelled", u"Project Cancelled"),
                                    ("project_processing", u"Project Processing"),
                                    ("project_stop", u"Project Stop"),
                                    ("project_pause", u"Project Pause"),
                                    ("project_filed", u"Project Filed"),
-                                   ("project_cancelled", u"Project Cancelled"), ], string="State"),
+                                    ], string="State"),
         'project_log': fields.html(u"Project Log Info", readonly=True),
         "xiangmubianhao": fields.char(u"Project Num", select=True, size=128, ),
         "chenjiebumen_id": fields.many2one("hr.department", u"In Charge Department"),
