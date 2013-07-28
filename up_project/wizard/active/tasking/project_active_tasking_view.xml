@@ -8,7 +8,7 @@
                 <form version="7.0" string="engineer Form">
                     <div>
                         <group invisible="1">
-                            <field name="shifoutoubiao"/>
+
                             <field name="category_name"/>
                         </group>
                         <table class="oe_form_group activetable">
@@ -23,8 +23,8 @@
                                             <field name="categories_else"
                                                    attrs="{'invisible':[('category_name','!=',u'其它')]}"/>
                                         </div>
-                                        <div class="inline-item">投标类别:
-
+                                        <div class="inline-item">
+                                            是否投标:<field name="shifoutoubiao" readonly="1"/>
                                             <field name="tender_category"
                                                    attrs="{'invisible':[('shifoutoubiao','=',False)]}"
                                                    readonly="1"/>
@@ -40,7 +40,7 @@
                                             <field name="zhuguanzongshi_id" class="oe_no_button"
                                                    options='{"no_open": True}'
                                                    domain="[('groups_id','=',%(group_up_project_zongshishi)d)]"
-                                                   attrs="{'invisible':[('guanlijibie','!=',u'院级')],'required':[('guanlijibie','=',u'院级')]}"/>
+                                                   attrs="{'invisible':[('guanlijibie','!=',u'LH200307240001')],'required':[('guanlijibie','=',u'LH200307240001')]}"/>
                                         </div>
                                     </td>
                                 </tr>
@@ -132,12 +132,15 @@
                                    on_change="onchange_partner_id(partner_id)"
                                    attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
                                    required="1"/>
-                            <field name="guimo" required="1"
+                            <field name="partner_type"
+                                   attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
+                                   required="1"/>
+                            <field name="partner_address" readonly="1"/>
+                            <field name="customer_contact" required="1" domain="[('is_company','=',False)]"
+                                   attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
+                            <field name="guimo" required="1" colspan="4"
                                    attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
                                     />
-                            <field name="partner_address" readonly="1"/>
-                            <field name="customer_contact" required="1"
-                                   attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
                         </group>
                         <table class="oe_form_group activetable" col="5">
                             <thead class="oe_form_group_row">
@@ -356,7 +359,7 @@
                                                        options='{"no_open": True}'
                                                        domain="[('groups_id','=',%(group_up_project_zongshishi)d)]"
                                                        readonly="1"
-                                                       attrs="{'invisible':[('guanlijibie','!=',u'院级')]}"/>
+                                                       attrs="{'invisible':[('guanlijibie','!=',u'LH200307240001')]}"/>
                                             </div>
                                         </td>
                                         <td colspan="2">会签栏</td>

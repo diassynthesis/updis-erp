@@ -30,6 +30,22 @@
     padding-top: 7px !important;
 }
 
+.openerp table.no-border-table {
+    border: none;
+}
+
+.openerp table.no-border-table  tr {
+    border: none;
+}
+
+.openerp table.no-border-table td {
+    border: none;
+}
+
+.openerp table.no-border-table th {
+    border: none;
+}
+
 .openerp div.inline-item span {
     width: auto !important;
 }
@@ -49,4 +65,8 @@
 
 .openerp span.hint-red {
     color: red;
+}
+
+.openerp div.oe_long_title {
+    width: 70% !important;
 }
