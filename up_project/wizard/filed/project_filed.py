@@ -19,4 +19,5 @@ class project_project_inherit(osv.osv):
 
     def act_filed_workflow(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'state': 'project_filed'}, context=context)
+        self._workflow_signal(cr, uid, ids, 's_filed_start', context=context),
         return ids[0]

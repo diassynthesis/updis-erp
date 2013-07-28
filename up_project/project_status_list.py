@@ -15,4 +15,8 @@ status_code = {
     'filed_start': 30101,
     'filed_end': 30102,
 
+    'project_cancel': 40101,
+    'project_stop': 50101,
+    'project_pause': 60101,
+
 }

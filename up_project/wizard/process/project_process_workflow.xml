@@ -19,7 +19,7 @@
             <field name="wkf_id" ref="wkf_up_project_temp_process"/>
             <field name="name">Project Process Add Member</field>
             <field name="kind">function</field>
-            <field name="action">write({'state_process':'add_member'})</field>
+            <field name="action">write({'state_process':'add_member','status_code':20101})</field>
         </record>
         <record id="acitivity_project_temp_process_stop" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project_temp_process"/>
@@ -27,7 +27,7 @@
             <field name="flow_stop">True</field>
             <field name="kind">function</field>
             <field name="signal_send">subflow.pro_t_prc_end</field>
-            <field name="action">write({'state_process':'process_filed'})</field>
+            <field name="action">write({'state_process':'process_filed','status_code':20102})</field>
         </record>
 
 
@@ -35,6 +35,7 @@
         <record id="t_project_temp_process_start" model="workflow.transition">
             <field name="act_from" ref="activity_project_temp_process_start"/>
             <field name="act_to" ref="activity_project_temp_process_add_member"/>
+            <field name="signal">s_add_m_str</field>
         </record>
         <record id="t_project_temp_process_0" model="workflow.transition">
             <field name="act_from" ref="activity_project_temp_process_add_member"/>

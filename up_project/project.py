@@ -249,7 +249,7 @@ class updis_project(osv.osv):
                                    ("project_stop", u"Project Stop"),
                                    ("project_pause", u"Project Pause"),
                                    ("project_filed", u"Project Filed"),
-                                    ], string="State"),
+                                  ], string="State"),
         'project_log': fields.html(u"Project Log Info", readonly=True),
         "xiangmubianhao": fields.char(u"Project Num", select=True, size=128, ),
         "chenjiebumen_id": fields.many2one("hr.department", u"In Charge Department"),
@@ -357,18 +357,27 @@ class updis_project(osv.osv):
 
 
     def related_to_me_action(self, cr, uid, context=None):
-        domain = [('create_uid', '=', uid)]
+        domain = ['&', ('create_uid', '=', uid), ('status_code', '=', 10101)]
         status_code = []
+        #director
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_suozhang', context=context):
             domain = ['|', '&', ('status_code', '=', 10102), ('related_user_id', '=', uid)] + domain
+            #Operator Room
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context):
             status_code += [10103]
+            #Engineer Room
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context):
             status_code += [10104]
-        domain = ['|', ('status_code', 'in', status_code)] + domain
 
-        other_domain = ['|', '&', ('status_code', '=', 10105), ('user_id', '=', uid)]
-        domain = other_domain + domain
+        #Manager
+        manager_domain = ['|', '&', ('status_code', 'in', [10105, 20101, 50101, 60101]), ('user_id', '=', uid)]
+
+        #Filed Manager
+        if self.user_has_groups(cr, uid, 'up_project.group_up_project_filed_manager', context=context):
+            status_code += [30101]
+
+        domain = ['|', ('status_code', 'in', status_code)] + domain
+        domain = manager_domain + domain
 
         return {
             'name': 'project Related To Me',

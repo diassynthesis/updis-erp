@@ -19,7 +19,7 @@
             <field name="wkf_id" ref="wkf_up_project_filed"/>
             <field name="name">Project Filed Filing</field>
             <field name="kind">function</field>
-            <field name="action">write({'state_filed':'start_file'})</field>
+            <field name="action">write({'state_filed':'start_file','status_code':30101})</field>
         </record>
         <record id="acitivity_project_filed_stop" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project_filed"/>
@@ -27,7 +27,7 @@
             <field name="flow_stop">True</field>
             <field name="kind">function</field>
             <field name="signal_send">subflow.pro_filed_end</field>
-            <field name="action">write({'state_filed':'end_file'})</field>
+            <field name="action">write({'state_filed':'end_file','status_code':30102})</field>
         </record>
 
 
@@ -35,6 +35,7 @@
         <record id="t_project_filed_start" model="workflow.transition">
             <field name="act_from" ref="activity_project_filed_start"/>
             <field name="act_to" ref="activity_project_filed_filing"/>
+            <field name="signal">s_filed_start</field>
         </record>
         <record id="t_project_filed_0" model="workflow.transition">
             <field name="act_from" ref="activity_project_filed_filing"/>

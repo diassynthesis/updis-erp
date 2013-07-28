@@ -22,7 +22,7 @@ class project_project_inherit(osv.osv):
 
     def action_active_cancel(self, cr, uid, ids, context=None):
         self.action_end_active(cr, uid, ids, context=context)
-        self.write(cr, uid, ids, {'state': 'project_cancelled'}, context=context)
+        self.write(cr, uid, ids, {'state': 'project_cancelled', 'status_code': 40101}, context=context)
         return True
 
     def action_end_active(self, cr, uid, ids, context=None):
