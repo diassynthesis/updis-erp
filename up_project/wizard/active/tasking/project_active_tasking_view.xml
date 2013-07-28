@@ -47,16 +47,17 @@
                             </tbody>
                         </table>
                     </div>
-                    <div>
+                    <footer>
                         <button name="engineer_review_accept" class="oe_highlight"
                                 groups="up_project.group_up_project_zongshishi" string="审批通过"
                                 type="object"/>
-                    </div>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
                 </form>
             </field>
         </record>
         <record id="project_active_tasking_engineer_form_action" model="ir.actions.act_window">
-            <field name="name">project.project.active.tasking.engineer.action</field>
+            <field name="name">project  engineer room approve wizard</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">project.project.active.tasking.engineer</field>
             <field name="view_type">form</field>
@@ -79,16 +80,17 @@
                         <field name="renwuyaoqiu" required="1" colspan="6"/>
                         <field name="chenjiebumen_id" required="1" colspan="3"/>
                     </group>
-                    <div>
+                    <footer>
                         <button name="operator_review_accept" class="oe_highlight" string="提交总师室审批"
                                 confirm="确定提交到总师室审批?"
                                 type="object" groups="up_project.group_up_project_jingyingshi"/>
-                    </div>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
                 </form>
             </field>
         </record>
         <record id="project_active_tasking_operator_form_action" model="ir.actions.act_window">
-            <field name="name">project.project.active.tasking.operator.action</field>
+            <field name="name">project operator room approve wizard</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">project.project.active.tasking.operator</field>
             <field name="view_type">form</field>

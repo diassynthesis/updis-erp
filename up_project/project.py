@@ -20,11 +20,74 @@ class project_project_wizard(osv.osv_memory):
 
         if 'user_id' in fields:
             res['user_id'] = project.user_id.id if project.user_id else None
+        if 'name' in fields:
+            res['name'] = project.name
+        if 'xiangmubianhao' in fields:
+            res['xiangmubianhao'] = project.xiangmubianhao
+        if 'country_id' in fields:
+            res['country_id'] = project.country_id.id if project.country_id else None
+        if 'state_id' in fields:
+            res['state_id'] = project.state_id.id if project.state_id else None
+        if 'city' in fields:
+            res['city'] = project.city
+        if 'city_type' in fields:
+            res['city_type'] = project.city_type
+        if 'partner_type' in fields:
+            res['partner_type'] = project.partner_type
+        if 'partner_id' in fields:
+            res['partner_id'] = project.partner_id.id if project.partner_id else None
+        if 'customer_contact' in fields:
+            res['customer_contact'] = project.customer_contact.id if project.customer_contact else None
+        if 'project_type' in fields:
+            res['project_type'] = project.project_type.id if project.project_type else None
+        if 'categories_id' in fields:
+            res['categories_id'] = project.categories_id.id if project.categories_id else None
+        if 'shifoutoubiao' in fields:
+            res['shifoutoubiao'] = project.shifoutoubiao
+        if 'toubiaoleibie' in fields:
+            res['toubiaoleibie'] = project.toubiaoleibie
+        if 'zhuguanzongshi_id' in fields:
+            res['zhuguanzongshi_id'] = project.zhuguanzongshi_id.id if project.zhuguanzongshi_id else None
+        if 'chenjiebumen_id' in fields:
+            res['chenjiebumen_id'] = project.chenjiebumen_id.id if project.chenjiebumen_id else None
+        if 'guanlijibie' in fields:
+            res['guanlijibie'] = project.guanlijibie
+        if 'guimo' in fields:
+            res['guimo'] = project.guimo
+        if 'waibao' in fields:
+            res['waibao'] = project.waibao
+        if 'shizhenpeitao' in fields:
+            res['shizhenpeitao'] = project.shizhenpeitao
 
         return res
 
     _columns = {
         "user_id": fields.many2one('res.users', string="Project Manager"),
+        "name": fields.char(size=256, String="Project Name"),
+        "xiangmubianhao": fields.char(size=256, String="Project Num"),
+        'country_id': fields.many2one('res.country', 'Country'),
+        "state_id": fields.many2one('res.country.state', 'State', domain="[('country_id','=',country_id)]"),
+        "city": fields.char("City", size=128),
+        'city_type': fields.selection(
+            [('CC200511210001', u'直辖市'), ('CC200511210002', u'省会城市'), ('CC200511210003', u'地级市'),
+             ('CC200511210004', u'县级市'), ('CC200511210005', u'其它')], string="City Type"),
+        'partner_type': fields.selection([("WT200508180001", u"深圳规划局"),
+                                          ("WT200508180002", u"深圳市其他"),
+                                          ("WT200508180003", u"市外"),
+                                          ("WT200509020001", u"其它"), ], string="Partner Type"),
+        "partner_id": fields.many2one('res.partner', 'Customer'),
+        "customer_contact": fields.many2one('res.partner', 'Customer Contact'),
+        "project_type": fields.many2one("project.type", string="Project Type", ),
+        "categories_id": fields.many2one("project.upcategory", u"项目类别"),
+        "shifoutoubiao": fields.boolean("Is Tender"),
+        "toubiaoleibie": fields.selection([('business', u'商务标'), ('technology', u'技术标'), ('complex', u'综合标')],
+                                          "Tender Type"),
+        "zhuguanzongshi_id": fields.many2one("res.users", u"主管总师"),
+        "chenjiebumen_id": fields.many2one("hr.department", u"In Charge Department"),
+        "guanlijibie": fields.selection([('LH200307240001', u'院级'), ('LH200307240002', u'所级')], u'Project Level'),
+        "guimo": fields.char(u"Scale", size=64),
+        "waibao": fields.boolean("Is Outsourcing"),
+        "shizhenpeitao": fields.boolean("Is City"),
     }
 
     def project_admin_change_accept(self, cr, uid, ids, context=None):
@@ -34,7 +97,26 @@ class project_project_wizard(osv.osv_memory):
         project = self.pool.get("project.project").browse(cr, uid, record_id, context)
         self_record = self.browse(cr, uid, ids[0], context)
         project.write({
-            'user_id': self_record.user_id.id if self_record.user_id.id else None
+            'user_id': self_record.user_id.id if self_record.user_id.id else None,
+            'name': self_record.name,
+            'xiangmubianhao': self_record.xiangmubianhao,
+            'country_id': self_record.country_id.id if self_record.country_id.id else None,
+            'state_id': self_record.state_id.id if self_record.state_id.id else None,
+            'city': self_record.city,
+            'city_type': self_record.city_type,
+            'partner_type': self_record.partner_type,
+            'partner_id': self_record.partner_id.id if self_record.partner_id.id else None,
+            'customer_contact': self_record.customer_contact.id if self_record.customer_contact.id else None,
+            'project_type': self_record.project_type.id if self_record.project_type.id else None,
+            'categories_id': self_record.categories_id.id if self_record.categories_id.id else None,
+            'shifoutoubiao': self_record.shifoutoubiao,
+            'toubiaoleibie': self_record.toubiaoleibie,
+            'zhuguanzongshi_id': self_record.zhuguanzongshi_id.id if self_record.zhuguanzongshi_id.id else None,
+            'chenjiebumen_id': self_record.chenjiebumen_id.id if self_record.chenjiebumen_id.id else None,
+            'guanlijibie': self_record.guanlijibie,
+            'guimo': self_record.guimo,
+            'waibao': self_record.waibao,
+            'shizhenpeitao': self_record.shizhenpeitao,
         })
         return True
 
@@ -158,11 +240,9 @@ class updis_project(osv.osv):
         'create_uid': fields.many2one('res.users', 'Author', select=True),
         'write_date': fields.datetime('Modification date', select=True),
         'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
-        'country_id': fields.many2one('res.country', 'Country'),
-        "state_id": fields.many2one('res.country.state', 'State', domain="[('country_id','=',country_id)]"),
-        "city": fields.char("City", size=128),
-
-
+        'country_id': fields.many2one('res.country', string='Country'),
+        "state_id": fields.many2one('res.country.state', string='State', domain="[('country_id','=',country_id)]"),
+        "city": fields.char(size=128, string="City"),
         'state': fields.selection([("project_active", u"Project Active"),
                                    ("project_processing", u"Project Processing"),
                                    ("project_stop", u"Project Stop"),

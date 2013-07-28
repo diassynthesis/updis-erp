@@ -6,20 +6,71 @@
             <field name="model">project.project.wizard</field>
             <field name="arch" type="xml">
                 <form version="7.0" string="Wizard Form">
-                    <group>
-                        <field name="user_id"/>
-                    </group>
-                    <div>
+                    <sheet>
+                        <div class="oe_title oe_long_title">
+                            <h1>
+                                <field name="name" placeholder="Project Name"/>
+                            </h1>
+                        </div>
+                        <div class="oe_right inline-item">
+                            <span>项目编号:</span>
+                            <field name="xiangmubianhao"/>
+                        </div>
+                        <group col="2">
+                            <label string="Project Location" for="country_id"/>
+                            <div class="address_format">
+                                <field name="country_id" class="oe_no_button" widget="selection"
+                                        style="width: 15%%"
+                                       options="{'no_open':True}" nolabel="1" placeholder="Country"
+                                        />
+                                <field name="state_id" widget="selection" options="{'no_open':True}"
+                                       placeholder="State"
+                                       nolabel="1" style="width: 20%%"
+                                        />
+                                <field name="city" nolabel="1" placeholder="City" style="width: 20%%"
+                                        />
+                                <label for="city_type" string="城市类别"/>
+                                <field name="city_type" nolabel="1" style="width: 20%%"
+                                        />
+                            </div>
+                        </group>
+                        <group>
+                            <group string="Partner Info">
+                                <field name="partner_type"/>
+                                <field name="partner_id" domain="[('is_company','=',True)]"/>
+                                <field name="customer_contact" domain="[('is_company','=',False)]"/>
+                            </group>
+                            <group string="Project Type">
+                                <field name="project_type" class="oe_no_button"/>
+                                <field name="categories_id"/>
+                                <field name="shifoutoubiao"/>
+                                <field name="toubiaoleibie"/>
+                            </group>
+                            <group string="In charge Relate">
+                                <field name="zhuguanzongshi_id"/>
+                                <field name="chenjiebumen_id"/>
+                                <field name="user_id"/>
+                                <field name="guanlijibie"/>
+                            </group>
+                            <group string="Other Info">
+                                <field name="guimo"/>
+                                <field name="waibao"/>
+                                <field name="shizhenpeitao"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
                         <button name="project_admin_change_accept" class="oe_highlight"
-                                groups="up_project.group_up_project_admin" string="修改"
+                                groups="up_project.group_project_base_info_admin" string="修改"
                                 type="object"/>
-                    </div>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
                 </form>
             </field>
         </record>
 
         <record id="project_project_wizard_action" model="ir.actions.act_window">
-            <field name="name">project.project.wizard.action</field>
+            <field name="name">project Basic Info Change</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">project.project.wizard</field>
             <field name="view_type">form</field>
@@ -81,7 +132,7 @@
                         <div name="project_header"/>
                         <button name="%(project_project_wizard_action)d"
                                 string="修改项目基本属性"
-                                type="action" groups="up_project.group_up_project_admin"/>
+                                type="action" groups="up_project.group_project_base_info_admin"/>
                         <field name="state" widget="statusbar"
                                readonly="1"/>
                     </header>
