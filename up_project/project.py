@@ -153,6 +153,7 @@ class project_upcategory(osv.osv):
     _columns = {
         "name": fields.char("Category", size=64, required=True),
         "complete_name": fields.function(_cate_name_get_fnc, type="char", string="Name"),
+        "project_type": fields.many2one("project.type", string="Project Type", ),
         'summary': fields.text("Summary"),
         'parent_id': fields.many2one('project.upcategory', "Parent Category", ondelete='set null', select=True),
         'child_ids': fields.one2many('project.upcategory', 'parent_id', 'Child Categories'),
@@ -283,7 +284,6 @@ class updis_project(osv.osv):
         'begin_date': fields.date(string='Begin Date'),
         'plan_finish_date': fields.date(string='Plan Finish Date'),
         "shizhenpeitao": fields.boolean("Is City"),
-        'city_comment': fields.char(size=128, string="City Comment"),
         'questions': fields.text(string="Questions"),
         'next_work_plan': fields.text(string="Next Work Plan"),
         'primary_work': fields.text(string="Primary Work"),

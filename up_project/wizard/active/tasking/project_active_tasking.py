@@ -41,12 +41,15 @@ class project_active_tasking_engineer(osv.osv_memory):
             res['shifoutoubiao'] = tasking.shifoutoubiao
         if 'user_id' in fields:
             res['user_id'] = tasking.user_id.id if tasking.user_id else None
+        if 'project_type' in fields:
+            res['project_type'] = tasking.project_type.id if tasking.project_type else None
 
         return res
 
 
     _columns = {
         "shifoutoubiao": fields.boolean(string="is Tender?"),
+        "project_type": fields.many2one("project.type", string="Project Type", ),
         "categories_id": fields.many2one("project.upcategory", u"项目类别"),
         "category_name": fields.related('categories_id', 'name', type='char', string="Project Category Name"),
         "guanlijibie": fields.selection([('LH200307240001', u'院级'), ('LH200307240002', u'所级')], u'项目管理级别'),
@@ -74,7 +77,7 @@ class project_active_tasking_engineer(osv.osv_memory):
             'categories_else': self_record.categories_else,
             'tender_category': self_record.tender_category,
             'zhuguanzongshi_id': self_record.zhuguanzongshi_id.id if self_record.zhuguanzongshi_id else None,
-            'user_id': self_record.user_id.id if self_record.user_id.id else None
+            'project_type': self_record.project_type.id if self_record.project_type else None,
 
         })
         return tasking.engineer_review_accept()
@@ -87,6 +90,15 @@ class project_active_tasking_engineer(osv.osv_memory):
                 'category_name': category.name,
             }
             ret['value'].update(sms_vals)
+        return ret
+
+    def onchange_type_id(self, cr, uid, ids, type_id, context=None):
+        ret = {'value': {}}
+        sms_vals = {
+            'category_name': "",
+            'categories_id': None,
+        }
+        ret['value'].update(sms_vals)
         return ret
 
 
