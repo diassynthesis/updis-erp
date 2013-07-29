@@ -20,7 +20,7 @@
                             <label string="Project Location" for="country_id"/>
                             <div class="address_format">
                                 <field name="country_id" class="oe_no_button" widget="selection"
-                                        style="width: 15%%"
+                                       style="width: 15%%"
                                        options="{'no_open':True}" nolabel="1" placeholder="Country"
                                         />
                                 <field name="state_id" widget="selection" options="{'no_open':True}"
@@ -92,6 +92,7 @@
                     <field name="message_unread" invisible="1"/>
                     <field name="date" invisible="1"/>
                     <field name="xiangmubianhao"/>
+                    <field name="project_type"/>
                     <field name="name" string="Project Name"/>
                     <field name="user_id" string="Project Manager"/>
                     <field name="partner_id" string="Contact"/>
@@ -106,16 +107,18 @@
             <field name="model">project.project</field>
             <field name="arch" type="xml">
                 <search string="Search Project">
-                    <field name="xiangmubianhao" string="Project Num"/>
                     <field name="name" string="Project Name"/>
-                    <field name="partner_id" string="Customer"/>
+                    <field name="xiangmubianhao" string="Project Num"/>
                     <separator/>
                     <filter string="Project(s) Manager" domain="[('user_id','=',uid)]"
                             help="Projects in which I am a manager" icon="terp-personal"/>
-                    <field name="user_id" string="Project Manager"/>
+                    <filter string="Tender Project(s)" domain="[('shifoutoubiao','=',True)]" help="All Tender Projects"
+                            icon="terp-personal"/>
                     <group expand="0" string="Group By...">
                         <filter string="state" name="Manager" icon="terp-personal" domain="[]"
                                 context="{'group_by':'state'}"/>
+                        <filter string="type" name="Type" icon="terp-personal" domain="[]"
+                                context="{'group_by':'project_type'}"/>
                     </group>
                 </search>
             </field>

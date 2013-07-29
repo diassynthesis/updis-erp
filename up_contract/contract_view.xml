@@ -125,31 +125,46 @@
                                 <field name="name" placeholder="Please Input Contract Name"/>
                             </h1>
                         </div>
-                        <group string="Basic Info">
-                            <group col="1">
-                                <group>
-                                    <field name="type"/>
-                                    <field name="number"/>
-                                    <field name="price"/>
-                                </group>
-                                <group attrs="{'invisible':[('type','!=','common')]}">
+                        <div class="oe_right inline-item">
+                            <span>合同编号:</span>
+                            <field name="number"/>
+                        </div>
+                        <group>
+                            <group string="Contract Info">
+                                <field name="type"/>
+                                <field name="price"/>
+                                <field name="customer_type"/>
+                                <field name="entrust_type"/>
+                                <field name="change"/>
+                                <group attrs="{'invisible':[('type','!=','common')]}" colspan="2">
                                     <field name="city_level_number"/>
                                     <field name="filed_date"/>
                                 </group>
-                                <group attrs="{'invisible':[('type','!=','third_party')]}">
+                                <group attrs="{'invisible':[('type','!=','third_party')]}" colspan="2">
                                     <field name="third_party_sign_date"/>
                                 </group>
 
                             </group>
-                            <group col="1">
+                            <group string="Project Info">
                                 <group>
                                     <field name="project_id" class="oe_no_button"
-                                           options='{"no_open": True}' on_change="on_change_project(project_id)"/>
+                                           on_change="on_change_project(project_id)"/>
                                     <field name="project_category" readonly="1"/>
                                     <field name="design_department" readonly="1"/>
                                     <field name="project_scale" readonly="1"/>
                                     <field name="project_level" readonly="1"/>
+                                    <field name="project_is_city" readonly="1"/>
+                                    <field name="city_comment" attrs="{'invisible':[('project_is_city','=',False)]}"/>
                                     <field name="project_start_date"/>
+                                    <field name="project_is_tender" readonly="1"/>
+                                    <field name="project_tender_type" readonly="1"
+                                           attrs="{'invisible':[('project_is_tender','=',False)]}"/>
+                                    <group colspan="2" attrs="{'invisible':[('project_is_tender','=',False)]}">
+                                        <field name="import_tender_type"/>
+                                        <field name="import_tender_result"/>
+                                        <field name="tender_phone"/>
+                                        <field name="import_contin"/>
+                                    </group>
                                 </group>
                             </group>
                         </group>
@@ -173,6 +188,7 @@
                                 <field name="expenses_ids"/>
                             </group>
                         </group>
+                        <field name="comment"/>
 
                     </sheet>
                 </form>
