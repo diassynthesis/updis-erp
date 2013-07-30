@@ -21,8 +21,16 @@
                         <field name="name" placeholder="Please in put training name"/>
                     </h1>
                     <group string="Training Info" col="4">
-                        <field name="organizers"/>
-                        <field name="time"/>
+
+                        <field name="organizers" colspan="2"/>
+                        <div class="inline-item">
+                            <label for="time" class="oe_inline"/>
+                            <field name="time" class="oe_inline"/>
+                            <span>--</span>
+                            <field name="end_time" class="oe_inline" nolabel="1"/>
+                        </div>
+
+
                     </group>
                     <group string="Join Employees">
                         <field name="record_ids" nolabel='1'/>
@@ -38,6 +46,7 @@
                     <field name="name"/>
                     <field name="organizers"/>
                     <field name="time"/>
+                    <field name="end_time"/>
                 </tree>
             </field>
         </record>

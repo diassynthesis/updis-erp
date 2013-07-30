@@ -10,6 +10,7 @@ class updis_hr_training(osv.osv):
     _columns = {
         'name': fields.char(size=200, string='Training Name', required=True),
         'time': fields.date(string='Training Time'),
+        'end_time':fields.date(string='Training End Time'),
         'organizers': fields.char(size=100, string='Training Organizers'),
         'record_ids': fields.one2many('updis.hr.training.record', 'training_id', 'Training Related employees'),
 
@@ -27,6 +28,8 @@ class updis_hr_training_record(osv.osv):
         'training_certificate': fields.char(string='Certificate Number', size=100),
         'training_time': fields.related('training_id', 'time', type="date",
                                         string="Training Time", readonly=True),
+        'training_end_time': fields.related('training_id', 'end_time', type="date",
+                                        string="Training End Time", readonly=True),
         'training_organizers': fields.related('training_id', 'organizers', type="char",
                                               string="Training Organizers", readonly=True),
     }

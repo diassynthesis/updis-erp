@@ -105,6 +105,7 @@
                                 <field name="training_id"/>
                                 <field name="training_organizers"/>
                                 <field name="training_time"/>
+                                <field name="training_end_time"/>
                                 <field name="score"/>
                                 <field name="training_certificate"/>
                             </tree>
