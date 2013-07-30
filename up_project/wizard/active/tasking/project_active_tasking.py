@@ -1,5 +1,5 @@
 # -*- encoding:utf-8 -*-
-from datetime import datetime
+import datetime
 from openerp.osv import fields
 from openerp.osv import osv
 
@@ -330,7 +330,7 @@ class project_active_tasking(osv.osv):
 
     def _sign_form(self, cr, uid, ids, submitter_id_field_name, submit_date_field_name, is_clean=False, context=None):
         if not is_clean:
-            self.write(cr, uid, ids, {submitter_id_field_name: uid, submit_date_field_name: datetime.now()},
+            self.write(cr, uid, ids, {submitter_id_field_name: uid, submit_date_field_name: datetime.datetime.now()},
                        context=context)
         else:
             self.write(cr, uid, ids, {submitter_id_field_name: None, submit_date_field_name: None},
@@ -425,6 +425,17 @@ class project_active_tasking(osv.osv):
                                 'user_id': tasking.jianyixiangmufuzeren_id.id, 'state': 'zhidingfuzeren',
                                 'status_code': 10104},
                    context=context)
+        return True
+
+    def workflow_manager_room(self, cr, uid, ids, context=None):
+        tasking = self.browse(cr, 1, ids[0], context=context)
+        if tasking.begin_date:
+            self.write(cr, 1, ids, {'state': 'end', 'status_code': 10106, 'begin_date': datetime.date.today()},
+                       context=context)
+        else:
+            self.write(cr, 1, ids, {'state': 'end', 'status_code': 10106, },
+                       context=context)
+
         return True
 
 

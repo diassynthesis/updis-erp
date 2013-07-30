@@ -56,7 +56,7 @@
             <field name="kind">function</field>
             <field name="flow_stop">True</field>
             <field name="signal_send">subflow.pro_act_task_end</field>
-            <field name="action">write({'state':'end','status_code':10106})</field>
+            <field name="action">workflow_manager_room()</field>
         </record>
 
         <!-- Transitions -->

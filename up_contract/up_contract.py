@@ -67,7 +67,8 @@ class updis_contract_contract(osv.osv):
         'name': fields.char(size=128, string="Contract Name", required=True),
         'type': fields.selection([('common', u'Common Contract'), ('third_party', u'Third Party')], required=True,
                                  string='Contract Type'),
-        'third_party_sign_date': fields.date(string='Third Party Contract Sign Date'),
+        'sign_date': fields.date(string='Contract Sign Date'),
+        'third_party_sign_date': fields.date(string='Contract Third Party Sign Date'),
         'customer': fields.many2many('res.partner', 'contract_partner_rel', 'contract_id', 'partner_id',
                                      string='Customers'),
         'customer_type': fields.selection([('JC200511210001', u"规划部门"),
@@ -85,8 +86,6 @@ class updis_contract_contract(osv.osv):
         'number': fields.char(string='Contract No.', size=128),
         'city_level_number': fields.char(string='City Contract No.', size=128),
         'city_comment': fields.char(size=128, string="City Comment"),
-        'filed_date': fields.date(string='Contract Filed Date'),
-        'project_start_date': fields.date(string="Project Start Date"),
         'comment': fields.text(string="Comment"),
         "change": fields.selection([(u"转让", u"转让"), (u"正常", u"正常"), (u"变更", u"变更")], string="Contract Change"),
 
@@ -107,7 +106,7 @@ class updis_contract_contract(osv.osv):
         "is_import": fields.boolean(string="Is Import"),
 
         'project_id': fields.many2one('project.project', string="Project"),
-
+        'project_number': fields.related('project_id', 'xiangmubianhao', type='char', string="Project Number"),
         'project_category': fields.related('project_id', 'categories_id', type="many2one",
                                            relation="project.upcategory", string="Project Category"),
         'design_department': fields.related('project_id', 'chenjiebumen_id', type="many2one",
@@ -122,6 +121,7 @@ class updis_contract_contract(osv.osv):
                                                          ('complex', u'综合标')],
                                               string='Project Tender Type'),
         'project_is_city': fields.related('project_id', 'shizhenpeitao', type='boolean', string="Project Is City"),
+        'project_begin_date': fields.related('project_id', 'begin_date', type='date', string="Project Start Date"),
 
 
     }
@@ -146,6 +146,8 @@ class updis_contract_contract(osv.osv):
         if project_id:
             project = self.pool.get('project.project').browse(cr, uid, project_id, context)
             values = {
+                'name': project.name,
+                'project_number': project.xiangmubianhao,
                 'number': project.xiangmubianhao,
                 'design_department': project.chenjiebumen_id.id if project.chenjiebumen_id else None,
                 'project_scale': project.guimo,
@@ -156,10 +158,13 @@ class updis_contract_contract(osv.osv):
                 'project_is_tender': project.shifoutoubiao,
                 'project_tender_type': project.toubiaoleibie,
                 'project_is_city': project.shizhenpeitao,
+                'project_begin_date': project.begin_date,
             }
             ret['value'].update(values)
         else:
             values = {
+                'name': "",
+                'project_number': "",
                 'number': None,
                 'design_department': None,
                 'project_scale': "",
@@ -170,6 +175,7 @@ class updis_contract_contract(osv.osv):
                 'project_is_tender': False,
                 'project_tender_type': None,
                 'project_is_city': False,
+                'project_begin_date': None,
 
             }
             ret['value'].update(values)
