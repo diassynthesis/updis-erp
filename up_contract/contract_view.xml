@@ -163,10 +163,10 @@
                                     <field name="project_tender_type" readonly="1"
                                            attrs="{'invisible':[('project_is_tender','=',False)]}"/>
                                     <group colspan="2" attrs="{'invisible':[('project_is_tender','=',False)]}">
-                                        <field name="import_tender_type"/>
-                                        <field name="import_tender_result"/>
-                                        <field name="tender_phone"/>
-                                        <field name="import_contin"/>
+                                        <field name="import_tender_type" readonly="1"/>
+                                        <field name="import_tender_result" readonly="1"/>
+                                        <field name="tender_phone" readonly="1"/>
+                                        <field name="import_contin" readonly="1"/>
                                     </group>
                                 </group>
                             </group>
@@ -240,7 +240,8 @@
             <field name="inherit_id" ref="up_project.edit_project_inherit"/>
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='project_log']" position="after">
-                    <page string="Project Contract" groups="up_contract.group_up_contract_user">
+                    <page string="Project Contract" attrs="{'invisible':[('can_see_contract','=',False)]}">
+                        <field name="can_see_contract" invisible="1"/>
                         <field name="contract_ids">
                             <tree>
                                 <field name="number"/>
@@ -248,34 +249,45 @@
                                 <field name="type"/>
                                 <field name="price"/>
                             </tree>
-                            <form>
+                            <form string="Project Contract" version="7.0">
                                 <sheet>
                                     <div class="oe_title">
                                         <h1>
                                             <field name="name" placeholder="Please Input Contract Name"/>
                                         </h1>
                                     </div>
-                                    <group string="Basic Info">
-                                        <group col="1">
-                                            <group>
-                                                <field name="type"/>
-                                                <field name="number"/>
-                                                <field name="price"/>
-                                            </group>
-                                            <group attrs="{'invisible':[('type','!=','common')]}">
-                                                <field name="city_level_number"/>
-                                                <field name="project_begin_date"/>
-                                            </group>
-                                            <group attrs="{'invisible':[('type','!=','third_party')]}">
+                                    <div class="oe_right inline-item">
+                                        <span class="oe_inline">合同编号:</span>
+                                        <field name="number" class="oe_inline" required="1"/>
+                                    </div>
+                                    <group>
+                                        <group string="Contract Info">
+                                            <field name="type"/>
+                                            <field name="price"/>
+                                            <field name="customer_type"/>
+                                            <field name="entrust_type"/>
+                                            <field name="change"/>
+                                            <field name="sign_date"/>
+                                            <field name="city_level_number"/>
+                                            <group attrs="{'invisible':[('type','!=','third_party')]}" colspan="2">
                                                 <field name="third_party_sign_date"/>
                                             </group>
+                                            <field name="comment"/>
                                         </group>
                                     </group>
 
                                     <group col="1" attrs="{'invisible':[('type','!=','common')]}">
-                                        <group string="Customer Info">
-                                            <field name="customer" domain="[('is_company','=',True)]"/>
-                                            <field name="customer_contact"/>
+                                        <group string="Customer Info" col="4">
+                                            <field name="customer" domain="[('is_company','=',True)]">
+                                                <tree>
+                                                    <field name="name"/>
+                                                </tree>
+                                            </field>
+                                            <field name="customer_contact">
+                                                <tree>
+                                                    <field name="name"/>
+                                                </tree>
+                                            </field>
                                         </group>
                                         <group string="Invoice Info">
                                             <field name="income_ids"/>
@@ -291,7 +303,6 @@
                                             <field name="expenses_ids"/>
                                         </group>
                                     </group>
-
                                 </sheet>
                             </form>
                         </field>
@@ -321,18 +332,22 @@
             <field name="arch" type="xml">
                 <form string="Project Contract Income">
                     <group>
-                        <field name="contract_id" required="1"/>
-                        <field name="price"/>
-                        <newline/>
-                        <group colspan="2" col="4">
-                            <field name="obtain_date"/>
-                            <field name="handler"/>
+                        <group>
+                            <field name="contract_id" required="1"/>
+                            <field name="price"/>
+                            <newline/>
+                            <group colspan="2" col="4">
+                                <field name="obtain_date"/>
+                                <field name="handler"/>
+                            </group>
                         </group>
-                        <newline/>
-
-                        <field name="invoice_ids" domain="[('contract_id','=',contract_id)]"/>
-                        <field name="comment"/>
+                        <group></group>
+                        <group colspan="2">
+                            <field name="invoice_ids" domain="[('contract_id','=',contract_id)]"/>
+                            <field name="comment"/>
+                        </group>
                     </group>
+
                 </form>
             </field>
         </record>
@@ -368,19 +383,24 @@
             <field name="arch" type="xml">
                 <form string="Project Contract Invoice">
                     <group>
-                        <field name="contract_id" required="1"/>
-                        <newline/>
-                        <group colspan="2" col="4">
-                            <field name="number"/>
-                            <field name="price"/>
-                            <field name="obtain_date"/>
-                            <field name="handler"/>
-                            <field name="is_clear"/>
+                        <group colspan="2">
+                            <group>
+                                <field name="contract_id" required="1"/>
+                                <newline/>
+                                <group colspan="2" col="4">
+                                    <field name="number"/>
+                                    <field name="price"/>
+                                    <field name="obtain_date"/>
+                                    <field name="handler"/>
+                                    <field name="is_clear"/>
+                                </group>
+                            </group>
+                            <group></group>
                         </group>
-                        <newline/>
                         <field name="income_ids" domain="[('contract_id','=',contract_id)]"/>
                         <field name="comment"/>
                     </group>
+
                 </form>
             </field>
         </record>

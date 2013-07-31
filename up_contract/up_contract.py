@@ -27,7 +27,7 @@ class updis_contract_invoice(osv.osv):
     _description = 'Project Contract Invoice'
     _rec_name = 'number'
     _columns = {
-        'number': fields.char('Invoice No.', size=64,),
+        'number': fields.char('Invoice No.', size=64, ),
         'obtain_date': fields.date('Invoice Create Date', required=True),
         'price': fields.float(string='Price', digits=(16, 4)),
         'comment': fields.text(string="Comment"),
@@ -219,7 +219,42 @@ class updis_contract_contract(osv.osv):
 
 class updis_project_project(osv.osv):
     _inherit = "project.project"
+
+    def _is_user_contract_visible(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            if obj.user_id and obj.user_id.id == uid:
+                result[obj.id] = True
+                break
+            else:
+                result[obj.id] = False
+            if self.user_has_groups(cr, uid,
+                                    'up_contract.group_up_contract_user,up_contract.group_up_contract_manager,up_contract.group_up_contract_admin',
+                                    context=context):
+                result[obj.id] = True
+                break
+            else:
+                result[obj.id] = False
+
+            hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
+            if hr_id:
+                hr_record = self.pool.get('hr.employee').browse(cr, uid, hr_id[0], context=context)
+                user_department_id = hr_record.department_id.id if hr_record.department_id else "sdfsdf"
+                project_department_id = obj.chenjiebumen_id.id if obj.chenjiebumen_id else None
+                if user_department_id == project_department_id and self.user_has_groups(cr, uid,
+                                                                                        'up_project.group_up_project_suozhang',
+                                                                                        context=context):
+                    result[obj.id] = True
+                    break
+                else:
+                    result[obj.id] = False
+            else:
+                result[obj.id] = False
+        return result
+
     _columns = {
         'contract_ids': fields.one2many('project.contract.contract', 'project_id',
                                         string='Project Contracts'),
+        'can_see_contract': fields.function(_is_user_contract_visible, type="boolean",
+                                            string="Is User Can See Contract"),
     }
