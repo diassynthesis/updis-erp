@@ -27,7 +27,7 @@ class updis_contract_invoice(osv.osv):
     _description = 'Project Contract Invoice'
     _rec_name = 'number'
     _columns = {
-        'number': fields.char('Invoice No.', size=64, required=True),
+        'number': fields.char('Invoice No.', size=64,),
         'obtain_date': fields.date('Invoice Create Date', required=True),
         'price': fields.float(string='Price', digits=(16, 4)),
         'comment': fields.text(string="Comment"),
@@ -35,10 +35,14 @@ class updis_contract_invoice(osv.osv):
         'contract_id': fields.many2one('project.contract.contract', string="Contract"),
         'income_ids': fields.many2many('project.contract.income', 'contract_invoice_income_rels', 'invoice_id',
                                        'income_id', string='Incomes'),
+        'is_clear': fields.boolean(string="is Invoice Clear"),
+        'clear_date': fields.date(string='Invoice Clear Date'),
+        "is_import": fields.boolean(string="Is Import"),
     }
 
     _defaults = {
         'obtain_date': lambda *a: str(datetime.date.today()),
+        'is_import': False,
     }
 
 
@@ -53,10 +57,12 @@ class updis_contract_income(osv.osv):
         'contract_id': fields.many2one('project.contract.contract', string="Contract"),
         'invoice_ids': fields.many2many('project.contract.invoice', 'contract_invoice_income_rels', 'income_id',
                                         'invoice_id', string='Invoices'),
+        "is_import": fields.boolean(string="Is Import"),
     }
 
     _defaults = {
         'obtain_date': lambda *a: str(datetime.date.today()),
+        'is_import': False,
     }
 
 
@@ -129,6 +135,7 @@ class updis_contract_contract(osv.osv):
 
     _defaults = {
         'type': 'common',
+        'is_import': False,
     }
 
     def _get_project_category_on_change(self, cr, uid, ids, project_id, context=None):
