@@ -429,7 +429,7 @@ class project_active_tasking(osv.osv):
 
     def workflow_manager_room(self, cr, uid, ids, context=None):
         tasking = self.browse(cr, 1, ids[0], context=context)
-        if tasking.begin_date:
+        if not tasking.is_import:
             self.write(cr, 1, ids, {'state': 'end', 'status_code': 10106, 'begin_date': datetime.date.today()},
                        context=context)
         else:

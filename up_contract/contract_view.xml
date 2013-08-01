@@ -447,6 +447,13 @@
             <field name="act_window_id" ref="action_project_contract_income_management"/>
         </record>
 
+        <record id="action_project_contract_need_process_management" model="ir.actions.act_window">
+            <field name="name">Projects Contract Need Process</field>
+            <field name="res_model">project.contract.contract</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('price','=',None)]</field>
+        </record>
 
         <menuitem name="Contract" id="up_contract.project_contract" parent="base.menu_main_pm" sequence="50"
                   groups="up_contract.group_up_contract_manager"/>
@@ -454,6 +461,10 @@
                   parent="up_contract.project_contract"
                   action="action_project_contract_management" groups="up_contract.group_up_contract_manager"
                   sequence="10"/>
+        <menuitem name="Contract Need Process" id="up_contract.project_need_process_management"
+                  parent="up_contract.project_contract"
+                  action="action_project_contract_need_process_management" groups="up_contract.group_up_contract_manager"
+                  sequence="9"/>
 
         <menuitem name="Contract Incomes" id="up_contract.project_contract_income_management"
                   parent="up_contract.project_contract"

@@ -9,6 +9,7 @@ __author__ = 'cysnake4713'
 class updis_contract_expenses(osv.osv):
     _name = 'project.contract.expenses'
     _rec_name = 'price'
+    _order = 'obtain_date'
     _columns = {
         'obtain_date': fields.date('Obtain Date', required=True),
         'price': fields.float(string='Obtain Price', digits=(16, 4)),
@@ -26,6 +27,7 @@ class updis_contract_invoice(osv.osv):
     _name = 'project.contract.invoice'
     _description = 'Project Contract Invoice'
     _rec_name = 'number'
+    _order = 'obtain_date'
     _columns = {
         'number': fields.char('Invoice No.', size=64, ),
         'obtain_date': fields.date('Invoice Create Date', required=True),
@@ -49,6 +51,7 @@ class updis_contract_invoice(osv.osv):
 class updis_contract_income(osv.osv):
     _name = 'project.contract.income'
     _rec_name = 'price'
+    _order = 'obtain_date'
     _columns = {
         'obtain_date': fields.date('Obtain Date', required=True),
         'price': fields.float(string='Obtain Price', digits=(16, 4)),
@@ -68,8 +71,15 @@ class updis_contract_income(osv.osv):
 
 class updis_contract_contract(osv.osv):
     _name = 'project.contract.contract'
-
+    _order = 'create_date desc'
+    _log_access = True
     _columns = {
+
+        'create_date': fields.datetime('Created on', select=True),
+        'create_uid': fields.many2one('res.users', 'Author', select=True),
+        'write_date': fields.datetime('Modification date', select=True),
+        'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
+
         'name': fields.char(size=128, string="Contract Name", required=True),
         'type': fields.selection([('common', u'Common Contract'), ('third_party', u'Third Party')], required=True,
                                  string='Contract Type'),
@@ -136,6 +146,8 @@ class updis_contract_contract(osv.osv):
     _defaults = {
         'type': 'common',
         'is_import': False,
+        'change': u'正常',
+
     }
 
     def _get_project_category_on_change(self, cr, uid, ids, project_id, context=None):
@@ -219,6 +231,7 @@ class updis_contract_contract(osv.osv):
 
 class updis_project_project(osv.osv):
     _inherit = "project.project"
+    _name = 'project.project'
 
     def _is_user_contract_visible(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
@@ -258,3 +271,29 @@ class updis_project_project(osv.osv):
         'can_see_contract': fields.function(_is_user_contract_visible, type="boolean",
                                             string="Is User Can See Contract"),
     }
+
+
+class project_active_tasking_inherit(osv.osv):
+    _name = "project.project.active.tasking"
+    _inherit = "project.project.active.tasking"
+
+    def workflow_manager_room(self, cr, uid, ids, context=None):
+        contract_obj = self.pool.get("project.contract.contract")
+        project = self.browse(cr, uid, ids[0], context=context)
+        if project:
+            cid = contract_obj.create(cr, 1, {"name": project.name, 'project_id': project.project_id.id,
+                                              "number": project.xiangmubianhao,
+                                              "customer": [
+                                                  (6, 0, [project.partner_id.id if project.partner_id else None])],
+                                              "customer_contact": [(6, 0, [
+                                                  project.customer_contact.id if project.customer_contact else None])]},
+                                      context=context)
+        tasking = self.browse(cr, 1, ids[0], context=context)
+        if not tasking.is_import:
+            self.write(cr, 1, ids, {'state': 'end', 'status_code': 10106, 'begin_date': datetime.date.today()},
+                       context=context)
+        else:
+            self.write(cr, 1, ids, {'state': 'end', 'status_code': 10106, },
+                       context=context)
+
+        return True
