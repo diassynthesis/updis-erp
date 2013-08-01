@@ -280,7 +280,7 @@ class project_active_tasking_inherit(osv.osv):
     def workflow_manager_room(self, cr, uid, ids, context=None):
         contract_obj = self.pool.get("project.contract.contract")
         project = self.browse(cr, uid, ids[0], context=context)
-        if project:
+        if project and not project.is_import:
             cid = contract_obj.create(cr, 1, {"name": project.name, 'project_id': project.project_id.id,
                                               "number": project.xiangmubianhao,
                                               "customer": [
