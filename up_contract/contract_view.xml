@@ -457,15 +457,15 @@
 
         <menuitem name="Contract" id="up_contract.project_contract" parent="base.menu_main_pm" sequence="50"
                   groups="up_contract.group_up_contract_manager"/>
-        <menuitem name="Contract Management" id="up_contract.project_contract_management"
-                  parent="up_contract.project_contract"
-                  action="action_project_contract_management" groups="up_contract.group_up_contract_manager"
-                  sequence="10"/>
+
         <menuitem name="Contract Need Process" id="up_contract.project_need_process_management"
                   parent="up_contract.project_contract"
                   action="action_project_contract_need_process_management" groups="up_contract.group_up_contract_manager"
                   sequence="9"/>
-
+        <menuitem name="Contract Management" id="up_contract.project_contract_management"
+                  parent="up_contract.project_contract"
+                  action="action_project_contract_management" groups="up_contract.group_up_contract_manager"
+                  sequence="10"/>
         <menuitem name="Contract Incomes" id="up_contract.project_contract_income_management"
                   parent="up_contract.project_contract"
                   action="action_project_contract_income_management" groups="up_contract.group_up_contract_manager"
