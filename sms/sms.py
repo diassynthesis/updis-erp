@@ -39,7 +39,7 @@ class sms(osv.Model):
                 resp = urllib2.urlopen(self._sms_gateway, urlencode(params), timeout=45)
 
                 if resp.code == 200:
-                    sms_server_id = resp.read()
+                    sms_server_id = resp.read().decode('gbk')
                     self.write(cr, uid, [sms.id], {
                         'sms_server_id': sms_server_id,
                         'state': 'sent',
@@ -64,8 +64,7 @@ class sms(osv.Model):
                 self.write(cr, uid, [sms.id], {
                     'state': 'error',
                     'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
-                    # 'sms_server_id': e.reason,
+                    'sms_server_id': str(e),
                 })
-
 
         logging.getLogger('sms.sms').warning("SENDING SMS!")
