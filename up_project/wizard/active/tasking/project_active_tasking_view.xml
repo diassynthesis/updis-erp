@@ -193,7 +193,10 @@
                                                 attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangshenpi')]}"
                                                 groups="up_project.group_up_project_suozhang"
                                                 confirm="确定打回申请到发起人?"/>
-                                        <field name="director_reviewer_apply_id" readonly="1"/>
+                                        <field name="director_reviewer_apply_id" readonly="1" invisible="1"/>
+                                        <div attrs="{'invisible':[('state','in',['open','suozhangshenpi'])]}">
+                                            <field name="director_reviewer_apply_image" widget="image" readonly="1"/>
+                                        </div>
                                         <field name="director_reviewer_apply_time" readonly="1"/>
                                     </td>
                                 </tr>
@@ -319,7 +322,8 @@
                                        colspan="6"/>
                                 <field name="chenjiebumen_id" readonly="1"
                                        colspan="3"/>
-                                <field name="jinyinshi_submitter_id" readonly="1" colspan="2"/>
+                                <field name="jinyinshi_submitter_id_image" widget="image" readonly="1"
+                                       colspan="2"/>
                                 <div>
                                     <field name="jinyinshi_submitter_datetime" readonly="1" colspan="1"/>
                                 </div>
@@ -374,14 +378,16 @@
                                     <tr>
                                         <td>总师室</td>
                                         <td>
-                                            <field name="zongshishi_submitter_id" readonly="1"/>
+                                            <field name="zongshishi_submitter_id_image" widget="image" readonly="1"/>
                                             <field name="zongshishi_submit_datetime" readonly="1"/>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>承接部门负责人</td>
                                         <td>
-                                            <field name="director_approve" readonly="1"/>
+                                            <div attrs="{'invisible':[('state','!=','end')]}">
+                                                <field name="director_approve_image" readonly="1" widget="image"/>
+                                            </div>
                                             <field name="director_approve_time" readonly="1"/>
                                             <button name="manager_review_accept"
                                                     class="oe_highlight"

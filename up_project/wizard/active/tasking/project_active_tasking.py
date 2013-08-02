@@ -252,9 +252,13 @@ class project_active_tasking(osv.osv):
 
 
         'director_reviewer_apply_id': fields.many2one('res.users', string=u'Review Apply By'),
+        'director_reviewer_apply_image': fields.related('director_reviewer_apply_id', "sign_image", type="binary",
+                                                        string=u'Review Image'),
         'director_reviewer_apply_time': fields.datetime(string="Director Reviewer Approve Time"),
 
         'director_approve': fields.many2one('res.users', string="Director Approve"),
+        'director_approve_image': fields.related('director_approve', "sign_image", type="binary",
+                                                 string=u'Review Image'),
         'director_approve_time': fields.datetime(string="Director Approve Time"),
 
         ##Operator Room
@@ -267,6 +271,8 @@ class project_active_tasking(osv.osv):
 
 
         "jinyinshi_submitter_id": fields.many2one('res.users', string=u"Operator Room Submitter"),
+        "jinyinshi_submitter_id_image": fields.related('jinyinshi_submitter_id', "sign_image", type="binary",
+                                                       string=u'Review Image'),
         "jinyinshi_submitter_datetime": fields.datetime(string=u"Operator Room Submit Date"),
 
         #Engineer Room
@@ -281,6 +287,8 @@ class project_active_tasking(osv.osv):
         # "chenjiefuzeren_id": fields.related("project_id", "user_id", type="many2one", relation="res.users",
         #                                     string=u"承接项目负责人"),
         "zongshishi_submitter_id": fields.many2one("res.users", string=u"Zongshishi Submitter"),
+        "zongshishi_submitter_id_image": fields.related('zongshishi_submitter_id', "sign_image", type="binary",
+                                                        string=u'Review Image'),
         "zongshishi_submit_datetime": fields.datetime(string=u"Zongshishi Submit Date"),
 
         'is_wait_user_process': fields.function(_is_wait_user_process, type="boolean",
