@@ -380,7 +380,7 @@ class updis_project(osv.osv):
         domain = manager_domain + domain
 
         return {
-            'name': 'project Related To Me',
+            'name': u'待处理项目',
             'type': 'ir.actions.act_window',
             'view_mode': 'tree,form',
             'view_type': 'form',
@@ -401,7 +401,7 @@ class updis_project(osv.osv):
             domain = ['|', ('state', 'in', ['project_active', 'project_cancelled'])] + domain
 
         return {
-            'name': 'All Project',
+            'name': u'所有项目',
             'type': 'ir.actions.act_window',
             'view_mode': 'tree,form',
             'view_type': 'form',

@@ -15,17 +15,6 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "会 签 栏"
-msgstr "会 签 栏"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: view:project.project.active.tasking:0
-#: field:project.project.active.tasking,difangfagui:0
-msgid "地方规范或特殊法律法规"
-msgstr "地方规范或特殊法律法规"
 
 #. module: up_project
 #: field:project.members,profession_manager_user_ids:0
@@ -1553,6 +1542,11 @@ msgid "Customer"
 msgstr "甲方"
 
 #. module: up_project
+#: field:project.project,partner_id:0
+msgid "Customer"
+msgstr "甲方"
+
+#. module: up_project
 #: field:project.profession,order_num:0
 msgid "Profession Order Num"
 msgstr "专业排序编号"
@@ -1632,11 +1626,6 @@ msgid "Partner Type"
 msgstr "甲方类别"
 
 #. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "注：1. 评审方式中：总规项目为会议、一般项目为会签、规划局直接委托项目为审批； 2. 出现与以前表述不一致的合同/ 协议要求时，必需在评审记录中写明情况； 3. 评审记录栏填写不下时，可采取附页方式； 4. 所级项目不设主管总师。"
-msgstr "注：1. 评审方式中：总规项目为会议、一般项目为会签、规划局直接委托项目为审批； 2. 出现与以前表述不一致的合同/ 协议要求时，必需在评审记录中写明情况； 3. 评审记录栏填写不下时，可采取附页方式； 4. 所级项目不设主管总师。"
-
-#. module: up_project
 #: view:project.project.active.tasking:0
 msgid "承接部门负责人"
 msgstr "承接部门负责人"
@@ -1689,11 +1678,6 @@ msgstr "待处理项目"
 #: sql_constraint:project.project:0
 msgid "xiangmubianhao must be unique !"
 msgstr "项目编号不可重复！"
-
-#. module: up_project
-#: field:project.project,import_aaddress:0
-msgid "Import AAddress"
-msgstr "Import AAddress"
 
 #. module: up_project
 #: model:ir.actions.report.xml,name:up_project.report_project_active_tasking_report_pdf
