@@ -16,16 +16,20 @@
                                 <tr>
                                     <td rowspan="3">
                                         <div class="inline-item">类别:
-                                            <field name="project_type" required="1" on_change="onchange_type_id(project_type)" options='{"no_open": True}' />
+                                            <field name="project_type" required="1"
+                                                   on_change="onchange_type_id(project_type)"
+                                                   options='{"no_open": True}'/>
                                             <field name="categories_id" class="oe_no_button"
-                                                   options='{"no_open": True}' required="1" domain="[('project_type','=',project_type)]"
+                                                   options='{"no_open": True}' required="1"
+                                                   domain="[('project_type','=',project_type)]"
                                                    on_change="onchange_category_id(categories_id)"
                                                     />
                                             <field name="categories_else"
                                                    attrs="{'invisible':[('category_name','!=',u'其它')]}"/>
                                         </div>
                                         <div class="inline-item">
-                                            是否投标:<field name="shifoutoubiao" readonly="1"/>
+                                            是否投标:
+                                            <field name="shifoutoubiao" readonly="1"/>
                                             <field name="tender_category"
                                                    attrs="{'invisible':[('shifoutoubiao','=',False)]}"
                                                    readonly="1"/>
@@ -58,7 +62,7 @@
             </field>
         </record>
         <record id="project_active_tasking_engineer_form_action" model="ir.actions.act_window">
-            <field name="name">project  engineer room approve wizard</field>
+            <field name="name">project engineer room approve wizard</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">project.project.active.tasking.engineer</field>
             <field name="view_type">form</field>
@@ -423,9 +427,15 @@
                         </td>
                         <td>
                             <field name="active_tasking_is_wait_user_process" invisible="1"/>
+                            <field name="is_import" invisible="1"/>
                             <div attrs="{'invisible':[('active_tasking_is_wait_user_process','=',False)]}">
                                 <span class="hint-red">
                                     等待处理
+                                </span>
+                            </div>
+                            <div attrs="{'invisible':[('is_import','=',False)]}">
+                                <span>
+                                    导入记录
                                 </span>
                             </div>
                         </td>
