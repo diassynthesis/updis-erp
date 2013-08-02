@@ -63,8 +63,8 @@ class project_project_wizard(osv.osv_memory):
 
     _columns = {
         "user_id": fields.many2one('res.users', string="Project Manager"),
-        "name": fields.char(size=256, String="Project Name"),
-        "xiangmubianhao": fields.char(size=256, String="Project Num"),
+        "name": fields.char(size=256, string="Project Name"),
+        "xiangmubianhao": fields.char(size=256, string="Project Num"),
         'country_id': fields.many2one('res.country', 'Country'),
         "state_id": fields.many2one('res.country.state', 'State', domain="[('country_id','=',country_id)]"),
         "city": fields.char("City", size=128),
