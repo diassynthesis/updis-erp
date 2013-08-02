@@ -18,6 +18,7 @@
                         </tree>
                     </field>
                     <field name="is_clear"/>
+                    <field name="clear_date"/>
                 </tree>
             </field>
         </record>
@@ -65,7 +66,9 @@
                             <field name="number"/>
                             <field name="obtain_date"/>
                             <field name="handler"/>
+                            <newline/>
                             <field name="is_clear"/>
+                            <field name="clear_date"/>
                         </group>
                         <newline/>
                         <field name="contract_id" invisible="1"/>
@@ -373,6 +376,7 @@
                     <field name="handler"/>
                     <field name="income_ids"/>
                     <field name="is_clear"/>
+                    <field name="clear_date"/>
                 </tree>
             </field>
         </record>
@@ -392,7 +396,9 @@
                                     <field name="price"/>
                                     <field name="obtain_date"/>
                                     <field name="handler"/>
+                                    <newline/>
                                     <field name="is_clear"/>
+                                    <field name="clear_date"/>
                                 </group>
                             </group>
                             <group></group>
