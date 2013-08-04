@@ -35,6 +35,8 @@ UPDIS Project Module.""",
 
         'report/active/renwuxiada.xml',
         'data/updis_data.xml',
+
+        'hr_view.xml',
     ],
     'css': [
         'static/css/up_project.css'
