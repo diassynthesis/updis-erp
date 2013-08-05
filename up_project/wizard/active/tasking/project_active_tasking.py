@@ -34,7 +34,7 @@ class project_active_tasking_engineer(osv.osv_memory):
         if 'tender_category' in fields:
             res['tender_category'] = tasking.tender_category
         if 'zhuguanzongshi_id' in fields:
-            res['zhuguanzongshi_id'] = tasking.zhuguanzongshi_id.id if tasking.zhuguanzongshi_id else None
+            res['zhuguanzongshi_id'] = [z.id for z in tasking.zhuguanzongshi_id]
         if 'shifoutoubiao' in fields:
             res['shifoutoubiao'] = tasking.shifoutoubiao
         if 'user_id' in fields:
@@ -61,7 +61,8 @@ class project_active_tasking_engineer(osv.osv_memory):
                                             u"投标类别"),
         'user_id': fields.many2many('res.users', 'wizard_tasking_user_id', 'project_user_id', 'res_user_id',
                                     string='Project Manager'),
-        "zhuguanzongshi_id": fields.many2one("res.users", u"主管总师"),
+        "zhuguanzongshi_id": fields.many2many("res.users", "tasking_zongshi_res_user", "tasking_id", "res_user_id",
+                                              u"主管总师"),
     }
 
     def engineer_review_accept(self, cr, uid, ids, context=None):
@@ -74,10 +75,10 @@ class project_active_tasking_engineer(osv.osv_memory):
             'categories_id': self_record.categories_id.id if self_record.categories_id else None,
             # 'category_name': self_record.category_name,
             'guanlijibie': self_record.guanlijibie,
-            'user_id': [(6,0,[u.id for u in  self_record.user_id])],
+            'user_id': [(6, 0, [u.id for u in self_record.user_id])],
             'categories_else': self_record.categories_else,
             'tender_category': self_record.tender_category,
-            'zhuguanzongshi_id': self_record.zhuguanzongshi_id.id if self_record.zhuguanzongshi_id else None,
+            'zhuguanzongshi_id': [(6, 0, [z.id for z in self_record.zhuguanzongshi_id])],
             'project_type': self_record.project_type.id if self_record.project_type else None,
 
         })

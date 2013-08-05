@@ -3224,7 +3224,7 @@ s8AZsVf/2Q==
 				</tr>
 				<tr>
 					<td><para style="Label">主管总师：</para></td>
-					<td><para style="Label">[[o.zhuguanzongshi_id.name]]</para></td>
+					<td><para style="Label">[[zongshi_names]]</para></td>
 				</tr>
 			</blockTable>
 			</td>

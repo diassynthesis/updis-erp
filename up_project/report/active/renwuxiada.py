@@ -12,6 +12,7 @@ class renwuxiada(report_sxw.rml_parse):
             'time': time,
             'date_format': self.date_format,
             'manager_names': self._get_manager_names(context['active_id'], context=context),
+            'zongshi_names': self._get_zhuguanzongshi_names(context['active_id'], context=context),
             # 'project_active_tasking': self._get_project_active_tasking_form,
         })
 
@@ -32,6 +33,12 @@ class renwuxiada(report_sxw.rml_parse):
                 [u.name for u in self.pool.get('res.users').browse(self.cr, 1, user_ids['user_id'], context=context)])
         else:
             return " "
+
+    def _get_zhuguanzongshi_names(self, pid, context):
+        # import pdb;pdb.set_trace()
+        project = self.pool.get('project.project.active.tasking')
+        tasking = project.browse(self.cr, self.uid, pid, context=context)
+        return " ".join([z.name for z in tasking.zhuguanzongshi_id])
 
     def _get_project_active_tasking_form(self, pid):
         form = self.pool.get('project.project.active.tasking')

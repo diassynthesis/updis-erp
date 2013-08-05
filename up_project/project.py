@@ -47,7 +47,7 @@ class project_project_wizard(osv.osv_memory):
         if 'toubiaoleibie' in fields:
             res['toubiaoleibie'] = project.toubiaoleibie
         if 'zhuguanzongshi_id' in fields:
-            res['zhuguanzongshi_id'] = project.zhuguanzongshi_id.id if project.zhuguanzongshi_id else None
+            res['zhuguanzongshi_id'] = [z.id for z in project.zhuguanzongshi_id]
         if 'chenjiebumen_id' in fields:
             res['chenjiebumen_id'] = project.chenjiebumen_id.id if project.chenjiebumen_id else None
         if 'guanlijibie' in fields:
@@ -83,7 +83,9 @@ class project_project_wizard(osv.osv_memory):
         "shifoutoubiao": fields.boolean("Is Tender"),
         "toubiaoleibie": fields.selection([('business', u'商务标'), ('technology', u'技术标'), ('complex', u'综合标')],
                                           "Tender Type"),
-        "zhuguanzongshi_id": fields.many2one("res.users", u"主管总师"),
+        "zhuguanzongshi_id": fields.many2many("res.users", "wizard_project_zhuangguan_res_user", "project_id",
+                                              "res_user_id",
+                                              u"主管总师"),
         "chenjiebumen_id": fields.many2one("hr.department", u"In Charge Department"),
         "guanlijibie": fields.selection([('LH200307240001', u'院级'), ('LH200307240002', u'所级')], u'Project Level'),
         "guimo": fields.char(u"Scale", size=64),
@@ -112,7 +114,7 @@ class project_project_wizard(osv.osv_memory):
             'categories_id': self_record.categories_id.id if self_record.categories_id.id else None,
             'shifoutoubiao': self_record.shifoutoubiao,
             'toubiaoleibie': self_record.toubiaoleibie,
-            'zhuguanzongshi_id': self_record.zhuguanzongshi_id.id if self_record.zhuguanzongshi_id.id else None,
+            'zhuguanzongshi_id': [(6, 0, [z.id for z in self_record.zhuguanzongshi_id])],
             'chenjiebumen_id': self_record.chenjiebumen_id.id if self_record.chenjiebumen_id.id else None,
             'guanlijibie': self_record.guanlijibie,
             'guimo': self_record.guimo,
@@ -295,7 +297,8 @@ class updis_project(osv.osv):
         'city_type': fields.selection(
             [('CC200511210001', u'直辖市'), ('CC200511210002', u'省会城市'), ('CC200511210003', u'地级市'),
              ('CC200511210004', u'县级市'), ('CC200511210005', u'其它')], string="City Type"),
-        "zhuguanzongshi_id": fields.many2one("res.users", u"主管总师"),
+        "zhuguanzongshi_id": fields.many2many("res.users", "project_zhuangguan_res_user", "project_id", "res_user_id",
+                                              u"主管总师"),
         'import_is_hidden': fields.char(size=8, string="Import Is Hidden"),
         'import_sum_up_flag': fields.char(size=8, string="Import Sum Up Flag"),
         'import_flag': fields.char(size=8, string="Import Flag"),
