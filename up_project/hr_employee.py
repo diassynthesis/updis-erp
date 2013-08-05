@@ -13,18 +13,48 @@ class hr_employee_inheirt(osv.osv):
         result = dict.fromkeys(ids, False)
         result_ids = set()
         for the_id in ids:
+            #validation_user_ids
             cr.execute("""select project_members.project_id
             from project_members_vali_hr_employee, project_members
             where employee_id=%s
                 and project_member_id =  project_members.id""", (the_id,))
             result_ids = result_ids | set([r[0] for r in cr.fetchall()])
 
-            ##
+            #audit_user_ids
             cr.execute("""select project_members.project_id
             from project_members_audit_hr_employee, project_members
             where employee_id=%s
                 and project_member_id =  project_members.id""", (the_id,))
             result_ids = result_ids | set([r[0] for r in cr.fetchall()])
+
+            #profession_manager_user_ids
+            cr.execute("""select project_members.project_id
+            from project_members_profession_manager_hr_employee, project_members
+            where employee_id=%s
+                and project_member_id =  project_members.id""", (the_id,))
+            result_ids = result_ids | set([r[0] for r in cr.fetchall()])
+
+            #design_user_ids
+            cr.execute("""select project_members.project_id
+            from project_members_design_hr_employee, project_members
+            where employee_id=%s
+                and project_member_id =  project_members.id""", (the_id,))
+            result_ids = result_ids | set([r[0] for r in cr.fetchall()])
+
+            #proofread_user_ids
+            cr.execute("""select project_members.project_id
+            from project_members_proofread_hr_employee, project_members
+            where employee_id=%s
+                and project_member_id =  project_members.id""", (the_id,))
+            result_ids = result_ids | set([r[0] for r in cr.fetchall()])
+
+            #drawing_user_ids
+            cr.execute("""select project_members.project_id
+            from project_members_drawing_hr_employee, project_members
+            where employee_id=%s
+                and project_member_id =  project_members.id""", (the_id,))
+            result_ids = result_ids | set([r[0] for r in cr.fetchall()])
+
 
             result[the_id] = list(result_ids)
 
