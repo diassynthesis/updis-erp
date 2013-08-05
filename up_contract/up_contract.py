@@ -236,7 +236,7 @@ class updis_project_project(osv.osv):
     def _is_user_contract_visible(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            if obj.user_id and obj.user_id.id == uid:
+            if uid in [u.id for u in obj.user_id]:
                 result[obj.id] = True
                 break
             else:

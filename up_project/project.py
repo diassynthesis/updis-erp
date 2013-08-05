@@ -19,7 +19,7 @@ class project_project_wizard(osv.osv_memory):
         project = project_pool.browse(cr, uid, record_id, context=context)
 
         if 'user_id' in fields:
-            res['user_id'] = project.user_id.id if project.user_id else None
+            res['user_id'] = [u.id for u in project.user_id]
         if 'name' in fields:
             res['name'] = project.name
         if 'xiangmubianhao' in fields:
@@ -62,7 +62,8 @@ class project_project_wizard(osv.osv_memory):
         return res
 
     _columns = {
-        "user_id": fields.many2one('res.users', string="Project Manager"),
+        "user_id": fields.many2many('res.users', 'wizard_project_user_id_res_user', 'project_user_id', 'res_user_id',
+                                    string="Project Manager"),
         "name": fields.char(size=256, string="Project Name"),
         "xiangmubianhao": fields.char(size=256, string="Project Num"),
         'country_id': fields.many2one('res.country', 'Country'),
@@ -97,7 +98,7 @@ class project_project_wizard(osv.osv_memory):
         project = self.pool.get("project.project").browse(cr, uid, record_id, context)
         self_record = self.browse(cr, uid, ids[0], context)
         project.write({
-            'user_id': self_record.user_id.id if self_record.user_id.id else None,
+            'user_id': [(6, 0, [r.id for r in self_record.user_id])],
             'name': self_record.name,
             'xiangmubianhao': self_record.xiangmubianhao,
             'country_id': self_record.country_id.id if self_record.country_id.id else None,
@@ -223,8 +224,8 @@ class updis_project(osv.osv):
     def _is_user_is_project_manager(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            if obj.user_id:
-                result[obj.id] = (obj.user_id.id == uid)
+            if uid in [r.id for r in obj.user_id]:
+                result[obj.id] = True
             else:
                 result[obj.id] = False
         return result
@@ -232,6 +233,9 @@ class updis_project(osv.osv):
     _columns = {
         # 基础信息
         #  'analytic_account_id': fields.boolean("Over Ride"),
+
+        'user_id': fields.many2many('res.users', 'project_user_id_res_user', 'project_user_id', 'res_user_id',
+                                    string='Project Manager'),
         'director_reviewer_id': fields.many2one('res.users', string=u'Review Director'),
         'related_user_id': fields.many2one('res.users', string="Related Users ID"),
         'status_code': fields.integer(string='Status Code'),

@@ -3220,7 +3220,7 @@ s8AZsVf/2Q==
 			<blockTable colWidths="60,190">
 				<tr>
 					<td><para style="Label">项目负责人：</para></td>
-					<td><para style="Label">[[o.user_id.name]]</para></td>
+					<td><para style="Label">[[manager_names ]]</para></td>
 				</tr>
 				<tr>
 					<td><para style="Label">主管总师：</para></td>

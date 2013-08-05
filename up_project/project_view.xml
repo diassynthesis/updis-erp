@@ -49,7 +49,7 @@
                             <group string="In charge Relate">
                                 <field name="zhuguanzongshi_id"/>
                                 <field name="chenjiebumen_id"/>
-                                <field name="user_id"/>
+                                <field name="user_id" widget="many2many_tags"/>
                                 <field name="guanlijibie"/>
                             </group>
                             <group string="Other Info">
@@ -191,7 +191,7 @@
                             <group string="In charge Relate">
                                 <field name="zhuguanzongshi_id" readonly="1"/>
                                 <field name="chenjiebumen_id" readonly="1"/>
-                                <field name="user_id" readonly="1"/>
+                                <field name="user_id" readonly="1" widget="many2many_tags"/>
                                 <field name="guanlijibie" readonly="1"/>
                             </group>
                             <group string="Other Info">

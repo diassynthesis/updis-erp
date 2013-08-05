@@ -29,8 +29,6 @@ class project_active_tasking_engineer(osv.osv_memory):
         #     res['category_name'] = tasking.category_name
         if 'guanlijibie' in fields:
             res['guanlijibie'] = tasking.guanlijibie
-        if 'chenjiefuzeren_id' in fields:
-            res['chenjiefuzeren_id'] = tasking.chenjiefuzeren_id.id if tasking.chenjiefuzeren_id else None
         if 'categories_else' in fields:
             res['categories_else'] = tasking.categories_else
         if 'tender_category' in fields:
@@ -40,7 +38,12 @@ class project_active_tasking_engineer(osv.osv_memory):
         if 'shifoutoubiao' in fields:
             res['shifoutoubiao'] = tasking.shifoutoubiao
         if 'user_id' in fields:
-            res['user_id'] = tasking.user_id.id if tasking.user_id else None
+            user_ids = tasking_pool.read(cr, uid, record_id, ['user_id'], context=context)
+            if user_ids['user_id']:
+                res['user_id'] = [u.id for u in
+                                  self.pool.get('res.users').browse(cr, 1, user_ids['user_id'], context=context)]
+            else:
+                res['user_id'] = None
         if 'project_type' in fields:
             res['project_type'] = tasking.project_type.id if tasking.project_type else None
 
@@ -53,13 +56,11 @@ class project_active_tasking_engineer(osv.osv_memory):
         "categories_id": fields.many2one("project.upcategory", u"项目类别"),
         "category_name": fields.related('categories_id', 'name', type='char', string="Project Category Name"),
         "guanlijibie": fields.selection([('LH200307240001', u'院级'), ('LH200307240002', u'所级')], u'项目管理级别'),
-        "chenjiefuzeren_id": fields.many2one("res.users", u"承接项目负责人"),
         "categories_else": fields.char(size=128, string='Else Category'),
         "tender_category": fields.selection([('business', u'商务标'), ('technology', u'技术标'), ('complex', u'综合标')],
                                             u"投标类别"),
-        # "chenjiefuzeren_id": fields.related("project_id", "user_id", type="many2one", relation="res.users",
-        #                                     string=u"承接项目负责人"),
-        'user_id': fields.many2one('res.users', string='Project Manager'),
+        'user_id': fields.many2many('res.users', 'wizard_tasking_user_id', 'project_user_id', 'res_user_id',
+                                    string='Project Manager'),
         "zhuguanzongshi_id": fields.many2one("res.users", u"主管总师"),
     }
 
@@ -73,7 +74,7 @@ class project_active_tasking_engineer(osv.osv_memory):
             'categories_id': self_record.categories_id.id if self_record.categories_id else None,
             # 'category_name': self_record.category_name,
             'guanlijibie': self_record.guanlijibie,
-            'chenjiefuzeren_id': self_record.chenjiefuzeren_id.id if self_record.chenjiefuzeren_id else None,
+            'user_id': [(6,0,[u.id for u in  self_record.user_id])],
             'categories_else': self_record.categories_else,
             'tender_category': self_record.tender_category,
             'zhuguanzongshi_id': self_record.zhuguanzongshi_id.id if self_record.zhuguanzongshi_id else None,
@@ -201,7 +202,9 @@ class project_active_tasking(osv.osv):
                 if self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context):
                     result_flag = True
             if obj.state == 'suozhangqianzi':
-                if obj.user_id and obj.user_id.id == current_uid:
+                project = self.pool.get('project.project.active.tasking')
+                user_ids = project.read(cr, uid, obj.id, ['user_id'], context=context)
+                if current_uid in user_ids['user_id']:
                     result_flag = True
 
             result[obj.id] = result_flag
@@ -248,7 +251,8 @@ class project_active_tasking(osv.osv):
 
         "duofanghetong": fields.boolean(u"多方合同"),
         "jianyishejibumen_id": fields.many2one("hr.department", u"建议设计部门"),
-        "jianyixiangmufuzeren_id": fields.many2one("res.users", u"建议项目负责人"),
+        "jianyixiangmufuzeren_id": fields.many2many("res.users", "tasking_jianyi_manager_user_id", "tasking_user_id",
+                                                    "res_user_id", u"建议项目负责人"),
 
 
         'director_reviewer_apply_id': fields.many2one('res.users', string=u'Review Apply By'),
@@ -280,12 +284,9 @@ class project_active_tasking(osv.osv):
 
         "category_name": fields.related("categories_id", 'name', type="char", string="Category Name"),
 
-        "chenjiefuzeren_id": fields.many2one("res.users", u"承接项目负责人"),
         "categories_else": fields.char(size=128, string='Else Category'),
         "tender_category": fields.selection([('business', u'商务标'), ('technology', u'技术标'), ('complex', u'综合标')],
                                             u"投标类别"),
-        # "chenjiefuzeren_id": fields.related("project_id", "user_id", type="many2one", relation="res.users",
-        #                                     string=u"承接项目负责人"),
         "zongshishi_submitter_id": fields.many2one("res.users", string=u"Zongshishi Submitter"),
         "zongshishi_submitter_id_image": fields.related('zongshishi_submitter_id', "sign_image", type="binary",
                                                         string=u'Review Image'),
@@ -430,7 +431,8 @@ class project_active_tasking(osv.osv):
     def workflow_engineer_room(self, cr, uid, ids, context=None):
         tasking = self.browse(cr, 1, ids[0], context=context)
         self.write(cr, 1, ids, {'tender_category': tasking.toubiaoleibie,
-                                'user_id': tasking.jianyixiangmufuzeren_id.id, 'state': 'zhidingfuzeren',
+                                'user_id': [(6, 0, [j.id for j in tasking.jianyixiangmufuzeren_id])],
+                                'state': 'zhidingfuzeren',
                                 'status_code': 10104},
                    context=context)
         return True

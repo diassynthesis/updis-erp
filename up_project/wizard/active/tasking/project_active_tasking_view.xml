@@ -38,7 +38,7 @@
                                             <field name="guanlijibie" required="1"/>
                                         </div>
                                         <div class="inline-item">项目负责人:
-                                            <field name="user_id" class="oe_no_button"
+                                            <field name="user_id" class="oe_no_button" widget="many2many_tags"
                                                    options='{"no_open": True}' required="1"/>
                                         </div>
                                         <div class="inline-item">主管总师:
@@ -269,7 +269,7 @@
                                         <div class="inline-item"
                                              attrs="{'invisible':[('state','not in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren'])]}">
                                             建议项目负责人:
-                                            <field name="jianyixiangmufuzeren_id" required="1" class="oe_no_button"
+                                            <field name="jianyixiangmufuzeren_id" required="1" class="oe_no_button" widget="many2many_tags"
                                                    options='{"no_open": True}'
                                                    attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
                                         </div>
@@ -362,7 +362,7 @@
                                                 <field name="guanlijibie" readonly="1"/>
                                             </div>
                                             <div class="inline-item">项目负责人:
-                                                <field name="user_id" class="oe_no_button"
+                                                <field name="user_id" class="oe_no_button" widget="many2many_tags"
                                                        options='{"no_open": True}' readonly="1"/>
                                             </div>
                                             <div class="inline-item">主管总师:

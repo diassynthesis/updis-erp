@@ -104,8 +104,13 @@ from_rec = object.name
 content = u"项目[%s]需要您的审批启动,请及时处理项目和跟进项目进度" % (object.name)
 model = 'project.project.active.tasking'
 res_id = object.id
-to = object.user_id.id
-users = pool.get('res.users').browse(cr,1,[to],context=context)
+project = pool.get('project.project.active.tasking')
+user_ids = project.read(cr, uid, res_id, ['user_id'], context=context)
+if user_ids['user_id']:
+    to = user_ids['user_id']
+else:
+    to = []
+users = pool.get('res.users').browse(cr,1,to,context=context)
 pool.get('sms.sms').send_sms_to_users( cr, 1, users, from_rec, content, model, res_id, context=None)
             </field>
         </record>
