@@ -13,7 +13,7 @@ class hr_employee_inheirt(osv.osv):
         result = dict.fromkeys(ids, False)
         result_ids = set()
         for the_id in ids:
-            #validation_user_ids
+            #members
             project_members_obj = self.pool.get("project.members")
             members_id = project_members_obj.search(cr, uid,
                                                     ['|', '|', '|', '|', '|', ('validation_user_ids', '=', the_id),
@@ -23,7 +23,17 @@ class hr_employee_inheirt(osv.osv):
                                                      ('proofread_user_ids', '=', the_id),
                                                      ('drawing_user_ids', '=', the_id), ], context=context)
             project_ids = project_members_obj.read(cr, uid, members_id, ["project_id"], context=context)
-            result_ids = set(p['project_id'][0] for p in project_ids)
+            result_ids = result_ids | set(p['project_id'][0] for p in project_ids)
+
+            #manager and in charge
+            employee = self.browse(cr, uid, the_id, context=context)
+            project_ids = self.pool.get("project.project").search(cr, uid, ['|',
+                                                                            ('user_id', '=',
+                                                                             employee.user_id.id if employee.user_id else None),
+                                                                            ('zhuguanzongshi_id', '=',
+                                                                             employee.user_id.id if employee.user_id else None)],
+                                                                  context=context)
+            result_ids = result_ids | set(project_ids)
 
             result[the_id] = list(result_ids)
 
