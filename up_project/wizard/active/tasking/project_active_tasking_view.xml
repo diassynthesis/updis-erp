@@ -44,7 +44,6 @@
                                         <div class="inline-item">主管总师:
                                             <field name="zhuguanzongshi_id" class="oe_no_button"
                                                    options='{"no_open": True}'
-                                                   domain="[('groups_id','=',%(group_up_project_zongshishi)d)]"
                                                    attrs="{'invisible':[('guanlijibie','!=',u'LH200307240001')],'required':[('guanlijibie','=',u'LH200307240001')]}"/>
                                         </div>
                                     </td>
