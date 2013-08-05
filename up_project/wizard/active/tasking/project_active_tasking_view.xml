@@ -185,8 +185,8 @@
                                                 groups="project.group_project_user"/>
                                         <button name="director_review_accept"
                                                 class="oe_highlight"
-                                                string="提交经营室审批"
-                                                confirm="确定提交到向经营室审批?"
+                                                string="审批通过并提交经营室"
+                                                confirm="确定审批通过并且提交到经营室审批?"
                                                 type="object"
                                                 attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangshenpi')]}"
                                                 groups="up_project.group_up_project_suozhang"/>
