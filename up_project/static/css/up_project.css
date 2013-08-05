@@ -70,3 +70,8 @@
 .openerp div.oe_long_title {
     width: 70% !important;
 }
+
+.openerp span.big-red-hit {
+    color: red;
+    font-size: 20px;
+}
