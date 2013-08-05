@@ -366,7 +366,35 @@ class updis_project(osv.osv):
         return ids
 
 
-    def related_to_me_action(self, cr, uid, context=None):
+    def action_projects_related_to_me(self, cr, uid, context=None):
+        domain = [('create_uid', '=', uid)]
+        domain = ['|', ('user_id', '=', uid)] + domain
+        domain = ['|', ('zhuguanzongshi_id', '=', uid)] + domain
+
+        project_members_obj = self.pool.get("project.members")
+        members_id = project_members_obj.search(cr, uid,
+                                                ['|', '|', '|', '|', '|', ('validation_user_ids', '=', uid),
+                                                 ('audit_user_ids', '=', uid),
+                                                 ('profession_manager_user_ids', '=', uid),
+                                                 ('design_user_ids', '=', uid),
+                                                 ('proofread_user_ids', '=', uid),
+                                                 ('drawing_user_ids', '=', uid), ], context=context)
+        project_ids = project_members_obj.read(cr, uid, members_id, ["project_id"], context=context)
+        result_ids = set(p['project_id'][0] for p in project_ids)
+        domain = ['|', ('id', 'in', list(result_ids))] + domain
+
+        return {
+            'name': u'与我相关项目',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'res_model': 'project.project',
+            'target': 'current',
+            'domain': domain,
+            'context': context,
+        }
+
+    def project_need_process_action(self, cr, uid, context=None):
         domain = ['&', ('create_uid', '=', uid), ('status_code', '=', 10101)]
         status_code = []
         #director

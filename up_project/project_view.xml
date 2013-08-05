@@ -245,19 +245,31 @@
         </record>
 
         <!--Project related to Chief Engineer Room-->
-        <record id="action_project_related_to_me" model="ir.actions.server">
-            <field name="name">action.project.related.to.me</field>
+        <record id="action_project_need_process" model="ir.actions.server">
+            <field name="name">Project Need Process</field>
             <field name="state">code</field>
             <field name="condition" eval="True"/>
             <field name="model_id" ref="project.model_project_project"/>
             <field name="code">
-                action = self.related_to_me_action(cr,uid,context=context)
+                action = self.project_need_process_action(cr,uid,context=context)
             </field>
         </record>
-        <menuitem name="Project Related To Me" id="project_related_to_me"
+        <menuitem name="Project Need Process" id="project_need_process"
                   parent="project.menu_project_management"
-                  action="action_project_related_to_me" sequence="4"/>
+                  action="action_project_need_process" sequence="4"/>
 
+
+        <record id="open_view_project_related_to_me" model="ir.actions.server">
+            <field name="name">Projects Related To Me</field>
+            <field name="state">code</field>
+            <field name="condition" eval="True"/>
+            <field name="model_id" ref="project.model_project_project"/>
+            <field name="code">
+                action = self.action_projects_related_to_me(cr,uid,context=context)
+            </field>
+        </record>
+        <menuitem action="open_view_project_related_to_me" id="menu_projects_related_to_me" name="Projects Related To Me"
+                  parent="project.menu_project_management" sequence="9"/>
 
         <record id="open_view_project_all" model="ir.actions.server">
             <field name="name">Action Projects</field>
@@ -268,7 +280,7 @@
                 action = self.all_projects_action(cr,uid,context=context)
             </field>
         </record>
-        <menuitem action="open_view_project_all" id="project.menu_projects" name="Projects"
+        <menuitem action="open_view_project_all" id="project.menu_projects" name="All Projects"
                   parent="project.menu_project_management" sequence="10"/>
 
         <!--project sms config-->
