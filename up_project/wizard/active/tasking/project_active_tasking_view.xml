@@ -39,10 +39,12 @@
                                         </div>
                                         <div class="inline-item">项目负责人:
                                             <field name="user_id" class="oe_no_button" widget="many2many_tags"
+                                                   domain="[('active','=',True)]"
                                                    options='{"no_open": True}' required="1"/>
                                         </div>
                                         <div class="inline-item">主管总师:
                                             <field name="zhuguanzongshi_id" class="oe_no_button" widget="many2many_tags"
+                                                   domain="[('active','=',True)]"
                                                    options='{"no_open": True}'
                                                    attrs="{'invisible':[('guanlijibie','!=',u'LH200307240001')],'required':[('guanlijibie','=',u'LH200307240001')]}"/>
                                         </div>
