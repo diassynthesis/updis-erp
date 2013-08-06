@@ -97,7 +97,7 @@
                     <field name="user_id" string="Project Manager"/>
                     <field name="partner_id" string="Contact"/>
                     <field name="state"/>
-                    <field name="create_date"/>
+                    <field name="begin_date"/>
                 </tree>
             </field>
         </record>

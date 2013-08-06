@@ -27,20 +27,22 @@ class hr_employee_inheirt(osv.osv):
 
             #manager and in charge
             employee = self.browse(cr, uid, the_id, context=context)
-            project_ids = self.pool.get("project.project").search(cr, uid, ['|',
+            project_ids = self.pool.get("project.project").search(cr, uid, ['|', '|',
                                                                             ('user_id', '=',
                                                                              employee.user_id.id if employee.user_id else None),
                                                                             ('zhuguanzongshi_id', '=',
-                                                                             employee.user_id.id if employee.user_id else None)],
+                                                                             employee.user_id.id if employee.user_id else None),
+                                                                            ('id', 'in', list(result_ids))],
+                                                                  order="begin_date desc",
                                                                   context=context)
-            result_ids = result_ids | set(project_ids)
+            # result_ids = result_ids | set(project_ids)
 
-            result[the_id] = list(result_ids)
+            result[the_id] = list(project_ids)
 
         return result
 
     _columns = {
         "related_project_members": fields.function(_get_related_project_members, type="many2many",
                                                    relation="project.project",
-                                                   string="Related Projects"),
+                                                   string="Related Projects", ),
     }
