@@ -1,3 +1,4 @@
+import os
 import time
 import datetime
 from report import report_sxw
@@ -13,6 +14,7 @@ class renwuxiada(report_sxw.rml_parse):
             'date_format': self.date_format,
             'manager_names': self._get_manager_names(context['active_id'], context=context),
             'zongshi_names': self._get_zhuguanzongshi_names(context['active_id'], context=context),
+            'bottom_image': self._get_bottom_image(),
             # 'project_active_tasking': self._get_project_active_tasking_form,
         })
 
@@ -33,6 +35,16 @@ class renwuxiada(report_sxw.rml_parse):
                 [u.name for u in self.pool.get('res.users').browse(self.cr, 1, user_ids['user_id'], context=context)])
         else:
             return " "
+
+    def _get_bottom_image(self):
+        # import pdb;pdb.set_trace()
+        head_img_obj = self.pool.get("ir.header_img")
+        img_ids = head_img_obj.search(self.cr, 1, [('name', '=', 'updis_logo')])
+        if img_ids:
+            head_img = head_img_obj.browse(self.cr, 1, img_ids[0])
+            return head_img.img
+        else:
+            return None
 
     def _get_zhuguanzongshi_names(self, pid, context):
         # import pdb;pdb.set_trace()

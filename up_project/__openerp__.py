@@ -8,7 +8,7 @@
 UPDIS Project Module.""",
     'author': 'cysnake4713',
     'website': 'http://openerp.com',
-    'depends': ['base', 'project', 'oecn_base_fonts'],
+    'depends': ['base', 'project', 'oecn_base_fonts','report_webkit'],
     'init_xml': [
 
     ],
@@ -39,7 +39,7 @@ UPDIS Project Module.""",
         'hr_view.xml',
     ],
     'css': [
-        'static/css/up_project.css'
+        'static/src/css/up_project.css'
     ],
     'demo_xml': [],
     'test': [],
