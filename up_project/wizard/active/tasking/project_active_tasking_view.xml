@@ -196,7 +196,7 @@
                                                 confirm="确定打回申请到发起人?"/>
                                         <field name="director_reviewer_apply_id" readonly="1" invisible="1"/>
                                         <div attrs="{'invisible':[('state','in',['open','suozhangshenpi'])]}">
-                                            <field name="director_reviewer_apply_image" widget="image" width="70%%" readonly="1"/>
+                                            <field name="director_reviewer_apply_image" widget="image" class="oe_avatar oe_left" readonly="1"/>
                                         </div>
                                         <field name="director_reviewer_apply_time" readonly="1"/>
                                     </td>
@@ -325,7 +325,7 @@
                                 <field name="chenjiebumen_id" readonly="1"
                                        colspan="3"/>
                                 <div>
-                                    <field name="jinyinshi_submitter_id_image" widget="image" width="70%%" readonly="1"
+                                    <field name="jinyinshi_submitter_id_image" widget="image" class="oe_avatar oe_left" readonly="1"
                                            colspan="2"/>
                                 </div>
                                 <div>
@@ -382,7 +382,7 @@
                                     <tr>
                                         <td>总师室</td>
                                         <td>
-                                            <field name="zongshishi_submitter_id_image" widget="image" width="70%%" readonly="1"/>
+                                            <field name="zongshishi_submitter_id_image" widget="image" class="oe_avatar oe_left" readonly="1"/>
                                             <field name="zongshishi_submit_datetime" readonly="1"/>
                                         </td>
                                     </tr>
@@ -390,7 +390,7 @@
                                         <td>承接部门负责人</td>
                                         <td>
                                             <div attrs="{'invisible':[('state','!=','end')]}">
-                                                <field name="director_approve_image" readonly="1" widget="image" width="70%%"/>
+                                                <field name="director_approve_image" readonly="1" widget="image" class="oe_avatar oe_left"/>
                                             </div>
                                             <field name="director_approve_time" readonly="1"/>
                                             <button name="manager_review_accept"
