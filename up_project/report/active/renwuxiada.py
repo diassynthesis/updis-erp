@@ -22,7 +22,7 @@ class renwuxiada(report_sxw.rml_parse):
         if current_date.split('.')[0] != 'False':
             create_date_display = datetime.datetime.strptime(current_date.split('.')[0],
                                                              '%Y-%m-%d %H:%M:%S') + datetime.timedelta(hours=8)
-            return create_date_display.strftime('%Y/%m/%d %p %I:%M:%S')
+            return create_date_display.strftime('%Y/%m/%d')
         else:
             return ""
 
