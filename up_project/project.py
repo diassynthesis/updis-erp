@@ -67,7 +67,7 @@ class project_project_wizard(osv.osv_memory):
         "name": fields.char(size=256, string="Project Name"),
         "xiangmubianhao": fields.char(size=256, string="Project Num"),
         'country_id': fields.many2one('res.country', 'Country'),
-        "state_id": fields.many2one('res.country.state', 'State', domain="[('country_id','=',country_id)]"),
+        "state_id": fields.many2one('res.country.state', 'State', ),
         "city": fields.char("City", size=128),
         'city_type': fields.selection(
             [('CC200511210001', u'直辖市'), ('CC200511210002', u'省会城市'), ('CC200511210003', u'地级市'),
@@ -122,6 +122,14 @@ class project_project_wizard(osv.osv_memory):
             'shizhenpeitao': self_record.shizhenpeitao,
         })
         return True
+
+    def onchange_country_id(self, cr, uid, ids, type_id, context=None):
+        ret = {'value': {}}
+        sms_vals = {
+            'state_id': None,
+        }
+        ret['value'].update(sms_vals)
+        return ret
 
 
 class project_type(osv.osv):
@@ -250,7 +258,7 @@ class updis_project(osv.osv):
         'write_date': fields.datetime('Modification date', select=True),
         'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
         'country_id': fields.many2one('res.country', string='Country'),
-        "state_id": fields.many2one('res.country.state', string='State', domain="[('country_id','=',country_id)]"),
+        "state_id": fields.many2one('res.country.state', string='State'),
         "city": fields.char(size=128, string="City"),
         'state': fields.selection([("project_active", u"Project Active"),
                                    ("project_cancelled", u"Project Cancelled"),
