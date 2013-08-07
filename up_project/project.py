@@ -319,6 +319,9 @@ class updis_project(osv.osv):
         'import_proejct_number': fields.char(size=256, string='Import Project Num'),
         'temp_status': fields.char(size=56, string="Temp Status"),
 
+        'attachments': fields.many2many("ir.attachment", "project_attachments", "project_id", "attachment_id",
+                                        string="related_files"),
+
     }
 
     def _get_default_country(self, cr, uid, context):

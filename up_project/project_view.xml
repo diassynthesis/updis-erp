@@ -232,6 +232,11 @@
                                 <field name="next_work_plan"/>
                             </group>
                         </page>
+                        <page name="attachments" string="Attachments">
+                            <group>
+                                <field name="attachments" nolabel="1"/>
+                            </group>
+                        </page>
                         <page name="project_log" string="Project Logs">
                             <field name="project_logs" nolabel="1" readonly="1">
                                 <tree>
