@@ -156,7 +156,7 @@
                                            on_change="on_change_project(project_id)"/>
                                     <field name="project_number" readonly="1"/>
                                     <field name="project_category" readonly="1"/>
-                                    <field name="design_department" readonly="1"/>
+                                    <field name="design_department"/>
                                     <field name="project_scale" readonly="1"/>
                                     <field name="project_level" readonly="1"/>
                                     <field name="project_is_city" readonly="1"/>
