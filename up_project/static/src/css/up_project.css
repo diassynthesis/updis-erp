@@ -75,3 +75,8 @@
     color: red;
     font-size: 20px;
 }
+
+.openerp .no_shadow > img {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}

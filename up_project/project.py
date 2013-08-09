@@ -381,7 +381,7 @@ class updis_project(osv.osv):
         domain = [('create_uid', '=', uid)]
         domain = ['|', ('user_id', '=', uid)] + domain
         domain = ['|', ('zhuguanzongshi_id', '=', uid)] + domain
-
+        domain = ['|', ('director_reviewer_id', '=', uid)] + domain
         project_members_obj = self.pool.get("project.members")
         members_id = project_members_obj.search(cr, uid,
                                                 ['|', '|', '|', '|', '|', ('validation_user_ids', '=', uid),
