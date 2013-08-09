@@ -177,7 +177,7 @@
                                        attrs="{'readonly':['|',('is_project_created','=',True),('is_project_creater','=',False),('state','!=','project_active')]}"/>
                             </div>
                         </group>
-                        <div attrs="{'invisible':[('state','!=','project_active')]}">
+                        <div attrs="{'invisible':[('is_project_created','=',True)]}">
                             <span class="big-red-hit">请填写基础信息点击左上角保存后,点击页面下方的任务下达单启动项目．</span>
                         </div>
                         <group attrs="{'invisible':[('state','=','project_active')]}">
