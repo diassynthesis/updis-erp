@@ -400,14 +400,14 @@
                                                     string="确认启动项目"
                                                     confirm="确定启动项目?"
                                                     type="object"
-                                                    attrs="{'invisible':['|',('state','!=','suozhangqianzi'),('is_user_is_project_manager','=',False)]}"
-                                                    groups="project.group_project_user"/>
+                                                    attrs="{'invisible':['|',('state','!=','suozhangqianzi'),('is_display_button','!=',True)]}"
+                                                    groups="up_project.group_up_project_suozhang"/>
                                             <button name="manager_reject"
                                                     string="打回申请单"
                                                     confirm="确定打回总师室申请?"
                                                     type="object"
-                                                    attrs="{'invisible':['|',('state','!=','suozhangqianzi'),('is_user_is_project_manager','=',False)]}"
-                                                    groups="project.group_project_user"/>
+                                                    attrs="{'invisible':['|',('state','!=','suozhangqianzi'),('is_display_button','!=',True)]}"
+                                                    groups="up_project.group_up_project_suozhang"/>
                                         </td>
                                     </tr>
                                 </tbody>
