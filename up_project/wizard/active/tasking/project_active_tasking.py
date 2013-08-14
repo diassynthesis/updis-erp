@@ -224,7 +224,7 @@ class project_active_tasking(osv.osv):
                                       ("zhidingbumen", u"经营室审批"),
                                       ("zhidingfuzeren", u"总师室审批"),
                                       ("suozhangqianzi", u"负责人签字"),
-                                      ("end", u'归档'),
+                                      ("end", u'表单归档'),
                                   ], "State", help='When project is created, the state is \'open\''),
 
         "partner_address": fields.related('partner_id', "street", type="char", string='Custom Address'),

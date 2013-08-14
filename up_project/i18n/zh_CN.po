@@ -1415,8 +1415,8 @@ msgstr "等待处理"
 #. module: up_project
 #: selection:project.project,active_tasking_state:0
 #: selection:project.project.active.tasking,state:0
-msgid "归档"
-msgstr "归档"
+msgid "表单归档"
+msgstr "表单归档"
 
 #. module: up_project
 #: field:project.project,is_user_is_project_manager:0
