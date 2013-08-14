@@ -87,92 +87,97 @@
             [[o.customer_contact.mobile]]</para></td>
 	  </tr>
 	</blockTable>
-    <blockTable style="SuoZhangTable" colWidths="48,60,130,193,67">
-      <tr>
-		<td><para style="Label" alignment="center" fontName="Helvetica-Bold">序号</para></td>
-		<td><para style="Label" alignment="center" fontName="Helvetica-Bold">评 审 内 容</para></td>
-		<td><para style="Label" alignment="center" fontName="Helvetica-Bold"></para></td>
-		<td><para style="Label" alignment="center" fontName="Helvetica-Bold">评  审  意  见</para></td>
-		<td><para style="Label" alignment="center" fontName="Helvetica-Bold">评 审 人</para></td>
-	  </tr>
-    </blockTable>
-    <blockTable style="SuoZhangTable-big" colWidths="431,67">
-        <tr>
-            <td>
-                <blockTable  style="SuoZhangTable" colWidths="48,60,130,193">
+      <blockTable style="SuoZhangTable" colWidths="48,60,130,193,67">
                       <tr>
-                        <td><para style="Label">1</para></td>
-                        <td><para style="Label">顾客要求形成文件否</para></td>
-                        <td><para style="Label"></para></td>
-                        <td><para style="Value"> [[o.yaoqiuxingchengwenjian==u'已形成' and '[√]' or '[ ]']]  已形成    [[o.yaoqiuxingchengwenjian==u'未形成，但已确认' and '[√]' or '[ ]']]  未形成，但已确认</para></td>
+                        <td><para style="Label" alignment="center" fontName="Helvetica-Bold">序号</para></td>
+                        <td><para style="Label" alignment="center" fontName="Helvetica-Bold">评 审 内 容</para></td>
+                        <td><para style="Label" alignment="center" fontName="Helvetica-Bold"></para></td>
+                        <td><para style="Label" alignment="center" fontName="Helvetica-Bold">评  审  意  见</para></td>
+                        <td><para style="Label" alignment="center" fontName="Helvetica-Bold">评  审  人</para></td>
+                      </tr>
+      </blockTable>
+      <blockTable style="SuoZhangTable-big" colWidths="431,67">
+          <tr>
+              <td>
+                    <blockTable style="SuoZhangTable" colWidths="48,60,130,193">
+                      <tr>
+                            <td><para style="Label">1</para></td>
+                            <td><para style="Label">与以前表述不一致的合同/ 协议要求是否
+                              解决</para></td>
+                            <td><para style="Label"></para></td>
+                            <td><para style="Value">[[o.hetongyizhi==u'合同/协议要求表述不一致已解决' and '[√]' or '[ ]']]合同/协议要求表述不一致已解决
+                              [[o.hetongyizhi==u'没有出现不一致' and '[√]' or '[ ]']]没有出现不一致</para></td>
+                          </tr>
+                      <tr>
+                            <td><para style="Label">2</para></td>
+                            <td><para style="Label">顾客要求形成文件否</para></td>
+                            <td><para style="Label"></para></td>
+                            <td><para style="Value"> [[o.yaoqiuxingchengwenjian==u'已形成' and '[√]' or '[ ]']]  已形成    [[o.yaoqiuxingchengwenjian==u'未形成，但已确认' and '[√]' or '[ ]']]  未形成，但已确认</para></td>
+                          </tr>
+                          <tr>
+                            <td><para style="Label">3</para></td>
+                            <td><para style="Label">设计要求
+                              是否得到
+                              规定</para></td>
+                            <td><para style="Label">明示要求</para></td>
+                            <td><para style="Value">[[o.express_requirement==u'有招标书' and '[√]' or '[ ]']]  有招标书     [[o.express_requirement==u'有委托书' and '[√]' or '[ ]']]  有委托书
+                              [[o.express_requirement==u'有协议/合同草案' and '[√]' or '[ ]']]  有协议/合同草案  [[o.express_requirement==u'有口头要求记录' and '[√]' or '[ ]']]  有口头要求记录</para></td>
+                          </tr>
+                          <tr>
+                            <td><para style="Label"></para></td>
+                            <td><para style="Label"></para></td>
+                            <td><para style="Label">隐含要求</para></td>
+                            <td><para style="Value">[[o.yinhanyaoqiu==u'有' and '[√]' or '[ ]']] 有（需在评审记录一栏中标明记录）
+                              [[o.yinhanyaoqiu!=u'有' and '[√]' or '[ ]']] 无</para></td>
+                          </tr>
+                          <tr>
+                            <td><para style="Label"></para></td>
+                            <td><para style="Label"></para></td>
+                            <td><para style="Label">地方规范或特殊法律法规</para></td>
+                            <td><para style="Value">[[o.difangfagui==u'有' and '[√]' or '[ ]']] 有（需在评审记录一栏中标明记录）
+                              [[o.difangfagui!=u'有' and '[√]' or '[ ]']] 无</para></td>
+                          </tr>
+                          <tr>
+                            <td><para style="Label"></para></td>
+                            <td><para style="Label"></para></td>
+                            <td><para style="Label">附加要求</para></td>
+                            <td><para style="Value">[[o.fujiayaoqiu==u'有' and '[√]' or '[ ]']] 有（需在评审记录一栏中标明记录）
+                              [[o.fujiayaoqiu!=u'有' and '[√]' or '[ ]']] 无</para></td>
+                          </tr>
+                          <tr>
+                            <td><para style="Label">4</para></td>
+                            <td><para style="Label">本院是否有能力满足规定要求</para></td>
+                            <td><para style="Label"></para></td>
+                            <td><para style="Value">[[o.ziyuan==u'人力资源满足' and '[√]' or '[ ]']]人力资源满足  [[o.ziyuan==u'人力资源不足' and '[√]' or '[ ]']]人力资源不足
+                            [[o.shebei==u'设备满足' and '[√]' or '[ ]']]设备满足  [[o.shebei==u'设备不满足' and '[√]' or '[ ]']]设备不满足
+                            [[o.gongqi==u'工期可接受' and '[√]' or '[ ]']]工期可接受  [[o.gongqi==u'工期太紧' and '[√]' or '[ ]']]工期太紧
+                            [[o.shejifei==u'设计费合理' and '[√]' or '[ ]']]设计费合理  [[o.shejifei==u'设计费太低' and '[√]' or '[ ]']]设计费太低
+                            </para>
+                            </td>
+                        </tr>
+                    </blockTable>
+              </td>
+              <td>
+                  <blockTable colWidths="80">
+                      <tr>
+                          <td>
+                              <para style="Value">[[o.director_reviewer_id.sign_image and
+                                  setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or
+                                  removeParentNode('para')]] [[o.director_reviewer_id.sign_image]]
+                              </para>
+                          </td>
                       </tr>
                       <tr>
-                        <td><para style="Label">2</para></td>
-                        <td><para style="Label">设计要求
-                          是否得到
-                          规定</para></td>
-                        <td><para style="Label">明示要求</para></td>
-                        <td><para style="Value">[[o.express_requirement==u'有招标书' and '[√]' or '[ ]']]  有招标书     [[o.express_requirement==u'有委托书' and '[√]' or '[ ]']]  有委托书
-                          [[o.express_requirement==u'有协议/合同草案' and '[√]' or '[ ]']]  有协议/合同草案  [[o.express_requirement==u'有口头要求记录' and '[√]' or '[ ]']]  有口头要求记录</para></td>
+                          <td>
+                              <para style="Value">[[date_format(o.jinyinshi_submitter_datetime)]]</para>
+                          </td>
                       </tr>
-                      <tr>
-                        <td><para style="Label"></para></td>
-                        <td><para style="Label"></para></td>
-                        <td><para style="Label">隐含要求</para></td>
-                        <td><para style="Value">[[o.yinhanyaoqiu==u'有' and '[√]' or '[ ]']] 有（需在评审记录一栏中标明记录）
-                          [[o.yinhanyaoqiu!=u'有' and '[√]' or '[ ]']] 无</para></td>
-                      </tr>
-                      <tr>
-                        <td><para style="Label"></para></td>
-                        <td><para style="Label"></para></td>
-                        <td><para style="Label">地方规范或特殊法律法规</para></td>
-                        <td><para style="Value">[[o.difangfagui==u'有' and '[√]' or '[ ]']] 有（需在评审记录一栏中标明记录）
-                          [[o.difangfagui!=u'有' and '[√]' or '[ ]']] 无</para></td>
-                      </tr>
-                      <tr>
-                        <td><para style="Label"></para></td>
-                        <td><para style="Label"></para></td>
-                        <td><para style="Label">附加要求</para></td>
-                        <td><para style="Value">[[o.fujiayaoqiu==u'有' and '[√]' or '[ ]']] 有（需在评审记录一栏中标明记录）
-                          [[o.fujiayaoqiu!=u'有' and '[√]' or '[ ]']] 无</para></td>
-                      </tr>
-                      <tr>
-                        <td><para style="Label">3</para></td>
-                        <td><para style="Label">与以前表述不一致的合同/ 协议要求是否
-                          解决</para></td>
-                        <td><para style="Label"></para></td>
-                        <td><para style="Value">[[o.hetongyizhi==u'合同/协议要求表述不一致已解决' and '[√]' or '[ ]']]合同/协议要求表述不一致已解决
-                          [[o.hetongyizhi==u'没有出现不一致' and '[√]' or '[ ]']]没有出现不一致</para></td>
-                      </tr>
-                      <tr>
-                        <td><para style="Label">4</para></td>
-                        <td><para style="Label">本院是否有能力满足规定要求</para></td>
-                        <td><para style="Label"></para></td>
-                        <td><para style="Value">[[o.ziyuan==u'人力资源满足' and '[√]' or '[ ]']]人力资源满足  [[o.ziyuan==u'人力资源不足' and '[√]' or '[ ]']]人力资源不足
-                        [[o.shebei==u'设备满足' and '[√]' or '[ ]']]设备满足  [[o.shebei==u'设备不满足' and '[√]' or '[ ]']]设备不满足
-                        [[o.gongqi==u'工期可接受' and '[√]' or '[ ]']]工期可接受  [[o.gongqi==u'工期太紧' and '[√]' or '[ ]']]工期太紧
-                        [[o.shejifei==u'设计费合理' and '[√]' or '[ ]']]设计费合理  [[o.shejifei==u'设计费太低' and '[√]' or '[ ]']]设计费太低
-                        </para>
-                        </td>
-                      </tr>
-                </blockTable>
-            </td>
-            <td>
-                <blockTable colWidths="80">
-                    <tr>
-                        <td><para style="Value">[[o.director_reviewer_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[o.director_reviewer_id.sign_image]] </para>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><para style="Value"> [[date_format(o.jinyinshi_submitter_datetime)]]</para></td>
-                    </tr>
-                </blockTable>
+                  </blockTable>
+              </td>
+          </tr>
+      </blockTable>
 
 
-
-            </td>
-        </tr>
-    </blockTable>
 
 	<blockTable style="JingYingShiTable" colWidths="239,259">
 	  <tr>
