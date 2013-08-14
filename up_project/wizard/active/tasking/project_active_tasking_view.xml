@@ -432,7 +432,7 @@
                     <tr>
                         <td>
                             <field name="active_tasking" readonly="1" required="0" class="oe_inline" nolabel="1"
-                                   target="new"/>
+                                   target="new" attrs="{'invisible':[('is_import','=',True)]}" />
                         </td>
                         <td>
                             <field name="active_tasking_state" readonly="1"/>
@@ -447,7 +447,7 @@
                             </div>
                             <div attrs="{'invisible':[('is_import','=',False)]}">
                                 <span>
-                                    导入记录
+                                    导入项目,不存在下达记录
                                 </span>
                             </div>
                         </td>
