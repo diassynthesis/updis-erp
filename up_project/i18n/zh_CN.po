@@ -775,8 +775,8 @@ msgstr "项目 经营室"
 
 #. module: up_project
 #: view:project.project:0
-msgid "Project Document"
-msgstr "项目文件"
+msgid "Project Process"
+msgstr "项目流程"
 
 #. module: up_project
 #: model:ir.actions.server,name:up_project.project_active_tasking_engineer_room_send_sms
