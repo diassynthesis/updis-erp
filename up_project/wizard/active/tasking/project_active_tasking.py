@@ -63,6 +63,7 @@ class project_active_tasking_engineer(osv.osv_memory):
                                     string='Project Manager'),
         "zhuguanzongshi_id": fields.many2many("res.users", "tasking_zongshi_res_user", "tasking_id", "res_user_id",
                                               u"主管总师"),
+
     }
 
     def engineer_review_accept(self, cr, uid, ids, context=None):
@@ -295,6 +296,9 @@ class project_active_tasking(osv.osv):
 
         'is_wait_user_process': fields.function(_is_wait_user_process, type="boolean",
                                                 string="Is User is The Project Manager"),
+
+        'else_attachments': fields.many2many("ir.attachment", "project_tasking_attachments", "tasking_id", "attachment_id",
+                                        string="Related files"),
 
     }
 

@@ -209,7 +209,7 @@
                                         <field name="express_requirement"
                                                attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
                                         <div>
-                                            <field name="attachments" widget="many2many_binary"
+                                            <field name="attachments" widget="many2many_binary" domain="[('res_model','=','project.project.active.tasking')]"
                                                     attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
                                                     />
                                         </div>
@@ -333,6 +333,15 @@
                                 <div>
                                     <field name="jinyinshi_submitter_datetime" readonly="1" colspan="1"/>
                                 </div>
+
+                            </group>
+                        </div>
+                        <div>
+                            <group class="activetable" col="4"
+                                   attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}">
+                                <field name="else_attachments" widget="many2many_binary"
+                                       attrs="{'readonly':[('state','not in',['zhidingbumen','zhidingfuzeren','suozhangqianzi'])]}"
+                                       colspan="4"/>
 
                             </group>
                         </div>
