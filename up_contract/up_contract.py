@@ -284,9 +284,9 @@ class project_active_tasking_inherit(osv.osv):
             cid = contract_obj.create(cr, 1, {"name": project.name, 'project_id': project.project_id.id,
                                               "number": project.xiangmubianhao,
                                               "customer": [
-                                                  (6, 0, [project.partner_id.id if project.partner_id else None])],
+                                                  (6, 0, [project.partner_id.id] if project.partner_id else [])],
                                               "customer_contact": [(6, 0, [
-                                                  project.customer_contact.id if project.customer_contact else None])]},
+                                                  project.customer_contact.id] if project.customer_contact else [])]},
                                       context=context)
         tasking = self.browse(cr, 1, ids[0], context=context)
         if not tasking.is_import:
