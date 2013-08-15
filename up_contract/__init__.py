@@ -1,1 +1,2 @@
 import up_contract
+import up_contract_analysis

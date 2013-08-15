@@ -412,6 +412,18 @@
         </record>
 
 
+        <record id="project_contract_income_analysis_tree_menu" model="ir.ui.view">
+            <field name="name">project.contract.income.analysis.tree.menu</field>
+            <field name="model">project.contract.contract.analysis</field>
+            <field name="arch" type="xml">
+                <tree string="Project Contract Income Analysis">
+                    <field name="contract_id"/>
+                    <field name="total_price"/>
+                    <field name="paid_price"/>
+                </tree>
+            </field>
+        </record>
+
         <record id="action_project_contract_invoice_management" model="ir.actions.act_window">
             <field name="name">Projects Contract Invoices</field>
             <field name="res_model">project.contract.invoice</field>
@@ -461,12 +473,21 @@
             <field name="domain">[('price','=',None)]</field>
         </record>
 
+        <record id="action_project_contract_incomes_analysis" model="ir.actions.act_window">
+            <field name="name">Projects Contract Income Analysis</field>
+            <field name="res_model">project.contract.contract.analysis</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="context">{}</field>
+        </record>
+
         <menuitem name="Contract" id="up_contract.project_contract" parent="base.menu_main_pm" sequence="50"
                   groups="up_contract.group_up_contract_manager"/>
 
         <menuitem name="Contract Need Process" id="up_contract.project_need_process_management"
                   parent="up_contract.project_contract"
-                  action="action_project_contract_need_process_management" groups="up_contract.group_up_contract_manager"
+                  action="action_project_contract_need_process_management"
+                  groups="up_contract.group_up_contract_manager"
                   sequence="9"/>
         <menuitem name="Contract Management" id="up_contract.project_contract_management"
                   parent="up_contract.project_contract"
@@ -480,5 +501,10 @@
                   parent="up_contract.project_contract"
                   action="action_project_contract_invoice_management" groups="up_contract.group_up_contract_manager"
                   sequence="20"/>
+
+        <menuitem name="Contract Incomes Analysis" id="up_contract.project_contract_incomes_analysis"
+                  parent="up_contract.project_contract"
+                  action="action_project_contract_incomes_analysis" groups="up_contract.group_up_contract_manager"
+                  sequence="25"/>
     </data>
 </openerp>
