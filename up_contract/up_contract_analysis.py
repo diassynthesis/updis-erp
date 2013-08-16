@@ -57,3 +57,26 @@ class up_contract_analysis(osv.osv):
                    " on c.id = i.contract_id" \
                    " GROUP BY c.id" \
                    " )")
+
+    def all_contract_analysis_action(self, cr, uid, context=None):
+        domain = []
+        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_partial_user', context=context):
+            hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
+            if hr_id:
+                hr_record = self.pool.get('hr.employee').browse(cr, uid, hr_id[0], context=context)
+                user_department_id = hr_record.department_id.id if hr_record.department_id else 0
+                domain = [('department_id.id', '=', user_department_id)]
+            else:
+                domain = [('department_id.id', '=', 0)]
+        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_user', context=context):
+            domain = []
+        return {
+            'name': u'收费进度查询',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'res_model': 'project.contract.contract.analysis',
+            'target': 'current',
+            'domain': domain,
+            'context': context,
+        }

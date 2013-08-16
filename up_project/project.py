@@ -506,35 +506,3 @@ class project_members(osv.osv):
     }
     _defaults = {
     }
-
-
-    # class project_duty(osv.Model):
-    #     """Duty"""
-    #     _name = "project.duty"
-    #     _description = "Project Duty"
-    #     _columns = {
-    #         'name': fields.char("Name", size=64),
-    #         'active': fields.boolean("Active"),
-    #     }
-    #     _defaults = {
-    #         'active': True
-    #     }
-
-
-    # class project_assignment(osv.Model):
-    #     """docstring for project_assignment"""
-    #     _name = "project.assignment"
-    #     _description = "Project Assignment"
-    #
-    #     def _get_project(self, cr, uid, *args, **kwargs):
-    #         #import pdb;pdb.set_trace()
-    #         pass
-    #
-    #     _columns = {
-    #         'duty_id': fields.many2one('project.duty', 'Duty'),
-    #         'profession_id': fields.many2one('project.profession', 'Profession'),
-    #         'project_id': fields.many2one('project.project', 'Project'),
-    #     }
-    #     _defaults = {
-    #         'project_id': _get_project,
-    #     }

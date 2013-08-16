@@ -355,12 +355,14 @@
             </field>
         </record>
 
-        <record id="action_project_contract_management" model="ir.actions.act_window">
+        <record id="action_project_contract_management" model="ir.actions.server">
             <field name="name">Projects Contract</field>
-            <field name="res_model">project.contract.contract</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="context">{}</field>
+            <field name="state">code</field>
+            <field name="condition" eval="True"/>
+            <field name="model_id" ref="up_contract.model_project_contract_contract"/>
+            <field name="code">
+                action = self.all_contract_action(cr,uid,context=context)
+            </field>
         </record>
 
 
@@ -515,16 +517,18 @@
             <field name="domain">[('price','=',None)]</field>
         </record>
 
-        <record id="action_project_contract_incomes_analysis" model="ir.actions.act_window">
+        <record id="action_project_contract_incomes_analysis" model="ir.actions.server">
             <field name="name">Projects Contract Income Analysis</field>
-            <field name="res_model">project.contract.contract.analysis</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="context">{}</field>
+            <field name="state">code</field>
+            <field name="condition" eval="True"/>
+            <field name="model_id" ref="up_contract.model_project_contract_contract_analysis"/>
+            <field name="code">
+                action = self.all_contract_analysis_action(cr,uid,context=context)
+            </field>
         </record>
 
         <menuitem name="Contract" id="up_contract.project_contract" parent="base.menu_main_pm" sequence="50"
-                  groups="up_contract.group_up_contract_manager"/>
+                  groups="up_contract.group_up_contract_partial_user"/>
 
         <menuitem name="Contract Need Process" id="up_contract.project_need_process_management"
                   parent="up_contract.project_contract"
@@ -533,20 +537,23 @@
                   sequence="9"/>
         <menuitem name="Contract Management" id="up_contract.project_contract_management"
                   parent="up_contract.project_contract"
-                  action="action_project_contract_management" groups="up_contract.group_up_contract_manager"
+                  action="action_project_contract_management"
+                  groups="up_contract.group_up_contract_partial_user,up_contract.group_up_contract_user"
                   sequence="10"/>
         <menuitem name="Contract Incomes" id="up_contract.project_contract_income_management"
                   parent="up_contract.project_contract"
-                  action="action_project_contract_income_management" groups="up_contract.group_up_contract_manager"
+                  action="action_project_contract_income_management" groups="up_contract.group_up_contract_user"
                   sequence="15"/>
         <menuitem name="Contract Invoices" id="up_contract.project_contract_invoice_management"
                   parent="up_contract.project_contract"
-                  action="action_project_contract_invoice_management" groups="up_contract.group_up_contract_manager"
+                  action="action_project_contract_invoice_management"
+                  groups="up_contract.group_up_contract_user"
                   sequence="20"/>
 
         <menuitem name="Contract Incomes Analysis" id="up_contract.project_contract_incomes_analysis"
                   parent="up_contract.project_contract"
-                  action="action_project_contract_incomes_analysis" groups="up_contract.group_up_contract_manager"
+                  action="action_project_contract_incomes_analysis"
+                  groups="up_contract.group_up_contract_partial_user,up_contract.group_up_contract_user"
                   sequence="25"/>
     </data>
 </openerp>
