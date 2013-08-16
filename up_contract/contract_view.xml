@@ -468,45 +468,24 @@
             </field>
         </record>
 
-        <record id="action_project_contract_invoice_management" model="ir.actions.act_window">
+        <record id="action_project_contract_invoice_management" model="ir.actions.server">
             <field name="name">Projects Contract Invoices</field>
-            <field name="res_model">project.contract.invoice</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="context">{}</field>
-        </record>
-        <record id="act_view_project_contract_invoice_form" model="ir.actions.act_window.view">
-            <field name="sequence">17</field>
-            <field name="view_id" ref="project_contract_invoice_form_menu"/>
-            <field name="view_mode">form</field>
-            <field name="act_window_id" ref="action_project_contract_invoice_management"/>
-        </record>
-        <record id="act_view_project_contract_invoice_tree" model="ir.actions.act_window.view">
-            <field name="sequence">16</field>
-            <field name="view_id" ref="project_contract_invoice_tree_menu"/>
-            <field name="view_mode">tree</field>
-            <field name="act_window_id" ref="action_project_contract_invoice_management"/>
+            <field name="state">code</field>
+            <field name="condition" eval="True"/>
+            <field name="model_id" ref="up_contract.model_project_contract_invoice"/>
+            <field name="code">
+                action = self.all_contract_invoice_action(cr,uid,context=context)
+            </field>
         </record>
 
-
-        <record id="action_project_contract_income_management" model="ir.actions.act_window">
+        <record id="action_project_contract_income_management" model="ir.actions.server">
             <field name="name">Projects Contract Income</field>
-            <field name="res_model">project.contract.income</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="context">{}</field>
-        </record>
-        <record id="act_view_project_contract_income_form" model="ir.actions.act_window.view">
-            <field name="sequence">17</field>
-            <field name="view_id" ref="project_contract_income_form_menu"/>
-            <field name="view_mode">form</field>
-            <field name="act_window_id" ref="action_project_contract_income_management"/>
-        </record>
-        <record id="act_view_project_contract_income_tree" model="ir.actions.act_window.view">
-            <field name="sequence">16</field>
-            <field name="view_id" ref="project_contract_income_tree_menu"/>
-            <field name="view_mode">tree</field>
-            <field name="act_window_id" ref="action_project_contract_income_management"/>
+            <field name="state">code</field>
+            <field name="condition" eval="True"/>
+            <field name="model_id" ref="up_contract.model_project_contract_income"/>
+            <field name="code">
+                action = self.all_contract_income_action(cr,uid,context=context)
+            </field>
         </record>
 
         <record id="action_project_contract_need_process_management" model="ir.actions.act_window">
@@ -542,12 +521,13 @@
                   sequence="10"/>
         <menuitem name="Contract Incomes" id="up_contract.project_contract_income_management"
                   parent="up_contract.project_contract"
-                  action="action_project_contract_income_management" groups="up_contract.group_up_contract_user"
+                  action="action_project_contract_income_management"
+                  groups="up_contract.group_up_contract_partial_user,up_contract.group_up_contract_user"
                   sequence="15"/>
         <menuitem name="Contract Invoices" id="up_contract.project_contract_invoice_management"
                   parent="up_contract.project_contract"
                   action="action_project_contract_invoice_management"
-                  groups="up_contract.group_up_contract_user"
+                  groups="up_contract.group_up_contract_partial_user,up_contract.group_up_contract_user"
                   sequence="20"/>
 
         <menuitem name="Contract Incomes Analysis" id="up_contract.project_contract_incomes_analysis"

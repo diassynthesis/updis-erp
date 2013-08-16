@@ -47,6 +47,44 @@ class updis_contract_invoice(osv.osv):
         'is_import': False,
     }
 
+    def all_contract_invoice_action(self, cr, uid, context=None):
+        domain = []
+        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_partial_user', context=context):
+            hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
+            if hr_id:
+                hr_record = self.pool.get('hr.employee').browse(cr, uid, hr_id[0], context=context)
+                user_department_id = hr_record.department_id.id if hr_record.department_id else 0
+                domain = [('contract_id.design_department.id', '=', user_department_id)]
+            else:
+                domain = [('contract_id.design_department.id', '=', 0)]
+        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_user', context=context):
+            domain = []
+
+        view_form = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
+                                                                  ('name', '=',
+                                                                   'project_contract_invoice_form_menu')],
+                                                          context=context)
+        if view_form:
+            view_form_id = self.pool.get('ir.model.data').read(cr, 1, view_form[0], ['res_id'])
+
+        view_tree = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
+                                                                  ('name', '=',
+                                                                   'project_contract_invoice_tree_menu')],
+                                                          context=context)
+        if view_tree:
+            view_tree_id = self.pool.get('ir.model.data').read(cr, 1, view_tree[0], ['res_id'])
+        return {
+            'name': u'已开发票查询',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'res_model': 'project.contract.invoice',
+            'target': 'current',
+            'domain': domain,
+            'context': context,
+            'views': [(view_tree_id['res_id'], 'tree'), (view_form_id['res_id'], 'form')],
+        }
+
 
 class updis_contract_income(osv.osv):
     _name = 'project.contract.income'
@@ -67,6 +105,44 @@ class updis_contract_income(osv.osv):
         'obtain_date': lambda *a: str(datetime.date.today()),
         'is_import': False,
     }
+
+    def all_contract_income_action(self, cr, uid, context=None):
+        domain = []
+        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_partial_user', context=context):
+            hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
+            if hr_id:
+                hr_record = self.pool.get('hr.employee').browse(cr, uid, hr_id[0], context=context)
+                user_department_id = hr_record.department_id.id if hr_record.department_id else 0
+                domain = [('contract_id.design_department.id', '=', user_department_id)]
+            else:
+                domain = [('contract_id.design_department.id', '=', 0)]
+        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_user', context=context):
+            domain = []
+
+        view_form = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
+                                                                  ('name', '=',
+                                                                   'project_contract_income_form_menu')],
+                                                          context=context)
+        if view_form:
+            view_form_id = self.pool.get('ir.model.data').read(cr, 1, view_form[0], ['res_id'])
+
+        view_tree = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
+                                                                  ('name', '=',
+                                                                   'project_contract_income_tree_menu')],
+                                                          context=context)
+        if view_tree:
+            view_tree_id = self.pool.get('ir.model.data').read(cr, 1, view_tree[0], ['res_id'])
+        return {
+            'name': u'收费进度查询',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'res_model': 'project.contract.income',
+            'target': 'current',
+            'domain': domain,
+            'context': context,
+            'views': [(view_tree_id['res_id'], 'tree'), (view_form_id['res_id'], 'form')],
+        }
 
 
 class updis_contract_contract(osv.osv):
