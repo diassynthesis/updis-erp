@@ -507,7 +507,7 @@
         </record>
 
         <menuitem name="Contract" id="up_contract.project_contract" parent="base.menu_main_pm" sequence="50"
-                  groups="up_contract.group_up_contract_partial_user"/>
+                  groups="up_contract.group_up_contract_partial_user,up_contract.group_up_contract_user"/>
 
         <menuitem name="Contract Need Process" id="up_contract.project_need_process_management"
                   parent="up_contract.project_contract"
