@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
     <data>
+        <record id="project_active_tasking_reject_form" model="ir.ui.view">
+            <field name="name">project.project.active.tasking.reject.wizard</field>
+            <field name="model">project.project.active.tasking.reject.wizard</field>
+            <field name="arch" type="xml">
+                <form version="7.0" string="Reject">
+                    <group>
+                        <field name="comment"/>
+                    </group>
+                    <footer>
+                        <button name="reject_commit" class="oe_highlight"
+                                string="打回申请" confirm="确定打回申请?"
+                                type="object"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="project_active_tasking_reject_wizard_action" model="ir.actions.act_window">
+            <field name="name">project Tasking Reject</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.project.active.tasking.reject.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="project_active_tasking_reject_form"/>
+            <field name="target">new</field>
+        </record>
+
+
         <record id="project_active_tasking_engineer_form" model="ir.ui.view">
             <field name="name">project.project.active.tasking.engineer.form</field>
             <field name="model">project.project.active.tasking.engineer</field>
@@ -139,14 +168,14 @@
                             <field name="partner_id" domain="[('is_company','=',True)]"
                                    on_change="onchange_partner_id(partner_id)"
                                    attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
-                                   />
+                                    />
                             <field name="partner_type"
                                    attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
-                                   />
+                                    />
                             <field name="partner_address" readonly="1"/>
-                            <field name="customer_contact"  domain="[('is_company','=',False)]"
+                            <field name="customer_contact" domain="[('is_company','=',False)]"
                                    attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
-                            <field name="guimo"  colspan="4"
+                            <field name="guimo" colspan="4"
                                    attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
                                     />
                         </group>
@@ -190,13 +219,14 @@
                                                 type="object"
                                                 attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangshenpi')]}"
                                                 groups="up_project.group_up_project_suozhang"/>
-                                        <button name="draft_reject" string="打回申请单" type="object"
+                                        <button name="%(project_active_tasking_reject_wizard_action)d" string="打回申请单"
+                                                type="action"
                                                 attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangshenpi')]}"
-                                                groups="up_project.group_up_project_suozhang"
-                                                confirm="确定打回申请到发起人?"/>
+                                                groups="up_project.group_up_project_suozhang"/>
                                         <field name="director_reviewer_apply_id" readonly="1" invisible="1"/>
                                         <div attrs="{'invisible':[('state','in',['open','suozhangshenpi'])]}">
-                                            <field name="director_reviewer_apply_image" widget="image" class="oe_avatar no_shadow oe_left" readonly="1"/>
+                                            <field name="director_reviewer_apply_image" widget="image"
+                                                   class="oe_avatar no_shadow oe_left" readonly="1"/>
                                         </div>
                                         <field name="director_reviewer_apply_time" readonly="1"/>
                                     </td>
@@ -209,8 +239,9 @@
                                         <field name="express_requirement"
                                                attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
                                         <div>
-                                            <field name="attachments" widget="many2many_binary" domain="[('res_model','=','project.project.active.tasking')]"
-                                                    attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
+                                            <field name="attachments" widget="many2many_binary"
+                                                   domain="[('res_model','=','project.project.active.tasking')]"
+                                                   attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
                                                     />
                                         </div>
                                     </td>
@@ -272,7 +303,7 @@
                                         <div class="inline-item"
                                              attrs="{'invisible':[('state','not in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren'])]}">
                                             建议项目负责人:
-                                            <field name="jianyixiangmufuzeren_id"  class="oe_no_button"
+                                            <field name="jianyixiangmufuzeren_id" class="oe_no_button"
                                                    widget="many2many_tags"
                                                    options='{"no_open": True}'
                                                    attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
@@ -311,9 +342,10 @@
                                     string="提交总师室审批"
                                     states="zhidingbumen"
                                     type="action" groups="up_project.group_up_project_jingyingshi"/>
-                            <button name="operator_reject" string="打回申请" states="zhidingbumen"
-                                    type="object"
-                                    groups="up_project.group_up_project_jingyingshi" confirm="确定打回所长申请?"/>
+                            <button name="%(project_active_tasking_reject_wizard_action)d" string="打回申请"
+                                    states="zhidingbumen"
+                                    type="action"
+                                    groups="up_project.group_up_project_jingyingshi"/>
                         </div>
                         <div id="operator">
                             <group class="activetable" col="6"
@@ -327,7 +359,8 @@
                                 <field name="chenjiebumen_id" readonly="1"
                                        colspan="3"/>
                                 <div>
-                                    <field name="jinyinshi_submitter_id_image" widget="image" class="oe_avatar  no_shadow oe_left" readonly="1"
+                                    <field name="jinyinshi_submitter_id_image" widget="image"
+                                           class="oe_avatar  no_shadow oe_left" readonly="1"
                                            colspan="2"/>
                                 </div>
                                 <div>
@@ -350,9 +383,9 @@
                                     groups="up_project.group_up_project_zongshishi" string="审批通过"
                                     states="zhidingfuzeren"
                                     type="action"/>
-                            <button name="engineer_reject" string="打回申请单"
+                            <button name="%(project_active_tasking_reject_wizard_action)d" string="打回申请单"
                                     groups="up_project.group_up_project_zongshishi"
-                                    states="zhidingfuzeren" type="object" confirm="确定打回经营室申请?"/>
+                                    states="zhidingfuzeren" type="action"/>
                         </div>
                         <div id="engineer"
                              attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren'])]}">
@@ -393,7 +426,8 @@
                                     <tr>
                                         <td>总师室</td>
                                         <td>
-                                            <field name="zongshishi_submitter_id_image" widget="image" class="oe_avatar no_shadow oe_left" readonly="1"/>
+                                            <field name="zongshishi_submitter_id_image" widget="image"
+                                                   class="oe_avatar no_shadow oe_left" readonly="1"/>
                                             <field name="zongshishi_submit_datetime" readonly="1"/>
                                         </td>
                                     </tr>
@@ -401,7 +435,8 @@
                                         <td>承接部门负责人</td>
                                         <td>
                                             <div attrs="{'invisible':[('state','!=','end')]}">
-                                                <field name="director_approve_image" readonly="1" widget="image" class="oe_avatar no_shadow oe_left"/>
+                                                <field name="director_approve_image" readonly="1" widget="image"
+                                                       class="oe_avatar no_shadow oe_left"/>
                                             </div>
                                             <field name="director_approve_time" readonly="1"/>
                                             <button name="manager_review_accept"
@@ -411,10 +446,9 @@
                                                     type="object"
                                                     attrs="{'invisible':['|',('state','!=','suozhangqianzi'),('is_display_button','!=',True)]}"
                                                     groups="up_project.group_up_project_suozhang"/>
-                                            <button name="manager_reject"
+                                            <button name="%(project_active_tasking_reject_wizard_action)d"
                                                     string="打回申请单"
-                                                    confirm="确定打回总师室申请?"
-                                                    type="object"
+                                                    type="action"
                                                     attrs="{'invisible':['|',('state','!=','suozhangqianzi'),('is_display_button','!=',True)]}"
                                                     groups="up_project.group_up_project_suozhang"/>
                                         </td>
@@ -423,6 +457,16 @@
                             </table>
                         </div>
                     </sheet>
+                    <notebook>
+                        <page string="Reject">
+                            <field name="reject_logs" readonly="1">
+                                <tree>
+                                    <field name="state"/>
+                                    <field name="comment"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </form>
             </field>
         </record>
@@ -441,7 +485,7 @@
                     <tr>
                         <td>
                             <field name="active_tasking" readonly="1" required="0" class="oe_inline" nolabel="1"
-                                   target="new" attrs="{'invisible':[('is_import','=',True)]}" />
+                                   target="new" attrs="{'invisible':[('is_import','=',True)]}"/>
                         </td>
                         <td>
                             <field name="active_tasking_state" readonly="1"/>

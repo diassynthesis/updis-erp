@@ -6,6 +6,51 @@ from openerp.osv import osv
 __author__ = 'cysnake4713'
 
 
+class project_active_tasking_reject_log(osv.osv):
+    _name = "project.project.active.tasking.reject.log"
+    _description = "Project Active Tasking Reject Log"
+    _order = "create_date desc"
+    _columns = {
+        "state": fields.selection([
+                                      # ("draft",u"New project"),
+                                      ("open", u"提出申请"),
+                                      ("suozhangshenpi", u"所长审批"),
+                                      ("zhidingbumen", u"经营室审批"),
+                                      ("zhidingfuzeren", u"总师室审批"),
+                                      ("suozhangqianzi", u"负责人签字"),
+                                      ("end", u'表单归档'),
+                                  ], "Reject State"),
+        "comment": fields.text(string="Reject Reason"),
+    }
+
+
+class project_active_tasking_reject(osv.osv_memory):
+    _name = "project.project.active.tasking.reject.wizard"
+    _description = "Project Active Tasking Reject"
+    _columns = {
+        "comment": fields.text(string="Reject Reason"),
+    }
+
+    def reject_commit(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        record_id = context and context.get('active_id', False) or False
+        tasking = self.pool.get("project.project.active.tasking").browse(cr, uid, record_id, context)
+        self_record = self.browse(cr, uid, ids[0], context)
+        tasking.write({
+            'reject_logs': [(0, 0, {'comment': self_record.comment, 'state': tasking.state})],
+        })
+
+        if tasking.state == "suozhangshenpi":
+            return tasking.draft_reject()
+        if tasking.state == "zhidingbumen":
+            return tasking.operator_reject()
+        if tasking.state == "zhidingfuzeren":
+            return tasking.engineer_reject()
+        if tasking.state == "suozhangqianzi":
+            return tasking.manager_reject()
+
+
 class project_active_tasking_engineer(osv.osv_memory):
     _name = "project.project.active.tasking.engineer"
     _description = "Project Active Tasking"
@@ -297,8 +342,11 @@ class project_active_tasking(osv.osv):
         'is_wait_user_process': fields.function(_is_wait_user_process, type="boolean",
                                                 string="Is User is The Project Manager"),
 
-        'else_attachments': fields.many2many("ir.attachment", "project_tasking_attachments", "tasking_id", "attachment_id",
-                                        string="Related files"),
+        'else_attachments': fields.many2many("ir.attachment", "project_tasking_attachments", "tasking_id",
+                                             "attachment_id",
+                                             string="Related files"),
+        'reject_logs': fields.many2many("project.project.active.tasking.reject.log", "project_tasking_reject_log",
+                                        "tasking_id", "log_id", string="Reject Log"),
 
     }
 
