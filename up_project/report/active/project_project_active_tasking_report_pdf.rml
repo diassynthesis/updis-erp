@@ -161,15 +161,13 @@
                   <blockTable colWidths="80">
                       <tr>
                           <td>
-                              <para style="Value">[[o.director_reviewer_id.sign_image and
-                                  setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or
-                                  removeParentNode('para')]] [[o.director_reviewer_id.sign_image]]
+                              <para style="Value">[[o.director_reviewer_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[o.director_reviewer_id.sign_image]]
                               </para>
                           </td>
                       </tr>
                       <tr>
                           <td>
-                              <para style="Value">[[date_format(o.jinyinshi_submitter_datetime)]]</para>
+                              <para style="Value">[[date_format(o.director_reviewer_apply_time)]]</para>
                           </td>
                       </tr>
                   </blockTable>
@@ -268,7 +266,7 @@
                         <td><para style="Label">[[o.director_approve.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]][[o.director_approve.sign_image]]</para></td>
                     </tr>
                     <tr>
-                        <td><para style="Value">[[date_format(o.director_reviewer_apply_time)]]</para></td>
+                        <td><para style="Value">[[date_format(o.director_approve_time)]]</para></td>
                     </tr>
                 </blockTable>
             </td>
