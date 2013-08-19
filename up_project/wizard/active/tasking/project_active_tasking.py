@@ -229,6 +229,23 @@ class project_active_tasking(osv.osv):
                 result[obj.id] = False
         return result
 
+    def _is_project_director(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
+            if hr_id:
+                hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
+                user_department_id = hr_record.department_id.id if hr_record.department_id else "-1"
+                project_department_id = obj.chenjiebumen_id.id if obj.chenjiebumen_id else None
+                if user_department_id == project_department_id and (
+                    hr_record.job_id.name if hr_record.job_id else None) == u"所长":
+                    result[obj.id] = True
+                else:
+                    result[obj.id] = False
+            else:
+                result[obj.id] = False
+        return result
+
     def _is_wait_user_process(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         if context is None:
@@ -249,10 +266,14 @@ class project_active_tasking(osv.osv):
                 if self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context):
                     result_flag = True
             if obj.state == 'suozhangqianzi':
-                project = self.pool.get('project.project.active.tasking')
-                user_ids = project.read(cr, uid, obj.id, ['user_id'], context=context)
-                if current_uid in user_ids['user_id']:
-                    result_flag = True
+                hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', current_uid)], context=context)
+                if hr_id:
+                    hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
+                    user_department_id = hr_record.department_id.id if hr_record.department_id else "-1"
+                    project_department_id = obj.chenjiebumen_id.id if obj.chenjiebumen_id else None
+                    if user_department_id == project_department_id and (
+                        hr_record.job_id.name if hr_record.job_id else None) == u"所长":
+                        result_flag = True
 
             result[obj.id] = result_flag
         return result
@@ -347,6 +368,9 @@ class project_active_tasking(osv.osv):
                                              string="Related files"),
         'reject_logs': fields.many2many("project.project.active.tasking.reject.log", "project_tasking_reject_log",
                                         "tasking_id", "log_id", string="Reject Log"),
+
+        'is_project_director': fields.function(_is_project_director, type="boolean",
+                                               string="Is User is The Project Director"),
 
     }
 

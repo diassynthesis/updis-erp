@@ -411,12 +411,21 @@ class updis_project(osv.osv):
         #director
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_suozhang', context=context):
             domain = ['|', '&', ('status_code', '=', 10102), ('related_user_id', '=', uid)] + domain
-            #Operator Room
+            # is True Director In HR
+            hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
+            if hr_id:
+                hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
+                if hr_record.job_id.name if hr_record.job_id else None == u"所长":
+                    user_department_id = hr_record.department_id.id if hr_record.department_id else "-1"
+                    domain = ['|', '&', ('status_code', '=', 10105),
+                              ('chenjiebumen_id', '=', user_department_id)] + domain
+
+                    #Operator Room
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context):
             status_code += [10103]
             #Engineer Room
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context):
-            status_code += [10104, 10105]
+            status_code += [10104]
 
         #Manager
         manager_domain = ['|', '&', ('status_code', 'in', [20101, 50101, 60101]), ('user_id', '=', uid)]

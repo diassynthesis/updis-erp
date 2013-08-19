@@ -443,17 +443,18 @@
                                                        class="oe_avatar no_shadow oe_left"/>
                                             </div>
                                             <field name="director_approve_time" readonly="1"/>
+                                            <field name="is_project_director" invisible="1"/>
                                             <button name="manager_review_accept"
                                                     class="oe_highlight"
                                                     string="确认启动项目"
                                                     confirm="确定启动项目?"
                                                     type="object"
-                                                    attrs="{'invisible':['|',('state','!=','suozhangqianzi'),('is_display_button','!=',True)]}"
+                                                    attrs="{'invisible':['|',('state','!=','suozhangqianzi'),('is_project_director','=',False)]}"
                                                     groups="up_project.group_up_project_suozhang"/>
                                             <button name="%(project_active_tasking_reject_wizard_action)d"
                                                     string="打回申请单"
                                                     type="action"
-                                                    attrs="{'invisible':['|',('state','!=','suozhangqianzi'),('is_display_button','!=',True)]}"
+                                                    attrs="{'invisible':['|',('state','!=','suozhangqianzi'),('is_project_director','=',False)]}"
                                                     groups="up_project.group_up_project_suozhang"/>
                                         </td>
                                     </tr>

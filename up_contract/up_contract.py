@@ -357,7 +357,6 @@ class updis_project_project(osv.osv):
                                                                                         'up_project.group_up_project_suozhang',
                                                                                         context=context):
                     result[obj.id] = True
-                    break
                 else:
                     result[obj.id] = False
             else:
