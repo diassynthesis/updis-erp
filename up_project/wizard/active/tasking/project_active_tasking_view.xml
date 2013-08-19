@@ -148,6 +148,10 @@
                         <div class="sheet-title">
                             <h1>产品要求评审及任务下达记录</h1>
                         </div>
+                        <div class="oe_right inline-item">
+                                建表人：
+                                <field name="create_uid" readonly="1"/>
+                        </div>
                         <group invisible="1">
                             <field name="is_project_creater"/>
                             <field name="is_display_button"/>
