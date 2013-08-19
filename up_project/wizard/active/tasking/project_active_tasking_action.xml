@@ -50,13 +50,18 @@
            <field name="state">code</field>
             <field name="model_id" ref="up_project.model_project_project_active_tasking"/>
             <field name="code">
+http_address = pool.get('ir.config_parameter').browse(cr,1,1,context=context).value
+http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.project" % object.project_id.id
 from_rec = object.name
+subject = u"项目进度提示"
+big_ant_content = u"""项目 %s [%s] 需要您的审批,请及时处理项目和跟进项目进度 """ % (http_address,object.name)
 content = u"项目[%s]需要您的审批,请及时处理项目和跟进项目进度" % (object.name)
 model = 'project.project.active.tasking'
 res_id = object.id
 to = object.director_reviewer_id.id
 users = pool.get('res.users').browse(cr,1,[to],context=context)
 pool.get('sms.sms').send_sms_to_users( cr, 1, users, from_rec, content, model, res_id, context=None)
+pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, big_ant_content, model, res_id, context=None)
             </field>
         </record>
 
@@ -68,11 +73,13 @@ pool.get('sms.sms').send_sms_to_users( cr, 1, users, from_rec, content, model, r
             <field name="model_id" ref="up_project.model_project_project_active_tasking"/>
             <field name="code">
 from_rec = object.name
+subject = u"项目进度提示"
 content = u"项目[%s]需要您的审批,请及时处理项目和跟进项目进度" % (object.name)
 model = 'project.project.active.tasking'
 res_id = object.id
 group_id = 'group_up_project_jingyingshi'
 pool.get('sms.sms').send_sms_to_group(cr,uid,from_rec,content,model,res_id,group_id,context)
+pool.get('sms.sms').send_big_ant_to_group(cr,uid,from_rec,subject,content,model,res_id,group_id,context)
             </field>
         </record>
 
@@ -84,12 +91,14 @@ pool.get('sms.sms').send_sms_to_group(cr,uid,from_rec,content,model,res_id,group
             <field name="model_id" ref="up_project.model_project_project_active_tasking"/>
             <field name="code">
 from_rec = object.name
+subject = u"项目进度提示"
 content = u"项目[%s]需要您的审批,请及时处理项目和跟进项目进度" % (object.name)
 model = 'project.project.active.tasking'
 res_id = object.id
 group_id = 'group_up_project_zongshishi'
 sms_config_id = 'project_config_sms_active_tasking_engineer'
 pool.get('sms.sms').send_sms_to_config_group(cr, uid, sms_config_id, from_rec, content, model, res_id, context=None)
+pool.get('sms.sms').send_big_ant_to_config_group(cr, uid, sms_config_id, from_rec, subject, content, model, res_id, context=None)
             </field>
         </record>
 
@@ -101,6 +110,7 @@ pool.get('sms.sms').send_sms_to_config_group(cr, uid, sms_config_id, from_rec, c
             <field name="model_id" ref="up_project.model_project_project_active_tasking"/>
             <field name="code">
 from_rec = object.name
+subject = u"项目进度提示"
 content = u"项目[%s]需要您的审批启动,请及时处理项目和跟进项目进度" % (object.name)
 model = 'project.project.active.tasking'
 res_id = object.id
@@ -112,6 +122,7 @@ else:
     to = []
 users = pool.get('res.users').browse(cr,1,to,context=context)
 pool.get('sms.sms').send_sms_to_users( cr, 1, users, from_rec, content, model, res_id, context=None)
+pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, content, model, res_id, context=None)
             </field>
         </record>
     </data>

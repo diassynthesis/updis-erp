@@ -9,7 +9,7 @@
             <field name="numbercall">-1</field>
             <field name="doall" eval="False"/>
             <field name="model">sms.sms</field>
-            <field name="function">process_sms_queue</field>
+            <field name="function">process_send_message_in_queue</field>
             <field name="args">()</field>
         </record>
 
@@ -25,9 +25,14 @@
                         <field name="from"/>
                         <field name="model"/>
                         <field name="res_id"/>
-                        <field name="sms_server_id"/>
                         <field name="to"/>
+                        <field name="type"/>
+                        <field name="subject"/>
                         <field name="content" colspan="2"/>
+                    </group>
+                    <newline/>
+                    <group>
+                        <field name="sms_server_id"/>
                     </group>
                 </form>
             </field>
@@ -39,6 +44,7 @@
             <field name="arch" type="xml">
                 <tree string="sms List">
                     <field name="state"/>
+                    <field name="type"/>
                     <field name="content"/>
                     <field name="sent_date"/>
                 </tree>
