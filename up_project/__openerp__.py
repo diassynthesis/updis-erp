@@ -37,6 +37,7 @@ UPDIS Project Module.""",
         'data/updis_data.xml',
 
         'hr_view.xml',
+        'res_partner.xml',
     ],
     'css': [
         'static/src/css/up_project.css'
