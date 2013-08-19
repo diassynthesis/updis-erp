@@ -199,7 +199,7 @@ class updis_project(osv.osv):
     _log_access = True
     _inherit = "project.project"
     _name = "project.project"
-    _order = "begin_date desc"
+    _order = "create_date desc"
 
     def _is_project_creater(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
