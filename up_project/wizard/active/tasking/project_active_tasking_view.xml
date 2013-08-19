@@ -149,8 +149,8 @@
                             <h1>产品要求评审及任务下达记录</h1>
                         </div>
                         <div class="oe_right inline-item">
-                                建表人：
-                                <field name="create_uid" readonly="1"/>
+                            建表人：
+                            <field name="create_uid" readonly="1"/>
                         </div>
                         <group invisible="1">
                             <field name="is_project_creater"/>
@@ -231,6 +231,9 @@
                                         <div attrs="{'invisible':[('state','in',['open','suozhangshenpi'])]}">
                                             <field name="director_reviewer_apply_image" widget="image"
                                                    class="oe_avatar no_shadow oe_left" readonly="1"/>
+                                        </div>
+                                        <div attrs="{'invisible':['|',('state','in',['open','suozhangshenpi']),('director_reviewer_apply_image','!=',False)]}">
+                                            <field name="director_reviewer_apply_id" readonly="1"/>
                                         </div>
                                         <field name="director_reviewer_apply_time" readonly="1"/>
                                     </td>
@@ -366,6 +369,9 @@
                                     <field name="jinyinshi_submitter_id_image" widget="image"
                                            class="oe_avatar  no_shadow oe_left" readonly="1"
                                            colspan="2"/>
+                                    <div attrs="{'invisible':[('jinyinshi_submitter_id_image','!=',False)]}">
+                                        <field name="jinyinshi_submitter_id" readonly="1"/>
+                                    </div>
                                 </div>
                                 <div>
                                     <field name="jinyinshi_submitter_datetime" readonly="1" colspan="1"/>
@@ -432,6 +438,9 @@
                                         <td>
                                             <field name="zongshishi_submitter_id_image" widget="image"
                                                    class="oe_avatar no_shadow oe_left" readonly="1"/>
+                                            <div attrs="{'invisible':[('zongshishi_submitter_id_image','!=',False)]}">
+                                                <field name="zongshishi_submitter_id" readonly="1"/>
+                                            </div>
                                             <field name="zongshishi_submit_datetime" readonly="1"/>
                                         </td>
                                     </tr>
@@ -441,6 +450,9 @@
                                             <div attrs="{'invisible':[('state','!=','end')]}">
                                                 <field name="director_approve_image" readonly="1" widget="image"
                                                        class="oe_avatar no_shadow oe_left"/>
+                                                <field name="director_approve"
+                                                       attrs="{'invisible':[('director_approve_image','!=',False)]}"
+                                                       readonly="1"/>
                                             </div>
                                             <field name="director_approve_time" readonly="1"/>
                                             <field name="is_project_director" invisible="1"/>
