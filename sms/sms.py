@@ -13,7 +13,7 @@ class sms(osv.Model):
     _order = "sent_date desc"
     _columns = {
         'subject': fields.char('Subject', size=256),
-        'content': fields.text("Content", size=128),
+        'content': fields.text("Content", size=2000),
         'from': fields.char("From", size=200),
         'to': fields.char('To', size=2000),
         'sent_date': fields.datetime("Send date"),

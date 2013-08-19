@@ -48,7 +48,7 @@
             <field name="name">负责人签字</field>
             <field name="kind">function</field>
             <field name="action">write({'state':'suozhangqianzi','status_code':10105})</field>
-            <field name="action_id" ref="project_active_tasking_director_apply_send_sms"/>
+            <field name="action_id" ref="project_active_tasking_manager_send_sms"/>
         </record>
         <record id="act_active_tasking_stop" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
