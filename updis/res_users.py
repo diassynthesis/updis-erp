@@ -94,3 +94,25 @@ class res_users(osv.osv):
             }
             ret['value'].update(vals)
         return ret
+
+    def _get_group(self, cr, uid, context=None):
+        dataobj = self.pool.get('ir.model.data')
+        result = []
+        try:
+            dummy, group_id = dataobj.get_object_reference(cr, SUPERUSER_ID, 'base', 'group_user')
+            result.append(group_id)
+            dummy, group_id = dataobj.get_object_reference(cr, SUPERUSER_ID, 'base', 'group_partner_manager')
+            result.append(group_id)
+            dummy, group_id = dataobj.get_object_reference(cr, SUPERUSER_ID, 'project', 'group_project_user')
+            result.append(group_id)
+            dummy, group_id = dataobj.get_object_reference(cr, SUPERUSER_ID, 'up_project',
+                                                           'group_up_project_common_user')
+            result.append(group_id)
+        except ValueError:
+            # If these groups does not exists anymore
+            pass
+        return result
+
+    _defaults = {
+        'groups_id': _get_group,
+    }

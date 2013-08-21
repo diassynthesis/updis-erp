@@ -3,7 +3,7 @@
     <data>
         <record model="ir.cron" id="auto_send_sms">
             <field name="name">Auto Send SMS</field>
-            <field name="active">True</field>
+            <!--field name="active">True</field-->
             <field name="interval_number">2</field>
             <field name="interval_type">minutes</field>
             <field name="numbercall">-1</field>
