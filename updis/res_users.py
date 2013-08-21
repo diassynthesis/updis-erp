@@ -31,6 +31,7 @@ class res_users(osv.osv):
         'home_phone': fields.char('Home Phone', size=32, readonly=False),
         'devices': fields.many2many("updis.device", "res_users_device_rel", "res_users_id", "device_id",
                                     "User Device Relative"),
+        'big_ant_login_name': fields.char('Big Ant Login Name', size=128),
     }
 
     SELF_WRITEABLE_FIELDS = ['password', 'signature', 'action_id', 'company_id', 'email', 'name', 'image',
@@ -83,3 +84,13 @@ class res_users(osv.osv):
             return super(res_users, self).create(cr, 1, vals, context)
         else:
             return super(res_users, self).create(cr, uid, vals, context)
+
+
+    def on_change_login(self, cr, uid, ids, login, big_ant_name, context=None):
+        ret = {'value': {}}
+        if not big_ant_name:
+            vals = {
+                'big_ant_login_name': login,
+            }
+            ret['value'].update(vals)
+        return ret
