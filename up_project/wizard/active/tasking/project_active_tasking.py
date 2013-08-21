@@ -525,6 +525,16 @@ class project_active_tasking(osv.osv):
 
         return True
 
+    def write(self, cr, uid, ids, vals, context=None):
+        if 'attachments' in vals:
+            val = ((6, 0, [attach[1] for attach in vals['attachments']],),)
+            vals['attachments'] = val
+        if 'else_attachments' in vals:
+            val = ((6, 0, [attach[1] for attach in vals['else_attachments']],),)
+            vals['else_attachments'] = val
+
+        return super(project_active_tasking, self).write(cr, uid, ids, vals, context=context)
+
 
 class project_project_inherit(osv.osv):
     _inherit = 'project.project'
