@@ -113,7 +113,8 @@
                         <field name="pingshenfangshi" required="1" colspan="3"/>
                         <field name="yinfacuoshi" required="1" colspan="3"/>
                         <field name="renwuyaoqiu" required="1" colspan="6"/>
-                        <field name="chenjiebumen_id" required="1" colspan="3"/>
+                        <field name="chenjiebumen_id" required="1" colspan="3" class="oe_no_button"
+                                                   options='{"no_open": True}' domain="[('deleted','=',False)]"/>
                     </group>
                     <footer>
                         <button name="operator_review_accept" class="oe_highlight" string="提交总师室审批"
@@ -304,7 +305,7 @@
                                              attrs="{'invisible':[('state','not in',['open','suozhangshenpi','zhidingbumen'])]}">
                                             建议设计部门:
                                             <field name="jianyishejibumen_id" class="oe_no_button"
-                                                   options='{"no_open": True}'
+                                                   options='{"no_open": True}' domain="[('deleted','=',False)]"
                                                    attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
                                         </div>
                                         <div class="inline-item"
