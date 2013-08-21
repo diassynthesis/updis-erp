@@ -230,9 +230,9 @@
                         </page>
                         <page name="project_comment" string="Project Comments">
                             <group>
-                                <field name="questions"/>
-                                <field name="primary_work"/>
-                                <field name="next_work_plan"/>
+                                <field name="questions" attrs="{'readonly':[('is_user_is_project_manager','=',False)]}"/>
+                                <field name="primary_work" attrs="{'readonly':[('is_user_is_project_manager','=',False)]}" />
+                                <field name="next_work_plan" attrs="{'readonly':[('is_user_is_project_manager','=',False)]}" />
                             </group>
                         </page>
                         <page name="attachments" string="Attachments">

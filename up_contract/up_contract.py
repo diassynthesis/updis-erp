@@ -335,32 +335,24 @@ class updis_project_project(osv.osv):
     def _is_user_contract_visible(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
+            result[obj.id] = False
             if uid in [u.id for u in obj.user_id]:
                 result[obj.id] = True
-                break
-            else:
-                result[obj.id] = False
-            if self.user_has_groups(cr, uid,
+            elif self.user_has_groups(cr, uid,
                                     'up_contract.group_up_contract_user,up_contract.group_up_contract_manager,up_contract.group_up_contract_admin',
                                     context=context):
                 result[obj.id] = True
-                break
-            else:
-                result[obj.id] = False
 
-            hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
-            if hr_id:
-                hr_record = self.pool.get('hr.employee').browse(cr, uid, hr_id[0], context=context)
-                user_department_id = hr_record.department_id.id if hr_record.department_id else "sdfsdf"
-                project_department_id = obj.chenjiebumen_id.id if obj.chenjiebumen_id else None
-                if user_department_id == project_department_id and self.user_has_groups(cr, uid,
-                                                                                        'up_project.group_up_project_suozhang',
-                                                                                        context=context):
-                    result[obj.id] = True
-                else:
-                    result[obj.id] = False
             else:
-                result[obj.id] = False
+                hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
+                if hr_id:
+                    hr_record = self.pool.get('hr.employee').browse(cr, uid, hr_id[0], context=context)
+                    user_department_id = hr_record.department_id.id if hr_record.department_id else "sdfsdf"
+                    project_department_id = obj.chenjiebumen_id.id if obj.chenjiebumen_id else None
+                    if user_department_id == project_department_id and self.user_has_groups(cr, uid,
+                                                                                            'up_project.group_up_project_suozhang',
+                                                                                            context=context):
+                        result[obj.id] = True
         return result
 
     _columns = {
