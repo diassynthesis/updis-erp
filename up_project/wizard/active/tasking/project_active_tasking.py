@@ -21,6 +21,7 @@ class project_active_tasking_reject_log(osv.osv):
                                       ("end", u'表单归档'),
                                   ], "Reject State"),
         "comment": fields.text(string="Reject Reason"),
+        'create_date': fields.datetime('Created on', select=True),
     }
 
 

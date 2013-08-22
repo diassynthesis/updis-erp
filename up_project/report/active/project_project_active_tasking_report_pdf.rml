@@ -161,7 +161,7 @@
                   <blockTable colWidths="80">
                       <tr>
                           <td>
-                              <para style="Value">[[o.director_reviewer_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[o.director_reviewer_id.sign_image]]
+                              <para style="Value">[[o.director_reviewer_id.sign_image and setTag('para','image',{'width':'54','height':'32','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[o.director_reviewer_id.sign_image]]
                               </para>
                           </td>
                       </tr>
@@ -203,7 +203,7 @@
 					<td><para style="Value">[[o.chenjiebumen_id.name]]</para></td>
 					<td><para style="Label">评审主持人：</para></td>
 					<td>
-						<para style="Value">[[o.jinyinshi_submitter_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[o.jinyinshi_submitter_id.sign_image]]
+						<para style="Value">[[o.jinyinshi_submitter_id.sign_image and setTag('para','image',{'width':'54','height':'32','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[o.jinyinshi_submitter_id.sign_image]]
                        </para>
 					</td>
                     <td><para style="Value"> [[date_format(o.jinyinshi_submitter_datetime)]]</para></td>
@@ -246,7 +246,7 @@
 			<td>
                 <blockTable colWidths="150">
                     <tr>
-                        <td><para style="Label">[[o.zongshishi_submitter_id.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[o.zongshishi_submitter_id.sign_image]]</para></td>
+                        <td><para style="Label">[[o.zongshishi_submitter_id.sign_image and setTag('para','image',{'width':'54','height':'32','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[o.zongshishi_submitter_id.sign_image]]</para></td>
                     </tr>
                     <tr>
                         <td><para style="Value">[[date_format(o.zongshishi_submit_datetime)]]</para> </td>
@@ -263,7 +263,7 @@
 			<td>
                 <blockTable colWidths="150">
                     <tr>
-                        <td><para style="Label">[[o.director_approve.sign_image and setTag('para','image',{'width':'48','height':'28','preserveAspectRatio':'1'}) or removeParentNode('para')]][[o.director_approve.sign_image]]</para></td>
+                        <td><para style="Label">[[o.director_approve.sign_image and setTag('para','image',{'width':'54','height':'32','preserveAspectRatio':'1'}) or removeParentNode('para')]][[o.director_approve.sign_image]]</para></td>
                     </tr>
                     <tr>
                         <td><para style="Value">[[date_format(o.director_approve_time)]]</para></td>
