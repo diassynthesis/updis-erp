@@ -93,8 +93,11 @@
                     <field name="message_unread" invisible="1"/>
                     <field name="date" invisible="1"/>
                     <field name="xiangmubianhao"/>
-                    <field name="project_type"/>
+                    <field name="categories_id"/>
+                    <field name="chenjiebumen_id"/>
                     <field name="name" string="Project Name"/>
+                    <field name="guanlijibie"/>
+                    <field name="zhuguanzongshi_id"/>
                     <field name="user_id" string="Project Manager"/>
                     <field name="partner_id" string="Contact"/>
                     <field name="state"/>
@@ -205,6 +208,7 @@
                                 <field name="guimo" readonly="1"/>
                                 <field name="waibao" readonly="1"/>
                                 <field name="shizhenpeitao" readonly="1"/>
+                                <field name="begin_date" readonly="1"/>
                             </group>
                         </group>
                     </sheet>
