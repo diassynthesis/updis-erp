@@ -305,7 +305,7 @@ class updis_project(osv.osv):
         'primary_work': fields.text(string="Primary Work"),
         'city_type': fields.selection(
             [('CC200511210001', u'直辖市'), ('CC200511210002', u'省会城市'), ('CC200511210003', u'地级市'),
-             ('CC200511210004', u'县级市'), ('CC200511210005', u'其它')], string="City Type"),
+             ('CC200511210004', u'县级市'), ('CC200511210005', u'其它'), ('plan_city', u'计划单列市')], string="City Type"),
         "zhuguanzongshi_id": fields.many2many("res.users", "project_zhuangguan_res_user", "project_id", "res_user_id",
                                               string=u"主管总师",
                                               domain=['|', ("active", "=", True), ("active", "=", False)]),
