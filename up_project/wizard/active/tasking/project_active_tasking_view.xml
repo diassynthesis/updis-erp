@@ -171,7 +171,7 @@
                                    attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
                                    colspan="4"/>
                             <field name="partner_id" domain="[('is_company','=',True)]"
-                                   on_change="onchange_partner_id(partner_id)"
+                                   on_change="onchange_partner_id(partner_id)" string="甲方"
                                    attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
                                     />
                             <field name="partner_type"

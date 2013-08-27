@@ -38,7 +38,7 @@
                         <group>
                             <group string="Partner Info">
                                 <field name="partner_type"/>
-                                <field name="partner_id" domain="[('is_company','=',True)]"/>
+                                <field name="partner_id" string="甲方" domain="[('is_company','=',True)]"/>
                                 <field name="customer_contact" domain="[('is_company','=',False)]"/>
                             </group>
                             <group string="Project Type">
@@ -50,7 +50,7 @@
                             <group string="In charge Relate">
                                 <field name="zhuguanzongshi_id" domain="[('active','=',True)]" widget="many2many_tags"/>
                                 <field name="chenjiebumen_id"/>
-                                <field name="user_id" widget="many2many_tags"/>
+                                <field name="user_id" widget="many2many_tags" string="项目负责人"/>
                                 <field name="guanlijibie"/>
                             </group>
                             <group string="Other Info">
@@ -186,7 +186,7 @@
                         <group attrs="{'invisible':[('is_project_created','=',False)]}">
                             <group string="Partner Info">
                                 <field name="partner_type" readonly="1"/>
-                                <field name="partner_id" readonly="1"/>
+                                <field name="partner_id" string="甲方" readonly="1"/>
                                 <field name="customer_contact" readonly="1"/>
                             </group>
                             <group string="Project Type">
