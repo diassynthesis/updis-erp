@@ -216,6 +216,10 @@
                 <search string="Project Contract">
                     <field name="name"/>
                     <field name="number"/>
+                    <filter string="Common Contract(s)" domain="[('type','=','common')]"
+                            help="Show All Common Contract(s)"/>
+                    <filter string="Thrid Party Contract(s)" domain="[('type','=','third_party')]"
+                            help="Show All Thrid Party Contract(s)"/>
                     <group expand="1" string="Group by...">
                         <filter name="by-project-name" string="Project Name" domain="[]"
                                 context="{'group_by':'project_id'}"/>
