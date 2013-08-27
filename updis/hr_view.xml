@@ -78,6 +78,9 @@
                     <group string="Vacation">
                         <field name="year_vac_days"/>
                         <field name="have_vac_days"/>
+                        <button name="clear_have_vac_days"
+                                string="重置所有已休假记录" confirm="你确定重置所有休假天数么？重置休假天数不可回退！"
+                                type="object" groups="base.group_system"/>
                     </group>
                     <newline/>
                     <group col="2" colspan="4" string="Other Info">

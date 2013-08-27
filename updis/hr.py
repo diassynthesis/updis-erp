@@ -87,5 +87,9 @@ class hr_employee_updis(osv.osv):
                                   'Trains'),
     }
 
+    def clear_have_vac_days(self, cr, uid, ids, context=None):
+        cr.execute("update hr_employee set have_vac_days=0")
+        return True
+
     def onchange_address_id(self, cr, uid, ids, address, context=None):
         return {'value': {}}
