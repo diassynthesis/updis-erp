@@ -10,7 +10,7 @@ class up_contract_analysis(osv.osv):
     _description = "Project Contract Analysis"
     _auto = False
     _rec_name = "contract_name"
-    _order = "contract_sign_date desc"
+    _order = "contract_id desc"
     _columns = {
         'contract_id': fields.many2one('project.contract.contract', 'Contract', readonly=1),
         'contract_name': fields.related('contract_id', 'name', type="char",
