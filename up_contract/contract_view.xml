@@ -76,7 +76,7 @@
                         <newline/>
                         <field name="contract_id" invisible="1"/>
                         <field name="price"/>
-                        <field name="income_ids" domain="[('contract_id','=',contract_id)]"/>
+                        <field name="income_ids" domain="[('contract_id','=',contract_id)]" context="{'active_id':contract_id}"/>
                         <field name="comment"/>
                     </group>
                 </form>
@@ -115,7 +115,7 @@
                         <newline/>
                         <field name="contract_id" invisible="1"/>
                         <field name="price"/>
-                        <field name="invoice_ids" domain="[('contract_id','=',contract_id)]"/>
+                        <field name="invoice_ids" domain="[('contract_id','=',contract_id)]" context="{'active_id':contract_id}"/>
                         <field name="comment"/>
                     </group>
                 </form>
