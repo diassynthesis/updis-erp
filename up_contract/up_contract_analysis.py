@@ -9,9 +9,12 @@ class up_contract_analysis(osv.osv):
     _name = "project.contract.contract.analysis"
     _description = "Project Contract Analysis"
     _auto = False
-
+    _rec_name = "contract_name"
+    _order = "contract_sign_date desc"
     _columns = {
         'contract_id': fields.many2one('project.contract.contract', 'Contract', readonly=1),
+        'contract_name': fields.related('contract_id', 'name', type="char",
+                                        string="Contract Name", readonly=1),
         'department_id': fields.related('contract_id', 'design_department', relation='hr.department', type="many2one",
                                         string="Design Department", readonly=1),
         'contract_num': fields.related('contract_id', 'number', type="char",
@@ -21,14 +24,15 @@ class up_contract_analysis(osv.osv):
                                                            ('WT200508180003', u"市外"),
                                                            ('WT200509020001', u"其他")]
             , readonly=1, string="Entrust Type"),
-        'contract_sign_date': fields.related('contract_id', 'sign_date', type="date", readonly=1, string="Sign Date"),
+        'contract_sign_date': fields.date(string="Sign Date"),
 
         'project_id': fields.related('contract_id', 'project_id', type="many2one", relation='project.project',
                                      string="Project", readonly=1),
         'project_manager': fields.related('project_id', 'user_id', type="many2many", relation='res.users',
                                           string="Project Manager", readonly=1),
-        'project_type': fields.related('project_id', 'project_type', type="many2one", relation='project.type',
-                                       string="Project Type", readonly=1),
+        'project_category': fields.related('project_id', 'categories_id', type="many2one",
+                                           relation='project.upcategory',
+                                           string="Project Category", readonly=1),
         'project_state': fields.related('project_id', 'state', type="selection",
                                         selection=[("project_active", u"Project Active"),
                                                    ("project_cancelled", u"Project Cancelled"),
@@ -45,17 +49,18 @@ class up_contract_analysis(osv.osv):
 
     def init(self, cr):
         openerp.tools.sql.drop_view_if_exists(cr, 'project_contract_contract_analysis')
-        cr.execute(" CREATE VIEW project_contract_contract_analysis AS ( " \
-                   " SELECT " \
-                   " c.id as id," \
-                   " c.id as contract_id," \
-                   " COALESCE(c.price, 0.0) as total_price," \
-                   " COALESCE(SUM(i.price), 0.0) as paid_price," \
-                   " COALESCE(c.price, 0.0) - COALESCE(SUM(i.price), 0.0) as remain_price"
-                   " FROM " \
-                   " project_contract_contract as c LEFT JOIN project_contract_income as i" \
-                   " on c.id = i.contract_id" \
-                   " GROUP BY c.id" \
+        cr.execute(" CREATE VIEW project_contract_contract_analysis AS ( "
+                   " SELECT "
+                   " c.id as id,"
+                   " c.id as contract_id,"
+                   " COALESCE(c.price, 0.0) as total_price,"
+                   " COALESCE(SUM(i.price), 0.0) as paid_price,"
+                   " COALESCE(c.price, 0.0) - COALESCE(SUM(i.price), 0.0) as remain_price,"
+                   " to_char(c.sign_date, 'YYYY-MM-DD') AS contract_sign_date"
+                   " FROM "
+                   " project_contract_contract as c LEFT JOIN project_contract_income as i"
+                   " on c.id = i.contract_id"
+                   " GROUP BY c.id"
                    " )")
 
     def all_contract_analysis_action(self, cr, uid, context=None):

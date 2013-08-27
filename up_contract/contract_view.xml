@@ -422,6 +422,16 @@
         </record>
 
 
+        <record id="project_contract_income_analysis_tree_search" model="ir.ui.view">
+            <field name="name">project.contract.income.analysis.search</field>
+            <field name="model">project.contract.contract.analysis</field>
+            <field name="arch" type="xml">
+                <search string="Project Contract">
+                    <field name="contract_name"/>
+                    <field name="contract_num"/>
+                </search>
+            </field>
+        </record>
         <record id="project_contract_income_analysis_tree_menu" model="ir.ui.view">
             <field name="name">project.contract.income.analysis.tree.menu</field>
             <field name="model">project.contract.contract.analysis</field>
@@ -430,7 +440,7 @@
                     <field name="contract_num"/>
                     <field name="contract_id"/>
                     <field name="department_id"/>
-                    <field name="project_type"/>
+                    <field name="project_category"/>
                     <field name="project_manager"/>
                     <field name="total_price"/>
                     <field name="paid_price"/>
@@ -462,7 +472,7 @@
                             <field name="contract_num"/>
                             <newline/>
                             <field name="department_id"/>
-                            <field name="project_type"/>
+                            <field name="project_category"/>
                             <field name="project_manager" widget="many2many_tags"/>
                             <field name="total_price"/>
                             <field name="paid_price"/>
