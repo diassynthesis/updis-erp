@@ -47,6 +47,18 @@ class updis_contract_invoice(osv.osv):
         'is_import': False,
     }
 
+    def default_get(self, cr, uid, fields, context=None):
+        res = super(updis_contract_invoice, self).default_get(cr, uid, fields, context=context)
+        if context is None:
+            context = {}
+        record_id = context and context.get('active_id', False) or False
+        if not record_id:
+            return res
+
+        if 'contract_id' in fields:
+            res['contract_id'] = record_id
+        return res
+
     def all_contract_invoice_action(self, cr, uid, context=None):
         domain = []
         if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_partial_user', context=context):
@@ -105,6 +117,18 @@ class updis_contract_income(osv.osv):
         'obtain_date': lambda *a: str(datetime.date.today()),
         'is_import': False,
     }
+
+    def default_get(self, cr, uid, fields, context=None):
+        res = super(updis_contract_income, self).default_get(cr, uid, fields, context=context)
+        if context is None:
+            context = {}
+        record_id = context and context.get('active_id', False) or False
+        if not record_id:
+            return res
+
+        if 'contract_id' in fields:
+            res['contract_id'] = record_id
+        return res
 
     def all_contract_income_action(self, cr, uid, context=None):
         domain = []
@@ -226,6 +250,18 @@ class updis_contract_contract(osv.osv):
         'change': u'正常',
 
     }
+
+    def default_get(self, cr, uid, fields, context=None):
+        res = super(updis_contract_contract, self).default_get(cr, uid, fields, context=context)
+        if context is None:
+            context = {}
+        record_id = context and context.get('active_id', False) or False
+        if not record_id:
+            return res
+
+        if 'project_id' in fields:
+            res['project_id'] = record_id
+        return res
 
     def _get_project_category_on_change(self, cr, uid, ids, project_id, context=None):
         project = self.pool.get('project.project').browse(cr, uid, project_id, context)

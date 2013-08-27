@@ -4,6 +4,7 @@
         <record id="project_contract_invoice_tree" model="ir.ui.view">
             <field name="name">project.contract.invoice.tree</field>
             <field name="model">project.contract.invoice</field>
+            <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree string="Project Contract Invoice">
                     <field name="obtain_date"/>
@@ -25,6 +26,7 @@
         <record id="project_contract_income_tree" model="ir.ui.view">
             <field name="name">project.contract.income.tree</field>
             <field name="model">project.contract.income</field>
+            <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree string="Project Contract Income">
                     <field name="obtain_date"/>
@@ -45,6 +47,7 @@
         <record id="project_contract_expenses_tree" model="ir.ui.view">
             <field name="name">project.contract.expenses.tree</field>
             <field name="model">project.contract.expenses</field>
+            <field name="priority">20</field>
             <field name="arch" type="xml">
                 <tree string="Project Contract Third Party Expenses">
                     <field name="price"/>
@@ -191,8 +194,9 @@
                                 </field>
                             </group>
                             <group string="Invoice Info">
-                                <field name="income_ids"/>
-                                <field name="invoice_ids"/>
+                                <field name="id" invisible="1"/>
+                                <field name="income_ids" context="{'active_id':id}"/>
+                                <field name="invoice_ids" context="{'active_id':id}"/>
                             </group>
                         </group>
                         <group col="1" attrs="{'invisible':[('type','!=','third_party')]}">
@@ -251,71 +255,14 @@
                 <xpath expr="//page[@name='project_log']" position="after">
                     <page string="Project Contract" attrs="{'invisible':[('can_see_contract','=',False)]}">
                         <field name="can_see_contract" invisible="1"/>
-                        <field name="contract_ids">
+                        <field name="id" invisible="1"/>
+                        <field name="contract_ids" context="{'active_id':id}">
                             <tree>
                                 <field name="number"/>
                                 <field name="name"/>
                                 <field name="type"/>
                                 <field name="price"/>
                             </tree>
-                            <form string="Project Contract" version="7.0">
-                                <sheet>
-                                    <div class="oe_title">
-                                        <h1>
-                                            <field name="name" placeholder="Please Input Contract Name"/>
-                                        </h1>
-                                    </div>
-                                    <div class="oe_right inline-item">
-                                        <span class="oe_inline">合同编号:</span>
-                                        <field name="number" class="oe_inline" required="1"/>
-                                    </div>
-                                    <group>
-                                        <group string="Contract Info">
-                                            <field name="type"/>
-                                            <field name="price"/>
-                                            <field name="change"/>
-                                            <field name="sign_date"/>
-                                            <group attrs="{'invisible':[('type','!=','common')]}" colspan="2">
-                                                <field name="customer_type"/>
-                                                <field name="entrust_type"/>
-                                                <field name="city_level_number"/>
-                                            </group>
-                                            <group attrs="{'invisible':[('type','!=','third_party')]}" colspan="2">
-                                                <field name="third_party_sign_date"/>
-                                            </group>
-                                            <field name="comment"/>
-                                        </group>
-                                    </group>
-
-                                    <group col="1" attrs="{'invisible':[('type','!=','common')]}">
-                                        <group string="Customer Info" col="4">
-                                            <field name="customer" domain="[('is_company','=',True)]">
-                                                <tree>
-                                                    <field name="name"/>
-                                                </tree>
-                                            </field>
-                                            <field name="customer_contact">
-                                                <tree>
-                                                    <field name="name"/>
-                                                </tree>
-                                            </field>
-                                        </group>
-                                        <group string="Invoice Info">
-                                            <field name="income_ids"/>
-                                            <field name="invoice_ids"/>
-                                        </group>
-                                    </group>
-                                    <group col="1" attrs="{'invisible':[('type','!=','third_party')]}">
-                                        <group string="Third Party Info">
-                                            <field name="third_party_company" domain="[('is_company','=',True)]"/>
-                                            <field name="third_party_company_contact"/>
-                                        </group>
-                                        <group string="Third Party Expense">
-                                            <field name="expenses_ids"/>
-                                        </group>
-                                    </group>
-                                </sheet>
-                            </form>
                         </field>
                     </page>
                 </xpath>
@@ -325,6 +272,7 @@
         <record id="project_contract_income_tree_menu" model="ir.ui.view">
             <field name="name">project.contract.income.tree.menu</field>
             <field name="model">project.contract.income</field>
+            <field name="priority">25</field>
             <field name="arch" type="xml">
                 <tree string="Project Contract Income">
                     <field name="contract_id"/>
@@ -377,6 +325,7 @@
         <record id="project_contract_invoice_tree_menu" model="ir.ui.view">
             <field name="name">project.contract.invoice.tree.menu</field>
             <field name="model">project.contract.invoice</field>
+            <field name="priority">25</field>
             <field name="arch" type="xml">
                 <tree string="Project Contract Invoice">
                     <field name="contract_id"/>
