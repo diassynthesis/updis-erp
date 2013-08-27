@@ -171,7 +171,7 @@ class updis_contract_income(osv.osv):
 
 class updis_contract_contract(osv.osv):
     _name = 'project.contract.contract'
-    _order = 'create_date desc'
+    _order = 'id desc'
     _log_access = True
     _rec_name = "name"
     _columns = {
