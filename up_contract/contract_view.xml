@@ -139,11 +139,13 @@
                             <group string="Contract Info">
                                 <field name="type"/>
                                 <field name="price"/>
-                                <field name="customer_type"/>
-                                <field name="entrust_type"/>
                                 <field name="change"/>
                                 <field name="sign_date"/>
-                                <field name="city_level_number"/>
+                                <group attrs="{'invisible':[('type','!=','common')]}" colspan="2">
+                                    <field name="customer_type"/>
+                                    <field name="entrust_type"/>
+                                    <field name="city_level_number"/>
+                                </group>
                                 <group attrs="{'invisible':[('type','!=','third_party')]}" colspan="2">
                                     <field name="third_party_sign_date"/>
                                 </group>
@@ -267,11 +269,13 @@
                                         <group string="Contract Info">
                                             <field name="type"/>
                                             <field name="price"/>
-                                            <field name="customer_type"/>
-                                            <field name="entrust_type"/>
                                             <field name="change"/>
                                             <field name="sign_date"/>
-                                            <field name="city_level_number"/>
+                                            <group attrs="{'invisible':[('type','!=','common')]}" colspan="2">
+                                                <field name="customer_type"/>
+                                                <field name="entrust_type"/>
+                                                <field name="city_level_number"/>
+                                            </group>
                                             <group attrs="{'invisible':[('type','!=','third_party')]}" colspan="2">
                                                 <field name="third_party_sign_date"/>
                                             </group>
