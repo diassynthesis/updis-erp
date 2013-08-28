@@ -42,9 +42,9 @@ class up_contract_analysis(osv.osv):
                                                    ("project_filed", u"Project Filed"),
                                         ],
                                         string="Project State", readonly=1),
-        'total_price': fields.float(string='Total Price', digits=(16, 4), readonly=1),
-        'paid_price': fields.float(string='Paid Price', digits=(16, 4), readonly=1),
-        'remain_price': fields.float(string='Remain Price', digits=(16, 4), readonly=1),
+        'total_price': fields.float(string='Total Price', digits=(16, 6), readonly=1),
+        'paid_price': fields.float(string='Paid Price', digits=(16, 6), readonly=1),
+        'remain_price': fields.float(string='Remain Price', digits=(16, 6), readonly=1),
     }
 
     def init(self, cr):

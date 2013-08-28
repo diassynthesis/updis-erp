@@ -12,7 +12,7 @@ class updis_contract_expenses(osv.osv):
     _order = 'obtain_date'
     _columns = {
         'obtain_date': fields.date('Obtain Date', required=True),
-        'price': fields.float(string='Obtain Price', digits=(16, 4)),
+        'price': fields.float(string='Obtain Price', digits=(16, 6)),
         'comment': fields.text(string="Comment"),
         'handler': fields.many2one('hr.employee', string='Handler'),
         'contract_id': fields.many2one('project.contract.contract', string="Contract"),
@@ -31,7 +31,7 @@ class updis_contract_invoice(osv.osv):
     _columns = {
         'number': fields.char('Invoice No.', size=64, ),
         'obtain_date': fields.date('Invoice Create Date', required=True),
-        'price': fields.float(string='Price', digits=(16, 4)),
+        'price': fields.float(string='Price', digits=(16, 6)),
         'comment': fields.text(string="Comment"),
         'handler': fields.many2one('hr.employee', string='Handler'),
         'contract_id': fields.many2one('project.contract.contract', string="Contract"),
@@ -104,7 +104,7 @@ class updis_contract_income(osv.osv):
     _order = 'obtain_date'
     _columns = {
         'obtain_date': fields.date('Obtain Date', required=True),
-        'price': fields.float(string='Obtain Price', digits=(16, 4)),
+        'price': fields.float(string='Obtain Price', digits=(16, 6)),
         'comment': fields.text(string="Comment"),
         'handler': fields.many2one('hr.employee', string='Handler'),
         'contract_id': fields.many2one('project.contract.contract', string="Contract"),
@@ -199,7 +199,7 @@ class updis_contract_contract(osv.osv):
         'third_party_company_contact': fields.many2many('res.partner', 'contract_contact_third_party_company_rel',
                                                         'contract_contact_id',
                                                         'partner_id', string="Third Party Company Contacts"),
-        'price': fields.float(string='Contract Price', digits=(16, 4)),
+        'price': fields.float(string='Contract Price', digits=(16, 6)),
         'number': fields.char(string='Contract No.', size=128),
         'city_level_number': fields.char(string='City Contract No.', size=128),
         'city_comment': fields.char(size=128, string="City Comment"),
