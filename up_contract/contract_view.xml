@@ -20,6 +20,7 @@
                     </field>
                     <field name="is_clear"/>
                     <field name="clear_date"/>
+                    <field name="comment"/>
                 </tree>
             </field>
         </record>
@@ -40,6 +41,7 @@
                             <field name="price"/>
                         </tree>
                     </field>
+                    <field name="comment"/>
 
                 </tree>
             </field>
@@ -54,6 +56,7 @@
                     <field name="handler"/>
                     <field name="contract_id" invisible="1"/>
                     <field name="obtain_date"/>
+                    <field name="comment"/>
                 </tree>
             </field>
         </record>
