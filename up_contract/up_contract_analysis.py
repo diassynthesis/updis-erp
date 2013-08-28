@@ -60,6 +60,7 @@ class up_contract_analysis(osv.osv):
                    " FROM "
                    " project_contract_contract as c LEFT JOIN project_contract_income as i"
                    " on c.id = i.contract_id"
+                   " WHERE c.type = 'common' "
                    " GROUP BY c.id"
                    " )")
 
