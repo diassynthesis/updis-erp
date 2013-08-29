@@ -17,9 +17,9 @@
         <record id="acitivity_project_end" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project"/>
             <field name="name">Project End</field>
-            <field name="kind">dummy</field>
+            <field name="kind">function</field>
             <field name="flow_stop">True</field>
-            <field name="action" eval="False"/>
+            <field name="action">write({'state':'project_finish'})</field>
         </record>
 
 
@@ -40,7 +40,7 @@
         </record>
         <record id="acitivity_project_filed" model="workflow.activity">
             <field name="wkf_id" ref="wkf_up_project"/>
-            <field name="name">Project Filed</field>
+            <field name="name">Project Filing</field>
             <field name="kind">subflow</field>
             <field name="subflow_id" ref="wkf_up_project_filed"/>
             <field name="action">act_filed_workflow()</field>

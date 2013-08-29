@@ -1786,5 +1786,10 @@ msgstr "项目停滞"
 
 #. module: up_project
 #: selection:project.project,state:0
+msgid "Project Filing"
+msgstr "项目归档中"
+
+#. module: up_project
+#: selection:project.project,state:0
 msgid "Project Filed"
-msgstr "项目归档"
+msgstr "项目已归档"
