@@ -239,6 +239,9 @@ class updis_contract_contract(osv.osv):
                                               string='Project Tender Type'),
         'project_is_city': fields.related('project_id', 'shizhenpeitao', type='boolean', string="Project Is City"),
         'project_begin_date': fields.related('project_id', 'begin_date', type='date', string="Project Start Date"),
+        'attachments': fields.many2many("ir.attachment", "contract_attatchment_many", "contract_id",
+                                        "attachment_id",
+                                        string="Related files"),
 
 
     }
@@ -336,6 +339,9 @@ class updis_contract_contract(osv.osv):
         return mid
 
     def write(self, cr, uid, ids, vals, context=None):
+        if 'attachments' in vals:
+            val = ((6, 0, [attach[1] for attach in vals['attachments']],),)
+            vals['attachments'] = val
         if len(ids) == 1:
             self._update_contract_id(cr, uid, vals, ids[0], context)
         result = super(updis_contract_contract, self).write(cr, uid, ids, vals, context=context)

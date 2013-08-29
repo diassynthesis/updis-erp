@@ -156,7 +156,7 @@
                                     <field name="third_party_sign_date"/>
                                 </group>
                                 <field name="comment"/>
-
+                                <field name="attachments" widget="many2many_binary" groups="up_contract.group_up_contract_file_user"/>
                             </group>
                             <group string="Project Info">
                                 <group>

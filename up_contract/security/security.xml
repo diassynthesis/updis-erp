@@ -1,12 +1,16 @@
 <?xml version="1.0"?>
 <openerp>
-    <data noupdate="0">
+    <data>
          <record id="group_up_contract_partial_user" model="res.groups">
             <field name="name">普通用户(可查看本所合同信息)</field>
             <field name="category_id" ref="base.module_category_up_contract_management"/>
         </record>
         <record id="group_up_contract_user" model="res.groups">
             <field name="name">特殊用户(可查看全部合同信息)</field>
+            <field name="category_id" ref="base.module_category_up_contract_management"/>
+        </record>
+        <record id="group_up_contract_file_user" model="res.groups">
+            <field name="name">可以查看合同附件</field>
             <field name="category_id" ref="base.module_category_up_contract_management"/>
         </record>
         <record id="group_up_contract_manager" model="res.groups">
@@ -17,7 +21,7 @@
         <record id="group_up_contract_admin" model="res.groups">
             <field name="name">管理员</field>
             <field name="category_id" ref="base.module_category_up_contract_management"/>
-            <field name="implied_ids" eval="[(4, ref('up_contract.group_up_contract_manager'))]"/>
+            <field name="implied_ids" eval="[(4, ref('up_contract.group_up_contract_manager')),(4, ref('up_contract.group_up_contract_file_user'))]"/>
         </record>
 
     </data>
