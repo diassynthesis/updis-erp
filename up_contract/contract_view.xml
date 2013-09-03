@@ -79,7 +79,8 @@
                         <newline/>
                         <field name="contract_id" invisible="1"/>
                         <field name="price"/>
-                        <field name="income_ids" domain="[('contract_id','=',contract_id)]" context="{'active_id':contract_id}"/>
+                        <field name="income_ids" domain="[('contract_id','=',contract_id)]"
+                               context="{'active_id':contract_id}"/>
                         <field name="comment"/>
                     </group>
                 </form>
@@ -118,7 +119,8 @@
                         <newline/>
                         <field name="contract_id" invisible="1"/>
                         <field name="price"/>
-                        <field name="invoice_ids" domain="[('contract_id','=',contract_id)]" context="{'active_id':contract_id}"/>
+                        <field name="invoice_ids" domain="[('contract_id','=',contract_id)]"
+                               context="{'active_id':contract_id}"/>
                         <field name="comment"/>
                     </group>
                 </form>
@@ -153,10 +155,10 @@
                                     <field name="city_level_number"/>
                                 </group>
                                 <group attrs="{'invisible':[('type','!=','third_party')]}" colspan="2">
-                                    <field name="third_party_sign_date"/>
                                 </group>
                                 <field name="comment"/>
-                                <field name="attachments" widget="many2many_binary" groups="up_contract.group_up_contract_file_user"/>
+                                <field name="attachments" widget="many2many_binary"
+                                       groups="up_contract.group_up_contract_file_user"/>
                             </group>
                             <group string="Project Info">
                                 <group>
@@ -166,18 +168,21 @@
                                     <field name="project_category" readonly="1"/>
                                     <field name="design_department"/>
                                     <field name="project_scale" readonly="1"/>
-                                    <field name="project_level" readonly="1"/>
-                                    <field name="project_is_city" readonly="1"/>
-                                    <field name="city_comment" attrs="{'invisible':[('project_is_city','=',False)]}"/>
-                                    <field name="project_begin_date"/>
-                                    <field name="project_is_tender" readonly="1"/>
-                                    <field name="project_tender_type" readonly="1"
+                                    <group attrs="{'invisible':[('type','!=','common')]}" colspan="2">
+                                        <field name="project_level" readonly="1"/>
+                                        <field name="project_is_tender" readonly="1"/>
+                                        <field name="project_tender_type" readonly="1"
                                            attrs="{'invisible':[('project_is_tender','=',False)]}"/>
-                                    <group colspan="2" attrs="{'invisible':[('project_is_tender','=',False)]}">
-                                        <field name="import_tender_type" readonly="1"/>
-                                        <field name="import_tender_result" readonly="1"/>
-                                        <field name="tender_phone" readonly="1"/>
-                                        <field name="import_contin" readonly="1"/>
+                                        <group colspan="2" attrs="{'invisible':[('project_is_tender','=',False)]}">
+                                            <field name="import_tender_type" readonly="1"/>
+                                            <field name="import_tender_result" readonly="1"/>
+                                            <field name="tender_phone" readonly="1"/>
+                                            <field name="import_contin" readonly="1"/>
+                                        </group>
+                                        <field name="project_begin_date"/>
+                                        <field name="project_is_city" readonly="1"/>
+                                        <field name="city_comment"
+                                               attrs="{'invisible':[('project_is_city','=',False)]}"/>
                                     </group>
                                 </group>
                             </group>
@@ -223,9 +228,10 @@
                 <search string="Project Contract">
                     <field name="name"/>
                     <field name="number"/>
-                    <filter name="is-common-contract"  string="Common Contract(s)" domain="[('type','=','common')]"
+                    <filter name="is-common-contract" string="Common Contract(s)" domain="[('type','=','common')]"
                             help="Show All Common Contract(s)"/>
-                    <filter name="is-third-party-contract" string="Thrid Party Contract(s)" domain="[('type','=','third_party')]"
+                    <filter name="is-third-party-contract" string="Thrid Party Contract(s)"
+                            domain="[('type','=','third_party')]"
                             help="Show All Thrid Party Contract(s)"/>
                 </search>
             </field>
