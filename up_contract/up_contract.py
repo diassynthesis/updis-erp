@@ -385,6 +385,7 @@ class updis_contract_contract(osv.osv):
         if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_user', context=context):
             domain = []
         context['search_default_is-third-party-contract'] = 1
+        context['default_type'] = 'third_party'
         return {
             'name': u'所有合同',
             'type': 'ir.actions.act_window',
