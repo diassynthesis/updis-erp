@@ -35,57 +35,45 @@
             <field name="model">project.project.active.tasking.engineer</field>
             <field name="arch" type="xml">
                 <form version="7.0" string="engineer Form">
-                    <div>
-                        <group invisible="1">
+                    <group invisible="1">
 
-                            <field name="category_name"/>
-                        </group>
-                        <table class="oe_form_group activetable">
-                            <tbody>
-                                <tr>
-                                    <td rowspan="3">
-                                        <div class="inline-item">类别:
-                                            <field name="project_type" required="1"
-                                                   on_change="onchange_type_id(project_type)"
-                                                   options='{"no_open": True}'/>
-                                            <field name="categories_id" class="oe_no_button"
-                                                   options='{"no_open": True}' required="1"
-                                                   domain="[('project_type','=',project_type)]"
-                                                   on_change="onchange_category_id(categories_id)"
-                                                    />
-                                            <field name="categories_else"
-                                                   attrs="{'invisible':[('category_name','!=',u'其它')]}"/>
-                                        </div>
-                                        <div class="inline-item">
-                                            是否投标:
-                                            <field name="shifoutoubiao" readonly="1"/>
-                                            <field name="tender_category"
-                                                   attrs="{'invisible':[('shifoutoubiao','=',False)]}"
-                                                   readonly="1"/>
-                                        </div>
-                                        <div class="inline-item">项目管理级别:
-                                            <field name="guanlijibie" required="1"/>
-                                        </div>
-                                        <div class="inline-item">项目负责人:
-                                            <field name="user_id" class="oe_no_button" widget="many2many_tags"
-                                                   domain="[('active','=',True)]"
-                                                   options='{"no_open": True}' required="1"/>
-                                        </div>
-                                        <div class="inline-item">主管总师:
-                                            <field name="zhuguanzongshi_id" class="oe_no_button" widget="many2many_tags"
-                                                   domain="[('active','=',True)]"
-                                                   options='{"no_open": True}'
-                                                   attrs="{'invisible':[('guanlijibie','!=',u'LH200307240001')],'required':[('guanlijibie','=',u'LH200307240001')]}"/>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                        <field name="category_name"/>
+                    </group>
+                    <group col="4">
+                        <field name="project_type" required="1"
+                               on_change="onchange_type_id(project_type)"
+                               options='{"no_open": True}'/>
+                        <field name="categories_id" class="oe_no_button" nolabel="1"
+                               options='{"no_open": True}' required="1"
+                               domain="[('project_type','=',project_type)]"
+                               on_change="onchange_category_id(categories_id)"
+                                />
+                        <field name="categories_else" nolabel="1"
+                               attrs="{'invisible':[('category_name','!=',u'其它')]}"/>
+                        <newline/>
+                        <field name="shifoutoubiao" readonly="1"/>
+                        <field name="tender_category"
+                               attrs="{'invisible':[('shifoutoubiao','=',False)]}"
+                               readonly="1"/>
+                        <newline/>
+                        <field name="user_id" class="oe_no_button" widget="many2many_tags"
+                               domain="[('active','=',True)]"
+                               options='{"no_open": True}' required="1"/>
+                        <newline/>
+                        <field name="guanlijibie" required="1"/>
+                        <newline/>
+                        <field name="zhuguanzongshi_id" class="oe_no_button" widget="many2many_tags"
+                               domain="[('active','=',True)]"
+                               options='{"no_open": True}'
+                               attrs="{'invisible':[('guanlijibie','!=',u'LH200307240001')],'required':[('guanlijibie','=',u'LH200307240001')]}"/>
+                    </group>
+                    <br/>
+                    <br/>
                     <footer>
                         <button name="engineer_review_accept" class="oe_highlight"
                                 groups="up_project.group_up_project_zongshishi" string="审批通过"
                                 type="object"/>
+                        或
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
@@ -114,7 +102,7 @@
                         <field name="yinfacuoshi" required="1" colspan="3"/>
                         <field name="renwuyaoqiu" required="1" colspan="6"/>
                         <field name="chenjiebumen_id" required="1" colspan="3" class="oe_no_button"
-                                                   options='{"no_open": True}' domain="[('deleted','=',False)]"/>
+                               options='{"no_open": True}' domain="[('deleted','=',False)]"/>
                     </group>
                     <footer>
                         <button name="operator_review_accept" class="oe_highlight" string="提交总师室审批"
