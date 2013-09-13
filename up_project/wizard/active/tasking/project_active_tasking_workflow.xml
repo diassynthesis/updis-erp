@@ -57,6 +57,7 @@
             <field name="flow_stop">True</field>
             <field name="signal_send">subflow.pro_act_task_end</field>
             <field name="action">workflow_manager_room()</field>
+            <field name="action_id" ref="project_active_tasking_end_send_sms"/>
         </record>
 
         <!-- Transitions -->
