@@ -228,6 +228,9 @@
                 <search string="Project Contract">
                     <field name="name"/>
                     <field name="number"/>
+                    <field name="type"/>
+                    <field name="project_id"/>
+                    <field name="price"/>
                     <filter name="is-common-contract" string="Common Contract(s)" domain="[('type','=','common')]"
                             help="Show All Common Contract(s)"/>
                     <filter name="is-third-party-contract" string="Thrid Party Contract(s)"

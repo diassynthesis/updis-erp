@@ -99,7 +99,7 @@
                     <field name="guanlijibie"/>
                     <field name="zhuguanzongshi_id"/>
                     <field name="user_id" string="Project Manager"/>
-                    <field name="partner_id" string="Contact"/>
+                    <field name="partner_id" string="Customer"/>
                     <field name="state"/>
                     <field name="begin_date"/>
                 </tree>
@@ -113,6 +113,12 @@
                 <search string="Search Project">
                     <field name="name" string="Project Name"/>
                     <field name="xiangmubianhao" string="Project Num"/>
+                    <field name="categories_id"/>
+                    <field name="chenjiebumen_id"/>
+                    <field name="zhuguanzongshi_id"/>
+                    <field name="user_id" string="Project Manager"/>
+                    <field name="partner_id" string="Customer"/>
+                    <field name="guanlijibie"/>
                     <separator/>
                     <filter string="Project(s) Manager" domain="[('user_id','=',uid)]"
                             help="Projects in which I am a manager" icon="terp-personal"/>
@@ -122,7 +128,9 @@
                         <filter string="state" name="Manager" icon="terp-personal" domain="[]"
                                 context="{'group_by':'state'}"/>
                         <filter string="type" name="Type" icon="terp-personal" domain="[]"
-                                context="{'group_by':'project_type'}"/>
+                                context="{'group_by':'categories_id'}"/>
+                        <filter string="level" name="Project Level" icon="terp-personal" domain="[]"
+                                context="{'group_by':'guanlijibie'}"/>
                     </group>
                 </search>
             </field>
