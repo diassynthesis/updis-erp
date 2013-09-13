@@ -416,7 +416,8 @@ class updis_project(osv.osv):
             hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
             if hr_id:
                 hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
-                if hr_record.job_id.name if hr_record.job_id else None == u"所长":
+                job_name = hr_record.job_id.name if hr_record.job_id else None
+                if job_name == u"所长" or job_name == u"分院院长":
                     user_department_id = hr_record.department_id.id if hr_record.department_id else "-1"
                     domain = ['|', '&', ('status_code', '=', 10105),
                               ('chenjiebumen_id', '=', user_department_id)] + domain

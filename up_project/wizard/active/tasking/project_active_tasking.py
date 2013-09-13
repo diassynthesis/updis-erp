@@ -238,8 +238,8 @@ class project_active_tasking(osv.osv):
                 hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
                 user_department_id = hr_record.department_id.id if hr_record.department_id else "-1"
                 project_department_id = obj.chenjiebumen_id.id if obj.chenjiebumen_id else None
-                if user_department_id == project_department_id and (
-                    hr_record.job_id.name if hr_record.job_id else None) == u"所长":
+                job_name = hr_record.job_id.name if hr_record.job_id else None
+                if user_department_id == project_department_id and (job_name == u"所长" or job_name == u"分院院长"):
                     result[obj.id] = True
                 else:
                     result[obj.id] = False
@@ -272,8 +272,8 @@ class project_active_tasking(osv.osv):
                     hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
                     user_department_id = hr_record.department_id.id if hr_record.department_id else "-1"
                     project_department_id = obj.chenjiebumen_id.id if obj.chenjiebumen_id else None
-                    if user_department_id == project_department_id and (
-                        hr_record.job_id.name if hr_record.job_id else None) == u"所长":
+                    job_name = hr_record.job_id.name if hr_record.job_id else None
+                    if user_department_id == project_department_id and (job_name == u"所长" or job_name == u"分院院长"):
                         result_flag = True
 
             result[obj.id] = result_flag
