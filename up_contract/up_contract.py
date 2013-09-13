@@ -182,8 +182,9 @@ class updis_contract_contract(osv.osv):
         'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
 
         'name': fields.char(size=128, string="Contract Name", required=True),
-        'type': fields.selection([('common', u'Common Contract'), ('third_party', u'Third Party')], required=True,
-                                 string='Contract Type'),
+        'type': fields.selection(
+            [('common', u'Common Contract'), ('third_party', u'Third Party'), ('tender', 'Tender')], required=True,
+            string='Contract Type'),
         'sign_date': fields.date(string='Contract Sign Date'),
         'third_party_sign_date': fields.date(string='Contract Third Party Sign Date'),
         'customer': fields.many2many('res.partner', 'contract_partner_rel', 'contract_id', 'partner_id',
