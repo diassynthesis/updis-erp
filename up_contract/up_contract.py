@@ -399,6 +399,32 @@ class updis_contract_contract(osv.osv):
         }
 
 
+    def tender_contract_action(self, cr, uid, context=None):
+        domain = []
+        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_partial_user', context=context):
+            hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
+            if hr_id:
+                hr_record = self.pool.get('hr.employee').browse(cr, uid, hr_id[0], context=context)
+                user_department_id = hr_record.department_id.id if hr_record.department_id else 0
+                domain = [('design_department.id', '=', user_department_id)]
+            else:
+                domain = [('design_department.id', '=', 0)]
+        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_user', context=context):
+            domain = []
+        context['search_default_is-tender-contract'] = 1
+        context['default_type'] = 'tender'
+        return {
+            'name': u'所有合同',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'res_model': 'project.contract.contract',
+            'target': 'current',
+            'domain': domain,
+            'context': context,
+        }
+
+
 class updis_project_project(osv.osv):
     _inherit = "project.project"
     _name = 'project.project'
@@ -442,13 +468,23 @@ class project_active_tasking_inherit(osv.osv):
         contract_obj = self.pool.get("project.contract.contract")
         project = self.browse(cr, uid, ids[0], context=context)
         if project and not project.is_import:
-            cid = contract_obj.create(cr, 1, {"name": project.name, 'project_id': project.project_id.id,
-                                              "number": project.xiangmubianhao,
-                                              "customer": [
-                                                  (6, 0, [project.partner_id.id] if project.partner_id else [])],
-                                              "customer_contact": [(6, 0, [
-                                                  project.customer_contact.id] if project.customer_contact else [])]},
-                                      context=context)
+            if not project.shifoutoubiao:
+                cid = contract_obj.create(cr, 1, {"name": project.name, 'project_id': project.project_id.id,
+                                                  "number": project.xiangmubianhao,
+                                                  "customer": [
+                                                      (6, 0, [project.partner_id.id] if project.partner_id else [])],
+                                                  "customer_contact": [(6, 0, [
+                                                      project.customer_contact.id] if project.customer_contact else [])]},
+                                          context=context)
+            else:
+                cid = contract_obj.create(cr, 1, {"name": project.name, 'project_id': project.project_id.id,
+                                                  "type": 'tender',
+                                                  "number": project.xiangmubianhao,
+                                                  "customer": [
+                                                      (6, 0, [project.partner_id.id] if project.partner_id else [])],
+                                                  "customer_contact": [(6, 0, [
+                                                      project.customer_contact.id] if project.customer_contact else [])]},
+                                          context=context)
         tasking = self.browse(cr, 1, ids[0], context=context)
         if not tasking.is_import:
             self.write(cr, 1, ids, {'state': 'end', 'status_code': 10106, 'begin_date': datetime.date.today()},

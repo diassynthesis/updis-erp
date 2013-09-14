@@ -242,6 +242,8 @@
                     <filter name="is-third-party-contract" string="Thrid Party Contract(s)"
                             domain="[('type','=','third_party')]"
                             help="Show All Thrid Party Contract(s)"/>
+                    <filter name="is-tender-contract" string="Tender Contract(s)" domain="[('type','=','tender')]"
+                            help="Show All Tender Contract(s)"/>
                 </search>
             </field>
         </record>
@@ -343,6 +345,15 @@
             </field>
         </record>
 
+        <record id="action_project_tender_contract_management" model="ir.actions.server">
+            <field name="name">Projects Tender Contract</field>
+            <field name="state">code</field>
+            <field name="condition" eval="True"/>
+            <field name="model_id" ref="up_contract.model_project_contract_contract"/>
+            <field name="code">
+                action = self.tender_contract_action(cr,uid,context=context)
+            </field>
+        </record>
 
         <record id="project_contract_invoice_tree_menu" model="ir.ui.view">
             <field name="name">project.contract.invoice.tree.menu</field>
@@ -513,6 +524,11 @@
                   action="action_project_third_party_contract_management"
                   groups="up_contract.group_up_contract_partial_user,up_contract.group_up_contract_user"
                   sequence="11"/>
+        <menuitem name="Tender Contract Management" id="up_contract.project_tender_contract_management"
+                  parent="up_contract.project_contract"
+                  action="action_project_tender_contract_management"
+                  groups="up_contract.group_up_contract_partial_user,up_contract.group_up_contract_user"
+                  sequence="12"/>
         <menuitem name="Contract Incomes" id="up_contract.project_contract_income_management"
                   parent="up_contract.project_contract"
                   action="action_project_contract_income_management"
