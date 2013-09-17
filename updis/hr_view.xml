@@ -54,21 +54,24 @@
                     </group>
                 </xpath>
                 <xpath expr="//group[@string='Position']" position="after">
-                    <group string="Work Information">
-                        <field name="business"/>
-                        <field name="business_date"/>
-                        <field name="duty"/>
-                        <field name="duty_date"/>
-                        <field name="enter_date"/>
-                        <field name="out_date"/>
-                        <field name="contract_date"/>
-
-                    </group>
-                    <group string="Title Information">
-                        <field name="title"/>
-                        <field name="title_date"/>
-                        <field name="begin_work_date"/>
-
+                    <newline/>
+                    <group string="Work Information" colspan="2" col="2">
+                        <group>
+                            <field name="department_id"/>
+                            <field name="job_id"/>
+                            <field name="duty"/>
+                            <field name="duty_date"/>
+                            <field name="business"/>
+                            <field name="business_date"/>
+                        </group>
+                        <group>
+                            <field name="title"/>
+                            <field name="title_date"/>
+                            <field name="begin_work_date"/>
+                            <field name="enter_date"/>
+                            <field name="out_date"/>
+                            <field name="contract_date"/>
+                        </group>
                     </group>
                     <group string="Reg Tax">
                         <field name="reg_tax"/>
@@ -91,6 +94,7 @@
                         <field name="strong_point"/>
                     </group>
                 </xpath>
+                <xpath expr="//group[@string='Position']" position="replace"/>
                 <!--xpath expr="//group[@string='Citizenship &amp; Other Info']" position="inside">
 
                 </xpath-->
