@@ -105,14 +105,14 @@
                             <td><para style="Label">与以前表述不一致的合同/ 协议要求是否
                               解决</para></td>
                             <td><para style="Label"></para></td>
-                            <td><para style="Value">[[o.hetongyizhi==u'合同/协议要求表述不一致已解决' and '[√]' or '[ ]']]合同/协议要求表述不一致已解决
-                              [[o.hetongyizhi==u'没有出现不一致' and '[√]' or '[ ]']]没有出现不一致</para></td>
+                            <td><para style="Value">[[o.hetongyizhi==u'合同/协议要求表述不一致已解决' and '[ √ ]' or '[ _ ]']]合同/协议要求表述不一致已解决
+                              [[o.hetongyizhi==u'没有出现不一致' and '[ √ ]' or '[ _ ]']]没有出现不一致</para></td>
                           </tr>
                       <tr>
                             <td><para style="Label">2</para></td>
                             <td><para style="Label">顾客要求形成文件否</para></td>
                             <td><para style="Label"></para></td>
-                            <td><para style="Value"> [[o.yaoqiuxingchengwenjian==u'已形成' and '[√]' or '[ ]']]  已形成    [[o.yaoqiuxingchengwenjian==u'未形成，但已确认' and '[√]' or '[ ]']]  未形成，但已确认</para></td>
+                            <td><para style="Value"> [[o.yaoqiuxingchengwenjian==u'已形成' and '[ √ ]' or '[ _ ]']]  已形成    [[o.yaoqiuxingchengwenjian==u'未形成，但已确认' and '[ √ ]' or '[ _ ]']]  未形成，但已确认</para></td>
                           </tr>
                           <tr>
                             <td><para style="Label">3</para></td>
@@ -120,38 +120,38 @@
                               是否得到
                               规定</para></td>
                             <td><para style="Label">明示要求</para></td>
-                            <td><para style="Value">[[o.express_requirement==u'有招标书' and '[√]' or '[ ]']]  有招标书     [[o.express_requirement==u'有委托书' and '[√]' or '[ ]']]  有委托书
-                              [[o.express_requirement==u'有协议/合同草案' and '[√]' or '[ ]']]  有协议/合同草案  [[o.express_requirement==u'有口头要求记录' and '[√]' or '[ ]']]  有口头要求记录</para></td>
+                            <td><para style="Value">[[o.express_requirement==u'有招标书' and '[ √ ]' or '[ _ ]']]  有招标书     [[o.express_requirement==u'有委托书' and '[ √ ]' or '[ _ ]']]  有委托书
+                              [[o.express_requirement==u'有协议/合同草案' and '[ √ ]' or '[ _ ]']]  有协议/合同草案  [[o.express_requirement==u'有口头要求记录' and '[ √ ]' or '[ _ ]']]  有口头要求记录</para></td>
                           </tr>
                           <tr>
                             <td><para style="Label"></para></td>
                             <td><para style="Label"></para></td>
                             <td><para style="Label">隐含要求</para></td>
-                            <td><para style="Value">[[o.yinhanyaoqiu==u'有' and '[√]' or '[ ]']] 有（需在评审记录一栏中标明记录）
-                              [[o.yinhanyaoqiu!=u'有' and '[√]' or '[ ]']] 无</para></td>
+                            <td><para style="Value">[[o.yinhanyaoqiu==u'有' and '[ √ ]' or '[ _ ]']] 有（需在评审记录一栏中标明记录）
+                              [[o.yinhanyaoqiu!=u'有' and '[ √ ]' or '[ _ ]']] 无</para></td>
                           </tr>
                           <tr>
                             <td><para style="Label"></para></td>
                             <td><para style="Label"></para></td>
                             <td><para style="Label">地方规范或特殊法律法规</para></td>
-                            <td><para style="Value">[[o.difangfagui==u'有' and '[√]' or '[ ]']] 有（需在评审记录一栏中标明记录）
-                              [[o.difangfagui!=u'有' and '[√]' or '[ ]']] 无</para></td>
+                            <td><para style="Value">[[o.difangfagui==u'有' and '[ √ ]' or '[ _ ]']] 有（需在评审记录一栏中标明记录）
+                              [[o.difangfagui!=u'有' and '[ √ ]' or '[ _ ]']] 无</para></td>
                           </tr>
                           <tr>
                             <td><para style="Label"></para></td>
                             <td><para style="Label"></para></td>
                             <td><para style="Label">附加要求</para></td>
-                            <td><para style="Value">[[o.fujiayaoqiu==u'有' and '[√]' or '[ ]']] 有（需在评审记录一栏中标明记录）
-                              [[o.fujiayaoqiu!=u'有' and '[√]' or '[ ]']] 无</para></td>
+                            <td><para style="Value">[[o.fujiayaoqiu==u'有' and '[ √ ]' or '[ _ ]']] 有（需在评审记录一栏中标明记录）
+                              [[o.fujiayaoqiu!=u'有' and '[ √ ]' or '[ _ ]']] 无</para></td>
                           </tr>
                           <tr>
                             <td><para style="Label">4</para></td>
                             <td><para style="Label">本院是否有能力满足规定要求</para></td>
                             <td><para style="Label"></para></td>
-                            <td><para style="Value">[[o.ziyuan==u'人力资源满足' and '[√]' or '[ ]']]人力资源满足  [[o.ziyuan==u'人力资源不足' and '[√]' or '[ ]']]人力资源不足
-                            [[o.shebei==u'设备满足' and '[√]' or '[ ]']]设备满足  [[o.shebei==u'设备不满足' and '[√]' or '[ ]']]设备不满足
-                            [[o.gongqi==u'工期可接受' and '[√]' or '[ ]']]工期可接受  [[o.gongqi==u'工期太紧' and '[√]' or '[ ]']]工期太紧
-                            [[o.shejifei==u'设计费合理' and '[√]' or '[ ]']]设计费合理  [[o.shejifei==u'设计费太低' and '[√]' or '[ ]']]设计费太低
+                            <td><para style="Value">[[o.ziyuan==u'人力资源满足' and '[ √ ]' or '[ _ ]']]人力资源满足  [[o.ziyuan==u'人力资源不足' and '[ √ ]' or '[ _ ]']]人力资源不足
+                            [[o.shebei==u'设备满足' and '[ √ ]' or '[ _ ]']]设备满足  [[o.shebei==u'设备不满足' and '[ √ ]' or '[ _ ]']]设备不满足
+                            [[o.gongqi==u'工期可接受' and '[ √ ]' or '[ _ ]']]工期可接受  [[o.gongqi==u'工期太紧' and '[ √ ]' or '[ _ ]']]工期太紧
+                            [[o.shejifei==u'设计费合理' and '[ √ ]' or '[ _ ]']]设计费合理  [[o.shejifei==u'设计费太低' and '[ √ ]' or '[ _ ]']]设计费太低
                             </para>
                             </td>
                         </tr>
@@ -179,9 +179,9 @@
 
 	<blockTable style="JingYingShiTable" colWidths="239,259">
 	  <tr>
-		<td><para style="Label">评审方式：[[o.pingshenfangshi==u'会议' and '[√]' or '[ ]']]会议  	[[o.pingshenfangshi==u'会签' and '[√]' or '[ ]']]会签		[[o.pingshenfangshi==u'审批' and '[√]' or '[ ]']]审批</para></td>
-		<td><para style="Label">引发措施记录：[[o.yinfacuoshi==u'可以接受' and '[√]' or '[ ]']]可以接受		[[o.yinfacuoshi==u'不接受' and '[√]' or '[ ]']]不接受	[[o.yinfacuoshi==u'加班' and '[√]' or '[ ]']]加班
-[[o.yinfacuoshi==u'院内调配' and '[√]' or '[ ]']]院内调配	[[o.yinfacuoshi==u'外协' and '[√]' or '[ ]']]外协	[[o.yinfacuoshi==u'其它' and '[√]' or '[ ]']]其它</para></td>
+		<td><para style="Label">评审方式：[[o.pingshenfangshi==u'会议' and '[ √ ]' or '[ _ ]']]会议  	[[o.pingshenfangshi==u'会签' and '[ √ ]' or '[ _ ]']]会签		[[o.pingshenfangshi==u'审批' and '[ √ ]' or '[ _ ]']]审批</para></td>
+		<td><para style="Label">引发措施记录：[[o.yinfacuoshi==u'可以接受' and '[ √ ]' or '[ _ ]']]可以接受		[[o.yinfacuoshi==u'不接受' and '[ √ ]' or '[ _ ]']]不接受	[[o.yinfacuoshi==u'加班' and '[ √ ]' or '[ _ ]']]加班
+[[o.yinfacuoshi==u'院内调配' and '[ √ ]' or '[ _ ]']]院内调配	[[o.yinfacuoshi==u'外协' and '[ √ ]' or '[ _ ]']]外协	[[o.yinfacuoshi==u'其它' and '[ √ ]' or '[ _ ]']]其它</para></td>
 	  </tr>
 	</blockTable>
 	<blockTable style="ReviewResultTable" colWidths="28,249,55,166">
@@ -196,7 +196,7 @@
 务
 下
 达</para></td>
-			<td><para style="Value">任务要求：[[o.renwuyaoqiu==u'见委托书' and '[√]' or '[ ]']]见委托书		[[o.renwuyaoqiu==u'见合同草案' and '[√]' or '[ ]']]见合同草案			[[o.renwuyaoqiu==u'见洽谈记录' and '[√]' or '[ ]']]见洽谈记录			[[o.renwuyaoqiu==u'见电话记录' and '[√]' or '[ ]']]见电话记录			[[o.renwuyaoqiu==u'招标文件' and '[√]' or '[ ]']]招标文件</para>
+			<td><para style="Value">任务要求：[[o.renwuyaoqiu==u'见委托书' and '[ √ ]' or '[ _ ]']]见委托书		[[o.renwuyaoqiu==u'见合同草案' and '[ √ ]' or '[ _ ]']]见合同草案			[[o.renwuyaoqiu==u'见洽谈记录' and '[ √ ]' or '[ _ ]']]见洽谈记录			[[o.renwuyaoqiu==u'见电话记录' and '[ √ ]' or '[ _ ]']]见电话记录			[[o.renwuyaoqiu==u'招标文件' and '[ √ ]' or '[ _ ]']]招标文件</para>
 			<blockTable colWidths="71,74,80,57,120">
 				<tr>
 					<td><para style="Label">承接部门：</para></td>
@@ -215,12 +215,12 @@
 		</tr>
 		<tr>
 			<td><para style="Label"></para></td>
-			<td><para style="Label">类别：[[ o.category_name == u'区域\城镇体系\总体规划'  and '[√]' or '[ ]']]区域\城镇体系\总体规划		[[o.category_name ==u'专项规划(研究)'  and '[√]' or '[ ]']]专项规划(研究)
-                [[ o.category_name ==u'分区规划' and '[√]' or '[ ]']]分区规划		[[ o.category_name ==u'法定图则' and '[√]' or '[ ]']]法定图则			[[ o.category_name ==u'控规' and '[√]' or '[ ]']]控规 		[[ o.category_name ==u'修规(详细蓝图)' and '[√]' or '[ ]']]修规(详细蓝图)
-                [[ o.category_name ==u'旧改项目' and '[√]' or '[ ]']]旧改项目      [[ o.category_name ==u'城市设计' and '[√]' or '[ ]']]城市设计		[[ o.category_name ==u'工程项目' and '[√]' or '[ ]']]工程项目		[[ o.category_name ==u'市政专项' and '[√]' or '[ ]']]市政专项
-                [[ o.category_name ==u'其它' and u'[√]其它:%s'%(o.categories_else) or u'[ ]其它']]
-			投标类别：[[o.toubiaoleibie==u'商务标' and '[√]' or '[ ]']]商务标 	[[o.toubiaoleibie==u'技术标' and '[√]' or '[ ]']]技术标 	[[o.toubiaoleibie==u'综合标' and '[√]' or '[ ]']]综合标
-			项目管理级别：[[o.guanlijibie==u'院级' and '[√]' or '[ ]']]院级 	[[o.guanlijibie==u'所级' and '[√]' or '[ ]']]所级</para>
+			<td><para style="Label">类别：[[ o.category_name == u'区域\城镇体系\总体规划'  and '[ √ ]' or '[ _ ]']]区域\城镇体系\总体规划		[[o.category_name ==u'专项规划(研究)'  and '[ √ ]' or '[ _ ]']]专项规划(研究)
+                [[ o.category_name ==u'分区规划' and '[ √ ]' or '[ _ ]']]分区规划		[[ o.category_name ==u'法定图则' and '[ √ ]' or '[ _ ]']]法定图则			[[ o.category_name ==u'控规' and '[ √ ]' or '[ _ ]']]控规 		[[ o.category_name ==u'修规(详细蓝图)' and '[ √ ]' or '[ _ ]']]修规(详细蓝图)
+                [[ o.category_name ==u'旧改项目' and '[ √ ]' or '[ _ ]']]旧改项目      [[ o.category_name ==u'城市设计' and '[ √ ]' or '[ _ ]']]城市设计		[[ o.category_name ==u'工程项目' and '[ √ ]' or '[ _ ]']]工程项目		[[ o.category_name ==u'市政专项' and '[ √ ]' or '[ _ ]']]市政专项
+                [[ o.category_name ==u'其它' and u'[ √ ]其它:%s'%(o.categories_else) or u'[ _ ]其它']]
+			投标类别：[[o.toubiaoleibie==u'商务标' and '[ √ ]' or '[ _ ]']]商务标 	[[o.toubiaoleibie==u'技术标' and '[ √ ]' or '[ _ ]']]技术标 	[[o.toubiaoleibie==u'综合标' and '[ √ ]' or '[ _ ]']]综合标
+			项目管理级别：[[o.guanlijibie==u'院级' and '[ √ ]' or '[ _ ]']]院级 	[[o.guanlijibie==u'所级' and '[ √ ]' or '[ _ ]']]所级</para>
 			<blockTable colWidths="80,170">
                 <tr>
                    <td><para style="Label">  </para></td>
