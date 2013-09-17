@@ -125,6 +125,8 @@
                             help="Projects in which I am a manager" icon="terp-personal"/>
                     <filter string="Tender Project(s)" domain="[('shifoutoubiao','=',True)]" help="All Tender Projects"
                             icon="terp-personal"/>
+                    <filter name="filed-project" string="Filed Project(s)" domain="[('state','=','project_finish')]" help="All Filed Projects"
+                            icon="terp-personal"/>
                     <group expand="0" string="Group By...">
                         <filter string="state" name="Manager" icon="terp-personal" domain="[]"
                                 context="{'group_by':'state'}"/>
@@ -306,8 +308,19 @@
                 action = self.all_projects_action(cr,uid,context=context)
             </field>
         </record>
+        <record id="open_view_project_filed" model="ir.actions.server">
+            <field name="name">Action Filed Projects</field>
+            <field name="state">code</field>
+            <field name="condition" eval="True"/>
+            <field name="model_id" ref="project.model_project_project"/>
+            <field name="code">
+                action = self.all_filed_projects_action(cr,uid,context=context)
+            </field>
+        </record>
         <menuitem action="open_view_project_all" id="project.menu_projects" name="All Projects"
                   parent="project.menu_project_management" sequence="10"/>
+        <menuitem action="open_view_project_filed" id="project.menu_filed_projects" name="All Filed Projects"
+                  parent="project.menu_project_management" sequence="12"/>
 
         <!--project sms config-->
         <record id="project_config_sms_form" model="ir.ui.view">
