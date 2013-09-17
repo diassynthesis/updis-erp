@@ -137,7 +137,7 @@ pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, big_a
          <!-- Project active end sms!-->
         <record id="project_active_tasking_end_send_sms" model="ir.actions.server">
             <field name="name">发送项目启动通知短信</field>
-            <field name="condition" eval="True"/>
+            <field name="condition">object.is_import==False</field>
             <field name="state">code</field>
             <field name="model_id" ref="up_project.model_project_project_active_tasking"/>
             <field name="code">
