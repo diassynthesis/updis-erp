@@ -71,7 +71,7 @@ class project_project_wizard(osv.osv_memory):
         "city": fields.char("City", size=128),
         'city_type': fields.selection(
             [('CC200511210001', u'直辖市'), ('CC200511210002', u'省会城市'), ('CC200511210003', u'地级市'),
-             ('CC200511210004', u'县级市'), ('CC200511210005', u'其它')], string="City Type"),
+             ('CC200511210004', u'县级市'), ('CC200511210005', u'其它'), ('plan_city', u'计划单列市')], string="City Type"),
         'partner_type': fields.selection([("WT200508180001", u"深圳规划局"),
                                           ("WT200508180002", u"深圳市其他"),
                                           ("WT200508180003", u"市外"),
