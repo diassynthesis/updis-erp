@@ -31,4 +31,5 @@ class project_project_inherit(osv.osv):
 
         self.pool.get('project.project.active.tasking')._workflow_signal(cr, uid, tasking, 'temp_start_to_end',
                                                                          context=context)
+        self.write(cr, uid, ids, {'is_import': True})
         return True
