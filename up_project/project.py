@@ -459,6 +459,8 @@ class updis_project(osv.osv):
             domain = ['|', ('state', 'in', ['project_active', 'project_cancelled'])] + domain
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context):
             domain = ['|', ('state', 'in', ['project_active', 'project_cancelled'])] + domain
+        if self.user_has_groups(cr, uid, 'up_project.group_up_project_admin', context=context):
+            domain = ['|', ('state', 'in', ['project_active', 'project_cancelled'])] + domain
 
         return {
             'name': u'所有项目',
