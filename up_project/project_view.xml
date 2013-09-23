@@ -87,7 +87,31 @@
             <field name="priority">10</field>
             <field name="arch" type="xml">
                 <tree fonts="bold:message_unread==True"
-                      colors="red:date and (date&lt;current_date) and (state == 'open');blue:state in ('draft','pending');grey: state in ('close','cancelled')"
+                      string="Projects">
+                    <field name="sequence" invisible="1" widget="handle"/>
+                    <field name="message_unread" invisible="1"/>
+                    <field name="date" invisible="1"/>
+                    <field name="xiangmubianhao"/>
+                    <field name="categories_id"/>
+                    <field name="chenjiebumen_id"/>
+                    <field name="name" string="Project Name"/>
+                    <field name="guanlijibie"/>
+                    <field name="zhuguanzongshi_id"/>
+                    <field name="user_id" string="Project Manager"/>
+                    <field name="partner_id" string="Customer"/>
+                    <field name="state"/>
+                    <field name="begin_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_project_tree_need_process" model="ir.ui.view">
+            <field name="name">project.project.tree.need.process</field>
+            <field name="model">project.project</field>
+            <field name="priority">15</field>
+            <field name="arch" type="xml">
+                <tree fonts="bold:state=='project_active'"
+                      colors="red:state=='project_active'"
                       string="Projects">
                     <field name="sequence" invisible="1" widget="handle"/>
                     <field name="message_unread" invisible="1"/>

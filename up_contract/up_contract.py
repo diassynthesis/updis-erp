@@ -70,8 +70,8 @@ class updis_contract_invoice(osv.osv):
                                         ],
                                         string="Project State", readonly=1),
         'customer': fields.related('contract_id', 'customer', type="many2many",
-                                           relation='res.partner',
-                                           string="Contract Customer", readonly=1),
+                                   relation='res.partner',
+                                   string="Contract Customer", readonly=1),
     }
 
     _defaults = {
@@ -108,15 +108,13 @@ class updis_contract_invoice(osv.osv):
                                                                   ('name', '=',
                                                                    'project_contract_invoice_form_menu')],
                                                           context=context)
-        if view_form:
-            view_form_id = self.pool.get('ir.model.data').read(cr, 1, view_form[0], ['res_id'])
+        view_form_id = self.pool.get('ir.model.data').read(cr, 1, view_form[0], ['res_id'])
 
         view_tree = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
                                                                   ('name', '=',
                                                                    'project_contract_invoice_tree_menu')],
                                                           context=context)
-        if view_tree:
-            view_tree_id = self.pool.get('ir.model.data').read(cr, 1, view_tree[0], ['res_id'])
+        view_tree_id = self.pool.get('ir.model.data').read(cr, 1, view_tree[0], ['res_id'])
         return {
             'name': u'已开发票查询',
             'type': 'ir.actions.act_window',
@@ -173,8 +171,8 @@ class updis_contract_income(osv.osv):
                                         ],
                                         string="Project State", readonly=1),
         'customer': fields.related('contract_id', 'customer', type="many2many",
-                                           relation='res.partner',
-                                           string="Contract Customer", readonly=1),
+                                   relation='res.partner',
+                                   string="Contract Customer", readonly=1),
 
     }
 

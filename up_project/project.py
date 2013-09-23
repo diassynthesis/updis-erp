@@ -467,6 +467,18 @@ class updis_project(osv.osv):
         domain = ['|', ('status_code', 'in', status_code)] + domain
         domain = manager_domain + domain
 
+        view_form = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
+                                                                  ('name', '=',
+                                                                   'edit_project_inherit')],
+                                                          context=context)
+        view_form_id = self.pool.get('ir.model.data').read(cr, 1, view_form[0], ['res_id'])
+
+        view_tree = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
+                                                                  ('name', '=',
+                                                                   'view_project_tree_need_process')],
+                                                          context=context)
+        view_tree_id = self.pool.get('ir.model.data').read(cr, 1, view_tree[0], ['res_id'])
+
         return {
             'name': u'待处理项目',
             'type': 'ir.actions.act_window',
@@ -476,6 +488,7 @@ class updis_project(osv.osv):
             'target': 'current',
             'domain': domain,
             'context': context,
+            'views': [(view_tree_id['res_id'], 'tree'), (view_form_id['res_id'], 'form')],
         }
 
     def all_projects_action(self, cr, uid, context=None):
