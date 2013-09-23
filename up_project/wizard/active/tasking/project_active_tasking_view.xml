@@ -143,9 +143,12 @@
                         </div>
                         <group invisible="1">
                             <field name="is_project_creater"/>
+                            <field name="is_project_director"/>
                             <field name="is_display_button"/>
                             <field name="is_user_in_operator_group"/>
                             <field name="is_user_in_engineer_group"/>
+                            <field name="is_chief"/>
+                            <field name="is_admin"/>
                             <field name="category_name"/>
                             <field name="is_user_is_project_manager"/>
                         </group>
@@ -237,7 +240,8 @@
                                         <div>
                                             <field name="attachments" widget="many2many_binary"
                                                    domain="[('res_model','=','project.project.active.tasking')]"
-                                                   attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
+                                                   attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])],
+                                                   'invisible':[('is_project_director','!=',True),('is_project_creater','!=',True),('is_user_in_operator_group','!=',True),('is_user_in_engineer_group','!=',True),('is_chief','!=',True),('is_admin','!=',True)]}"
                                                     />
                                         </div>
                                     </td>

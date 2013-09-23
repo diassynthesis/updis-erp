@@ -212,6 +212,17 @@ class updis_project(osv.osv):
 
         return result
 
+    def _is_project_director(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            review_id = obj.director_reviewer_id.id
+            if review_id == uid:
+                result[obj.id] = True
+            else:
+                result[obj.id] = False
+
+        return result
+
     def _is_project_created(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
@@ -229,6 +240,18 @@ class updis_project(osv.osv):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
             result[obj.id] = self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context)
+        return result
+
+    def _is_chief(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            result[obj.id] = self.user_has_groups(cr, uid, 'up_project.group_up_project_chief', context=context)
+        return result
+
+    def _is_admin(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            result[obj.id] = self.user_has_groups(cr, uid, 'up_project.group_up_project_admin', context=context)
         return result
 
     def _is_user_is_project_manager(self, cr, uid, ids, field_name, args, context=None):
@@ -280,6 +303,8 @@ class updis_project(osv.osv):
         "waibao": fields.boolean("Is Outsourcing"),
         'is_project_creater': fields.function(_is_project_creater, type="boolean",
                                               string="Is Project Creater"),
+        'is_project_director': fields.function(_is_project_director, type="boolean",
+                                               string="Is Project Director"),
         'is_project_created': fields.function(_is_project_created, type="boolean",
                                               string="Is Project Created"),
         'member_ids': fields.one2many('project.members', 'project_id', string="Members"),
@@ -288,7 +313,10 @@ class updis_project(osv.osv):
 
         'is_user_in_engineer_group': fields.function(_is_user_in_engineer_group, type="boolean",
                                                      string="Is User In Engineer Room"),
-
+        'is_chief': fields.function(_is_chief, type="boolean",
+                                    string="Is User is in Chief"),
+        'is_admin': fields.function(_is_admin, type="boolean",
+                                    string="Is User is in Admin"),
         'is_user_is_project_manager': fields.function(_is_user_is_project_manager, type="boolean",
                                                       string="Is User is The Project Manager"),
 
