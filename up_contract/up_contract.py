@@ -69,6 +69,9 @@ class updis_contract_invoice(osv.osv):
                                                    ("project_finish", u"Project Filed"),
                                         ],
                                         string="Project State", readonly=1),
+        'customer': fields.related('contract_id', 'customer', type="many2many",
+                                           relation='res.partner',
+                                           string="Contract Customer", readonly=1),
     }
 
     _defaults = {
@@ -169,6 +172,9 @@ class updis_contract_income(osv.osv):
                                                    ("project_finish", u"Project Filed"),
                                         ],
                                         string="Project State", readonly=1),
+        'customer': fields.related('contract_id', 'customer', type="many2many",
+                                           relation='res.partner',
+                                           string="Contract Customer", readonly=1),
 
     }
 

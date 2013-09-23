@@ -46,6 +46,9 @@ class up_contract_analysis(osv.osv):
         'total_price': fields.float(string='Total Price', digits=(16, 6), readonly=1),
         'paid_price': fields.float(string='Paid Price', digits=(16, 6), readonly=1),
         'remain_price': fields.float(string='Remain Price', digits=(16, 6), readonly=1),
+        'customer': fields.related('contract_id', 'customer', type="many2many",
+                                           relation='res.partner',
+                                           string="Contract Customer", readonly=1),
     }
 
     def init(self, cr):

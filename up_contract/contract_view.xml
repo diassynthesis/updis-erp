@@ -236,6 +236,7 @@
                     <field name="number"/>
                     <field name="type"/>
                     <field name="project_id"/>
+                    <field name="customer"/>
                     <field name="price"/>
                     <field name="entrust_type"/>
                     <field name="sign_date"/>
@@ -264,6 +265,7 @@
                     <field name="type"/>
                     <field name="project_id"/>
                     <field name="price"/>
+                    <field name="customer" invisible="1"/>
                     <field name="entrust_type" invisible="1"/>
                     <field name="sign_date" invisible="1"/>
                     <field name="design_department" invisible="1"/>
@@ -307,6 +309,7 @@
                     <field name="price" string="单笔收费金额(万元)"/>
                     <field name="contract_entrust_type"/>
                     <field name="contract_sign_date"/>
+                    <field name="customer"/>
                     <field name="department_id"/>
                     <field name="project_category"/>
                     <field name="project_manager"/>
@@ -406,6 +409,7 @@
                     <field name="price" string="发票金额(万元)"/>
                     <field name="contract_entrust_type"/>
                     <field name="contract_sign_date"/>
+                    <field name="customer"/>
                     <field name="department_id"/>
                     <field name="project_category"/>
                     <field name="project_manager"/>
@@ -416,7 +420,7 @@
                     <field name="income_ids"/>
                     <field name="clear_date"/>
 
-                    <filter  string="Is cleared Invoice(s)" domain="[('is_clear','=',True)]"
+                    <filter string="Is cleared Invoice(s)" domain="[('is_clear','=',True)]"
                             help="Show All Cleared Invoice(s)"/>
                 </search>
             </field>
@@ -506,6 +510,7 @@
                     <field name="department_id"/>
                     <field name="project_category"/>
                     <field name="project_manager"/>
+                    <field name="customer"/>
                     <field name="total_price"/>
                     <field name="paid_price"/>
                     <field name="remain_price"/>
