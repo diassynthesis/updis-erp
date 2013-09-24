@@ -86,8 +86,7 @@
             <field name="model">project.project</field>
             <field name="priority">10</field>
             <field name="arch" type="xml">
-                <tree fonts="bold:message_unread==True"
-                      string="Projects">
+                <tree string="Projects">
                     <field name="sequence" invisible="1" widget="handle"/>
                     <field name="message_unread" invisible="1"/>
                     <field name="date" invisible="1"/>
@@ -110,8 +109,7 @@
             <field name="model">project.project</field>
             <field name="priority">15</field>
             <field name="arch" type="xml">
-                <tree fonts="bold:state=='project_active'"
-                      colors="red:state=='project_active'"
+                <tree colors="red:state=='project_active'"
                       string="Projects">
                     <field name="sequence" invisible="1" widget="handle"/>
                     <field name="message_unread" invisible="1"/>
