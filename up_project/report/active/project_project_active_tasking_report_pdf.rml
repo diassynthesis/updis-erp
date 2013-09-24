@@ -2,7 +2,7 @@
 <document filename="renwuxiada.pdf">
   <template pageSize="(612.0,792.0)" title="Test" author="Shrek Zhou" allowSplitting="20">
 	<pageTemplate id="first">
-	  <frame id="first" x1="57.0" y1="57.0" width="498" height="690"/>
+	  <frame id="first" x1="57.0" y1="57.0" width="498" height="720"/>
       <frame id="tag" x1="20.0" y1="0" width="172.0" height="0"/>
 	</pageTemplate>
   </template>
@@ -231,7 +231,7 @@
 				</tr>
 				<tr>
 					<td><para style="Label">主管总师：</para></td>
-					<td><para style="Label">[[zongshi_names]]爱上地方爱上地方</para></td>
+					<td><para style="Label">[[zongshi_names]]</para></td>
 				</tr>
 			</blockTable>
 			</td>
