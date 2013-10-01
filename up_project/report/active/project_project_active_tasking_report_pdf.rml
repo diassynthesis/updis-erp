@@ -160,7 +160,7 @@
                   <blockTable colWidths="80">
                       <tr>
                           <td>
-                              <para style="Value">[[o.director_reviewer_id.sign_image and setTag('para','image',{'width':'54','height':'32','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[o.director_reviewer_id.sign_image]]
+                              <para style="Value">[[o.director_reviewer_apply_id.sign_image and setTag('para','image',{'width':'54','height':'32','preserveAspectRatio':'1'}) or removeParentNode('para')]] [[o.director_reviewer_apply_id.sign_image]]
                               </para>
                           </td>
                       </tr>
