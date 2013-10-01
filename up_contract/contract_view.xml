@@ -262,13 +262,13 @@
                 <tree string="Project Contract" version="7.0">
                     <field name="number"/>
                     <field name="name"/>
+                    <field name="customer"/>
                     <field name="type"/>
                     <field name="project_id"/>
+                    <field name="design_department"/>
                     <field name="price"/>
-                    <field name="customer" invisible="1"/>
                     <field name="entrust_type" invisible="1"/>
                     <field name="sign_date" invisible="1"/>
-                    <field name="design_department" invisible="1"/>
                     <field name="project_category" invisible="1"/>
                     <field name="project_manager" invisible="1"/>
                     <field name="project_state" invisible="1"/>
@@ -328,10 +328,11 @@
                 <tree string="Project Contract Income">
                     <field name="contract_num" select="1"/>
                     <field name="contract_id" select="1"/>
+                    <field name="department_id"/>
+                    <field name="customer"/>
                     <field name="price" string="单笔收费金额(万元)" select="1"/>
                     <field name="contract_entrust_type" invisible="1" select="1"/>
                     <field name="contract_sign_date" invisible="1" select="1"/>
-                    <field name="department_id" invisible="1" select="1"/>
                     <field name="project_category" invisible="1" select="1"/>
                     <field name="project_manager" invisible="1" select="1"/>
                     <field name="project_state" invisible="1" select="1"/>
@@ -433,10 +434,11 @@
                 <tree string="Project Contract Invoice">
                     <field name="contract_num"/>
                     <field name="contract_id"/>
+                    <field name="department_id"/>
+                    <field name="customer"/>
                     <field name="price" string="发票金额(万元)"/>
                     <field name="contract_entrust_type" invisible="1"/>
                     <field name="contract_sign_date" invisible="1"/>
-                    <field name="department_id" invisible="1"/>
                     <field name="project_category" invisible="1"/>
                     <field name="project_manager" invisible="1"/>
                     <field name="project_state" invisible="1"/>
@@ -489,6 +491,7 @@
                     <field name="contract_num"/>
                     <field name="contract_id"/>
                     <field name="department_id"/>
+                    <field name="customer"/>
                     <field name="project_category"/>
                     <field name="project_manager"/>
                     <field name="total_price"/>
