@@ -276,29 +276,6 @@
             </field>
         </record>
 
-        <record id="edit_project_inherit_contract_inherit" model="ir.ui.view">
-            <field name="name">project.project.form.contract.inherit</field>
-            <field name="model">project.project</field>
-            <field name="inherit_id" ref="up_project.edit_project_inherit"/>
-            <field name="arch" type="xml">
-                <xpath expr="//page[@name='project_log']" position="after">
-                    <page string="Project Contract" attrs="{'invisible':[('can_see_contract','=',False)]}">
-                        <field name="can_see_contract" invisible="1"/>
-                        <field name="id" invisible="1"/>
-                        <field name="contract_ids" context="{'active_id':id}">
-                            <tree>
-                                <field name="number"/>
-                                <field name="name"/>
-                                <field name="type"/>
-                                <field name="price"/>
-                            </tree>
-                        </field>
-                    </page>
-                </xpath>
-            </field>
-        </record>
-
-
         <record id="project_contract_income_menu_search" model="ir.ui.view">
             <field name="name">project.contract.income.search</field>
             <field name="model">project.contract.income</field>
