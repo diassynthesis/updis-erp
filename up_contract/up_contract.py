@@ -2,6 +2,7 @@
 import datetime
 from openerp.osv import fields
 from openerp.osv import osv
+import contract_tools
 
 __author__ = 'cysnake4713'
 
@@ -92,17 +93,11 @@ class updis_contract_invoice(osv.osv):
         return res
 
     def all_contract_invoice_action(self, cr, uid, context=None):
-        domain = []
-        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_partial_user', context=context):
-            hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
-            if hr_id:
-                hr_record = self.pool.get('hr.employee').browse(cr, uid, hr_id[0], context=context)
-                user_department_id = hr_record.department_id.id if hr_record.department_id else 0
-                domain = [('contract_id.design_department.id', '=', user_department_id)]
-            else:
-                domain = [('contract_id.design_department.id', '=', 0)]
-        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_user', context=context):
+        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_all_limit', context=context):
             domain = []
+        else:
+            user_department_id = contract_tools.get_user_department(self, cr, uid, context)
+            domain = [('contract_id.design_department.id', '=', user_department_id)]
 
         view_form = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
                                                                   ('name', '=',
@@ -194,31 +189,23 @@ class updis_contract_income(osv.osv):
         return res
 
     def all_contract_income_action(self, cr, uid, context=None):
-        domain = []
-        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_partial_user', context=context):
-            hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
-            if hr_id:
-                hr_record = self.pool.get('hr.employee').browse(cr, uid, hr_id[0], context=context)
-                user_department_id = hr_record.department_id.id if hr_record.department_id else 0
-                domain = [('contract_id.design_department.id', '=', user_department_id)]
-            else:
-                domain = [('contract_id.design_department.id', '=', 0)]
-        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_user', context=context):
+        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_all_limit', context=context):
             domain = []
+        else:
+            user_department_id = contract_tools.get_user_department(self, cr, uid, context)
+            domain = [('contract_id.design_department.id', '=', user_department_id)]
 
         view_form = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
                                                                   ('name', '=',
                                                                    'project_contract_income_form_menu')],
                                                           context=context)
-        if view_form:
-            view_form_id = self.pool.get('ir.model.data').read(cr, 1, view_form[0], ['res_id'])
+        view_form_id = self.pool.get('ir.model.data').read(cr, 1, view_form[0], ['res_id'])
 
         view_tree = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
                                                                   ('name', '=',
                                                                    'project_contract_income_tree_menu')],
                                                           context=context)
-        if view_tree:
-            view_tree_id = self.pool.get('ir.model.data').read(cr, 1, view_tree[0], ['res_id'])
+        view_tree_id = self.pool.get('ir.model.data').read(cr, 1, view_tree[0], ['res_id'])
         return {
             'name': u'收费进度查询',
             'type': 'ir.actions.act_window',
@@ -423,22 +410,35 @@ class updis_contract_contract(osv.osv):
         result = super(updis_contract_contract, self).write(cr, uid, ids, vals, context=context)
         return result
 
-    def all_contract_action(self, cr, uid, context=None):
-        domain = []
-        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_partial_user', context=context):
-            hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
-            if hr_id:
-                hr_record = self.pool.get('hr.employee').browse(cr, uid, hr_id[0], context=context)
-                user_department_id = hr_record.department_id.id if hr_record.department_id else 0
-                domain = [('design_department.id', '=', user_department_id)]
-            else:
-                domain = [('design_department.id', '=', 0)]
-        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_user', context=context):
-            domain = []
 
-        context['search_default_is-common-contract'] = 1
+    def _get_domain_by_group(self, cr, uid, context=None):
+        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_all_limit', context=context):
+            domain = []
+        else:
+            user_department_id = contract_tools.get_user_department(self, cr, uid, context)
+            domain = [('design_department.id', '=', user_department_id)]
+        return domain
+
+    def contract_need_process(self, cr, uid, context=None):
+        domain = self._get_domain_by_group(cr, uid, context)
+        domain += ('price', '=', None)
+
         return {
-            'name': u'所有合同',
+            'name': u'待处理合同',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'res_model': 'project.contract.contract',
+            'target': 'current',
+            'domain': domain,
+        }
+
+    def all_contract_action(self, cr, uid, context=None):
+        domain = self._get_domain_by_group(cr, uid, context)
+        context['search_default_is-common-contract'] = 1
+
+        return {
+            'name': u'普通合同',
             'type': 'ir.actions.act_window',
             'view_mode': 'tree,form',
             'view_type': 'form',
@@ -449,17 +449,7 @@ class updis_contract_contract(osv.osv):
         }
 
     def third_party_contract_action(self, cr, uid, context=None):
-        domain = []
-        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_partial_user', context=context):
-            hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
-            if hr_id:
-                hr_record = self.pool.get('hr.employee').browse(cr, uid, hr_id[0], context=context)
-                user_department_id = hr_record.department_id.id if hr_record.department_id else 0
-                domain = [('design_department.id', '=', user_department_id)]
-            else:
-                domain = [('design_department.id', '=', 0)]
-        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_user', context=context):
-            domain = []
+        domain = self._get_domain_by_group(cr, uid, context)
         context['search_default_is-third-party-contract'] = 1
         context['default_type'] = 'third_party'
         return {
@@ -475,17 +465,7 @@ class updis_contract_contract(osv.osv):
 
 
     def tender_contract_action(self, cr, uid, context=None):
-        domain = []
-        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_partial_user', context=context):
-            hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
-            if hr_id:
-                hr_record = self.pool.get('hr.employee').browse(cr, uid, hr_id[0], context=context)
-                user_department_id = hr_record.department_id.id if hr_record.department_id else 0
-                domain = [('design_department.id', '=', user_department_id)]
-            else:
-                domain = [('design_department.id', '=', 0)]
-        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_user', context=context):
-            domain = []
+        domain = self._get_domain_by_group(cr, uid, context)
         context['search_default_is-tender-contract'] = 1
         context['default_type'] = 'tender'
         return {

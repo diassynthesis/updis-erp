@@ -2,30 +2,19 @@
 import datetime
 from openerp.osv import fields
 from openerp.osv import osv
+import contract_tools
 
 
 class updis_project_project(osv.osv):
     _inherit = "project.project"
     _name = 'project.project'
 
-    def __is_project_user_same_department(self, cr, uid, department_id, context):
-        hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
-        if hr_id:
-            hr_record = self.pool.get('hr.employee').browse(cr, uid, hr_id[0], context=context)
-            user_department_id = hr_record.department_id.id if hr_record.department_id else "sdfsdf"
-            if department_id == user_department_id:
-                return True
-            else:
-                return False
-        else:
-            return False
-
     def _is_user_contract_visible(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            is_same_department = self.__is_project_user_same_department(cr, uid,
-                                                                        obj.chenjiebumen_id.id if obj.chenjiebumen_id else None,
-                                                                        context=context)
+            is_same_department = contract_tools.is_project_user_same_department(self, cr, uid,
+                                                                                obj.chenjiebumen_id.id if obj.chenjiebumen_id else None,
+                                                                                context=context)
             result[obj.id] = False
             user_id = self.read(cr, uid, obj.id, ['user_id'], context=context)['user_id']
             if uid in user_id:

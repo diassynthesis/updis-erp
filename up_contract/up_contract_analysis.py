@@ -1,6 +1,7 @@
 # -*- encoding:utf-8 -*-
 import openerp
 from openerp.osv import osv, fields
+from up_contract import contract_tools
 
 __author__ = 'cysnake4713'
 
@@ -47,8 +48,8 @@ class up_contract_analysis(osv.osv):
         'paid_price': fields.float(string='Paid Price', digits=(16, 6), readonly=1),
         'remain_price': fields.float(string='Remain Price', digits=(16, 6), readonly=1),
         'customer': fields.related('contract_id', 'customer', type="many2many",
-                                           relation='res.partner',
-                                           string="Contract Customer", readonly=1),
+                                   relation='res.partner',
+                                   string="Contract Customer", readonly=1),
     }
 
     def init(self, cr):
@@ -69,17 +70,11 @@ class up_contract_analysis(osv.osv):
                    " )")
 
     def all_contract_analysis_action(self, cr, uid, context=None):
-        domain = []
-        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_partial_user', context=context):
-            hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
-            if hr_id:
-                hr_record = self.pool.get('hr.employee').browse(cr, uid, hr_id[0], context=context)
-                user_department_id = hr_record.department_id.id if hr_record.department_id else 0
-                domain = [('department_id.id', '=', user_department_id)]
-            else:
-                domain = [('department_id.id', '=', 0)]
-        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_user', context=context):
+        if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_all_limit', context=context):
             domain = []
+        else:
+            user_department_id = contract_tools.get_user_department(self, cr, uid, context)
+            domain = [('department_id.id', '=', user_department_id)]
         return {
             'name': u'收费进度查询',
             'type': 'ir.actions.act_window',
