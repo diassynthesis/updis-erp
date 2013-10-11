@@ -174,7 +174,7 @@
                             </group>
                             <group string="Project Info">
                                 <field name="project_id" class="oe_no_button"
-                                       on_change="on_change_project(project_id)"/>
+                                       on_change="on_change_project(project_id)" domain="context.get('temp_contract_domain',[])"/>
                                 <field name="project_number" readonly="1"/>
                                 <field name="project_category" readonly="1"/>
                                 <field name="design_department"/>
@@ -328,7 +328,7 @@
                 <form string="Project Contract Income">
                     <group>
                         <group>
-                            <field name="contract_id" required="1"/>
+                            <field name="contract_id" required="1" domain="context.get('temp_contract_domain',[])"/>
                             <field name="price"/>
                             <newline/>
                             <group colspan="2" col="4">
@@ -437,7 +437,7 @@
                     <group>
                         <group colspan="2">
                             <group>
-                                <field name="contract_id" required="1"/>
+                                <field name="contract_id" required="1" domain="context.get('temp_contract_domain',[])"/>
                                 <newline/>
                                 <group colspan="2" col="4">
                                     <field name="number"/>

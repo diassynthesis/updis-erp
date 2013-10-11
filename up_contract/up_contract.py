@@ -97,7 +97,8 @@ class updis_contract_invoice(osv.osv):
             domain = []
         else:
             user_department_id = contract_tools.get_user_department(self, cr, uid, context)
-            domain = [('contract_id.design_department.id', '=', user_department_id)]
+            domain = [('project_id.chenjiebumen_id.id', '=', user_department_id)]
+            context['temp_contract_domain'] = domain
 
         view_form = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
                                                                   ('name', '=',
@@ -110,6 +111,7 @@ class updis_contract_invoice(osv.osv):
                                                                    'project_contract_invoice_tree_menu')],
                                                           context=context)
         view_tree_id = self.pool.get('ir.model.data').read(cr, 1, view_tree[0], ['res_id'])
+
         return {
             'name': u'已开发票查询',
             'type': 'ir.actions.act_window',
@@ -193,7 +195,8 @@ class updis_contract_income(osv.osv):
             domain = []
         else:
             user_department_id = contract_tools.get_user_department(self, cr, uid, context)
-            domain = [('contract_id.design_department.id', '=', user_department_id)]
+            domain = [('project_id.chenjiebumen_id.id', '=', user_department_id)]
+            context['temp_contract_domain'] = domain
 
         view_form = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
                                                                   ('name', '=',
@@ -414,14 +417,16 @@ class updis_contract_contract(osv.osv):
     def _get_domain_by_group(self, cr, uid, context=None):
         if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_all_limit', context=context):
             domain = []
+            temp_domain = []
         else:
             user_department_id = contract_tools.get_user_department(self, cr, uid, context)
             domain = [('design_department.id', '=', user_department_id)]
-        return domain
+            temp_domain = [('chenjiebumen_id.id', '=', user_department_id)]
+        return domain, temp_domain
 
     def contract_need_process(self, cr, uid, context=None):
-        domain = self._get_domain_by_group(cr, uid, context)
-        domain += ('price', '=', None)
+        domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
+        domain += [('price', '=', None)]
 
         return {
             'name': u'待处理合同',
@@ -431,10 +436,11 @@ class updis_contract_contract(osv.osv):
             'res_model': 'project.contract.contract',
             'target': 'current',
             'domain': domain,
+            'context': context,
         }
 
     def all_contract_action(self, cr, uid, context=None):
-        domain = self._get_domain_by_group(cr, uid, context)
+        domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
         context['search_default_is-common-contract'] = 1
 
         return {
@@ -449,7 +455,7 @@ class updis_contract_contract(osv.osv):
         }
 
     def third_party_contract_action(self, cr, uid, context=None):
-        domain = self._get_domain_by_group(cr, uid, context)
+        domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
         context['search_default_is-third-party-contract'] = 1
         context['default_type'] = 'third_party'
         return {
@@ -465,7 +471,7 @@ class updis_contract_contract(osv.osv):
 
 
     def tender_contract_action(self, cr, uid, context=None):
-        domain = self._get_domain_by_group(cr, uid, context)
+        domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
         context['search_default_is-tender-contract'] = 1
         context['default_type'] = 'tender'
         return {
