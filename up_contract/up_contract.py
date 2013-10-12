@@ -10,7 +10,7 @@ __author__ = 'cysnake4713'
 class updis_contract_expenses(osv.osv):
     _name = 'project.contract.expenses'
     _rec_name = 'price'
-    _order = 'obtain_date'
+    _order = 'id desc'
     _columns = {
         'obtain_date': fields.date('Obtain Date', required=True),
         'price': fields.float(string='Obtain Price', digits=(16, 6)),
@@ -28,7 +28,7 @@ class updis_contract_invoice(osv.osv):
     _name = 'project.contract.invoice'
     _description = 'Project Contract Invoice'
     _rec_name = 'number'
-    _order = 'obtain_date'
+    _order = 'id desc'
     _columns = {
         'number': fields.char('Invoice No.', size=64, ),
         'obtain_date': fields.date('Invoice Create Date', required=True),
@@ -128,7 +128,7 @@ class updis_contract_invoice(osv.osv):
 class updis_contract_income(osv.osv):
     _name = 'project.contract.income'
     _rec_name = 'price'
-    _order = 'obtain_date'
+    _order = 'id desc'
     _columns = {
         'obtain_date': fields.date('Obtain Date', required=True),
         'price': fields.float(string='Obtain Price', digits=(16, 6)),
