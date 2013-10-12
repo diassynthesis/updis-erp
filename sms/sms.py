@@ -175,7 +175,7 @@ class sms(osv.Model):
 
 
     def send_big_ant_to_users(self, cr, uid, users, from_rec, subject, content, model, res_id, context=None):
-        to = ','.join(
+        to = ';'.join(
             [user.big_ant_login_name for user in users if user.big_ant_login_name])
         if to:
             sid = self.create(cr, uid,
@@ -193,7 +193,7 @@ class sms(osv.Model):
         if models:
             groups_pool = self.pool.get("res.groups")
             group = groups_pool.browse(cr, 1, models[0].res_id, context=context)
-            to = ','.join([user.big_ant_login_name for user in group.users if user.big_ant_login_name])
+            to = ';'.join([user.big_ant_login_name for user in group.users if user.big_ant_login_name])
 
             if to:
                 sms = self.pool.get('sms.sms')
@@ -210,7 +210,7 @@ class sms(osv.Model):
         if models:
             groups_pool = self.pool.get("project.config.sms")
             group = groups_pool.browse(cr, 1, models[0].res_id, context=context)
-            to = ','.join([user.big_ant_login_name for user in group.users if user.big_ant_login_name])
+            to = ';'.join([user.big_ant_login_name for user in group.users if user.big_ant_login_name])
 
             if to:
                 sms = self.pool.get('sms.sms')
