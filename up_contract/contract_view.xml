@@ -244,6 +244,8 @@
                     <field name="project_category"/>
                     <field name="project_manager"/>
                     <field name="project_state"/>
+                    <field name="project_level"/>
+                    <field name="third_party_company"/>
                     <filter name="is-common-contract" string="Common Contract(s)" domain="[('type','=','common')]"
                             help="Show All Common Contract(s)"/>
                     <filter name="is-third-party-contract" string="Thrid Party Contract(s)"
@@ -260,17 +262,21 @@
             <field name="model">project.contract.contract</field>
             <field name="arch" type="xml">
                 <tree string="Project Contract" version="7.0">
+                    <field name="type" invisible="context.get('temp_show_contract_type',1)"/>
                     <field name="number"/>
-                    <field name="name"/>
-                    <field name="customer"/>
-                    <field name="type"/>
-                    <field name="project_id"/>
                     <field name="design_department"/>
+                    <field name="project_id" invisible="context.get('temp_show_third_party',1)"/>
+                    <field name="third_party_company" invisible="context.get('temp_show_third_party',1)"/>
+                    <field name="sign_date" invisible="context.get('temp_show_third_party',1)"/>
+                    <field name="name" invisible="context.get('temp_show_tender_and_common',1)"/>
+                    <field name="project_category" invisible="context.get('temp_show_tender_and_common',1)"/>
+                    <field name="project_level" invisible="context.get('temp_show_tender_and_common',1)"/>
+                    <field name="project_manager" invisible="context.get('temp_show_tender_and_common',1)"/>
                     <field name="price"/>
+                    <field name="customer" invisible="context.get('temp_show_tender_and_common',1)"/>
                     <field name="entrust_type" invisible="1"/>
                     <field name="sign_date" invisible="1"/>
                     <field name="project_category" invisible="1"/>
-                    <field name="project_manager" invisible="1"/>
                     <field name="project_state" invisible="1"/>
                 </tree>
             </field>
@@ -304,8 +310,8 @@
             <field name="arch" type="xml">
                 <tree string="Project Contract Income">
                     <field name="contract_num" select="1"/>
-                    <field name="contract_id" select="1"/>
                     <field name="department_id"/>
+                    <field name="contract_id" select="1"/>
                     <field name="customer"/>
                     <field name="price" string="单笔收费金额(万元)" select="1"/>
                     <field name="contract_entrust_type" invisible="1" select="1"/>
@@ -410,8 +416,8 @@
             <field name="arch" type="xml">
                 <tree string="Project Contract Invoice">
                     <field name="contract_num"/>
-                    <field name="contract_id"/>
                     <field name="department_id"/>
+                    <field name="contract_id"/>
                     <field name="customer"/>
                     <field name="price" string="发票金额(万元)"/>
                     <field name="contract_entrust_type" invisible="1"/>

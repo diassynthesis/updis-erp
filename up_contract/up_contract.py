@@ -427,7 +427,8 @@ class updis_contract_contract(osv.osv):
     def contract_need_process(self, cr, uid, context=None):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
         domain += [('price', '=', None)]
-
+        context['temp_show_contract_type'] = 0
+        context['temp_show_tender_and_common'] = 0
         return {
             'name': u'待处理合同',
             'type': 'ir.actions.act_window',
@@ -442,7 +443,7 @@ class updis_contract_contract(osv.osv):
     def all_contract_action(self, cr, uid, context=None):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
         context['search_default_is-common-contract'] = 1
-
+        context['temp_show_tender_and_common'] = 0
         return {
             'name': u'普通合同',
             'type': 'ir.actions.act_window',
@@ -458,6 +459,7 @@ class updis_contract_contract(osv.osv):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
         context['search_default_is-third-party-contract'] = 1
         context['default_type'] = 'third_party'
+        context['temp_show_third_party'] = 0
         return {
             'name': u'所有合同',
             'type': 'ir.actions.act_window',
@@ -474,6 +476,7 @@ class updis_contract_contract(osv.osv):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
         context['search_default_is-tender-contract'] = 1
         context['default_type'] = 'tender'
+        context['temp_show_tender_and_common'] = 0
         return {
             'name': u'所有合同',
             'type': 'ir.actions.act_window',
