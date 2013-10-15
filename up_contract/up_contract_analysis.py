@@ -12,6 +12,14 @@ class up_contract_analysis(osv.osv):
     _auto = False
     _rec_name = "contract_name"
     _order = "contract_id desc"
+
+    def _get_project_manager_name(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            project_manager_name = [m.name for m in obj.project_manager]
+            result[obj.id] = ','.join(project_manager_name)
+        return result
+
     _columns = {
         'contract_id': fields.many2one('project.contract.contract', 'Contract', readonly=1),
         'contract_name': fields.related('contract_id', 'name', type="char",
@@ -31,6 +39,8 @@ class up_contract_analysis(osv.osv):
                                      string="Project", readonly=1),
         'project_manager': fields.related('project_id', 'user_id', type="many2many", relation='res.users',
                                           string="Project Manager", readonly=1),
+        'project_manager_name': fields.function(_get_project_manager_name, type='char', readonly=True,
+                                                string="Project Manager Name For export"),
         'project_category': fields.related('project_id', 'categories_id', type="many2one",
                                            relation='project.upcategory',
                                            string="Project Category", readonly=1),
