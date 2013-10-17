@@ -52,7 +52,9 @@
             <field name="code">
 from_rec = object.name
 subject = u"项目进度提示"
-http_address = pool.get('ir.config_parameter').browse(cr,1,1,context=context).value
+ir_obj = pool.get('ir.config_parameter')
+http_address_id = ir_obj.search(cr,1,[('key','=','web.base.static.url')],context=context)
+http_address = ir_obj.browse(cr,1,http_address_id[0],context=context).value
 http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.project" % object.project_id.id
 big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您的审批,请及时处理项目和跟进项目进度 """ % (http_address,object.name)
 content = u"项目[%s]需要您的审批,请及时处理项目和跟进项目进度" % (object.name)
@@ -75,7 +77,9 @@ pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, big_a
 from_rec = object.name
 subject = u"项目进度提示"
 content = u"项目[%s]需要您的审批,请及时处理项目和跟进项目进度" % (object.name)
-http_address = pool.get('ir.config_parameter').browse(cr,1,1,context=context).value
+ir_obj = pool.get('ir.config_parameter')
+http_address_id = ir_obj.search(cr,1,[('key','=','web.base.static.url')],context=context)
+http_address = ir_obj.browse(cr,1,http_address_id[0],context=context).value
 http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.project" % object.project_id.id
 big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您的审批,请及时处理项目和跟进项目进度 """ % (http_address,object.name)
 model = 'project.project.active.tasking'
@@ -96,7 +100,9 @@ pool.get('sms.sms').send_big_ant_to_group(cr,uid,from_rec,subject,big_ant_conten
 from_rec = object.name
 subject = u"项目进度提示"
 content = u"项目[%s]需要您的审批,请及时处理项目和跟进项目进度" % (object.name)
-http_address = pool.get('ir.config_parameter').browse(cr,1,1,context=context).value
+ir_obj = pool.get('ir.config_parameter')
+http_address_id = ir_obj.search(cr,1,[('key','=','web.base.static.url')],context=context)
+http_address = ir_obj.browse(cr,1,http_address_id[0],context=context).value
 http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.project" % object.project_id.id
 big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您的审批,请及时处理项目和跟进项目进度 """ % (http_address,object.name)
 model = 'project.project.active.tasking'
@@ -118,7 +124,9 @@ pool.get('sms.sms').send_big_ant_to_config_group(cr, uid, sms_config_id, from_re
 from_rec = object.name
 subject = u"项目进度提示"
 content = u"项目[%s]需要您的审批启动,请及时处理项目和跟进项目进度" % (object.name)
-http_address = pool.get('ir.config_parameter').browse(cr,1,1,context=context).value
+ir_obj = pool.get('ir.config_parameter')
+http_address_id = ir_obj.search(cr,1,[('key','=','web.base.static.url')],context=context)
+http_address = ir_obj.browse(cr,1,http_address_id[0],context=context).value
 http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.project" % object.project_id.id
 big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您的审批,请及时处理项目和跟进项目进度 """ % (http_address,object.name)
 model = 'project.project.active.tasking'
@@ -144,7 +152,9 @@ pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, big_a
 from_rec = object.name
 subject = u"项目进度提示"
 content = u"项目[%s]已经启动,您是本项目的:主管总师, 请及时处理和跟进项目进度" % (object.name)
-http_address = pool.get('ir.config_parameter').browse(cr,1,1,context=context).value
+ir_obj = pool.get('ir.config_parameter')
+http_address_id = ir_obj.search(cr,1,[('key','=','web.base.static.url')],context=context)
+http_address = ir_obj.browse(cr,1,http_address_id[0],context=context).value
 http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.project" % object.project_id.id
 big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 已经启动,您是本项目的:主管总师, 请及时处理和跟进项目进度 """ % (http_address,object.name)
 model = 'project.project.active.tasking'

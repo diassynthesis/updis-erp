@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-    <data>
+    <data noupdate="1">
         <record model="ir.cron" id="auto_send_sms">
             <field name="name">Auto Send SMS</field>
             <!--field name="active">True</field-->
@@ -12,8 +12,9 @@
             <field name="function">process_send_message_in_queue</field>
             <field name="args">()</field>
         </record>
+    </data>
 
-
+    <data>
         <record id="form_sms_view" model="ir.ui.view">
             <field name="name">sms.sms.form</field>
             <field name="model">sms.sms</field>
@@ -21,7 +22,7 @@
                 <form string="Sms Detail">
                     <group col="2">
                         <field name="state"/>
-                        <field name="sent_date"/>
+                        <field name="sent_date" readonly="1"/>
                         <field name="from"/>
                         <field name="model"/>
                         <field name="res_id"/>
@@ -32,7 +33,7 @@
                     </group>
                     <newline/>
                     <group>
-                        <field name="sms_server_id"/>
+                        <field name="sms_server_id" readonly="1"/>
                     </group>
                 </form>
             </field>

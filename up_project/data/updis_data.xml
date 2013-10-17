@@ -85,5 +85,12 @@
         <record id="project_config_sms_active_tasking_engineer" model="project.config.sms">
             <field name="name">项目启动--总师室--短信接受人</field>
         </record>
+
+
+        <!--parameters-->
+        <record id="ir_parameters_static_url" model="ir.config_parameter">
+            <field name="key">web.base.static.url</field>
+            <field name="value">http://erp.updis.cn</field>
+        </record>
     </data>
 </openerp>

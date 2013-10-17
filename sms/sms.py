@@ -10,7 +10,7 @@ class sms(osv.Model):
     _sms_gateway = "http://web.mobset.com/SDK/Sms_Send.asp"
     _big_ant_gateway = "http://10.100.100.200:6664/Employee.asmx/SendMessenge"
     _name = "sms.sms"
-    _order = "sent_date desc"
+    _order = "id desc"
     _columns = {
         'subject': fields.char('Subject', size=256),
         'content': fields.text("Content", size=2000),
