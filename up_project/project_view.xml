@@ -147,7 +147,8 @@
                             help="Projects in which I am a manager" icon="terp-personal"/>
                     <filter string="Tender Project(s)" domain="[('shifoutoubiao','=',True)]" help="All Tender Projects"
                             icon="terp-personal"/>
-                    <filter name="filed-project" string="Filed Project(s)" domain="[('state','=','project_finish')]" help="All Filed Projects"
+                    <filter name="filed-project" string="Filed Project(s)" domain="[('state','=','project_finish')]"
+                            help="All Filed Projects"
                             icon="terp-personal"/>
                     <group expand="0" string="Group By...">
                         <filter string="state" name="Manager" icon="terp-personal" domain="[]"
@@ -217,7 +218,8 @@
                             <br/>
                             <br/>
                             <br/>
-                            <span class="big-red-hit">请填写基础信息点击左上角保存后,点击当前页面下方的 "项目流程"标签卡 ---> "产品要求评审及任务下达记录" 开始启动流程．</span>
+                            <span class="big-red-hit">请填写基础信息点击左上角保存后,点击当前页面下方的 "项目流程"标签卡 ---> "产品要求评审及任务下达记录" 开始启动流程．
+                            </span>
                         </div>
                         <group attrs="{'invisible':[('is_project_created','=',False)]}">
                             <group string="Partner Info">
@@ -267,14 +269,18 @@
                         </page>
                         <page name="project_comment" string="Project Comments">
                             <group>
-                                <field name="questions" attrs="{'readonly':[('is_user_is_project_manager','=',False)]}"/>
-                                <field name="primary_work" attrs="{'readonly':[('is_user_is_project_manager','=',False)]}" />
-                                <field name="next_work_plan" attrs="{'readonly':[('is_user_is_project_manager','=',False)]}" />
+                                <field name="questions"
+                                       attrs="{'readonly':[('is_user_is_project_manager','=',False)]}"/>
+                                <field name="primary_work"
+                                       attrs="{'readonly':[('is_user_is_project_manager','=',False)]}"/>
+                                <field name="next_work_plan"
+                                       attrs="{'readonly':[('is_user_is_project_manager','=',False)]}"/>
                             </group>
                         </page>
                         <page name="attachments" string="Attachments">
                             <group>
-                                <field name="attachments" nolabel="1" readonly="1" widget="many2many_binary" invisible="1"/>
+                                <field name="attachments" nolabel="1" readonly="1" widget="many2many_binary"
+                                       invisible="1"/>
                             </group>
                         </page>
                         <page name="project_log" string="Project Logs">
@@ -424,6 +430,42 @@
                     </group>
                 </form>
             </field>
+        </record>
+
+
+        <record id="act_project_engineer_room_config" model="ir.actions.act_window">
+            <field name="name">Project Engineer Room Config Action</field>
+            <field name="res_model">project.engineer.room.config.wizard</field>
+            <field name="view_type">form</field>
+            <field name="target">new</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">form</field>
+            <field name="context">{}</field>
+
+        </record>
+
+        <menuitem name="Project Engineer Room Config" id="project_engineer_room_config_menu"
+                  parent="base.menu_definitions" groups="group_project_engineer_room_config"
+                  action="act_project_engineer_room_config" sequence="100"/>
+
+        <record id="project_engineer_room_config_form" model="ir.ui.view">
+            <field name="name">project engineer room config wizard</field>
+            <field name="model">project.engineer.room.config.wizard</field>
+            <field name="arch" type="xml">
+                <form version="7.0" string="Project Engineer Config">
+                    <h3>此处可修改总师室成员权限组成员</h3>
+                    <group>
+                        <field name="users" nolabel="1"/>
+                    </group>
+                    <footer>
+                        <button name="config_accept" class="oe_highlight" string="修改"
+                                groups="up_project.group_project_engineer_room_config"
+                                type="object"/>or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+
         </record>
     </data>
 </openerp>
