@@ -141,7 +141,8 @@ instance.web.Session = instance.web.JsonRPC.extend( /** @lends instance.web.Sess
             this.name + '|' + name + '=' + encodeURIComponent(JSON.stringify(value)),
             'path=/',
             'max-age=' + ttl,
-            'expires=' + new Date(new Date().getTime() + ttl*1000).toGMTString()
+            'expires=' + new Date(new Date().getTime() + ttl*1000).toGMTString(),
+	    'domain=.updis.cn'
         ].join(';');
     },
     /**
