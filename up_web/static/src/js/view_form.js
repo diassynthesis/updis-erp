@@ -2646,13 +2646,9 @@ instance.web.form.FieldTextHtml = instance.web.form.AbstractField.extend(instanc
                 width:      width, // width not including margins, borders or padding
                 height:     height, // height not including margins, borders or padding
                 controls:   // controls to add to the toolbar
- 				"bold italic underline strikethrough | font size " +
-                               " style "+
-                            "| color highlight removeformat | bullets numbering | outdent " +
-                            "indent |  alignleft center alignright justify | undo redo | link unlink | fileuploader imageuploader videouploader icon | source",
-                            //"bold italic underline strikethrough " +
-                            //"| removeformat | bullets numbering | outdent " +
-                            //"indent | link unlink | fileuploader imageuploader icon | source",
+                            "bold italic underline strikethrough " +
+                            "| removeformat | bullets numbering | outdent " +
+                            "indent | link unlink | source",
                 bodyStyle:  // style to assign to document body contained within the editor
                             "margin:4px; color:#4c4c4c; font-size:13px; font-family:\"Lucida Grande\",Helvetica,Verdana,Arial,sans-serif; cursor:text"
             });
@@ -5060,7 +5056,7 @@ instance.web.form.FieldBinaryImage = instance.web.form.FieldBinary.extend({
  * Options on attribute ; "blockui" {Boolean} block the UI or not
  * during the file is uploading
  */
-instance.web.form.FieldMany2ManyBinaryMultiFiles = instance.web.form.AbstractField.extend(instance.web.form.CompletionFieldMixin, instance.web.form.ReinitializeFieldMixin, {
+instance.web.form.FieldMany2ManyBinaryMultiFiles = instance.web.form.AbstractField.extend({
     template: "FieldBinaryFileUploader",
     init: function(field_manager, node) {
         this._super(field_manager, node);
@@ -5073,7 +5069,8 @@ instance.web.form.FieldMany2ManyBinaryMultiFiles = instance.web.form.AbstractFie
         this.fileupload_id = _.uniqueId('oe_fileupload_temp');
         $(window).on(this.fileupload_id, _.bind(this.on_file_loaded, this));
     },
-    initialize_content: function() {
+    start: function() {
+        this._super(this);
         this.$el.on('change', 'input.oe_form_binary_file', this.on_file_change );
     },
     set_value: function(value_) {

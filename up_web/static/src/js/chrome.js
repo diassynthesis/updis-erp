@@ -249,7 +249,7 @@ instance.web.CrashManager = instance.web.Class.extend({
         }
         // yes, exception handling is shitty
         if (error.code === 300 && error.data && error.data.type == "client_exception" && error.data.debug.match("SessionExpiredException")) {
-            this.show_warning({type: "Session Expired", data: { fault_code: "登录过期，请重新刷新页面！" }});
+            this.show_warning({type: "Session Expired", data: { fault_code: "Your OpenERP session expired. Please refresh the current web page." }});
             return;
         }
         if (error.data.fault_code) {
@@ -270,7 +270,7 @@ instance.web.CrashManager = instance.web.Class.extend({
             return;
         }
         instance.web.dialog($('<div>' + QWeb.render('CrashManager.warning', {error: error}) + '</div>'), {
-            title: "UpdisERP " + _.str.capitalize(error.type),
+            title: "OpenERP " + _.str.capitalize(error.type),
             buttons: [
                 {text: _t("Ok"), click: function() { $(this).dialog("close"); }}
             ]
@@ -285,7 +285,7 @@ instance.web.CrashManager = instance.web.Class.extend({
             $(this).dialog("close");
         };
         var dialog = new instance.web.Dialog(this, {
-            title: "UpdisERP " + _.str.capitalize(error.type),
+            title: "OpenERP " + _.str.capitalize(error.type),
             width: '80%',
             height: '50%',
             min_width: '800px',
@@ -1176,7 +1176,7 @@ instance.web.WebClient = instance.web.Client.extend({
     set_title: function(title) {
         title = _.str.clean(title);
         var sep = _.isEmpty(title) ? '' : ' - ';
-        document.title = title + sep + 'UpdisERP';
+        document.title = title + sep + 'OpenERP';
     },
     show_common: function() {
         var self = this;
@@ -1295,24 +1295,13 @@ instance.web.WebClient = instance.web.Client.extend({
         var n = this.notification;
         return n.warn.apply(n, arguments);
     },
-    
-    
-    abandon_on_logout: function () {
-        var self = this;
-        if (!this.has_uncommitted_changes()) {
-            self.rpc("/cas/cas_logout", {}).done(function (response) {
-                window.location = response["logout_url"];
-            });
-        }
-    },
-    
     on_logout: function() {
         var self = this;
         if (!this.has_uncommitted_changes()) {
             this.session.session_logout().done(function () {
                 $(window).unbind('hashchange', self.on_hashchange);
                 self.do_push_state({});
-                window.location='http://cms.updis.cn';
+                window.location.reload();
             });
         }
     },
