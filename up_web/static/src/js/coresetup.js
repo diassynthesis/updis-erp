@@ -137,12 +137,13 @@ instance.web.Session = instance.web.JsonRPC.extend( /** @lends instance.web.Sess
     set_cookie: function (name, value, ttl) {
         if (!this.name) { return; }
         ttl = ttl || 24*60*60*365;
+        var domain = $('#openerp-domain-value').text();
         document.cookie = [
             this.name + '|' + name + '=' + encodeURIComponent(JSON.stringify(value)),
             'path=/',
             'max-age=' + ttl,
             'expires=' + new Date(new Date().getTime() + ttl*1000).toGMTString(),
-	    'domain=.updis.cn'
+	    'domain=' + domain
         ].join(';');
     },
     /**

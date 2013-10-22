@@ -3,15 +3,17 @@ __author__ = 'cysnake4713'
 
 from openerp.addons.web.controllers.main import *
 from openerp.addons.web.controllers import main
+from tools import config
+
 
 def set_cookie_and_redirect(req, redirect_url):
     redirect = werkzeug.utils.redirect(redirect_url, 303)
     redirect.autocorrect_location_header = False
     cookie_val = urllib2.quote(simplejson.dumps(req.session_id))
-    from tools import config
 
     redirect.set_cookie('instance0|session_id', cookie_val, domain=config.get('domain', None))
     return redirect
+
 
 html_template = """<!DOCTYPE html>
 <html style="height: 100%%">
@@ -35,6 +37,7 @@ html_template = """<!DOCTYPE html>
         <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
         <script>CFInstall.check({mode: "overlay"});</script>
         <![endif]-->
+        <div id="openerp-domain-value" style='display: none;'>""" + config.get('domain', "") + """</div>
     </body>
 </html>
 """
