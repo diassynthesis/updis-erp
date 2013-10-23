@@ -38,6 +38,7 @@ html_template = """<!DOCTYPE html>
         <script>CFInstall.check({mode: "overlay"});</script>
         <![endif]-->
         <div id="openerp-domain-value" style='display: none;'>""" + config.get('domain', "") + """</div>
+        <div id='openerp-logout-url' style='display: none;'>""" + config.get('logout_redirect_url', "") + """</div>
     </body>
 </html>
 """

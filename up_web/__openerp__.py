@@ -11,9 +11,7 @@
     'css': [
     ],
     'js': [
-        'static/src/js/chrome.js',
-        'static/src/js/coresetup.js',
-        'static/src/js/view_form.js',
+        'static/src/js/modify.js',
     ],
     'img':[
 
