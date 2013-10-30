@@ -20,6 +20,7 @@ UPDIS Project Module.""",
 
         'wizard/active/project_active_view.xml',
         'wizard/active/tasking/project_active_tasking_action.xml',
+        'wizard/active/tasking/project_active_tasking_wizard_view.xml',
         'wizard/active/tasking/project_active_tasking_view.xml',
         'wizard/active/tasking/project_active_tasking_workflow.xml',
         'wizard/active/project_active_workflow.xml',
@@ -38,6 +39,7 @@ UPDIS Project Module.""",
 
         'hr_view.xml',
         'res_partner.xml',
+        'project_config.xml',
     ],
     'css': [
         'static/src/css/up_project.css'

@@ -92,5 +92,10 @@
             <field name="key">web.base.static.url</field>
             <field name="value">http://erp.updis.cn</field>
         </record>
+
+        <!--form config-->
+        <record id="project_active_tasking_config_record" model="project.active.tasking.config">
+            <field name="name">任务下达单配置</field>
+        </record>
     </data>
 </openerp>
