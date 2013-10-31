@@ -28,11 +28,13 @@
                             <field name="is_admin"/>
                             <field name="category_name"/>
                             <field name="is_user_is_project_manager"/>
+                            <field name="director_reviewer_groups"/>
+                            <field name="is_cover_sign"/>
+                            <field name="is_cover_sign_final"/>
                         </group>
                         <group colspan="2" name="project_num"
                                attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}">
-                            <field name="xiangmubianhao" readonly="1"
-                                    />
+                            <field name="xiangmubianhao" readonly="1"/>
                         </group>
                         <group class="activetable" col="4">
                             <field name="name" string="Project Name"
@@ -72,8 +74,9 @@
                                         <div class="inline-item"
                                              attrs="{'invisible':[('state','not in',['open','suozhangshenpi'])]}">
                                             <span>请求审评:</span>
+
                                             <field name="director_reviewer_id"
-                                                   domain="[('groups_id','=',%(group_up_project_suozhang)d)]"
+                                                   domain="[('id','=',director_reviewer_groups[0][2])]"
                                                    class="oe_no_button"
                                                    options='{"no_open": True}'
                                                    attrs="{'required':[('state','in',['open','suozhangshenpi'])],'invisible':[('state','not in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
@@ -90,12 +93,10 @@
                                                 string="审批通过并提交经营室"
                                                 confirm="确定审批通过并且提交到经营室审批?"
                                                 type="object"
-                                                attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangshenpi')]}"
-                                                groups="up_project.group_up_project_suozhang"/>
+                                                attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangshenpi')]}"/>
                                         <button name="%(project_active_tasking_reject_wizard_action)d" string="打回申请单"
                                                 type="action"
-                                                attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangshenpi')]}"
-                                                groups="up_project.group_up_project_suozhang"/>
+                                                attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangshenpi')]}"/>
                                         <field name="director_reviewer_apply_id" readonly="1" invisible="1"/>
                                         <div attrs="{'invisible':[('state','in',['open','suozhangshenpi'])]}">
                                             <field name="director_reviewer_apply_image" widget="image"
@@ -105,6 +106,9 @@
                                             <field name="director_reviewer_apply_id" readonly="1"/>
                                         </div>
                                         <field name="director_reviewer_apply_time" readonly="1"/>
+                                        <div attrs="{'invisible':[('is_cover_sign','=',False)]}">
+                                                (代签)
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -325,19 +329,19 @@
                                                        readonly="1"/>
                                             </div>
                                             <field name="director_approve_time" readonly="1"/>
-                                            <field name="is_project_director" invisible="1"/>
                                             <button name="manager_review_accept"
                                                     class="oe_highlight"
                                                     string="确认启动项目"
                                                     confirm="确定启动项目?"
                                                     type="object"
-                                                    attrs="{'invisible':['|',('state','!=','suozhangqianzi'),('is_project_director','=',False)]}"
-                                                    groups="up_project.group_up_project_suozhang"/>
+                                                    attrs="{'invisible':['|',('state','!=','suozhangqianzi'),('is_project_director','=',False)]}"/>
                                             <button name="%(project_active_tasking_reject_wizard_action)d"
                                                     string="打回申请单"
                                                     type="action"
-                                                    attrs="{'invisible':['|',('state','!=','suozhangqianzi'),('is_project_director','=',False)]}"
-                                                    groups="up_project.group_up_project_suozhang"/>
+                                                    attrs="{'invisible':['|',('state','!=','suozhangqianzi'),('is_project_director','=',False)]}"/>
+                                            <div attrs="{'invisible':[('is_cover_sign_final','=',False)]}">
+                                                (代签)
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>

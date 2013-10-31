@@ -68,7 +68,7 @@
         <record id="t_project_active_tasking_end" model="workflow.transition">
             <field name="act_from" ref="act_active_tasking_director_approve"/>
             <field name="act_to" ref="act_active_tasking_stop"/>
-            <field name="group_id" ref="up_project.group_up_project_suozhang"/>
+            <field name="group_id" eval="None"/>
             <field name="signal">fuzeren_submit</field>
         </record>
         <record id="t_project_active_tasking_start_end" model="workflow.transition">
@@ -87,14 +87,14 @@
         <record id="t_project_active_tasking_2" model="workflow.transition">
             <field name="act_from" ref="act_active_tasking_director_apply"/>
             <field name="act_to" ref="act_active_tasking_open"/>
-            <field name="group_id" ref="up_project.group_up_project_suozhang"/>
+            <field name="group_id" eval="None"/>
             <field name="signal">draft_reject</field>
         </record>
 
         <record id="t_project_active_tasking_3" model="workflow.transition">
             <field name="act_from" ref="act_active_tasking_director_apply"/>
             <field name="act_to" ref="act_active_tasking_operator_room"/>
-            <field name="group_id" ref="up_project.group_up_project_suozhang"/>
+            <field name="group_id" eval="None"/>
             <field name="signal">suozhangshenpi_submit</field>
         </record>
         <record id="t_project_active_tasking_4" model="workflow.transition">
@@ -126,7 +126,7 @@
         <record id="t_project_active_tasking_8" model="workflow.transition">
             <field name="act_from" ref="act_active_tasking_director_approve"/>
             <field name="act_to" ref="act_active_tasking_engineer_room"/>
-            <field name="group_id" ref="up_project.group_up_project_suozhang"/>
+            <field name="group_id" eval="None"/>
             <field name="signal">zongshishi_reject</field>
         </record>
     </data>

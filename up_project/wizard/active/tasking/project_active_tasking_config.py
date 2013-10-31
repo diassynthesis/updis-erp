@@ -216,6 +216,9 @@ class project_active_tasking_config(osv.osv):
         'chief_engineer_config': fields.many2many("res.users", "active_tasking_config_chief_engineer", "config_id",
                                                   "res_user_id",
                                                   string="Chief Engineer"),
+        'cover_director_config': fields.many2many("res.users", "active_tasking_config_cover_director", "config_id",
+                                                  "res_user_id",
+                                                  string="Cover Director"),
     }
 
 
@@ -234,6 +237,8 @@ class project_active_tasking_config_wizard(osv.osv_memory):
 
         if 'chief_engineer_config' in fields:
             res['chief_engineer_config'] = [z.id for z in origin.chief_engineer_config]
+        if 'cover_director_config' in fields:
+            res['cover_director_config'] = [z.id for z in origin.cover_director_config]
 
         return res
 
@@ -242,6 +247,9 @@ class project_active_tasking_config_wizard(osv.osv_memory):
                                                   "config_id",
                                                   "res_user_id",
                                                   string="Chief Engineer"),
+        'cover_director_config': fields.many2many("res.users", "active_tasking_config_cover_director_wizard", "config_id",
+                                                  "res_user_id",
+                                                  string="Cover Director"),
     }
 
     def config_accept(self, cr, uid, ids, context=None):
@@ -253,5 +261,6 @@ class project_active_tasking_config_wizard(osv.osv_memory):
         self_record = self.browse(cr, uid, ids[0], context)
         target.write({
             'chief_engineer_config': [(6, 0, [z.id for z in self_record.chief_engineer_config])],
+            'cover_director_config': [(6, 0, [z.id for z in self_record.cover_director_config])],
         })
         return True

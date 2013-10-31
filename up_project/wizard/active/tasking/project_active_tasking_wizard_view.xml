@@ -61,7 +61,7 @@
                         <field name="guanlijibie" required="1"/>
                         <newline/>
                         <field name="zhuguanzongshi_id" class="oe_no_button" widget="many2many_tags"
-                               domain="[('id','child_of',context.get('chief_engineer_domain',[]))]"
+                               domain="[('id','in',context.get('chief_engineer_domain',[]))]"
                                options='{"no_open": True}'
                                attrs="{'invisible':[('guanlijibie','!=',u'LH200307240001')],'required':[('guanlijibie','=',u'LH200307240001')]}"/>
                     </group>
@@ -122,6 +122,7 @@
                     </div>
                     <group>
                         <field name="chief_engineer_config"/>
+                        <field name="cover_director_config"/>
                     </group>
                     <footer>
                         <button name="config_accept" class="oe_highlight"

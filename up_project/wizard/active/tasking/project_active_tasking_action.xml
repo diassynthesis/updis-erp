@@ -159,14 +159,13 @@ http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.proj
 big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 已经启动,您是本项目的:主管总师, 请及时处理和跟进项目进度 """ % (http_address,object.name)
 model = 'project.project.active.tasking'
 res_id = object.id
-project = pool.get('project.project')
-zhuguanzongshi_id = project.read(cr,1,object.id,['zhuguanzongshi_id'],context=context)
-users = pool.get('res.users').browse(cr,1,zhuguanzongshi_id['zhuguanzongshi_id'],context=context)
+zhuguanzongshi_id = [z.id for z in  object.zhuguanzongshi_id]
+users = pool.get('res.users').browse(cr,1,zhuguanzongshi_id,context=context)
 pool.get('sms.sms').send_sms_to_users( cr, 1, users, from_rec, content, model, res_id, context=None)
 pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, big_ant_content, model, res_id, context=None)
 content = u"项目[%s]已经启动,您是本项目的:项目负责人, 请及时处理和跟进项目进度" % (object.name)
 big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 已经启动,您是本项目的:项目负责人, 请及时处理和跟进项目进度 """ % (http_address,object.name)
-user_id = project.read(cr,1,object.id,['user_id'],context=context)
+user_id = pool.get('project.project').read(cr,1,object.project_id.id,['user_id'],context=context)
 users = pool.get('res.users').browse(cr,1,user_id['user_id'],context=context)
 pool.get('sms.sms').send_sms_to_users( cr, 1, users, from_rec, content, model, res_id, context=None)
 pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, big_ant_content, model, res_id, context=None)

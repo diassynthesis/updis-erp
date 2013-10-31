@@ -169,6 +169,11 @@
                               <para style="Value">[[date_format(o.director_reviewer_apply_time)]]</para>
                           </td>
                       </tr>
+                      <tr>
+                          <td>
+                              <para style="Value">[[ o.is_cover_sign ==True and '(代签)' or '']]</para>
+                          </td>
+                      </tr>
                   </blockTable>
               </td>
           </tr>
@@ -266,6 +271,9 @@
                     </tr>
                     <tr>
                         <td><para style="Value">[[date_format(o.director_approve_time)]]</para></td>
+                    </tr>
+                    <tr>
+                        <td><para style="Value">[[ o.is_cover_sign_final ==True and '(代签)' or '']]</para></td>
                     </tr>
                 </blockTable>
             </td>

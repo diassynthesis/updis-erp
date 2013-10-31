@@ -2,6 +2,7 @@
 import datetime
 from openerp.osv import fields
 from openerp.osv import osv
+from up_tools import tools
 
 __author__ = 'cysnake4713'
 
@@ -31,7 +32,7 @@ class project_active_tasking(osv.osv):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
             hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
-            if hr_id:
+            if hr_id and self.user_has_groups(cr, uid, "up_project.group_up_project_suozhang", context=context):
                 hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
                 user_department_id = hr_record.department_id.id if hr_record.department_id else "-1"
                 project_department_id = obj.chenjiebumen_id.id if obj.chenjiebumen_id else None
@@ -42,6 +43,9 @@ class project_active_tasking(osv.osv):
                     result[obj.id] = False
             else:
                 result[obj.id] = False
+            if obj.director_reviewer_id.id == uid:
+                result[obj.id] = True
+
         return result
 
     def _is_wait_user_process(self, cr, uid, ids, field_name, args, context=None):
@@ -73,8 +77,66 @@ class project_active_tasking(osv.osv):
                     if user_department_id == project_department_id and (job_name == u"所长" or job_name == u"分院院长"):
                         result_flag = True
 
+                    config_group_id = tools.get_id_by_external_id(cr, self.pool,
+                                                          extends_id="project_active_tasking_config_record",
+                                                          model="project.active.tasking.config")
+                    config_group = self.pool.get('project.active.tasking.config').browse(cr, 1, config_group_id,
+                                                                                         context=context)
+                    config_group_ids = [z.id for z in config_group.cover_director_config]
+                    if user_department_id == project_department_id and current_uid in config_group_ids:
+                        result_flag = True
+
+
             result[obj.id] = result_flag
         return result
+
+    def _get_director_group(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+
+        director_group_id = tools.get_id_by_external_id(cr, self.pool,
+                                                        extends_id="group_up_project_suozhang",
+                                                        model="res.groups", context=context)
+        director_group = self.pool.get("res.groups").browse(cr, 1, director_group_id, context=context)
+        director_ids = [u.id for u in director_group.users]
+
+        config_group_id = tools.get_id_by_external_id(cr, self.pool, extends_id="project_active_tasking_config_record",
+                                                      model="project.active.tasking.config")
+        config_group = self.pool.get('project.active.tasking.config').browse(cr, 1, config_group_id, context=context)
+        config_group_ids = [z.id for z in config_group.cover_director_config]
+        final_group = set(director_ids) | set(config_group_ids)
+        for the_id in ids:
+            result[the_id] = list(final_group)
+
+        return result
+
+    def _is_cover_sign(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        config_group_id = tools.get_id_by_external_id(cr, self.pool, extends_id="project_active_tasking_config_record",
+                                                      model="project.active.tasking.config")
+        config_group = self.pool.get('project.active.tasking.config').browse(cr, 1, config_group_id, context=context)
+        config_group_ids = [z.id for z in config_group.cover_director_config]
+
+        for obj in self.browse(cr, uid, ids, context=context):
+            if obj.director_reviewer_id.id in config_group_ids:
+                result[obj.id] = True
+            else:
+                result[obj.id] = False
+        return result
+
+    def _is_cover_sign_final(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        config_group_id = tools.get_id_by_external_id(cr, self.pool, extends_id="project_active_tasking_config_record",
+                                                      model="project.active.tasking.config")
+        config_group = self.pool.get('project.active.tasking.config').browse(cr, 1, config_group_id, context=context)
+        config_group_ids = [z.id for z in config_group.cover_director_config]
+
+        for obj in self.browse(cr, uid, ids, context=context):
+            if obj.director_approve.id in config_group_ids:
+                result[obj.id] = True
+            else:
+                result[obj.id] = False
+        return result
+
 
     _columns = {
         'is_display_button': fields.function(_is_display_button, type="boolean",
@@ -120,7 +182,12 @@ class project_active_tasking(osv.osv):
         "jianyixiangmufuzeren_id": fields.many2many("res.users", "tasking_jianyi_manager_user_id", "tasking_user_id",
                                                     "res_user_id", u"建议项目负责人"),
 
-
+        'director_reviewer_groups': fields.function(_get_director_group, type="many2many", relation="res.users",
+                                                    string="Is User is The Project Director"),
+        'is_cover_sign': fields.function(_is_cover_sign, type="boolean",
+                                         string="Is Sign by Cover Director"),
+        'is_cover_sign_final': fields.function(_is_cover_sign_final, type="boolean",
+                                         string="Is Sign by Cover Director Final"),
         'director_reviewer_apply_id': fields.many2one('res.users', string=u'Review Apply By'),
         'director_reviewer_apply_image': fields.related('director_reviewer_apply_id', "sign_image", type="binary",
                                                         string=u'Review Image'),
