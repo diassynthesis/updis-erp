@@ -181,7 +181,7 @@ pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, big_a
 record = pool.get('ir.model.data').search(cr, 1, [('model', '=', 'project.active.tasking.config'),
                  ('name', '=', 'project_active_tasking_config_record')],context=context)
 record_id = pool.get('ir.model.data').read(cr, 1, record[0], ['res_id'], context=context)
-target = self.pool.get('project.active.tasking.config').browse(cr, uid, record_id['res_id'], context)
+target = self.pool.get('project.active.tasking.config').browse(cr, 1, record_id['res_id'], context)
 context['chief_engineer_domain'] = [z.id for z in target.chief_engineer_config]
 action = {
     'name': u'总师室审批',
