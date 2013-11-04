@@ -116,6 +116,15 @@
                                     <td rowspan="4">设计要求是否得到规定</td>
                                     <td>明示要求</td>
                                     <td>
+                                        <div class="inline-item">
+                                            是否投标:
+                                            <field name="shifoutoubiao"
+                                                   attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
+                                                    />
+                                            <field name="toubiaoleibie"
+                                                   attrs="{'required':[('shifoutoubiao','=',True)],'invisible':[('shifoutoubiao','=',False)],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
+                                                    />
+                                        </div>
                                         <field name="express_requirement"
                                                attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
                                         <div>
@@ -203,15 +212,6 @@
                                             多方合同:
                                             <field name="duofanghetong"
                                                    attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
-                                        </div>
-                                        <div class="inline-item">
-                                            是否投标:
-                                            <field name="shifoutoubiao"
-                                                   attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
-                                                    />
-                                            <field name="toubiaoleibie"
-                                                   attrs="{'required':[('shifoutoubiao','=',True)],'invisible':[('shifoutoubiao','=',False)],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
-                                                    />
                                         </div>
                                     </td>
                                 </tr>
