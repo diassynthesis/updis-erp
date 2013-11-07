@@ -1,8 +1,59 @@
 /**
  * Created by cysnake4713 on 13-10-23.
  */
-
 openerp.up_web = function (instance) {
+
+    var _t = instance.web._t,
+        _lt = instance.web._lt;
+    var QWeb = instance.web.qweb;
+
+    /*
+     # Values: (0, 0,  { fields })    create
+     #         (1, ID, { fields })    update
+     #         (2, ID)                remove (delete)
+     #         (3, ID)                unlink one (target id or target of relation)
+     #         (4, ID)                link
+     #         (5)                    unlink all (only valid for one2many)
+     */
+    var commands = {
+        // (0, _, {values})
+        CREATE: 0,
+        'create': function (values) {
+            return [commands.CREATE, false, values];
+        },
+        // (1, id, {values})
+        UPDATE: 1,
+        'update': function (id, values) {
+            return [commands.UPDATE, id, values];
+        },
+        // (2, id[, _])
+        DELETE: 2,
+        'delete': function (id) {
+            return [commands.DELETE, id, false];
+        },
+        // (3, id[, _]) removes relation, but not linked record itself
+        FORGET: 3,
+        'forget': function (id) {
+            return [commands.FORGET, id, false];
+        },
+        // (4, id[, _])
+        LINK_TO: 4,
+        'link_to': function (id) {
+            return [commands.LINK_TO, id, false];
+        },
+        // (5[, _[, _]])
+        DELETE_ALL: 5,
+        'delete_all': function () {
+            return [5, false, false];
+        },
+        // (6, _, ids) replaces all linked records with provided ids
+        REPLACE_WITH: 6,
+        'replace_with': function (ids) {
+            return [6, false, ids];
+        }
+    };
+
+
     instance.web.CrashManager.include({
         rpc_error: function (error) {
             if (!this.active) {
