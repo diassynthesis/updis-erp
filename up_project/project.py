@@ -1,6 +1,7 @@
 # -*- encoding:utf-8 -*-
 import datetime
 from osv import osv, fields
+from up_tools import tools
 
 
 class project_project_wizard(osv.osv_memory):
@@ -437,20 +438,35 @@ class updis_project(osv.osv):
     def project_need_process_action(self, cr, uid, context=None):
         domain = ['&', ('create_uid', '=', uid), ('status_code', '=', 10101)]
         status_code = []
+
         #director
+        hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
+        if hr_id:
+            hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
+            user_department_id = hr_record.department_id.id if hr_record.department_id else "-1"
+        else:
+            user_department_id = -1
+        domain = ['|', '&', ('status_code', '=', 10102), ('related_user_id', '=', uid)] + domain
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_suozhang', context=context):
-            domain = ['|', '&', ('status_code', '=', 10102), ('related_user_id', '=', uid)] + domain
             # is True Director In HR
-            hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
             if hr_id:
                 hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
                 job_name = hr_record.job_id.name if hr_record.job_id else None
                 if job_name == u"所长" or job_name == u"分院院长":
-                    user_department_id = hr_record.department_id.id if hr_record.department_id else "-1"
                     domain = ['|', '&', ('status_code', '=', 10105),
                               ('chenjiebumen_id', '=', user_department_id)] + domain
+        else:
+            config_group_id = tools.get_id_by_external_id(cr, self.pool,
+                                                          extends_id="project_active_tasking_config_record",
+                                                          model="project.active.tasking.config")
+            config_group = self.pool.get('project.active.tasking.config').browse(cr, 1, config_group_id,
+                                                                                 context=context)
+            config_group_ids = [z.id for z in config_group.cover_director_config]
+            if uid in config_group_ids:
+                domain = ['|', '&', ('status_code', '=', 10105),
+                          ('chenjiebumen_id', '=', user_department_id)] + domain
 
-                    #Operator Room
+        #Operator Room
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context):
             status_code += [10103]
             #Engineer Room
@@ -493,9 +509,9 @@ class updis_project(osv.osv):
 
     def all_projects_action(self, cr, uid, context=None):
         domain = ['|', ('state', 'not in', ['project_active', 'project_cancelled']), ('create_uid', '=', uid)]
-        if self.user_has_groups(cr, uid, 'up_project.group_up_project_suozhang', context=context):
-            domain = ['|', '&', ('state', 'in', ['project_active', 'project_cancelled']),
-                      ('director_reviewer_id', '=', uid)] + domain
+        #if self.user_has_groups(cr, uid, 'up_project.group_up_project_suozhang', context=context):
+        domain = ['|', '&', ('state', 'in', ['project_active', 'project_cancelled']),
+                  ('director_reviewer_id', '=', uid)] + domain
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context):
             domain = ['|', ('state', 'in', ['project_active', 'project_cancelled'])] + domain
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context):
@@ -564,46 +580,3 @@ class project_members(osv.osv):
     }
     _defaults = {
     }
-
-
-class project_engineer_room_config_wizard(osv.osv_memory):
-    _name = "project.engineer.room.config.wizard"
-    _description = "project Engineer Room Config"
-    _columns = {
-        'users': fields.many2many("res.users", "project_engineer_room_res_users", "project_id",
-                                  "res_user_id",
-                                  "Users"),
-    }
-
-    def default_get(self, cr, uid, fields, context=None):
-        res = super(project_engineer_room_config_wizard, self).default_get(cr, uid, fields, context=context)
-        group_data_id = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'res.groups'),
-                                                                      ('name', '=',
-                                                                       'group_up_project_zongshishi')],
-                                                              context=context)
-        group_id = self.pool.get('ir.model.data').read(cr, 1, group_data_id[0], ['res_id'])
-
-        groups_obj = self.pool.get('res.groups')
-        group_id = groups_obj.search(cr, 1, [('id', '=', group_id['res_id'])], context=context)
-        groups = groups_obj.browse(cr, 1, group_id, context=context)[0]
-
-        if 'users' in fields:
-            res['users'] = [u.id for u in groups.users]
-
-        return res
-
-    def config_accept(self, cr, uid, ids, context=None):
-        group_data_id = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'res.groups'),
-                                                                      ('name', '=',
-                                                                       'group_up_project_zongshishi')],
-                                                              context=context)
-        group_id = self.pool.get('ir.model.data').read(cr, 1, group_data_id[0], ['res_id'])
-
-        groups_obj = self.pool.get('res.groups')
-        self_record = self.browse(cr, uid, ids[0], context)
-
-        groups_obj.write(cr, 1, [group_id['res_id']], {
-            'users': [(6, 0, [z.id for z in self_record.users])],
-
-        })
-        return True
