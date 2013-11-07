@@ -128,7 +128,7 @@ openerp.up_web = function (instance) {
                     //"| removeformat | bullets numbering | outdent " +
                     //"indent | link unlink | fileuploader imageuploader icon | source",
                     bodyStyle:  // style to assign to document body contained within the editor
-                        "margin:4px; color:#4c4c4c; font-size:13px; font-family:\"Lucida Grande\",Helvetica,Verdana,Arial,sans-serif; cursor:text"
+                        "margin:4px; color:#4c4c4c; font-size:13px; font-family:'Lucida Grande',Helvetica,Verdana,Arial,sans-serif; cursor:text"
                 });
                 this.$cleditor = this.$textarea.cleditor()[0];
                 this.$cleditor.change(function () {
@@ -137,6 +137,11 @@ openerp.up_web = function (instance) {
                         self.internal_set_value(self.$textarea.val());
                     }
                 });
+                if (this.field.translate) {
+                    var $img = $('<img class="oe_field_translate oe_input_icon" src="/web/static/src/img/icons/terp-translate.png" width="16" height="16" border="0"/>')
+                        .click(this.on_translate);
+                    this.$cleditor.$toolbar.append($img);
+                }
             }
         }
     });
@@ -300,7 +305,7 @@ openerp.up_web = function (instance) {
             // TODO : activate send on wizard and form
 
             if (result.error || !result.id) {
-                this.do_warn(_t('Uploading error'), result.error);
+                this.do_warn(_t('Uploading Error'), result.error);
                 files = _.filter(files, function (val) {
                     return !val.upload;
                 });
