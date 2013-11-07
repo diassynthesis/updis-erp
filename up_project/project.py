@@ -363,6 +363,7 @@ class updis_project(osv.osv):
         'user_id': None,
         'country_id': _get_default_country,
         'is_import': False,
+        'privacy_visibility': 'public',
         # 'xiangmubianhao':lambda self, cr, uid, c=None: self.pool.get('ir.sequence').next_by_code(cr, uid, 'project.project', context=c)
     }
 
