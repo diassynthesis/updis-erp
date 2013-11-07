@@ -343,5 +343,197 @@ openerp.up_web = function (instance) {
         }
     });
 
+    instance.web.form.FieldMany2One.include({
+        render_editable: function () {
+            var self = this;
+            this.$input = this.$el.find("input");
+
+            this.init_error_displayer();
+
+            self.$input.on('focus', function () {
+                self.hide_error_displayer();
+            });
+
+            this.$drop_down = this.$el.find(".oe_m2o_drop_down_button");
+            this.$follow_button = $(".oe_m2o_cm_button", this.$el);
+
+            this.$follow_button.click(function (ev) {
+                ev.preventDefault();
+                if (!self.get('value')) {
+                    self.focus();
+                    return;
+                }
+                var pop = new instance.web.form.FormOpenPopup(self);
+                pop.show_element(
+                    self.field.relation,
+                    self.get("value"),
+                    self.build_context(),
+                    {
+                        title: _t("Open: ") + self.string
+                    }
+                );
+                pop.on('write_completed', self, function () {
+                    self.display_value = {};
+                    self.render_value();
+                    self.focus();
+                    self.view.do_onchange(self);
+                });
+            });
+
+            // some behavior for input
+            var input_changed = function () {
+                if (self.current_display !== self.$input.val()) {
+                    self.current_display = self.$input.val();
+                    if (self.$input.val() === "") {
+                        self.internal_set_value(false);
+                        self.floating = false;
+                    } else {
+                        self.floating = true;
+                    }
+                }
+            };
+            this.$input.keydown(input_changed);
+            this.$input.change(input_changed);
+            this.$drop_down.click(function () {
+                if (self.$input.autocomplete("widget").is(":visible")) {
+                    self.$input.autocomplete("close");
+                    self.$input.focus();
+                } else {
+                    if (self.get("value") && !self.floating) {
+                        self.$input.autocomplete("search", "");
+                    } else {
+                        self.$input.autocomplete("search");
+                    }
+                }
+            });
+
+            // Autocomplete close on dialog content scroll
+            var close_autocomplete = _.debounce(function () {
+                if (self.$input.autocomplete("widget").is(":visible")) {
+                    self.$input.autocomplete("close");
+                }
+            }, 50);
+            this.$input.closest(".ui-dialog .ui-dialog-content").on('scroll', this, close_autocomplete);
+
+            self.ed_def = $.Deferred();
+            self.uned_def = $.Deferred();
+            var ed_delay = 200;
+            var ed_duration = 15000;
+            var anyoneLoosesFocus = function (e) {
+                var used = false;
+                if (self.floating) {
+                    if (self.last_search.length > 0) {
+                        if (self.last_search[0][0] != self.get("value")) {
+                            self.display_value = {};
+                            self.display_value["" + self.last_search[0][0]] = self.last_search[0][1];
+                            self.reinit_value(self.last_search[0][0]);
+                        } else {
+                            used = true;
+                            self.render_value();
+                        }
+                    } else {
+                        used = true;
+                        self.reinit_value(false);
+                    }
+                    self.floating = false;
+                }
+                if (used && self.get("value") === false && !self.no_ed) {
+                    self.ed_def.reject();
+                    self.uned_def.reject();
+                    self.ed_def = $.Deferred();
+                    self.ed_def.done(function () {
+                        self.show_error_displayer();
+                        ignore_blur = false;
+                        self.trigger('focused');
+                    });
+                    ignore_blur = true;
+                    setTimeout(function () {
+                        self.ed_def.resolve();
+                        self.uned_def.reject();
+                        self.uned_def = $.Deferred();
+                        self.uned_def.done(function () {
+                            self.hide_error_displayer();
+                        });
+                        setTimeout(function () {
+                            self.uned_def.resolve();
+                        }, ed_duration);
+                    }, ed_delay);
+                } else {
+                    self.no_ed = false;
+                    self.ed_def.reject();
+                }
+            };
+            var ignore_blur = false;
+            this.$input.on({
+                focusout: anyoneLoosesFocus,
+                focus: function () {
+                    self.trigger('focused');
+                },
+                autocompleteopen: function () {
+                    ignore_blur = true;
+                },
+                autocompleteclose: function () {
+                    ignore_blur = false;
+                },
+                blur: function () {
+                    // autocomplete open
+                    if (ignore_blur) {
+                        return;
+                    }
+                    if (_(self.getChildren()).any(function (child) {
+                        return child instanceof instance.web.form.AbstractFormPopup;
+                    })) {
+                        return;
+                    }
+                    self.trigger('blurred');
+                }
+            });
+
+            var isSelecting = false;
+            // autocomplete
+            this.$input.autocomplete({
+                source: function (req, resp) {
+                    self.get_search_result(req.term).done(function (result) {
+                        resp(result);
+                    });
+                },
+                select: function (event, ui) {
+                    isSelecting = true;
+                    var item = ui.item;
+                    if (item.id) {
+                        self.display_value = {};
+                        self.display_value["" + item.id] = item.name;
+                        self.reinit_value(item.id);
+                    } else if (item.action) {
+                        item.action();
+                        // Cancel widget blurring, to avoid form blur event
+                        self.trigger('focused');
+                        return false;
+                    }
+                },
+                focus: function (e, ui) {
+                    e.preventDefault();
+                },
+                html: true,
+                // disabled to solve a bug, but may cause others
+                //close: anyoneLoosesFocus,
+                minLength: 0,
+                delay: 0
+            });
+            //set position for list of suggetions box
+            this.$input.autocomplete("option", "position", { my: "left top", at: "left bottom" });
+            this.$input.autocomplete("widget").openerpClass();
+            // used to correct a bug when selecting an element by pushing 'enter' in an editable list
+            this.$input.keyup(function (e) {
+                if (e.which === 13) { // ENTER
+                    if (isSelecting)
+                        e.stopPropagation();
+                }
+                isSelecting = false;
+            });
+            this.setupFocus(this.$follow_button);
+        }
+    });
+
 
 };
