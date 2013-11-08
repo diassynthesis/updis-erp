@@ -273,10 +273,9 @@
                     <field name="project_level" invisible="context.get('temp_show_tender_and_common',1)"/>
                     <field name="project_manager" invisible="context.get('temp_show_tender_and_common',1)"/>
                     <field name="price"/>
+                    <field name="project_begin_date"/>
                     <field name="customer" invisible="context.get('temp_show_tender_and_common',1)"/>
                     <field name="entrust_type" invisible="1"/>
-                    <field name="sign_date" invisible="1"/>
-                    <field name="project_category" invisible="1"/>
                     <field name="project_state" invisible="1"/>
                 </tree>
             </field>
