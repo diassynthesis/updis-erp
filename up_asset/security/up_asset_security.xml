@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="up_asset.asset_user" model="res.groups">
+            <field name="name">Asset User</field>
+            <field name="category_id" ref="base.module_category_up_asset"/>
+            <field name="comment">the Asset User will be able to view all asset.</field>
+        </record>
+        <record id="up_asset.asset_manager" model="res.groups">
+            <field name="name">Asset Manager</field>
+            <field name="category_id" ref="base.module_category_up_asset"/>
+            <field name="comment">the Asset Manager will be able to control all asset.</field>
+            <field name="implied_ids" eval="[(4, ref('up_asset.asset_user'))]"/>
+        </record>
+        <record id="up_asset.asset_admin" model="res.groups">
+            <field name="name">Asset Admin</field>
+            <field name="category_id" ref="base.module_category_up_asset"/>
+            <field name="comment">the Asset Admin will be able to control all asset config.</field>
+            <field name="implied_ids" eval="[(4, ref('up_asset.asset_manager'))]"/>
+        </record>
+
+    </data>
+</openerp>

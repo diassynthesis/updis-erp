@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!--Actions-->
+        <record id="action_up_asset_category_config" model="ir.actions.act_window">
+            <field name="name">Asset Category Config</field>
+            <field name="res_model">updis.asset.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+        <!--MenuItems-->
+        <menuitem name="Asset Management" id="menu_up_asset_management_root" sequence="100"
+                  groups="up_asset.asset_user"/>
+        <menuitem name="Asset Management" id="menu_up_asset_management" parent="menu_up_asset_management_root"
+                  sequence="10" groups="up_asset.asset_user"/>
+        <menuitem name="Active Asset Management" id="menu_up_active_asset_management" parent="menu_up_asset_management"
+                  sequence="10" groups="up_asset.asset_user"/>
+        <menuitem name="Close Asset Management" id="menu_up_close_asset_management" parent="menu_up_asset_management"
+                  sequence="20" groups="up_asset.asset_user"/>
+
+        <menuitem name="Asset Management Config" id="menu_up_asset_management_config"
+                  parent="menu_up_asset_management_root" groups="up_asset.asset_admin"
+                  sequence="20"/>
+        <menuitem name="Asset Category Config" id="menu_up_asset_category_config" groups="up_asset.asset_admin"
+                  parent="menu_up_asset_management_config" sequence="10" action="action_up_asset_category_config"/>
+    </data>
+</openerp>
