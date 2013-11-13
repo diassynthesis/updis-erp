@@ -5,7 +5,7 @@
             <field name="name">updis.asset.category.tree</field>
             <field name="model">updis.asset.category</field>
             <field name="arch" type="xml">
-                <tree string="Asset Category" version="7.0" editable="bottom">
+                <tree string="Asset Category" version="7.0" editable="top">
                     <field name="name"/>
                 </tree>
             </field>

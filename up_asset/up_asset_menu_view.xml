@@ -8,13 +8,20 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree</field>
         </record>
+
+        <record id="action_up_asset_asset_active" model="ir.actions.act_window">
+            <field name="name">Active Asset</field>
+            <field name="res_model">updis.asset.asset</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
         <!--MenuItems-->
         <menuitem name="Asset Management" id="menu_up_asset_management_root" sequence="100"
                   groups="up_asset.asset_user"/>
         <menuitem name="Asset Management" id="menu_up_asset_management" parent="menu_up_asset_management_root"
                   sequence="10" groups="up_asset.asset_user"/>
         <menuitem name="Active Asset Management" id="menu_up_active_asset_management" parent="menu_up_asset_management"
-                  sequence="10" groups="up_asset.asset_user"/>
+                  sequence="10" groups="up_asset.asset_user" action="action_up_asset_asset_active"/>
         <menuitem name="Close Asset Management" id="menu_up_close_asset_management" parent="menu_up_asset_management"
                   sequence="20" groups="up_asset.asset_user"/>
 
