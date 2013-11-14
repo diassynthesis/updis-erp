@@ -227,6 +227,14 @@ class updis_contract_contract(osv.osv):
     _order = 'id desc'
     _log_access = True
     _rec_name = "name"
+
+    def _get_project_manager_name(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            project_manager_name = [m.name for m in obj.project_manager]
+            result[obj.id] = ','.join(project_manager_name)
+        return result
+
     _columns = {
 
         'create_date': fields.datetime('Created on', select=True),
@@ -288,6 +296,8 @@ class updis_contract_contract(osv.osv):
                                         string='Project Level'),
         'project_manager': fields.related('project_id', 'user_id', type="many2many", relation='res.users',
                                           string="Project Manager", readonly=1),
+        'project_manager_name': fields.function(_get_project_manager_name, type='char', readonly=True,
+                                                string="Project Manager Name For export"),
         'project_is_tender': fields.related('project_id', 'shifoutoubiao', type='boolean', string="Project Is Tender"),
         'project_tender_type': fields.related('project_id', 'toubiaoleibie', type='selection',
                                               selection=[('business', u'商务标'), ('technology', u'技术标'),
