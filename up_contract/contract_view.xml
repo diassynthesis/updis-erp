@@ -254,6 +254,8 @@
                             help="Show All Thrid Party Contract(s)"/>
                     <filter name="is-tender-contract" string="Tender Contract(s)" domain="[('type','=','tender')]"
                             help="Show All Tender Contract(s)"/>
+                    <filter string="Sign Date is Not Null" domain="[('sign_date','!=',None)]"
+                            help="Sign Date is Not Null" icon="terp-personal"/>
                 </search>
             </field>
         </record>
@@ -503,6 +505,8 @@
                     <field name="contract_entrust_type"/>
                     <field name="contract_sign_date"/>
                     <field name="project_state"/>
+                    <filter string="Sign Date is Not Null" domain="[('contract_sign_date','!=',None)]"
+                            help="Sign Date is Not Null" icon="terp-personal"/>
                 </search>
             </field>
         </record>
