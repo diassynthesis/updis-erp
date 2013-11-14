@@ -413,7 +413,6 @@ class updis_contract_contract(osv.osv):
         result = super(updis_contract_contract, self).write(cr, uid, ids, vals, context=context)
         return result
 
-
     def _get_domain_by_group(self, cr, uid, context=None):
         if self.user_has_groups(cr, uid, 'up_contract.group_up_contract_all_limit', context=context):
             domain = []
@@ -427,8 +426,14 @@ class updis_contract_contract(osv.osv):
     def contract_need_process(self, cr, uid, context=None):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
         domain += [('price', '=', None)]
-        context['temp_show_contract_type'] = 0
-        context['temp_show_tender_and_common'] = 0
+        context.update({
+            'show_type': 0,
+            'show_name': 0,
+            'show_project_category': 0,
+            'show_project_level': 0,
+            'show_project_manager': 0,
+            'show_customer': 0,
+        })
         return {
             'name': u'待处理合同',
             'type': 'ir.actions.act_window',
@@ -443,7 +448,15 @@ class updis_contract_contract(osv.osv):
     def all_contract_action(self, cr, uid, context=None):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
         context['search_default_is-common-contract'] = 1
-        context['temp_show_tender_and_common'] = 0
+        context.update({
+            'show_sign_date': 0,
+            'show_name': 0,
+            'show_project_category': 0,
+            'show_project_level': 0,
+            'show_project_manager': 0,
+            'show_customer': 0,
+        })
+
         return {
             'name': u'普通合同',
             'type': 'ir.actions.act_window',
@@ -458,8 +471,12 @@ class updis_contract_contract(osv.osv):
     def third_party_contract_action(self, cr, uid, context=None):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
         context['search_default_is-third-party-contract'] = 1
-        context['default_type'] = 'third_party'
-        context['temp_show_third_party'] = 0
+        context.update({
+            'show_project_id': 0,
+            'show_third_party_company': 0,
+            'show_sign_date': 0,
+
+        })
         return {
             'name': u'所有合同',
             'type': 'ir.actions.act_window',
@@ -476,7 +493,13 @@ class updis_contract_contract(osv.osv):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
         context['search_default_is-tender-contract'] = 1
         context['default_type'] = 'tender'
-        context['temp_show_tender_and_common'] = 0
+        context.update({
+            'show_name': 0,
+            'show_project_category': 0,
+            'show_project_level': 0,
+            'show_project_manager': 0,
+            'show_customer': 0,
+        })
         return {
             'name': u'所有合同',
             'type': 'ir.actions.act_window',

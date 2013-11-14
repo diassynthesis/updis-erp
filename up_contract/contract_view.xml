@@ -174,7 +174,8 @@
                             </group>
                             <group string="Project Info">
                                 <field name="project_id" class="oe_no_button"
-                                       on_change="on_change_project(project_id)" domain="context.get('temp_contract_domain',[])"/>
+                                       on_change="on_change_project(project_id)"
+                                       domain="context.get('temp_contract_domain',[])"/>
                                 <field name="project_number" readonly="1"/>
                                 <field name="project_category" readonly="1"/>
                                 <field name="design_department"/>
@@ -262,19 +263,19 @@
             <field name="model">project.contract.contract</field>
             <field name="arch" type="xml">
                 <tree string="Project Contract" version="7.0">
-                    <field name="type" invisible="context.get('temp_show_contract_type',1)"/>
+                    <field name="type" invisible="context.get('show_type',1)"/>
                     <field name="number"/>
                     <field name="design_department"/>
-                    <field name="project_id" invisible="context.get('temp_show_third_party',1)"/>
-                    <field name="third_party_company" invisible="context.get('temp_show_third_party',1)"/>
-                    <field name="sign_date" invisible="context.get('temp_show_third_party',1)"/>
-                    <field name="name" invisible="context.get('temp_show_tender_and_common',1)"/>
-                    <field name="project_category" invisible="context.get('temp_show_tender_and_common',1)"/>
-                    <field name="project_level" invisible="context.get('temp_show_tender_and_common',1)"/>
-                    <field name="project_manager" invisible="context.get('temp_show_tender_and_common',1)"/>
+                    <field name="project_id" invisible="context.get('show_project_id',1)"/>
+                    <field name="third_party_company" invisible="context.get('show_third_party_company',1)"/>
+                    <field name="sign_date" invisible="context.get('show_sign_date',1)"/>
+                    <field name="name" invisible="context.get('show_name',1)"/>
+                    <field name="project_category" invisible="context.get('show_project_category',1)"/>
+                    <field name="project_level" invisible="context.get('show_project_level',1)"/>
+                    <field name="project_manager" invisible="context.get('show_project_manager',1)"/>
                     <field name="price"/>
                     <field name="project_begin_date"/>
-                    <field name="customer" invisible="context.get('temp_show_tender_and_common',1)"/>
+                    <field name="customer" invisible="context.get('show_customer',1)"/>
                     <field name="entrust_type" invisible="1"/>
                     <field name="project_state" invisible="1"/>
                 </tree>
