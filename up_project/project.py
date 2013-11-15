@@ -264,6 +264,13 @@ class updis_project(osv.osv):
                 result[obj.id] = False
         return result
 
+    def _get_project_manager_name(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            project_manager_name = [m.name for m in obj.user_id]
+            result[obj.id] = ','.join(project_manager_name)
+        return result
+
     _columns = {
         # 基础信息
         #  'analytic_account_id': fields.boolean("Over Ride"),
@@ -351,6 +358,9 @@ class updis_project(osv.osv):
 
         'attachments': fields.many2many("ir.attachment", "project_attachments", "project_id", "attachment_id",
                                         string="related_files"),
+
+        'project_manager_name': fields.function(_get_project_manager_name, type='char', readonly=True,
+                                                string="Project Manager Name For export"),
 
     }
 
