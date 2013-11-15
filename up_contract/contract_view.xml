@@ -482,9 +482,9 @@
                     <field name="total_price"/>
                     <field name="paid_price"/>
                     <field name="remain_price"/>
-                    <field name="contract_entrust_type"/>
+                    <field name="contract_entrust_type" invisible="1"/>
                     <field name="contract_sign_date"/>
-                    <field name="project_state"/>
+                    <field name="project_state" invisible="1"/>
                 </tree>
             </field>
         </record>
