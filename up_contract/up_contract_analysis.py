@@ -11,7 +11,7 @@ class up_contract_analysis(osv.osv):
     _description = "Project Contract Analysis"
     _auto = False
     _rec_name = "contract_name"
-    _order = "contract_sign_date desc"
+    _order = "id desc"
 
     def _get_project_manager_name(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
