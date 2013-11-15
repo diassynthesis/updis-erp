@@ -11,7 +11,7 @@ class up_contract_analysis(osv.osv):
     _description = "Project Contract Analysis"
     _auto = False
     _rec_name = "contract_name"
-    _order = "contract_id desc"
+    _order = "contract_sign_date desc"
 
     def _get_project_manager_name(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
@@ -85,6 +85,7 @@ class up_contract_analysis(osv.osv):
         else:
             user_department_id = contract_tools.get_user_department(self, cr, uid, context)
             domain = [('department_id.id', '=', user_department_id)]
+        context['search_default_sign-date-null'] = 1
         return {
             'name': u'收费进度查询',
             'type': 'ir.actions.act_window',
