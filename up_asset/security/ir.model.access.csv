@@ -6,3 +6,5 @@ access_updis_asset_asset,access_updis_asset_asset,model_updis_asset_asset,,0,0,0
 access_updis_asset_asset_user,access_updis_asset_asset_user,model_updis_asset_asset,up_asset.asset_user,1,0,0,0
 access_updis_asset_asset_manager,access_updis_asset_asset_manager,model_updis_asset_asset,up_asset.asset_manager,1,1,1,1
 access_updis_asset_asset_admin,access_updis_asset_asset_admin,model_updis_asset_asset,up_asset.asset_admin,1,1,1,1
+access_updis_asset_log,access_updis_asset_log,model_updis_asset_log,up_asset.asset_user,1,0,0,0
+access_updis_asset_log_manager,access_updis_asset_log_manager,model_updis_asset_log,up_asset.asset_manager,1,1,1,0

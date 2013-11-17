@@ -113,8 +113,10 @@
                     <field name="department_id"/>
                     <field name="usage"/>
                     <field name="unit_price"/>
+                    <filter name="only-active" string="Active Asset" domain="[('usage','not in',['scrap'])]"/>
+                    <filter name="only-scrap" string="Scrap Asset" domain="[('usage','in',['scrap'])]"/>
                     <group expand="0" string="Group by...">
-                        <filter name="by-category" string="Category" domain="[]"
+                        <filter name="by-category" string="By Category" domain="[]"
                                 context="{'group_by':'category_id'}"/>
                     </group>
                 </search>

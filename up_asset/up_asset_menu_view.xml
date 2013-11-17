@@ -14,16 +14,16 @@
             <field name="res_model">updis.asset.asset</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('usage','!=','scrap')]</field>
-            <field name="context">{'search_default_by-category':1}</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_by-category':1,'search_default_only-active':1}</field>
         </record>
         <record id="action_up_asset_asset_scrap" model="ir.actions.act_window">
             <field name="name">Scrap Asset</field>
             <field name="res_model">updis.asset.asset</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('usage','=','scrap')]</field>
-            <field name="context">{'search_default_by-category':1}</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_by-category':1,'search_default_only-scrap':1}</field>
         </record>
 
         <!--MenuItems-->
