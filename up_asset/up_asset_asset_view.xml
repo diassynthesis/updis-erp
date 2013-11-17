@@ -87,5 +87,25 @@
                 </tree>
             </field>
         </record>
+        <record id="view_up_asset_asset_search" model="ir.ui.view">
+            <field name="name">updis.asset.asset.search</field>
+            <field name="model">updis.asset.asset</field>
+            <field name="arch" type="xml">
+                <search string="Asset Search View">
+                    <field name="category_id"/>
+                    <field name="code"/>
+                    <field name="financial_code"/>
+                    <field name="name"/>
+                    <field name="model_and_type"/>
+                    <field name="department_id"/>
+                    <field name="usage"/>
+                    <field name="unit_price"/>
+                    <group expand="0" string="Group by...">
+                        <filter name="by-category" string="Category" domain="[]"
+                                context="{'group_by':'category_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
     </data>
 </openerp>
