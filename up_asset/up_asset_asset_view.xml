@@ -24,49 +24,62 @@
                             </group>
                             <group></group>
                         </group>
-                        <group>
-                            <group string="Code Info">
-                                <field name="code"/>
-                                <field name="financial_code"/>
-                            </group>
-                            <group string="Location Info">
-                                <field name="department_id"/>
-                                <field name="location"/>
-                                <field name="user"
-                                       attrs="{'invisible':[('category_id','!=',%(up_asset_category_computer)d)]}"/>
-                            </group>
-                            <div>
-                                <group string="Supplier"
-                                       attrs="{'invisible':[('category_id','!=',%(up_asset_category_software)d)]}">
-                                    <field name="supplier"
-                                           context="{'default_customer': 0, 'search_default_supplier': 1, 'default_supplier': 1}"
-                                           domain="[('supplier', '=', True)]"/>
+                        <notebook>
+                            <page string="Info">
+                                <group>
+                                    <group string="Code Info">
+                                        <field name="code"/>
+                                        <field name="financial_code"/>
+                                    </group>
+                                    <group string="Location Info">
+                                        <field name="department_id"/>
+                                        <field name="location"/>
+                                        <field name="user"
+                                               attrs="{'invisible':[('category_id','!=',%(up_asset_category_computer)d)]}"/>
+                                    </group>
+                                    <div>
+                                        <group string="Supplier"
+                                               attrs="{'invisible':[('category_id','!=',%(up_asset_category_software)d)]}">
+                                            <field name="supplier"
+                                                   context="{'default_customer': 0, 'search_default_supplier': 1, 'default_supplier': 1}"
+                                                   domain="[('supplier', '=', True)]"/>
+                                        </group>
+                                        <group string="Usage Info"
+                                               attrs="{'invisible':[('category_id','=',%(up_asset_category_software)d)]}">
+                                            <field name="usage"/>
+                                            <field name="scrap_result" attrs="{'invisible':[('usage','!=','scrap')]}"/>
+                                            <field name="scrap_note" attrs="{'invisible':[('usage','!=','scrap')]}"/>
+                                        </group>
+                                    </div>
+                                    <group string="Life Cycle Info">
+                                        <field name="purchase_date"/>
+                                        <field name="life_cycle"/>
+                                        <field name="retention"/>
+                                    </group>
+                                    <group string="Price Info">
+                                        <field name="quantity"/>
+                                        <field name="unit_price" string="Unit Price(yuan)"/>
+                                        <field name="cost" string="Cost(yuan)"
+                                               attrs="{'invisible':[('category_id','=',%(up_asset_category_software)d)]}"/>
+                                    </group>
                                 </group>
-                                <group string="Usage Info"
-                                       attrs="{'invisible':[('category_id','=',%(up_asset_category_software)d)]}">
-                                    <field name="usage"/>
-                                    <field name="scrap_result" attrs="{'invisible':[('usage','!=','scrap')]}"/>
-                                    <field name="scrap_note" attrs="{'invisible':[('usage','!=','scrap')]}"/>
+                                <label for="note" string="Maintenance Note"/>
+                                <field name="note" no_label="1"/>
+                                <group col="4">
+                                    <field name="create_uid" readonly="1"/>
+                                    <field name="create_date" readonly="1"/>
                                 </group>
-                            </div>
-                            <group string="Life Cycle Info">
-                                <field name="purchase_date"/>
-                                <field name="life_cycle"/>
-                                <field name="retention"/>
-                            </group>
-                            <group string="Price Info">
-                                <field name="quantity"/>
-                                <field name="unit_price" string="Unit Price(yuan)"/>
-                                <field name="cost" string="Cost(yuan)"
-                                       attrs="{'invisible':[('category_id','=',%(up_asset_category_software)d)]}"/>
-                            </group>
-                        </group>
-                        <label for="note" string="Maintenance Note"/>
-                        <field name="note" no_label="1"/>
-                        <group col="4">
-                            <field name="create_uid" readonly="1"/>
-                            <field name="create_date" readonly="1"/>
-                        </group>
+                            </page>
+                            <page string="Log">
+                                <field name="log_ids" readonly="1">
+                                    <tree>
+                                        <field name="date"/>
+                                        <field name="user_id"/>
+                                        <field name="log_info"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>

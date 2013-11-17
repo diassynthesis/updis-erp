@@ -54,6 +54,7 @@ class up_asset_asset(osv.osv):
         #for import
         'is_import': fields.boolean(string='Is Import'),
 
+        'log_ids': fields.one2many('updis.asset.log', 'asset_id', string='Logs'),
 
     }
     _defaults = {
@@ -61,4 +62,48 @@ class up_asset_asset(osv.osv):
         'quantity': 1,
         'purchase_date': lambda *a: str(datetime.date.today()),
         'retention': 'permanent',
+    }
+
+    def write(self, cr, uid, ids, vals, context=None):
+        self._create_log(cr, uid, ids, vals, context)
+        return super(up_asset_asset, self).write(cr, uid, ids, vals, context=context)
+
+    def _create_log(self, cr, uid, ids, vals, context=None):
+        old_assets = self.browse(cr, uid, ids, context)
+        log_obj = self.pool.get('updis.asset.log')
+        for old_asset in old_assets:
+            info = ""
+            if 'department_id' in vals and vals['department_id'] != (
+                old_asset.department_id.id if old_asset.department_id else 0 ):
+                department_name = self.pool.get('hr.department').browse(cr, uid, vals['department_id'], context).name if \
+                    vals['department_id'] != 0 else ""
+                info += u"改变资产部门:%s -> %s\n" % (old_asset.department_id.name if old_asset.department_id else "",
+                                                department_name)
+            if 'location' in vals and vals['location'] != old_asset.location:
+                info += u"改变资产位置:%s -> %s\n" % (
+                old_asset.location if old_asset.location else "", vals['location'] if vals['location'] else "")
+            if 'user' in vals and vals['user'] != old_asset.user:
+                info += u"改变用户:%s -> %s\n" % (
+                old_asset.user if old_asset.user else "", vals['user'] if vals['user'] else "")
+
+            if info:
+                log_obj.create(cr, uid, {'asset_id': old_asset.id, 'log_info': info})
+
+
+class up_asset_log(osv.osv):
+    _name = 'updis.asset.log'
+    _description = 'Asset Log'
+    _log_access = True
+    _order = 'date desc'
+
+    _columns = {
+        'asset_id': fields.many2one('updis.asset.asset', string='Related Asset'),
+        'user_id': fields.many2one('res.users', 'User', required=True),
+        'date': fields.datetime('Datetime', required=True),
+        'log_info': fields.char(size=512, string='Info'),
+    }
+
+    _defaults = {
+        'date': lambda *args: datetime.datetime.now(),
+        'user_id': lambda self, cr, uid, ctx: uid
     }
