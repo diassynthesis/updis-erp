@@ -10,6 +10,7 @@ UPDIS Asset Management Module.""",
     'website': 'http://cysnake.com',
     'depends': ['base','hr'],
     'data': [
+        'data/updis.asset.category.csv',
         'security/up_asset_security.xml',
         'security/ir.model.access.csv',
 
@@ -17,7 +18,7 @@ UPDIS Asset Management Module.""",
         'up_asset_asset_view.xml',
         'up_asset_menu_view.xml',
 
-        'data/updis.asset.category.csv',
+
     ],
     'demo': [],
     'test': [],

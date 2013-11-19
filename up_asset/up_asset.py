@@ -18,7 +18,7 @@ class up_asset_category(osv.osv):
 class up_asset_asset(osv.osv):
     _name = 'updis.asset.asset'
     _description = 'Asset Asset'
-    _log_access = True
+    _log_access = False
 
     _columns = {
         'category_id': fields.many2one('updis.asset.category', string="Category", required=True),
@@ -66,7 +66,8 @@ class up_asset_asset(osv.osv):
     }
 
     def write(self, cr, uid, ids, vals, context=None):
-        self._write_log(cr, uid, ids, vals, context)
+        if self._log_access is True:
+            self._write_log(cr, uid, ids, vals, context)
         return super(up_asset_asset, self).write(cr, uid, ids, vals, context=context)
 
     def _write_log(self, cr, uid, ids, vals, context=None):
