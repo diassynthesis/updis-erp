@@ -18,7 +18,7 @@ class up_asset_category(osv.osv):
 class up_asset_asset(osv.osv):
     _name = 'updis.asset.asset'
     _description = 'Asset Asset'
-    _log_access = False
+    _log_access = True
 
     _columns = {
         'category_id': fields.many2one('updis.asset.category', string="Category", required=True),
