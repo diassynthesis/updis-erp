@@ -28,8 +28,9 @@ class up_asset_asset(osv.osv):
         'name': fields.char(size=512, string='Name', required=True),
         'life_cycle': fields.integer(string='Life Cycle'),
         'model_and_type': fields.char(size=256, string='Model & Type'),
-        'usage': fields.selection(selection=[('in_use', 'In Use'), ('damage', 'Damage'), ('scrap', 'Scrap')],
-                                  string='Usage'),
+        'usage': fields.selection(
+            selection=[('idle', 'Idle'), ('in_use', 'In Use'), ('damage', 'Damage'), ('scrap', 'Scrap')],
+            string='Usage'),
         'scrap_result': fields.selection(
             selection=[('origin', 'In Origin Place'), ('warehouse', 'In Warehouse'), ('else', 'Else')],
             string='Scrap Result'),
