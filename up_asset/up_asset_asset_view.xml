@@ -54,7 +54,6 @@
                                     <group string="Life Cycle Info">
                                         <field name="purchase_date"/>
                                         <field name="life_cycle"/>
-                                        <field name="retention"/>
                                     </group>
                                     <group string="Price Info">
                                         <field name="quantity"/>

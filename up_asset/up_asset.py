@@ -41,8 +41,6 @@ class up_asset_asset(osv.osv):
         'quantity': fields.integer(string='Quantity'),
         'unit_price': fields.float(digits=(16, 2), string='Unit Price'),
         'cost': fields.float(digits=(16, 2), string='Cost'),
-        'retention': fields.selection(selection=[('permanent', 'Permanent')],
-                                      string='Retention'),
         'create_date': fields.datetime('Created on', select=True),
         'create_uid': fields.many2one('res.users', 'Author', select=True),
 
@@ -62,7 +60,6 @@ class up_asset_asset(osv.osv):
         'is_import': False,
         'quantity': 1,
         'purchase_date': lambda *a: str(datetime.date.today()),
-        'retention': 'permanent',
         'usage': 'in_use',
     }
 

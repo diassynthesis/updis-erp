@@ -1,0 +1,346 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* up_asset
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0-20131022-232438\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-11-22 06:19+0000\n"
+"PO-Revision-Date: 2013-11-22 06:19+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: up_asset
+#: field:updis.asset.asset,category_id:0
+msgid "Category"
+msgstr "分类"
+
+#. module: up_asset
+#: selection:updis.asset.asset,usage:0
+msgid "In Use"
+msgstr "良好"
+
+#. module: up_asset
+#: model:res.groups,comment:up_asset.asset_user
+msgid "the Asset User will be able to view all asset."
+msgstr "固定资产管理用户可以查看所有资产信息"
+
+#. module: up_asset
+#: view:updis.asset.asset:0
+msgid "Log"
+msgstr "历史记录"
+
+#. module: up_asset
+#: model:ir.actions.act_window,name:up_asset.action_up_asset_category_config
+#: model:ir.ui.menu,name:up_asset.menu_up_asset_category_config
+msgid "Asset Category Config"
+msgstr "固定资产分类管理"
+
+#. module: up_asset
+#: model:res.groups,name:up_asset.asset_manager
+msgid "Asset Manager"
+msgstr "固定资产管理经理"
+
+#. module: up_asset
+#: selection:updis.asset.asset,usage:0
+msgid "Scrap"
+msgstr "报废"
+
+#. module: up_asset
+#: selection:updis.asset.asset,scrap_result:0
+msgid "In Origin Place"
+msgstr "在原来位置"
+
+#. module: up_asset
+#: selection:updis.asset.asset,usage:0
+msgid "Damage"
+msgstr "损坏"
+
+#. module: up_asset
+#: view:updis.asset.asset:0
+#: field:updis.asset.asset,note:0
+msgid "Maintenance Note"
+msgstr "维修记录"
+
+#. module: up_asset
+#: field:updis.asset.log,asset_id:0
+msgid "Related Asset"
+msgstr "相关固定资产"
+
+#. module: up_asset
+#: selection:updis.asset.asset,retention:0
+msgid "Permanent"
+msgstr "永久"
+
+#. module: up_asset
+#: view:updis.asset.asset:0
+msgid "Asset"
+msgstr "固定资产"
+
+#. module: up_asset
+#: field:updis.asset.asset,department_id:0
+msgid "Department"
+msgstr "部门"
+
+#. module: up_asset
+#: field:updis.asset.asset,unit_price:0
+msgid "Unit Price"
+msgstr "单价"
+
+#. module: up_asset
+#: view:updis.asset.asset:0
+msgid "Cost(yuan)"
+msgstr "原值(元)"
+
+#. module: up_asset
+#: model:ir.ui.menu,name:up_asset.menu_up_close_asset_management
+msgid "Scrap Asset Management"
+msgstr "报废固定资产管理"
+
+#. module: up_asset
+#: view:updis.asset.asset:0
+#: field:updis.asset.asset,name:0
+msgid "Name"
+msgstr "设备名称"
+
+#. module: up_asset
+#: view:updis.asset.asset:0
+msgid "Code Info"
+msgstr "代码信息"
+
+#. module: up_asset
+#: field:updis.asset.asset,scrap_result:0
+msgid "Scrap Result"
+msgstr "报废结果"
+
+#. module: up_asset
+#: field:updis.asset.asset,create_uid:0
+msgid "Author"
+msgstr "创建人"
+
+#. module: up_asset
+#: model:ir.ui.menu,name:up_asset.menu_up_asset_management
+#: model:ir.ui.menu,name:up_asset.menu_up_asset_management_root
+msgid "Asset Management"
+msgstr "固定资产管理"
+
+#. module: up_asset
+#: model:res.groups,name:up_asset.asset_user
+msgid "Asset User"
+msgstr "固定资产用户"
+
+#. module: up_asset
+#: field:updis.asset.asset,life_cycle:0
+msgid "Life Cycle"
+msgstr "使用年限"
+
+#. module: up_asset
+#: field:updis.asset.asset,is_import:0
+msgid "Is Import"
+msgstr "是否为导入记录"
+
+#. module: up_asset
+#: selection:updis.asset.asset,scrap_result:0
+msgid "Else"
+msgstr "其他"
+
+#. module: up_asset
+#: model:ir.ui.menu,name:up_asset.menu_up_active_asset_management
+msgid "Active Asset Management"
+msgstr "在用固定资产管理"
+
+#. module: up_asset
+#: view:updis.asset.asset:0
+msgid "Life Cycle Info"
+msgstr "使用年限信息"
+
+#. module: up_asset
+#: field:updis.asset.asset,user:0
+#: field:updis.asset.log,user_id:0
+msgid "User"
+msgstr "使用人"
+
+#. module: up_asset
+#: model:res.groups,name:up_asset.asset_admin
+msgid "Asset Admin"
+msgstr "固定资产管理员"
+
+#. module: up_asset
+#: field:updis.asset.asset,scrap_note:0
+msgid "Scrap Note"
+msgstr "报废记录"
+
+#. module: up_asset
+#: view:updis.asset.asset:0
+msgid "Unit Price(yuan)"
+msgstr "单价(元)"
+
+#. module: up_asset
+#: field:updis.asset.category,name:0
+msgid "Asset Category Name"
+msgstr "固定资产分类名"
+
+#. module: up_asset
+#: view:updis.asset.asset:0
+#: field:updis.asset.log,log_info:0
+msgid "Info"
+msgstr "信息"
+
+#. module: up_asset
+#: model:ir.actions.act_window,name:up_asset.action_up_asset_asset_scrap
+#: view:updis.asset.asset:0
+msgid "Scrap Asset"
+msgstr "报废固定资产"
+
+#. module: up_asset
+#: model:ir.ui.menu,name:up_asset.menu_up_asset_management_config
+msgid "Asset Management Config"
+msgstr "固定资产配置"
+
+#. module: up_asset
+#: selection:updis.asset.asset,scrap_result:0
+msgid "In Warehouse"
+msgstr "在仓库"
+
+#. module: up_asset
+#: field:updis.asset.asset,create_date:0
+msgid "Created on"
+msgstr "创建日期"
+
+#. module: up_asset
+#: field:updis.asset.asset,purchase_date:0
+msgid "Purchase Date"
+msgstr "采购日期"
+
+#. module: up_asset
+#: selection:updis.asset.asset,usage:0
+msgid "Idle"
+msgstr "闲置"
+
+#. module: up_asset
+#: model:res.groups,comment:up_asset.asset_admin
+msgid "the Asset Admin will be able to control all asset config."
+msgstr "固定资产管理员可以配置所有相关信息"
+
+#. module: up_asset
+#: field:updis.asset.asset,retention:0
+msgid "Retention"
+msgstr "保管期限"
+
+#. module: up_asset
+#: view:updis.asset.asset:0
+msgid "Price Info"
+msgstr "价格信息"
+
+#. module: up_asset
+#: view:updis.asset.asset:0
+msgid "Asset Search View"
+msgstr "固定资产搜索"
+
+#. module: up_asset
+#: field:updis.asset.asset,quantity:0
+msgid "Quantity"
+msgstr "数量"
+
+#. module: up_asset
+#: field:updis.asset.asset,location:0
+msgid "Location"
+msgstr "位置"
+
+#. module: up_asset
+#: model:ir.actions.act_window,name:up_asset.action_up_asset_asset_active
+#: view:updis.asset.asset:0
+msgid "Active Asset"
+msgstr "在用固定资产"
+
+#. module: up_asset
+#: field:updis.asset.asset,code:0
+msgid "Code"
+msgstr "序号"
+
+#. module: up_asset
+#: field:updis.asset.asset,financial_code:0
+msgid "financial Code"
+msgstr "固定资产分类代码"
+
+#. module: up_asset
+#: field:updis.asset.asset,log_ids:0
+msgid "Logs"
+msgstr "历史记录"
+
+#. module: up_asset
+#: view:updis.asset.asset:0
+msgid "Supplier"
+msgstr "开发者"
+
+#. module: up_asset
+#: field:updis.asset.asset,usage:0
+msgid "Usage"
+msgstr "使用情况"
+
+#. module: up_asset
+#: view:updis.asset.asset:0
+msgid "Location Info"
+msgstr "位置信息"
+
+#. module: up_asset
+#: model:ir.model,name:up_asset.model_updis_asset_asset
+msgid "Asset Asset"
+msgstr "固定资产"
+
+#. module: up_asset
+#: view:updis.asset.asset:0
+msgid "Usage Info"
+msgstr "使用情况"
+
+#. module: up_asset
+#: field:updis.asset.log,date:0
+msgid "Datetime"
+msgstr "时间"
+
+#. module: up_asset
+#: view:updis.asset.asset:0
+msgid "Group by..."
+msgstr "分组..."
+
+#. module: up_asset
+#: view:updis.asset.asset:0
+msgid "By Category"
+msgstr "按分类"
+
+#. module: up_asset
+#: field:updis.asset.asset,cost:0
+msgid "Cost"
+msgstr "原值"
+
+#. module: up_asset
+#: model:ir.model,name:up_asset.model_updis_asset_category
+#: view:updis.asset.category:0
+msgid "Asset Category"
+msgstr "固定资产分类"
+
+#. module: up_asset
+#: field:updis.asset.asset,model_and_type:0
+msgid "Model & Type"
+msgstr "规格及信号"
+
+#. module: up_asset
+#: field:updis.asset.asset,supplier:0
+msgid "Developer"
+msgstr "开发者"
+
+#. module: up_asset
+#: model:res.groups,comment:up_asset.asset_manager
+msgid "the Asset Manager will be able to control all asset."
+msgstr "固定资产经理可以创建和管理固定资产条目"
+
+#. module: up_asset
+#: model:ir.model,name:up_asset.model_updis_asset_log
+msgid "Asset Log"
+msgstr "固定资产历史记录"
+
