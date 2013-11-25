@@ -223,8 +223,8 @@
                 [[ o.category_name ==u'分区规划' and '[ √ ]' or '[ _ ]']]分区规划		[[ o.category_name ==u'法定图则' and '[ √ ]' or '[ _ ]']]法定图则			[[ o.category_name ==u'控规' and '[ √ ]' or '[ _ ]']]控规 		[[ o.category_name ==u'修规(详细蓝图)' and '[ √ ]' or '[ _ ]']]修规(详细蓝图)
                 [[ o.category_name ==u'旧改项目' and '[ √ ]' or '[ _ ]']]旧改项目      [[ o.category_name ==u'城市设计' and '[ √ ]' or '[ _ ]']]城市设计		[[ o.category_name ==u'工程项目' and '[ √ ]' or '[ _ ]']]工程项目		[[ o.category_name ==u'市政专项' and '[ √ ]' or '[ _ ]']]市政专项
                 [[ o.category_name ==u'其它' and u'[ √ ]其它:%s'%(o.categories_else) or u'[ _ ]其它']]
-			投标类别：[[o.toubiaoleibie==u'商务标' and '[ √ ]' or '[ _ ]']]商务标 	[[o.toubiaoleibie==u'技术标' and '[ √ ]' or '[ _ ]']]技术标 	[[o.toubiaoleibie==u'综合标' and '[ √ ]' or '[ _ ]']]综合标
-			项目管理级别：[[o.guanlijibie==u'院级' and '[ √ ]' or '[ _ ]']]院级 	[[o.guanlijibie==u'所级' and '[ √ ]' or '[ _ ]']]所级</para>
+			投标类别：[[o.toubiaoleibie==u'business' and '[ √ ]' or '[ _ ]']]商务标 	[[o.toubiaoleibie==u'technology' and '[ √ ]' or '[ _ ]']]技术标 	[[o.toubiaoleibie==u'complex' and '[ √ ]' or '[ _ ]']]综合标
+			项目管理级别：[[o.guanlijibie==u'LH200307240001' and '[ √ ]' or '[ _ ]']]院级 	[[o.guanlijibie==u'LH200307240002' and '[ √ ]' or '[ _ ]']]所级</para>
 			<blockTable colWidths="80,170">
                 <tr>
                    <td><para style="Label">  </para></td>
