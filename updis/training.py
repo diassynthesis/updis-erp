@@ -13,7 +13,7 @@ class updis_hr_training(osv.osv):
         'time': fields.date(string='Training Time'),
         'end_time': fields.date(string='Training End Time'),
         'organizers': fields.char(size=100, string='Training Organizers'),
-        'record_ids': fields.one2many('updis.hr.training.record', 'training_id', 'Training Related employees'),
+        'record_ids': fields.one2many('updis.hr.training.record', 'training_id', string='Training Related employees'),
 
     }
 
@@ -23,7 +23,7 @@ class updis_hr_training_record(osv.osv):
     _name = "updis.hr.training.record"
     _order = "training_time"
     _columns = {
-        'training_id': fields.many2one('updis.hr.training', 'Training Name', required=True),
+        'training_id': fields.many2one('updis.hr.training', 'Training Name', required=True, ondelete='cascade'),
         'employee': fields.many2one('hr.employee', 'Employee', required=True),
 
         'score': fields.selection([(u'pass', u'Pass'), (u'fail', u'Not Pass')], 'Score'),
