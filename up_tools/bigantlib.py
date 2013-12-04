@@ -85,7 +85,7 @@ def _http_call(the_url, method, authorization, **kw):
     req = urllib2.Request(http_url, data=http_body)
     req.add_header('Accept-Encoding', 'gzip')
     try:
-        resp = urllib2.urlopen(req, timeout=5)
+        resp = urllib2.urlopen(req, timeout=10)
         body = _read_body(resp)
         r = et.fromstring(body)
         return r

@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 import logging
 import time
 import urllib2
+from up_tools.bigantlib import BigAntClient
 from urllib import urlencode
 
 from osv import osv, fields
@@ -8,7 +10,6 @@ from osv import osv, fields
 
 class sms(osv.Model):
     _sms_gateway = "http://web.mobset.com/SDK/Sms_Send.asp"
-    _big_ant_gateway = "http://10.100.100.200:6664/Employee.asmx/SendMessenge"
     _name = "sms.sms"
     _order = "id desc"
     _columns = {
@@ -48,29 +49,44 @@ class sms(osv.Model):
             'msgId': '',
 
         }
-
         sms_ids = self.search(cr, uid, [('state', '=', 'draft'), ('type', '=', 'big_ant')], context=context)
         for sms in self.browse(cr, uid, sms_ids, context):
             try:
                 params['recvLoginNames'] = sms.to
-                params['subject'] = sms.subject.encode('utf-8')
-                params['content'] = sms.content.encode('utf-8')
-                resp = urllib2.urlopen(self._big_ant_gateway, urlencode(params), timeout=45)
+                params['subject'] = sms.subject
+                params['content'] = sms.content
+                bigAntClient = BigAntClient()
+                resp = bigAntClient.Employee___asmx.SendMessenge.post(**params)
 
-                if resp.code == 200:
+                if resp.text == "1":
                     sms_server_id = 'Success'
                     self.write(cr, uid, [sms.id], {
                         'sms_server_id': sms_server_id,
                         'state': 'sent',
                         'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
                     })
+                elif resp.text == "0":
+                    logging.getLogger('sms.sms').warning("SENDING Big Ant Message failed!")
+                    self.write(cr, uid, [sms.id], {
+                        'state': 'error',
+                        'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
+                        'sms_server_id': u"网络链接失败",
+                    })
+                elif resp.text == "205":
+                    logging.getLogger('sms.sms').warning("SENDING Big Ant Message failed!")
+                    self.write(cr, uid, [sms.id], {
+                        'state': 'error',
+                        'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
+                        'sms_server_id': u"帐号或密码错误",
+                    })
                 else:
                     logging.getLogger('sms.sms').warning("SENDING Big Ant Message failed!")
                     self.write(cr, uid, [sms.id], {
                         'state': 'error',
                         'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
-                        'sms_server_id': 'response error ==>' + resp.code,
+                        'sms_server_id': u"未知原因出错%s" % resp.text,
                     })
+
             except UnicodeEncodeError, e:
                 logging.getLogger('sms.sms').error("sending Big Ant Message failed!")
                 self.write(cr, uid, [sms.id], {
@@ -202,7 +218,7 @@ class sms(osv.Model):
                                  context=context)
 
     def send_big_ant_to_config_group(self, cr, uid, config_group_id, from_rec, subject, content, model, res_id,
-                                 context=None):
+                                     context=None):
         model_pool = self.pool.get('ir.model.data')
         model_ids = model_pool.search(cr, 1, [('model', '=', 'project.config.sms'), ('name', '=', config_group_id)],
                                       context=context)
