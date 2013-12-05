@@ -24,6 +24,7 @@
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='user_id']" position="replace"/>
+                <xpath expr="//field[@name='parent_id']" position="replace"/>
                 <xpath expr="//group[@string='Position']/field[@name='coach_id']" position="replace"/>
                 <xpath expr="//group[@string='Status']/field[@name='gender']" position="replace"/>
                 <xpath expr="//group[@string='Birth']" position="replace"/>
@@ -32,7 +33,7 @@
                 <xpath expr="//page[@string='Public Information']/group/group[@string='Contact Information']"
                        position="after">
                     <group string="Education">
-                        <field name="degree" attrs="{'readonly':1}"/>
+                        <field name="degree"/>
                         <field name="diploma"/>
                         <field name="academy"/>
                         <field name="major"/>
@@ -53,21 +54,24 @@
                     </group>
                 </xpath>
                 <xpath expr="//group[@string='Position']" position="after">
-                    <group string="Work Information">
-                        <field name="business"/>
-                        <field name="business_date"/>
-                        <field name="duty"/>
-                        <field name="duty_date"/>
-                        <field name="enter_date"/>
-                        <field name="out_date"/>
-                        <field name="contract_date"/>
-
-                    </group>
-                    <group string="Title Information">
-                        <field name="title"/>
-                        <field name="title_date"/>
-                        <field name="begin_work_date"/>
-
+                    <newline/>
+                    <group string="Work Information" colspan="2" col="2">
+                        <group>
+                            <field name="department_id"/>
+                            <field name="job_id"/>
+                            <field name="duty"/>
+                            <field name="duty_date"/>
+                            <field name="business"/>
+                            <field name="business_date"/>
+                        </group>
+                        <group>
+                            <field name="title"/>
+                            <field name="title_date"/>
+                            <field name="begin_work_date"/>
+                            <field name="enter_date"/>
+                            <field name="out_date"/>
+                            <field name="contract_date"/>
+                        </group>
                     </group>
                     <group string="Reg Tax">
                         <field name="reg_tax"/>
@@ -77,6 +81,9 @@
                     <group string="Vacation">
                         <field name="year_vac_days"/>
                         <field name="have_vac_days"/>
+                        <button name="clear_have_vac_days"
+                                string="重置所有已休假记录" confirm="你确定重置所有休假天数么？重置休假天数不可回退！"
+                                type="object" groups="base.group_system"/>
                     </group>
                     <newline/>
                     <group col="2" colspan="4" string="Other Info">
@@ -87,6 +94,7 @@
                         <field name="strong_point"/>
                     </group>
                 </xpath>
+                <xpath expr="//group[@string='Position']" position="replace"/>
                 <!--xpath expr="//group[@string='Citizenship &amp; Other Info']" position="inside">
 
                 </xpath-->
@@ -104,6 +112,7 @@
                                 <field name="training_id"/>
                                 <field name="training_organizers"/>
                                 <field name="training_time"/>
+                                <field name="training_end_time"/>
                                 <field name="score"/>
                                 <field name="training_certificate"/>
                             </tree>
@@ -123,12 +132,25 @@
                 <xpath expr="//label[@for='category_ids']" position="replace"/>
                 <xpath expr="//field[@name='category_ids']" position="replace"/>
                 <xpath expr="//field[@name='active']" position="before">
-                    <field  name="category_ids" widget="many2many_tags" placeholder="e.g. Part Time"
+                    <field name="category_ids" widget="many2many_tags" placeholder="e.g. Part Time"
                            groups="base.group_hr_user"/>
                 </xpath>
             </field>
         </record>
 
+        <!-- leave employee -->
+
+        <record id="view_leave_employee_tree_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.leave.tree.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="arch" type="xml">
+                <field name="name"/>
+                <field name="department_id"/>
+                <field name="business"/>
+                <field name="mobile_phone"/>
+                <field name="out_date"/>
+            </field>
+        </record>
         <record id="action_view_leave_employee" model="ir.actions.act_window">
             <field name="name">View Leaved Employees</field>
             <field name="res_model">hr.employee</field>
@@ -138,6 +160,12 @@
             <field name="context">{'search_default_department':1}</field>
             <field name="view_id" eval="False"/>
             <field name="search_view_id" ref="hr.view_employee_filter"/>
+        </record>
+        <record id="act_view_hr_leave_employee_tree" model="ir.actions.act_window.view">
+            <field name="sequence">18</field>
+            <field name="view_id" ref="view_leave_employee_tree_inherit"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_view_leave_employee"/>
         </record>
 
         <menuitem name="Leave Employee" id="base.menu_leave_employee" parent="hr.menu_hr_main"

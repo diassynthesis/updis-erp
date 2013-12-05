@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <report id="report_project_active_tasking_report_pdf"
+                string="QRT7.2.2-1产品要求评审及任务下达记录"
+                model="project.project.active.tasking"
+                name="project.active.tasking.report.pdf"
+                rml="up_project/report/active/project_project_active_tasking_report_pdf.rml"
+                auto="False"
+                header="False"/>
+    </data>
+</openerp>

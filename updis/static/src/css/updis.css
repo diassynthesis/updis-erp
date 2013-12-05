@@ -70,3 +70,7 @@
 .openerp .oe_login .oe_login_logo {
     top: -100px !important;
 }
+
+.openerp .inline-item {
+    width: auto !important;
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_up_asset_category_config_tree" model="ir.ui.view">
+            <field name="name">updis.asset.category.tree</field>
+            <field name="model">updis.asset.category</field>
+            <field name="arch" type="xml">
+                <tree string="Asset Category" version="7.0" editable="top">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</openerp>

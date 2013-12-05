@@ -1,166 +1,353 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
-	<data>
-		<record id="project_assignment_search" model="ir.ui.view">
-			<field name="name">project.assignment.search</field>
-			<field name="model">project.assignment</field>
-			<field name="arch" type="xml">
-				<search string="Project Assignment">
-					<field name="project_id" string="Project"/>
-					<field name="duty_id" string="Duty"/>
-					<field name="profession_id" string="Profession"/>
-					<group expand="0" string="Group By...">
-						<filter string="Project" icon="terp-folder-orange" domain="" context="{'group_by':'project_id'}"/>
-						<filter string="Profession" icon="terp-folder-orange" domain="" context="{'group_by':'profession_id'}"/>
-						<filter string="Duty" icon="terp-folder-orange" domain="" context="{'group_by':'duty_id'}"/>
-					</group>
-				</search>
-			</field>
-		</record>
-		<record id="project_assignment_form" model="ir.ui.view">
-			<field name="name">project.assignment.form</field>
-			<field name="model">project.assignment</field>
-			<field name="arch" type="xml">
-				<form version="7.0" string="Project Assignment Form">
-					<group col="4">
-						<field name="duty_id"/>
-						<field name="profession_id"/>
-						<field name="project_id"/>
-					</group>
-				</form>
-			</field>
-		</record>
+    <data>
+        <record id="project_project_wizard_form" model="ir.ui.view">
+            <field name="name">project.project.wizard.form</field>
+            <field name="model">project.project.wizard</field>
+            <field name="arch" type="xml">
+                <form version="7.0" string="Wizard Form">
+                    <sheet>
+                        <div class="oe_title oe_long_title">
+                            <h1>
+                                <field name="name" placeholder="Project Name"/>
+                            </h1>
+                        </div>
+                        <div class="oe_right inline-item">
+                            <span>项目编号:</span>
+                            <field name="xiangmubianhao"/>
+                        </div>
+                        <group col="2">
+                            <label string="Project Location" for="country_id"/>
+                            <div class="address_format">
+                                <field name="country_id" class="oe_no_button" widget="selection"
+                                       on_change="onchange_country_id(country_id)"
+                                       style="width: 15%%"
+                                       options="{'no_open':True}" nolabel="1" placeholder="Country"
+                                        />
+                                <field name="state_id" widget="selection" options="{'no_open':True}"
+                                       placeholder="State" domain="[('country_id.id','=',49)]"
+                                       nolabel="1" style="width: 20%%"
+                                        />
+                                <field name="city" nolabel="1" placeholder="City" style="width: 20%%"
+                                        />
+                                <label for="city_type" string="城市类别"/>
+                                <field name="city_type" nolabel="1" style="width: 20%%"
+                                        />
+                            </div>
+                        </group>
+                        <group>
+                            <group string="Partner Info">
+                                <field name="partner_type"/>
+                                <field name="partner_id" string="甲方" domain="[('is_company','=',True)]"/>
+                                <field name="customer_contact" domain="[('is_company','=',False)]"/>
+                            </group>
+                            <group string="Project Type">
+                                <field name="project_type" class="oe_no_button"/>
+                                <field name="categories_id"/>
+                                <field name="shifoutoubiao"/>
+                                <field name="toubiaoleibie"/>
+                            </group>
+                            <group string="In charge Relate">
+                                <field name="zhuguanzongshi_id" domain="[('active','=',True)]" widget="many2many_tags"/>
+                                <field name="chenjiebumen_id"/>
+                                <field name="user_id" widget="many2many_tags" string="项目负责人"/>
+                                <field name="guanlijibie"/>
+                            </group>
+                            <group string="Other Info">
+                                <field name="guimo"/>
+                                <field name="waibao"/>
+                                <field name="shizhenpeitao"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="project_admin_change_accept" class="oe_highlight"
+                                groups="up_project.group_project_base_info_admin" string="修改"
+                                type="object"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
 
-		<record id="project_assignment_tree" model="ir.ui.view">
-			<field name="name">project.assignment.tree</field>
-			<field name="model">project.assignment</field>
-			<field name="arch" type="xml">
-				<tree string="项目分工">
-					<field name="duty_id"/>
-					<field name="profession_id"/>
-					<field name="project_id"/>
-				</tree>
-			</field>
-		</record>
-		<record id="edit_updis_project" model="ir.ui.view">
-			<field name="name">project.project.updisform</field>
-			<field name="model">project.project</field>
-			<field name="priority">10</field>
-			<field name="arch" type="xml">
-				<form string="Project" version="7.0">
-					<header>
-						<button name="action_suozhangshenpi" string="所长审批申请单" states="open" type="object"/>
-						<button name="action_jingyingshishenpi" string="经营室审批申请单" states="suozhangshenpi" type="object"/>
-						<button name="action_zongshishishenpi" string="总师室审批申请单" states="zhidingbumen" type="object"/>
-						<button name="action_suozhangqianzishenpi" string="所长签字审批申请单" states="zhidingfuzeren" type="object"/>
-						<button name="action_fuzerenqidong" string="负责人启动" states="suozhangqianzi" type="object"/>
-						<field name="state" widget="statusbar" statusbar_colors='{"open":"blue"}' readonly="1"/>
-					</header>
-					<sheet string="Project">
-						<field name="analytic_account_id" invisible="1" required="0"/>
-						<div class="oe_title">
-							<label for="name" class="oe_edit_only" string="Project Name"/>
-							<h1>
-								<field name="name" string="Project Name"/>
-							</h1>
-							<div name="options_active">
-								<field name="use_tasks" class="oe_inline" invisible="1" />
-								<label for="use_tasks" invisible="1" />
-							</div>
-						</div>
-						<div class="oe_right oe_button_box" name="buttons" groups="base.group_user">
-							<button name="%(project.act_project_project_2_project_task_all)d" string="Tasks"
-								type="action" attrs="{'invisible':[('use_tasks','=', 0)]}"/>
-							<button name="attachment_tree_view" string="Documents" type="object"/>
-						</div>
-						<group>
-							<group col="4">
-								<field name="country_id" class="oe_no_button" on_change="onchange_country(country_id)" options="{'no_open':True}"/>
-								<field name="state_id" class="oe_no_button" options="{'no_open':True}"/>
-								<field name="city"/>
-							</group>
-						</group>
-					</sheet>
-				</form>
-			</field>
-		</record>
+        <record id="project_project_wizard_action" model="ir.actions.act_window">
+            <field name="name">project Basic Info Change</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.project.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="project_project_wizard_form"/>
+            <field name="target">new</field>
+        </record>
 
 
-		<record id="edit_project_inherit" model="ir.ui.view">
-			<field name="name">project.project.form.inherit</field>
-			<field name="model">project.project</field>
-			<field name="inherit_id" ref="project.edit_project" />
-			<field name="arch" type="xml">
-				<xpath expr="//header" position="replace">
-					<header>
-						<button name="action_suozhangshenpi" string="所长审批申请单" states="open" type="object"/>
-						<button name="action_jingyingshishenpi" string="经营室审批申请单" states="suozhangshenpi" type="object"/>
-						<button name="action_zongshishishenpi" string="总师室审批申请单" states="zhidingbumen" type="object"/>
-						<button name="action_suozhangqianzishenpi" string="所长签字审批申请单" states="zhidingfuzeren" type="object"/>
-						<button name="action_fuzerenqidong" string="负责人启动" states="suozhangqianzi" type="object"/>
-						<field name="state" widget="statusbar" statusbar_colors='{"open":"blue"}' readonly="1"/>
-					</header>
-				</xpath>
-				<xpath expr="//field[@name='user_id']" position="after">
-					<field name="xiangmubianhao" readonly="1" />
-				</xpath>
-				<xpath expr="//page[last()]" position="after">	
-					<page string="Project Category">
-						<field name="categories_id"/>					
-					</page>
-				</xpath>
-				<xpath expr="//page[@name='team']" position="after">
-					<page string="Project Info" name="project_info">
-						<group>
-							<group string="基本信息">
-								<field name="state_id" class="oe_no_button" placeholder="State" options="{&quot;no_open&quot;: True}"/>
-								<field name="city"/>
-								<field name="guimo"/>
-								<field name="jianyishejibumen_id"/>
-								<field name="jianyixiangmufuzeren_id"/>
-								<field name="jiafang_id"/>	
-								<field name="waibao"/>
-								<field name="shizhenpeitao"/>
-								<field name="duofanghetong"/>
-								<field name="shifoutoubiao"/>
-							</group>
+        <record id="project.view_project" model="ir.ui.view">
+            <field name="name">project.project.tree.replace</field>
+            <field name="model">project.project</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <tree string="Projects">
+                    <field name="sequence" invisible="1" widget="handle"/>
+                    <field name="message_unread" invisible="1"/>
+                    <field name="date" invisible="1"/>
+                    <field name="xiangmubianhao"/>
+                    <field name="categories_id"/>
+                    <field name="chenjiebumen_id"/>
+                    <field name="name" string="Project Name"/>
+                    <field name="guanlijibie"/>
+                    <field name="zhuguanzongshi_id"/>
+                    <field name="user_id" string="Project Manager"/>
+                    <field name="partner_id" string="Customer"/>
+                    <field name="state"/>
+                    <field name="begin_date"/>
+                </tree>
+            </field>
+        </record>
 
-							<group string="所长审批内容">
-								<!-- 所长审批内容 -->
-								<field name="yaoqiuxingchengwenjian"/>	
-								<field name="yinhanyaoqiu"/>	
-								<field name="difangfagui"/>		
-								<field name="fujiayaoqiu"/>		
-								<field name="hetongyizhi"/>	
-								<field name="ziyuan"/>		
-								<field name="shebei"/>		
-								<field name="gongqi"/>		
-								<field name="shejifei"/>
-							</group>
-							<group string="明示要求">
-								<!-- 明示要求 -->
-								<field name="zhaobiaoshu" />		
-								<field name="weituoshu" />	
-								<field name="xieyicaoan" />		
-								<field name="koutouyaoqiujilu" />
-							</group>
-							<group string="经营室指定设计部门">
-								<field name="pingshenfangshi"/>	
-								<field name="yinfacuoshi"/>	
-								<field name="renwuyaoqiu"/>	
-								<field name="chenjiebumen_id"/>
-							</group>
-							<group string="总师室指定项目负责人">
-								<field name="toubiaoleibie"/>
-								<field name="guanlijibie"/>
-								<field name="chenjiefuzeren_id"/>
-								<field name="zhuguanzongshi_id"/>
-							</group>
-						</group>
-					</page>
-				</xpath>
-				<xpath expr="//page[@name='team']" position="replace"></xpath>
-			</field>
-		</record>
-	</data>
+        <record id="view_project_tree_need_process" model="ir.ui.view">
+            <field name="name">project.project.tree.need.process</field>
+            <field name="model">project.project</field>
+            <field name="priority">15</field>
+            <field name="arch" type="xml">
+                <tree colors="red:state=='project_active'"
+                      string="Projects">
+                    <field name="sequence" invisible="1" widget="handle"/>
+                    <field name="message_unread" invisible="1"/>
+                    <field name="date" invisible="1"/>
+                    <field name="xiangmubianhao"/>
+                    <field name="categories_id"/>
+                    <field name="chenjiebumen_id"/>
+                    <field name="name" string="Project Name"/>
+                    <field name="guanlijibie"/>
+                    <field name="zhuguanzongshi_id"/>
+                    <field name="user_id" string="Project Manager"/>
+                    <field name="partner_id" string="Customer"/>
+                    <field name="state"/>
+                    <field name="begin_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="project.view_project_project_filter" model="ir.ui.view">
+            <field name="name">project.project.select.replace</field>
+            <field name="model">project.project</field>
+            <field name="arch" type="xml">
+                <search string="Search Project">
+                    <field name="name" string="Project Name"/>
+                    <field name="xiangmubianhao" string="Project Num"/>
+                    <field name="categories_id"/>
+                    <field name="chenjiebumen_id"/>
+                    <field name="zhuguanzongshi_id"/>
+                    <field name="user_id" string="Project Manager"/>
+                    <field name="partner_id" string="Customer"/>
+                    <field name="guanlijibie"/>
+                    <field name="state"/>
+                    <separator/>
+                    <filter string="Project(s) Manager" domain="[('user_id','=',uid)]"
+                            help="Projects in which I am a manager" icon="terp-personal"/>
+                    <filter string="Tender Project(s)" domain="[('shifoutoubiao','=',True)]" help="All Tender Projects"
+                            icon="terp-personal"/>
+                    <filter name="filed-project" string="Filed Project(s)" domain="[('state','=','project_finish')]"
+                            help="All Filed Projects"
+                            icon="terp-personal"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="state" name="Manager" icon="terp-personal" domain="[]"
+                                context="{'group_by':'state'}"/>
+                        <filter string="type" name="Type" icon="terp-personal" domain="[]"
+                                context="{'group_by':'categories_id'}"/>
+                        <filter string="level" name="Project Level" icon="terp-personal" domain="[]"
+                                context="{'group_by':'guanlijibie'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="edit_project_inherit" model="ir.ui.view">
+            <field name="name">project.project.form.replace</field>
+            <field name="model">project.project</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <form string="Project" version="7.0">
+                    <header name="project_header">
+                        <div name="project_header"/>
+                        <button name="%(project_project_wizard_action)d"
+                                string="修改项目基本属性"
+                                type="action" groups="up_project.group_project_base_info_admin"/>
+                        <field name="state" widget="statusbar"
+                               readonly="1"/>
+                    </header>
+                    <sheet>
+                        <group invisible="1">
+                            <field name="is_project_created"/>
+                            <field name="is_project_creater"/>
+                            <field name="is_user_in_operator_group"/>
+                            <field name="is_user_in_engineer_group"/>
+                            <field name="is_user_is_project_manager"/>
+                        </group>
+                        <div class="oe_title oe_long_title">
+                            <h1>
+                                <field name="name" placeholder="Project Name"
+                                       attrs="{'readonly':['|',('is_project_created','=',True),('is_project_creater','=',False),('state','!=','project_active')]}"
+                                        />
+                            </h1>
+                        </div>
+                        <div attrs="{'invisible':[('state','=','project_active')]}" class="oe_right inline-item">
+                            <span>项目编号:</span>
+                            <field name="xiangmubianhao" readonly="1"/>
+                        </div>
+                        <group col="2">
+                            <label string="Project Location" for="country_id"/>
+                            <div class="address_format">
+                                <field name="country_id" class="oe_no_button" widget="selection"
+                                       on_change="on_change_country(country_id)" style="width: 15%%"
+                                       options="{'no_open':True}" nolabel="1" placeholder="Country"
+                                       attrs="{'readonly':['|',('is_project_created','=',True),('is_project_creater','=',False),('state','!=','project_active')]}"/>
+                                <field name="state_id" widget="selection" options="{'no_open':True}"
+                                       placeholder="State" domain="[('country_id.id','=',49)]"
+                                       nolabel="1" style="width: 20%%"
+                                       attrs="{'readonly':['|',('is_project_created','=',True),('is_project_creater','=',False),('state','!=','project_active')]}"/>
+                                <field name="city" nolabel="1" placeholder="City" style="width: 20%%"
+                                       attrs="{'readonly':['|',('is_project_created','=',True),('is_project_creater','=',False),('state','!=','project_active')]}"/>
+                                <label for="city_type" string="城市类别"/>
+                                <field name="city_type" nolabel="1" style="width: 20%%"
+                                       attrs="{'readonly':['|',('is_project_created','=',True),('is_project_creater','=',False),('state','!=','project_active')]}"/>
+                            </div>
+                        </group>
+                        <div attrs="{'invisible':[('is_project_created','=',True)]}">
+                            <br/>
+                            <br/>
+                            <br/>
+                            <span class="big-red-hit">请填写基础信息点击左上角保存后,点击当前页面下方的 "项目流程"标签卡 ---> "产品要求评审及任务下达记录" 开始启动流程．
+                            </span>
+                        </div>
+                        <group attrs="{'invisible':[('is_project_created','=',False)]}">
+                            <group string="Partner Info">
+                                <field name="partner_type" readonly="1"/>
+                                <field name="partner_id" string="甲方" readonly="1"/>
+                                <field name="customer_contact" readonly="1"/>
+                            </group>
+                            <group string="Project Type">
+                                <field name="project_type" class="oe_no_button" readonly="1"/>
+                                <field name="categories_id" readonly="1"/>
+                                <field name="shifoutoubiao" readonly="1"/>
+                                <field name="toubiaoleibie" readonly="1"/>
+                            </group>
+                            <group string="In charge Relate">
+                                <field name="zhuguanzongshi_id" widget="many2many_tags" readonly="1"/>
+                                <field name="chenjiebumen_id" readonly="1"/>
+                                <field name="user_id" readonly="1" widget="many2many_tags"/>
+                                <field name="guanlijibie" readonly="1"/>
+                            </group>
+                            <group string="Other Info">
+                                <field name="guimo" readonly="1"/>
+                                <field name="waibao" readonly="1"/>
+                                <field name="shizhenpeitao" readonly="1"/>
+                                <field name="begin_date" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <notebook>
+                        <page name="project_related_info" string="Project Process">
+                            <div>
+                                <div name="project_active_area">
+                                    <div class="area-header">
+                                        <h3>项目启动流程</h3>
+                                        <table class="oe_form_group">
+                                            <thead>
+                                                <th>流程</th>
+                                                <th>状态</th>
+                                                <th>提示</th>
+                                            </thead>
+                                            <tbody>
+                                                <div name="related_forms"/>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+                        <page name="project_comment" string="Project Comments">
+                            <group>
+                                <field name="questions"
+                                       attrs="{'readonly':[('is_user_is_project_manager','=',False)]}"/>
+                                <field name="primary_work"
+                                       attrs="{'readonly':[('is_user_is_project_manager','=',False)]}"/>
+                                <field name="next_work_plan"
+                                       attrs="{'readonly':[('is_user_is_project_manager','=',False)]}"/>
+                            </group>
+                        </page>
+                        <page name="attachments" string="Attachments">
+                            <group>
+                                <field name="attachments" nolabel="1" readonly="1" widget="many2many_binary"
+                                       invisible="1"/>
+                            </group>
+                        </page>
+                        <page name="project_log" string="Project Logs">
+                            <field name="project_logs" nolabel="1" readonly="1">
+                                <tree>
+                                    <field name="log_date"/>
+                                    <field name="log_user"/>
+                                    <field name="log_info"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                    </notebook>
+
+                </form>
+            </field>
+        </record>
+
+        <!--Project related to Chief Engineer Room-->
+        <record id="action_project_need_process" model="ir.actions.server">
+            <field name="name">Project Need Process</field>
+            <field name="state">code</field>
+            <field name="condition" eval="True"/>
+            <field name="model_id" ref="project.model_project_project"/>
+            <field name="code">
+                action = self.project_need_process_action(cr,uid,context=context)
+            </field>
+        </record>
+        <menuitem name="Project Need Process" id="project_need_process"
+                  parent="project.menu_project_management"
+                  action="action_project_need_process" sequence="4"/>
+
+
+        <record id="open_view_project_related_to_me" model="ir.actions.server">
+            <field name="name">Projects Related To Me</field>
+            <field name="state">code</field>
+            <field name="condition" eval="True"/>
+            <field name="model_id" ref="project.model_project_project"/>
+            <field name="code">
+                action = self.action_projects_related_to_me(cr,uid,context=context)
+            </field>
+        </record>
+        <menuitem action="open_view_project_related_to_me" id="menu_projects_related_to_me"
+                  name="Projects Related To Me"
+                  parent="project.menu_project_management" sequence="9"/>
+
+        <record id="open_view_project_all" model="ir.actions.server">
+            <field name="name">Action Projects</field>
+            <field name="state">code</field>
+            <field name="condition" eval="True"/>
+            <field name="model_id" ref="project.model_project_project"/>
+            <field name="code">
+                action = self.all_projects_action(cr,uid,context=context)
+            </field>
+        </record>
+        <record id="open_view_project_filed" model="ir.actions.server">
+            <field name="name">Action Filed Projects</field>
+            <field name="state">code</field>
+            <field name="condition" eval="True"/>
+            <field name="model_id" ref="project.model_project_project"/>
+            <field name="code">
+                action = self.all_filed_projects_action(cr,uid,context=context)
+            </field>
+        </record>
+        <menuitem action="open_view_project_all" id="project.menu_projects" name="All Projects"
+                  parent="project.menu_project_management" sequence="10"/>
+        <menuitem action="open_view_project_filed" id="project.menu_filed_projects" name="All Filed Projects"
+                  parent="project.menu_project_management" sequence="12"/>
+    </data>
 </openerp>

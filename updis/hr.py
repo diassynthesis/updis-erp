@@ -1,10 +1,31 @@
 #-*- encoding: utf-8 -*-
+import datetime
 from osv import fields, osv
 
 
 class hr_employee_updis(osv.osv):
     _description = "Employee"
     _inherit = "hr.employee"
+
+    def _get_total_vacations(self, cr, uid, ids, name, args, context=None):
+        res = {}
+        for record in self.browse(cr, uid, ids, context=context):
+            if record.enter_date and record.begin_work_date:
+                enter_date = datetime.datetime.strptime(record.enter_date, "%Y-%m-%d").date()
+                begin_work_date = datetime.datetime.strptime(record.begin_work_date, "%Y-%m-%d").date()
+                today = datetime.date.today()
+
+                if (today - enter_date).days < 366:
+                    res[record.id] = 0
+                elif (today - begin_work_date).days >= 365 * 20:
+                    res[record.id] = 15
+                elif 365 * 20 > (today - begin_work_date).days >= 365 * 10:
+                    res[record.id] = 10
+                else:
+                    res[record.id] = 5
+            else:
+                res[record.id] = 0
+        return res
 
     _columns = {
         'gender': fields.selection([(u'男', u'男'), (u'女', u'女')], 'Gender'),
@@ -18,7 +39,8 @@ class hr_employee_updis(osv.osv):
         'contract_date': fields.date("Contract Date"),
         'aptitude': fields.char("Aptitude", size=128),
         'major': fields.char("Major", size=128),
-        'year_vac_days': fields.integer("Year Vacation Days"),
+        'year_vac_days': fields.function(_get_total_vacations, type='integer', method=True, store=False,
+                                         string="Year Vacation Days", readonly=1),
         'have_vac_days': fields.integer("Have Vacation Days"),
         'insurance': fields.char("Insurance", size=128),
         'awards': fields.text("Award"),
@@ -55,10 +77,19 @@ class hr_employee_updis(osv.osv):
                                    string="Practice"),
         'home_phone': fields.related('user_id', 'home_phone', type="char",
                                      string="Home Phone"),
+
+        'image': fields.related('user_id', 'image', type='binary', string='Employee Image'),
+        'image_medium': fields.related('user_id', 'image_medium', type='binary', string='Employee Image Medium'),
+        'image_small': fields.related('user_id', 'image_small', type='binary', string='Employee Image Small'),
+        'has_image': fields.related('user_id', 'has_image', type='boolean', string='Employee Have Image'),
         'trains': fields.one2many('updis.hr.training.record', 'employee',
                                   # 'employee_training_rel', 'employee_id', 'training_id',
                                   'Trains'),
     }
+
+    def clear_have_vac_days(self, cr, uid, ids, context=None):
+        cr.execute("update hr_employee set have_vac_days=0")
+        return True
 
     def onchange_address_id(self, cr, uid, ids, address, context=None):
         return {'value': {}}

@@ -1,0 +1,276 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* vote
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0-20130308-002138\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-02 05:28+0000\n"
+"PO-Revision-Date: 2013-06-02 05:28+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: vote
+#: view:updis.vote.record:0
+msgid "Category"
+msgstr "类型"
+
+#. module: vote
+#: field:updis.vote.log,voter:0
+msgid "Voter"
+msgstr "投票人"
+
+#. module: vote
+#: field:updis.vote.record,author:0
+msgid "Author"
+msgstr "作者"
+
+#. module: vote
+#: field:updis.vote,start_time:0
+msgid "Vote Start Time"
+msgstr "投票开始时间"
+
+#. module: vote
+#: field:updis.vote.record,description:0
+msgid "Vote Record Description"
+msgstr "投票条目描述"
+
+#. module: vote
+#: field:updis.vote.record,content:0
+msgid "Content"
+msgstr "正文"
+
+#. module: vote
+#: model:ir.ui.menu,name:vote.menu_vote_log_management
+msgid "Vote Log Management"
+msgstr "投票记录管理"
+
+#. module: vote
+#: field:updis.vote,image_fixed:0
+msgid "Vote Category Photo"
+msgstr "投票标志图片"
+
+#. module: vote
+#: model:ir.ui.menu,name:vote.menu_vote_record_management
+msgid "Vote Record Management"
+msgstr "投票条目管理"
+
+#. module: vote
+#: view:updis.vote.record:0
+msgid "Please in put vote record name"
+msgstr "请输入投票条目内容"
+
+#. module: vote
+#: view:updis.vote.record:0
+msgid "Vote Record Info"
+msgstr "投票条目信息"
+
+#. module: vote
+#: field:updis.vote,description:0
+msgid "Vote Description"
+msgstr "投票描述"
+
+#. module: vote
+#: view:updis.vote:0
+msgid "Trainings"
+msgstr "培训"
+
+#. module: vote
+#: help:updis.vote,image:0
+msgid "This field holds the image used as photo for the vote, limited to 435*232px."
+msgstr "This field holds the image used as photo for the vote, limited to 435*232px."
+
+#. module: vote
+#: view:updis.vote.record:0
+msgid "Vote Records"
+msgstr "投票条目"
+
+#. module: vote
+#: help:updis.vote.record,image:0
+msgid "This field holds the image used as photo for the vote record, limited to 275*145px."
+msgstr "This field holds the image used as photo for the vote record, limited to 275*145px."
+
+#. module: vote
+#: model:ir.actions.act_window,name:vote.action_view_vote_category
+msgid "View Vote Category"
+msgstr "查看投票"
+
+#. module: vote
+#: model:ir.actions.act_window,name:vote.action_view_vote_record
+msgid "View Vote Record"
+msgstr "查看投票条目"
+
+#. module: vote
+#: model:ir.ui.menu,name:vote.menu_vote_log
+msgid "Vote log"
+msgstr "投票记录"
+
+#. module: vote
+#: field:updis.vote,name:0
+msgid "Vote Name"
+msgstr "投票名"
+
+#. module: vote
+#: field:updis.vote.record,have_image:0
+msgid "is vote record photo upload"
+msgstr "is vote record photo upload"
+
+#. module: vote
+#: field:updis.vote.record,record_image:0
+msgid "Vote Record Photo"
+msgstr "投票条目图片"
+
+#. module: vote
+#: model:ir.ui.menu,name:vote.menu_vote_record
+#: view:updis.vote.record:0
+msgid "Vote Record"
+msgstr "投票条目"
+
+#. module: vote
+#: view:updis.vote:0
+msgid "Vote Info"
+msgstr "投票信息"
+
+#. module: vote
+#: model:ir.ui.menu,name:vote.menu_vote_root
+msgid "Vote Management"
+msgstr "投票管理"
+
+#. module: vote
+#: model:ir.model,name:vote.model_updis_vote_log
+msgid "UPDIS Vote Log"
+msgstr "投票记录"
+
+#. module: vote
+#: view:updis.vote.record:0
+msgid "Vote Record Filter"
+msgstr "投票条目过滤"
+
+#. module: vote
+#: field:updis.vote,is_display:0
+msgid "Vote is display in cms?"
+msgstr "是否在页面中显示"
+
+#. module: vote
+#: model:res.groups,name:vote.vote_manager
+msgid "Vote Manager"
+msgstr "投票管理员"
+
+#. module: vote
+#: model:ir.ui.menu,name:vote.menu_vote_category
+#: field:updis.vote.log,vote_category:0
+#: field:updis.vote.record,vote_category:0
+msgid "Vote Category"
+msgstr "投票名"
+
+#. module: vote
+#: field:updis.vote.log,vote_time:0
+msgid "Vote Time"
+msgstr "投票时间"
+
+#. module: vote
+#: field:updis.vote,allow_vote_time:0
+msgid "Each one allowed vote times"
+msgstr "每人票数"
+
+#. module: vote
+#: view:updis.vote:0
+msgid "Please in put vote name"
+msgstr "请输入投票名"
+
+#. module: vote
+#: field:updis.vote,have_image:0
+msgid "is vote photo upload"
+msgstr "is vote photo upload"
+
+#. module: vote
+#: field:updis.vote,vote_logs:0
+msgid "Vote History"
+msgstr "投票历史记录"
+
+#. module: vote
+#: field:updis.vote.record,image:0
+msgid "Vote Record Photo Basic"
+msgstr "投票条目图片"
+
+#. module: vote
+#: model:res.groups,name:vote.vote_admin
+msgid "Vote Admin"
+msgstr "Vote Admin"
+
+#. module: vote
+#: field:updis.vote.record,name:0
+msgid "Vote Record Name"
+msgstr "投票条目名"
+
+#. module: vote
+#: model:res.groups,comment:vote.vote_manager
+msgid "the user will be able to manage Vote stuff ."
+msgstr "the user will be able to manage Vote stuff ."
+
+#. module: vote
+#: model:res.groups,comment:vote.vote_admin
+msgid "the user will be able to manage all Vote stuff ."
+msgstr "the user will be able to manage all Vote stuff ."
+
+#. module: vote
+#: model:ir.model,name:vote.model_updis_vote_record
+msgid "UPDIS Vote Record"
+msgstr "投票条目"
+
+#. module: vote
+#: view:updis.vote.record:0
+msgid "Vote Content"
+msgstr "投票正文"
+
+#. module: vote
+#: view:updis.vote.record:0
+msgid "Group by..."
+msgstr "分组..."
+
+#. module: vote
+#: model:ir.actions.act_window,name:vote.action_view_vote_log
+msgid "View Vote Log"
+msgstr "查看投票记录"
+
+#. module: vote
+#: field:updis.vote,end_time:0
+msgid "Vote End Time"
+msgstr "投票结束时间"
+
+#. module: vote
+#: view:updis.vote.log:0
+#: field:updis.vote.record,vote_logs:0
+msgid "Vote Logs"
+msgstr "投票记录"
+
+#. module: vote
+#: model:ir.ui.menu,name:vote.menu_vote_category_management
+msgid "Vote Category Management"
+msgstr "投票管理"
+
+#. module: vote
+#: view:updis.vote:0
+msgid "Vote"
+msgstr "投票"
+
+#. module: vote
+#: field:updis.vote.log,vote_for:0
+msgid "Vote For"
+msgstr "投给"
+
+#. module: vote
+#: model:ir.model,name:vote.model_updis_vote
+msgid "UPDIS Vote Category"
+msgstr "投票"
+
+#. module: vote
+#: field:updis.vote,image:0
+msgid "Vote Category Photo Basic"
+msgstr "投票标志图片"
+

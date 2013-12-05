@@ -1,0 +1,526 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* up_contract
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0-20130306-002055\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-02 06:47+0000\n"
+"PO-Revision-Date: 2013-08-02 06:47+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: up_contract
+#: field:project.contract.contract,price:0
+msgid "Contract Price"
+msgstr "合同金额(万元)"
+
+#. module: up_contract
+#: field:project.contract.contract,create_uid:0
+msgid "Author"
+msgstr "创建者"
+
+#. module: up_contract
+#: field:project.project,contract_ids:0
+msgid "Project Contracts"
+msgstr "项目合同"
+
+#. module: up_contract
+#: view:project.contract.contract:0
+#: view:project.project:0
+msgid "Third Party Expense"
+msgstr "外包合同金额"
+
+#. module: up_contract
+#: selection:project.contract.contract,entrust_type:0
+msgid "深圳规划局"
+msgstr "深圳规划局"
+
+#. module: up_contract
+#: field:project.project,can_see_contract:0
+msgid "Is User Can See Contract"
+msgstr "Is User Can See Contract"
+
+#. module: up_contract
+#: field:project.contract.invoice,clear_date:0
+msgid "Invoice Clear Date"
+msgstr "结清日"
+
+#. module: up_contract
+#: field:project.contract.invoice,number:0
+msgid "Invoice No."
+msgstr "发票号"
+
+#. module: up_contract
+#: model:ir.actions.act_window,name:up_contract.action_project_contract_income_management
+msgid "Projects Contract Income"
+msgstr "合同收费"
+
+#. module: up_contract
+#: field:project.contract.contract,tender_phone:0
+msgid "Tender Phone"
+msgstr "投标电话"
+
+#. module: up_contract
+#: field:project.contract.contract,income_ids:0
+#: field:project.contract.invoice,income_ids:0
+msgid "Incomes"
+msgstr "收费进度"
+
+#. module: up_contract
+#: field:project.contract.contract,customer_type:0
+msgid "Customer Type"
+msgstr "甲方类型"
+
+#. module: up_contract
+#: field:project.contract.contract,design_department:0
+msgid "Design Department"
+msgstr "设计部门"
+
+#. module: up_contract
+#: selection:project.contract.contract,customer_type:0
+msgid "其他政府部门"
+msgstr "其他政府部门"
+
+#. module: up_contract
+#: selection:project.contract.contract,change:0
+msgid "转让"
+msgstr "转让"
+
+#. module: up_contract
+#: model:res.groups,name:up_contract.group_up_contract_admin
+msgid "管理员"
+msgstr "管理员"
+
+#. module: up_contract
+#: field:project.contract.contract,import_tender_result:0
+msgid "Import Tender Result"
+msgstr "投标结果"
+
+#. module: up_contract
+#: selection:project.contract.contract,customer_type:0
+msgid "规划部门"
+msgstr "规划部门"
+
+#. module: up_contract
+#: sql_constraint:project.contract.contract:0
+msgid "number must be unique !"
+msgstr "合同编号不可重复"
+
+#. module: up_contract
+#: field:project.contract.contract,change:0
+msgid "Contract Change"
+msgstr "合同变更"
+
+#. module: up_contract
+#: model:ir.model,name:up_contract.model_project_project
+#: field:project.contract.contract,project_id:0
+msgid "Project"
+msgstr "项目"
+
+#. module: up_contract
+#: view:project.contract.contract:0
+#: view:project.project:0
+msgid "Third Party Info"
+msgstr "外协信息"
+
+#. module: up_contract
+#: field:project.contract.contract,import_tender_type:0
+msgid "Import Tender Type"
+msgstr "导入：投标类别"
+
+#. module: up_contract
+#: model:ir.ui.menu,name:up_contract.project_contract_income_management
+msgid "Contract Incomes"
+msgstr "收费进度"
+
+#. module: up_contract
+#: view:project.contract.contract:0
+msgid "Project Info"
+msgstr "项目信息"
+
+#. module: up_contract
+#: field:project.contract.contract,import_contin:0
+msgid "Import Tender Contin"
+msgstr "能否续签"
+
+#. module: up_contract
+#: field:project.contract.contract,expenses_ids:0
+msgid "Third Party Expenses"
+msgstr "外协收费"
+
+#. module: up_contract
+#: model:ir.model,name:up_contract.model_project_contract_expenses
+msgid "project.contract.expenses"
+msgstr "外协金额"
+
+#. module: up_contract
+#: field:project.contract.contract,project_category:0
+msgid "Project Category"
+msgstr "项目分类"
+
+#. module: up_contract
+#: selection:project.contract.contract,project_level:0
+msgid "所级"
+msgstr "所级"
+
+#. module: up_contract
+#: field:project.contract.contract,number:0
+msgid "Contract No."
+msgstr "合同编号"
+
+#. module: up_contract
+#: view:project.contract.expenses:0
+msgid "Project Contract Third Party Expenses"
+msgstr "合同外协金额"
+
+#. module: up_contract
+#: model:ir.model,name:up_contract.model_project_contract_invoice
+#: view:project.contract.invoice:0
+msgid "Project Contract Invoice"
+msgstr "合同已开发票"
+
+#. module: up_contract
+#: selection:project.contract.contract,change:0
+msgid "变更"
+msgstr "变更"
+
+#. module: up_contract
+#: model:ir.actions.act_window,name:up_contract.action_project_contract_invoice_management
+msgid "Projects Contract Invoices"
+msgstr "合同已开发票"
+
+#. module: up_contract
+#: selection:project.contract.contract,project_tender_type:0
+msgid "综合标"
+msgstr "综合标"
+
+#. module: up_contract
+#: field:project.contract.contract,third_party_company:0
+msgid "Third Party Company"
+msgstr "外协公司"
+
+#. module: up_contract
+#: selection:project.contract.contract,customer_type:0
+msgid "企业"
+msgstr "企业"
+
+#. module: up_contract
+#: view:project.contract.contract:0
+msgid "Project Type"
+msgstr "项目种类"
+
+#. module: up_contract
+#: field:project.contract.contract,customer_contact:0
+msgid "Customer Contacts"
+msgstr "甲方联系人"
+
+#. module: up_contract
+#: field:project.contract.contract,project_tender_type:0
+msgid "Project Tender Type"
+msgstr "投标类别"
+
+#. module: up_contract
+#: view:project.contract.contract:0
+#: view:project.project:0
+msgid "Contract Info"
+msgstr "合同信息"
+
+#. module: up_contract
+#: field:project.contract.contract,comment:0
+#: field:project.contract.expenses,comment:0
+#: field:project.contract.income,comment:0
+#: field:project.contract.invoice,comment:0
+msgid "Comment"
+msgstr "备注"
+
+#. module: up_contract
+#: field:project.contract.contract,project_is_city:0
+msgid "Project Is City"
+msgstr "市政配套"
+
+#. module: up_contract
+#: field:project.contract.contract,invoice_ids:0
+#: field:project.contract.income,invoice_ids:0
+msgid "Invoices"
+msgstr "已开发票"
+
+#. module: up_contract
+#: view:project.contract.contract:0
+msgid "Group by..."
+msgstr "分组..."
+
+#. module: up_contract
+#: field:project.contract.contract,write_uid:0
+msgid "Last Contributor"
+msgstr "最后编辑人"
+
+#. module: up_contract
+#: model:ir.ui.menu,name:up_contract.project_contract_invoice_management
+msgid "Contract Invoices"
+msgstr "合同已开发票"
+
+#. module: up_contract
+#: model:ir.actions.act_window,name:up_contract.action_project_contract_need_process_management
+msgid "Projects Contract Need Process"
+msgstr "待处理合同"
+
+#. module: up_contract
+#: field:project.contract.expenses,handler:0
+#: field:project.contract.income,handler:0
+#: field:project.contract.invoice,handler:0
+msgid "Handler"
+msgstr "经办人"
+
+#. module: up_contract
+#: field:project.contract.contract,sign_date:0
+msgid "Contract Sign Date"
+msgstr "合同签订日期"
+
+#. module: up_contract
+#: view:project.contract.contract:0
+#: view:project.project:0
+msgid "Invoice Info"
+msgstr "发票信息"
+
+#. module: up_contract
+#: field:project.contract.contract,project_begin_date:0
+msgid "Project Start Date"
+msgstr "任务下达时间"
+
+#. module: up_contract
+#: field:project.contract.contract,customer:0
+msgid "Customers"
+msgstr "甲方"
+
+#. module: up_contract
+#: view:project.contract.contract:0
+msgid "Project Name"
+msgstr "项目名称"
+
+#. module: up_contract
+#: field:project.contract.contract,third_party_company_contact:0
+msgid "Third Party Company Contacts"
+msgstr "外协公司联系人"
+
+#. module: up_contract
+#: field:project.contract.invoice,is_clear:0
+msgid "is Invoice Clear"
+msgstr "结清"
+
+#. module: up_contract
+#: view:project.contract.contract:0
+#: view:project.project:0
+msgid "Please Input Contract Name"
+msgstr "请输入合同名称"
+
+#. module: up_contract
+#: field:project.contract.invoice,obtain_date:0
+msgid "Invoice Create Date"
+msgstr "日期"
+
+#. module: up_contract
+#: field:project.contract.expenses,price:0
+#: field:project.contract.income,price:0
+msgid "Obtain Price"
+msgstr "金额"
+
+#. module: up_contract
+#: field:project.contract.contract,project_is_tender:0
+msgid "Project Is Tender"
+msgstr "是否投标"
+
+#. module: up_contract
+#: field:project.contract.contract,third_party_sign_date:0
+msgid "Contract Third Party Sign Date"
+msgstr "外协合同签订日期"
+
+#. module: up_contract
+#: field:project.contract.contract,type:0
+msgid "Contract Type"
+msgstr "合同类型"
+
+
+#. module: up_contract
+#: field:project.contract.contract,project_level:0
+msgid "Project Level"
+msgstr "项目级别"
+
+#. module: up_contract
+#: field:project.contract.contract,city_level_number:0
+msgid "City Contract No."
+msgstr "市局项目编号"
+
+#. module: up_contract
+#: model:ir.actions.act_window,name:up_contract.action_project_contract_management
+msgid "Projects Contract"
+msgstr "项目合同"
+
+#. module: up_contract
+#: field:project.contract.contract,city_comment:0
+msgid "City Comment"
+msgstr "市政配套备注"
+
+#. module: up_contract
+#: view:project.contract.contract:0
+#: view:project.project:0
+msgid "合同编号:"
+msgstr "合同编号:"
+
+#. module: up_contract
+#: view:project.contract.expenses:0
+msgid "Project Contract Expenses"
+msgstr "合同支出"
+
+#. module: up_contract
+#: selection:project.contract.contract,type:0
+msgid "Common Contract"
+msgstr "普通合同"
+
+#. module: up_contract
+#: selection:project.contract.contract,type:0
+msgid "Third Party"
+msgstr "外协合同"
+
+#. module: up_contract
+#: model:res.groups,name:up_contract.group_up_contract_manager
+msgid "经理"
+msgstr "经理"
+
+#. module: up_contract
+#: selection:project.contract.contract,project_tender_type:0
+msgid "技术标"
+msgstr "技术标"
+
+#. module: up_contract
+#: field:project.contract.contract,write_date:0
+msgid "Modification date"
+msgstr "最后修改时间"
+
+#. module: up_contract
+#: model:ir.model,name:up_contract.model_project_contract_contract
+msgid "project.contract.contract"
+msgstr "project.contract.contract"
+
+#. module: up_contract
+#: view:project.contract.income:0
+msgid "Project Contract Income"
+msgstr "收费进度"
+
+#. module: up_contract
+#: selection:project.contract.contract,project_tender_type:0
+msgid "商务标"
+msgstr "商务标"
+
+#. module: up_contract
+#: selection:project.contract.contract,entrust_type:0
+msgid "深圳市其他"
+msgstr "深圳市其他"
+
+#. module: up_contract
+#: field:project.contract.contract,entrust_type:0
+msgid "Entrust Type"
+msgstr "委托类型"
+
+#. module: up_contract
+#: model:ir.model,name:up_contract.model_project_project_active_tasking
+msgid "project.project.active.tasking"
+msgstr "任务下达"
+
+#. module: up_contract
+#: field:project.contract.invoice,price:0
+msgid "Price"
+msgstr "金额"
+
+#. module: up_contract
+#: field:project.contract.contract,is_import:0
+#: field:project.contract.income,is_import:0
+#: field:project.contract.invoice,is_import:0
+msgid "Is Import"
+msgstr "Is Import"
+
+#. module: up_contract
+#: model:ir.ui.menu,name:up_contract.project_need_process_management
+msgid "Contract Need Process"
+msgstr "待处理合同"
+
+#. module: up_contract
+#: model:res.groups,name:up_contract.group_up_contract_user
+msgid "普通用户"
+msgstr "普通用户"
+
+#. module: up_contract
+#: field:project.contract.expenses,obtain_date:0
+#: field:project.contract.income,obtain_date:0
+msgid "Obtain Date"
+msgstr "日期"
+
+#. module: up_contract
+#: model:ir.ui.menu,name:up_contract.project_contract_management
+msgid "Contract Management"
+msgstr "合同管理"
+
+#. module: up_contract
+#: selection:project.contract.contract,entrust_type:0
+msgid "其他"
+msgstr "其他"
+
+#. module: up_contract
+#: field:project.contract.contract,project_number:0
+msgid "Project Number"
+msgstr "项目编号"
+
+#. module: up_contract
+#: field:project.contract.contract,create_date:0
+msgid "Created on"
+msgstr "创建日期"
+
+#. module: up_contract
+#: selection:project.contract.contract,entrust_type:0
+msgid "市外"
+msgstr "市外"
+
+#. module: up_contract
+#: model:ir.model,name:up_contract.model_project_contract_income
+msgid "project.contract.income"
+msgstr "project.contract.income"
+
+#. module: up_contract
+#: model:ir.ui.menu,name:up_contract.project_contract
+#: field:project.contract.expenses,contract_id:0
+#: field:project.contract.income,contract_id:0
+#: field:project.contract.invoice,contract_id:0
+msgid "Contract"
+msgstr "合同"
+
+#. module: up_contract
+#: view:project.contract.contract:0
+#: view:project.project:0
+msgid "Customer Info"
+msgstr "甲方信息"
+
+#. module: up_contract
+#: field:project.contract.contract,project_scale:0
+msgid "Project Scale"
+msgstr "项目规模"
+
+#. module: up_contract
+#: field:project.contract.contract,name:0
+msgid "Contract Name"
+msgstr "合同名称"
+
+#. module: up_contract
+#: field:project.contract.contract,import_number:0
+msgid "Import Number"
+msgstr "Import Number"
+
+#. module: up_contract
+#: view:project.contract.contract:0
+#: view:project.project:0
+msgid "Project Contract"
+msgstr "项目合同"

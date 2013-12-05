@@ -2,36 +2,47 @@
 {
     'name': 'UPDIS Project Module',
     'version': '0.2',
-    'category': 'UP Project Management',
+    'category': 'up_project_management',
     'complexity': "easy",
     'description': """
 UPDIS Project Module.""",
-    'author': 'Shrek Zhou',
+    'author': 'cysnake4713',
     'website': 'http://openerp.com',
-    'depends': ['base', 'mail', 'resource', 'hr', 'project', 'oecn_base_fonts'],
-    'init_xml': [],
+    'depends': ['base', 'project', 'oecn_base_fonts', 'report_webkit'],
+    'init_xml': [
+
+    ],
     'update_xml': [
-        'data/updis_data.xml',
+
         'security/updis_security.xml',
         'security/ir.model.access.csv',
-        'wizard/suozhangshenpi.xml',
-        'wizard/suozhangshenpi_server_actions.xml',
-        'wizard/suozhangshenpi_workflow.xml',
-        'wizard/jingyingshi.xml',
-        'wizard/jingyingshi_server_actions.xml',
-        'wizard/jingyingshi_workflow.xml',
-        'wizard/zongshishi.xml',
-        'wizard/zongshishi_server_actions.xml',
-        'wizard/zongshishi_workflow.xml',
-        'wizard/suozhangqianzi.xml',
-        'wizard/suozhangqianzi_server_actions.xml',
-        'wizard/suozhangqianzi_workflow.xml',
-        'wizard/fuzerenqidong.xml',
-        'wizard/fuzerenqidong_server_actions.xml',
-        'wizard/fuzerenqidong_workflow.xml',
         'project_view.xml',
+
+        'wizard/active/project_active_view.xml',
+        'wizard/active/tasking/project_active_tasking_action.xml',
+        'wizard/active/tasking/project_active_tasking_wizard_view.xml',
+        'wizard/active/tasking/project_active_tasking_view.xml',
+        'wizard/active/tasking/project_active_tasking_workflow.xml',
+        'wizard/active/project_active_workflow.xml',
+
+        'wizard/process/project_process_view.xml',
+        'wizard/process/project_process_workflow.xml',
+
+        'wizard/filed/project_filed_view.xml',
+        'wizard/filed/project_filed_workflow.xml',
+
+
         'project_workflow.xml',
-        'report/renwuxiada.xml',
+
+        'report/active/renwuxiada.xml',
+        'data/updis_data.xml',
+
+        'hr_view.xml',
+        'res_partner.xml',
+        'project_config.xml',
+    ],
+    'css': [
+        'static/src/css/up_project.css'
     ],
     'demo_xml': [],
     'test': [],

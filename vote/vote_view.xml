@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="view_vote_category_from" model="ir.ui.view">
+            <field name="name">updis.vote.category.from</field>
+            <field name="model">updis.vote</field>
+            <field name="arch" type="xml">
+                <form string="Vote" version="7.0">
+                    <h1>
+                        <field name="name" placeholder="Please in put vote name"/>
+                    </h1>
+                    <group col="4">
+                        <field name="description" colspan="4"/>
+                    </group>
+                    <group string="Vote Info" col="4">
+                        <field name="start_time"/>
+                        <field name="end_time"/>
+                        <field name="allow_vote_time"/>
+                        <field name="is_display"/>
+                        <field name="show_result"/>
+                        <newline/>
+                        <field name="image_fixed" widget='image' colspan='4'/>
+                        <field name="have_image"/>
+                    </group>
+                    <group>
+                        <field name="comment" widget="html" colspan="4"/>
+                    </group>
+                    <group string="Result">
+                        <field name="vote_record_ids" readonly="1" nolabel="1">
+                            <tree>
+                                <field name="name"/>
+                                <field name="vote_number"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="vote_logs" colspan="4" readonly="1"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="view_vote_category_tree" model="ir.ui.view">
+            <field name="name">updis.vote.category.tree</field>
+            <field name="model">updis.vote</field>
+            <field name="arch" type="xml">
+                <tree string="Trainings" version="7.0">
+                    <field name="name"/>
+                    <field name="start_time"/>
+                    <field name="end_time"/>
+                    <field name="allow_vote_time"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="search_vote_record" model="ir.ui.view">
+            <field name="name">updis.vote.record.search</field>
+            <field name="model">updis.vote.record</field>
+            <field name="arch" type="xml">
+                <search string="Vote Record Filter">
+                    <field name="author"/>
+                    <group expand="0" string="Group by...">
+                        <filter name="by-category" string="Category" domain="[]"
+                                context="{'group_by':'vote_category'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_vote_record_from" model="ir.ui.view">
+            <field name="name">updis.vote.record.from</field>
+            <field name="model">updis.vote.record</field>
+            <field name="arch" type="xml">
+                <form string="Vote Record" version="7.0">
+                    <h1>
+                        <field name="name" placeholder="Please in put vote record name"/>
+                    </h1>
+                    <group string="Vote Record Info" col="4">
+                        <field name="vote_category"/>
+                        <field name="author"/>
+                        <field name="description" colspan="4"/>
+                        <field name="record_image" widget='image' colspan='4'/>
+                        <field name="have_image"/>
+                    </group>
+                    <group string="Vote Content" col="1">
+                        <field name="content" widget="html" nolabel="1"/>
+                    </group>
+                    <group col="1">
+                        <field name="vote_logs"/>
+                    </group>
+                    <div class="oe_chatter">
+                        <!--<field name="message_follower_ids" widget="mail_followers" help="Follow this project to automatically follow all related update and comments."/>-->
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="view_vote_record_tree" model="ir.ui.view">
+            <field name="name">updis.vote.record.tree</field>
+            <field name="model">updis.vote.record</field>
+            <field name="arch" type="xml">
+                <tree string="Vote Records" version="7.0">
+                    <field name="name"/>
+                    <field name="vote_category"/>
+                    <field name="author"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_vote_log_tree" model="ir.ui.view">
+            <field name="name">updis.vote.log.tree</field>
+            <field name="model">updis.vote.log</field>
+            <field name="arch" type="xml">
+                <tree string="Vote Logs" version="7.0">
+                    <field name="voter"/>
+                    <field name="vote_category"/>
+                    <field name="vote_time"/>
+                    <field name="vote_for"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_view_vote_category" model="ir.actions.act_window">
+            <field name="name">View Vote Category</field>
+            <field name="res_model">updis.vote</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_view_vote_record" model="ir.actions.act_window">
+            <field name="name">View Vote Record</field>
+            <field name="res_model">updis.vote.record</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_by-category':1}</field>
+        </record>
+        <record id="action_view_vote_log" model="ir.actions.act_window">
+            <field name="name">View Vote Log</field>
+            <field name="res_model">updis.vote.log</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+
+        <menuitem name="Vote Management" id="menu_vote_root" sequence="2" groups="vote.vote_manager"/>
+
+        <menuitem name="Vote Category" parent="menu_vote_root" id="menu_vote_category" sequence="40"/>
+        <menuitem name="Vote Category Management" action="action_view_vote_category" parent="menu_vote_category"
+                  id="menu_vote_category_management"/>
+
+        <menuitem name="Vote Record" parent="menu_vote_root" id="menu_vote_record" sequence="80"/>
+        <menuitem name="Vote Record Management" action="action_view_vote_record" parent="menu_vote_record"
+                  id="menu_vote_record_management"/>
+
+        <menuitem name="Vote log" parent="menu_vote_root" id="menu_vote_log" sequence="100" groups="vote.vote_admin"/>
+        <menuitem name="Vote Log Management" action="action_view_vote_log" parent="menu_vote_log"
+                  id="menu_vote_log_management" groups="vote.vote_admin"/>
+
+    </data>
+</openerp>

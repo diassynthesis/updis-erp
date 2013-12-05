@@ -1,0 +1,6 @@
+add
+//==============//
+domain = .cysnake.com
+logout_redirect_url = http://test.csdf.com
+//============//
+in the cofig file

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!-- 短信 -->
+        <!-- Project Creater Get SMS
+        <record id="project_active_tasking_open_send_sms" model="ir.actions.server">
+            <field name="name">发送项目起始短信</field>
+            <field name="condition">object.create_uid and object.create_uid.mobile_phone and object.director_reviewer_id
+            </field>
+            <field name="state">object_create</field>
+            <field name="model_id" ref="up_project.model_project_project_active_tasking"/>
+            <field name="srcmodel_id" ref="sms.model_sms_sms"/>
+        </record>
+        <record id="lines_suozhangshenpi_content" model="ir.server.object.lines">
+            <field name="server_id" ref="project_active_tasking_open_send_sms"/>
+            <field name="col1" ref="sms.field_sms_sms_content"/>
+            <field name="type">equation</field>
+            <field name="value">u"你的项目[%s]处于提出启动申请状态,可能项目被打回,请及时处理项目和跟进项目进度"%(object.name)</field>
+        </record>
+        <record id="lines_suozhangshenpi_to" model="ir.server.object.lines">
+            <field name="server_id" ref="project_active_tasking_open_send_sms"/>
+            <field name="col1" ref="sms.field_sms_sms_to"/>
+            <field name="type">equation</field>
+            <field name="value">object.create_uid.mobile_phone</field>
+        </record>
+        <record id="lines_suozhangshenpi_from" model="ir.server.object.lines">
+            <field name="server_id" ref="project_active_tasking_open_send_sms"/>
+            <field name="col1" ref="sms.field_sms_sms_from"/>
+            <field name="type">equation</field>
+            <field name="value">object.name</field>
+        </record>
+        <record id="lines_suozhangshenpi_res_id" model="ir.server.object.lines">
+            <field name="server_id" ref="project_active_tasking_open_send_sms"/>
+            <field name="col1" ref="sms.field_sms_sms_res_id"/>
+            <field name="type">equation</field>
+            <field name="value">object.id</field>
+        </record>
+        <record id="lines_suozhangshenpi_model" model="ir.server.object.lines">
+            <field name="server_id" ref="project_active_tasking_open_send_sms"/>
+            <field name="col1" ref="sms.field_sms_sms_model"/>
+            <field name="type">value</field>
+            <field name="value">project.project.active.tasking</field>
+        </record>-->
+
+
+        <!-- Project Director Get SMS-->
+        <record id="project_active_tasking_director_apply_send_sms" model="ir.actions.server">
+            <field name="name">发送所长审批通知短信</field>
+            <field name="condition" eval="True"/>
+           <field name="state">code</field>
+            <field name="model_id" ref="up_project.model_project_project_active_tasking"/>
+            <field name="code">
+from_rec = object.name
+subject = u"项目进度提示"
+ir_obj = pool.get('ir.config_parameter')
+http_address_id = ir_obj.search(cr,1,[('key','=','web.base.static.url')],context=context)
+http_address = ir_obj.browse(cr,1,http_address_id[0],context=context).value
+http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.project" % object.project_id.id
+big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您的审批,请及时处理项目和跟进项目进度 """ % (http_address,object.name)
+content = u"项目[%s]需要您的审批,请及时处理项目和跟进项目进度" % (object.name)
+model = 'project.project.active.tasking'
+res_id = object.id
+to = object.director_reviewer_id.id
+users = pool.get('res.users').browse(cr,1,[to],context=context)
+pool.get('sms.sms').send_sms_to_users( cr, 1, users, from_rec, content, model, res_id, context=None)
+pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, big_ant_content, model, res_id, context=None)
+            </field>
+        </record>
+
+        <!-- Project Operator Room Get SMS-->
+        <record id="project_active_tasking_operator_room_send_sms" model="ir.actions.server">
+            <field name="name">发送经营室审批通知短信</field>
+            <field name="condition" eval="True"/>
+            <field name="state">code</field>
+            <field name="model_id" ref="up_project.model_project_project_active_tasking"/>
+            <field name="code">
+from_rec = object.name
+subject = u"项目进度提示"
+content = u"项目[%s]需要您的审批,请及时处理项目和跟进项目进度" % (object.name)
+ir_obj = pool.get('ir.config_parameter')
+http_address_id = ir_obj.search(cr,1,[('key','=','web.base.static.url')],context=context)
+http_address = ir_obj.browse(cr,1,http_address_id[0],context=context).value
+http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.project" % object.project_id.id
+big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您的审批,请及时处理项目和跟进项目进度 """ % (http_address,object.name)
+model = 'project.project.active.tasking'
+res_id = object.id
+group_id = 'group_up_project_jingyingshi'
+pool.get('sms.sms').send_sms_to_group(cr,uid,from_rec,content,model,res_id,group_id,context)
+pool.get('sms.sms').send_big_ant_to_group(cr,uid,from_rec,subject,big_ant_content,model,res_id,group_id,context)
+            </field>
+        </record>
+
+          <!-- Project engineer Room Get SMS-->
+        <record id="project_active_tasking_engineer_room_send_sms" model="ir.actions.server">
+            <field name="name">发送总师室审批通知短信</field>
+            <field name="condition" eval="True"/>
+            <field name="state">code</field>
+            <field name="model_id" ref="up_project.model_project_project_active_tasking"/>
+            <field name="code">
+from_rec = object.name
+subject = u"项目进度提示"
+content = u"项目[%s]需要您的审批,请及时处理项目和跟进项目进度" % (object.name)
+ir_obj = pool.get('ir.config_parameter')
+http_address_id = ir_obj.search(cr,1,[('key','=','web.base.static.url')],context=context)
+http_address = ir_obj.browse(cr,1,http_address_id[0],context=context).value
+http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.project" % object.project_id.id
+big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您的审批,请及时处理项目和跟进项目进度 """ % (http_address,object.name)
+model = 'project.project.active.tasking'
+res_id = object.id
+group_id = 'group_up_project_zongshishi'
+sms_config_id = 'project_config_sms_active_tasking_engineer'
+pool.get('sms.sms').send_sms_to_config_group(cr, uid, sms_config_id, from_rec, content, model, res_id, context=None)
+pool.get('sms.sms').send_big_ant_to_config_group(cr, uid, sms_config_id, from_rec, subject, big_ant_content, model, res_id, context=None)
+            </field>
+        </record>
+
+        <!-- Project Director Get SMS-->
+        <record id="project_active_tasking_manager_send_sms" model="ir.actions.server">
+            <field name="name">发送项目负责人审批通知短信</field>
+            <field name="condition" eval="True"/>
+            <field name="state">code</field>
+            <field name="model_id" ref="up_project.model_project_project_active_tasking"/>
+            <field name="code">
+from_rec = object.name
+subject = u"项目进度提示"
+content = u"项目[%s]需要您的审批启动,请及时处理项目和跟进项目进度" % (object.name)
+ir_obj = pool.get('ir.config_parameter')
+http_address_id = ir_obj.search(cr,1,[('key','=','web.base.static.url')],context=context)
+http_address = ir_obj.browse(cr,1,http_address_id[0],context=context).value
+http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.project" % object.project_id.id
+big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您的审批,请及时处理项目和跟进项目进度 """ % (http_address,object.name)
+model = 'project.project.active.tasking'
+res_id = object.id
+project = pool.get('project.project.active.tasking')
+hr = pool.get('hr.employee')
+hr_ids = hr.search(cr,1,[('department_id','=',object.chenjiebumen_id.id),('job_id.name','=',u'所长')],context=context)
+hr_values = hr.browse(cr,1,hr_ids,context=context)
+to = [employee.user_id.id for employee in hr_values if employee.user_id]
+users = pool.get('res.users').browse(cr,1,to,context=context)
+pool.get('sms.sms').send_sms_to_users( cr, 1, users, from_rec, content, model, res_id, context=None)
+pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, big_ant_content, model, res_id, context=None)
+            </field>
+        </record>
+
+         <!-- Project active end sms!-->
+        <record id="project_active_tasking_end_send_sms" model="ir.actions.server">
+            <field name="name">发送项目启动通知短信</field>
+            <field name="condition">object.is_import==False</field>
+            <field name="state">code</field>
+            <field name="model_id" ref="up_project.model_project_project_active_tasking"/>
+            <field name="code">
+from_rec = object.name
+subject = u"项目进度提示"
+content = u"项目[%s]已经启动,您是本项目的:主管总师, 请及时处理和跟进项目进度" % (object.name)
+ir_obj = pool.get('ir.config_parameter')
+http_address_id = ir_obj.search(cr,1,[('key','=','web.base.static.url')],context=context)
+http_address = ir_obj.browse(cr,1,http_address_id[0],context=context).value
+http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.project" % object.project_id.id
+big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 已经启动,您是本项目的:主管总师, 请及时处理和跟进项目进度 """ % (http_address,object.name)
+model = 'project.project.active.tasking'
+res_id = object.id
+zhuguanzongshi_id = [z.id for z in  object.zhuguanzongshi_id]
+users = pool.get('res.users').browse(cr,1,zhuguanzongshi_id,context=context)
+pool.get('sms.sms').send_sms_to_users( cr, 1, users, from_rec, content, model, res_id, context=None)
+pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, big_ant_content, model, res_id, context=None)
+content = u"项目[%s]已经启动,您是本项目的:项目负责人, 请及时处理和跟进项目进度" % (object.name)
+big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 已经启动,您是本项目的:项目负责人, 请及时处理和跟进项目进度 """ % (http_address,object.name)
+user_id = pool.get('project.project').read(cr,1,object.project_id.id,['user_id'],context=context)
+users = pool.get('res.users').browse(cr,1,user_id['user_id'],context=context)
+pool.get('sms.sms').send_sms_to_users( cr, 1, users, from_rec, content, model, res_id, context=None)
+pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, big_ant_content, model, res_id, context=None)
+            </field>
+        </record>
+
+         <record id="project_active_tasking_engineer_form_action" model="ir.actions.server">
+             <field name="name">总师室审批</field>
+             <field name="condition" eval="True"/>
+             <field name="state">code</field>
+             <field name="model_id" ref="up_project.model_project_project_active_tasking"/>
+             <field name="code">
+record = pool.get('ir.model.data').search(cr, 1, [('model', '=', 'project.active.tasking.config'),
+                 ('name', '=', 'project_active_tasking_config_record')],context=context)
+record_id = pool.get('ir.model.data').read(cr, 1, record[0], ['res_id'], context=context)
+target = self.pool.get('project.active.tasking.config').browse(cr, 1, record_id['res_id'], context)
+context['chief_engineer_domain'] = [z.id for z in target.chief_engineer_config]
+action = {
+    'name': u'总师室审批',
+    'type': 'ir.actions.act_window',
+    'view_mode': 'form',
+    'view_type': 'form',
+    'res_model': 'project.project.active.tasking.engineer',
+    'target': 'new',
+    'context': context,
+}
+             </field>
+         </record>
+
+    </data>
+</openerp>

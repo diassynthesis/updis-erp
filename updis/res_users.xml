@@ -9,6 +9,15 @@
                 <xpath expr="//field[@name='image']" position="after">
                     <field name="sign_image" widget="image" class="oe_avatar oe_left" groups="base.group_no_one"/>
                 </xpath>
+                <xpath expr="//h2" position="after">
+                    <label for="big_ant_login_name" class="oe_edit_only"/>
+                    <h2>
+                        <field name="big_ant_login_name"/>
+                    </h2>
+                </xpath>
+                <xpath expr="//field[@name='login']" position="attributes">
+                     <attribute name="on_change">on_change_login(login,big_ant_login_name)</attribute>
+                </xpath>
             </field>
         </record>
 

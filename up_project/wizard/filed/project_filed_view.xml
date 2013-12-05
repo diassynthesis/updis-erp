@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <record id="edit_project_inherit_filed" model="ir.ui.view">
+            <field name="name">project.project.filed.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="edit_project_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header[@name='project_header']" position="after">
+                    <header attrs="{'invisible':[('state','!=','project_filed')]}">
+                        <button name="temp_filed_filing_finish"
+                                class="oe_highlight"
+                                string="归档完成"
+                                confirm="确定项目已经归档完成?进入归档完成状态的项目不可回退！请谨慎处理"
+                                groups="up_project.group_up_project_filed_manager"
+                                attrs="{'invisible':[('state_filed','!=','start_file')]}"/>
+                        <field name="state_filed" widget="statusbar" readonly="1"/>
+                    </header>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

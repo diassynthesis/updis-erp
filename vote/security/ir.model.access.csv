@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_updis_vote,access_updis_vote,model_updis_vote,,0,0,0,0
+access_updis_vote_record,access_updis_vote_record,model_updis_vote_record,,1,0,0,0
+access_updis_vote_log,access_updis_vote_log,model_updis_vote_log,,0,0,0,0
+
+access_updis_vote_manager,access_updis_vote_manager,model_updis_vote,vote.vote_manager,1,1,1,1
+access_updis_vote_record_manager,access_updis_vote_record_manager,model_updis_vote_record,vote.vote_manager,1,1,1,1
+access_updis_vote_log_manager,access_updis_vote_log_manager,model_updis_vote_log,vote.vote_manager,1,0,0,0
+
+access_updis_vote_admin,access_updis_vote_admin,model_updis_vote,vote.vote_admin,1,1,1,1
+access_updis_vote_record_admin,access_updis_vote_record_admin,model_updis_vote_record,vote.vote_admin,1,1,1,1
+access_updis_vote_log_admin,access_updis_vote_log_admin,model_updis_vote_log,vote.vote_admin,1,1,1,0

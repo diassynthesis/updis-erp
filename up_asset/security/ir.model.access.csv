@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_updis_asset_category,access_updis_asset_category,model_updis_asset_category,,1,0,0,0
+access_updis_asset_category_user,access_updis_asset_category_user,model_updis_asset_category,up_asset.asset_user,1,0,0,0
+access_updis_asset_category_admin,access_updis_asset_category_admin,model_updis_asset_category,up_asset.asset_admin,1,1,1,1
+access_updis_asset_asset,access_updis_asset_asset,model_updis_asset_asset,,0,0,0,0
+access_updis_asset_asset_user,access_updis_asset_asset_user,model_updis_asset_asset,up_asset.asset_user,1,0,0,0
+access_updis_asset_asset_manager,access_updis_asset_asset_manager,model_updis_asset_asset,up_asset.asset_manager,1,1,1,1
+access_updis_asset_asset_admin,access_updis_asset_asset_admin,model_updis_asset_asset,up_asset.asset_admin,1,1,1,1
+access_updis_asset_log,access_updis_asset_log,model_updis_asset_log,up_asset.asset_user,1,0,0,0
+access_updis_asset_log_manager,access_updis_asset_log_manager,model_updis_asset_log,up_asset.asset_manager,1,1,1,0

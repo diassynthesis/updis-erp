@@ -10,14 +10,7 @@
                     <group>
                         <label for="id" string="RML Rrepot Font"/>
                         <div name="base_font">
-                            <div>
-                                <label for="base_font"/>
-                                <field name="base_font" class="oe_inline"/>
-                            </div>
-                            <div>                                
-                                <field name="cjk_wrap" class="oe_inline" />
-                                <label for="cjk_wrap"/>
-                            </div>
+                            <button string='Configure fonts mapping for pdf report' type="action" name="%(action_font_configuration_installer)d" class="oe_link"/>
                         </div>
                     </group>
                 </xpath>

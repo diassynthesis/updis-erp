@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-    <data>
+    <data noupdate="1">
         <record model="ir.cron" id="auto_send_sms">
             <field name="name">Auto Send SMS</field>
-            <field name="active">True</field>
-            <field name="interval_number">1</field>
+            <!--field name="active">True</field-->
+            <field name="interval_number">2</field>
             <field name="interval_type">minutes</field>
             <field name="numbercall">-1</field>
-            <field name="doall">False</field>
+            <field name="doall" eval="False"/>
             <field name="model">sms.sms</field>
-            <field name="function">process_sms_queue</field>
+            <field name="function">process_send_message_in_queue</field>
             <field name="args">()</field>
         </record>
+    </data>
 
-
+    <data>
         <record id="form_sms_view" model="ir.ui.view">
             <field name="name">sms.sms.form</field>
             <field name="model">sms.sms</field>
             <field name="arch" type="xml">
                 <form string="Sms Detail">
-                    <field name="from"/>
-                    <field name="to"/>
-                    <field name="sent_date"/>
-                    <field name="model"/>
-                    <field name="res_id"/>
-                    <field name="sms_server_id"/>
-                    <field name="state"/>
-                    <field name="content"/>
+                    <group col="2">
+                        <field name="state"/>
+                        <field name="sent_date" readonly="1"/>
+                        <field name="from"/>
+                        <field name="model"/>
+                        <field name="res_id"/>
+                        <field name="to"/>
+                        <field name="type"/>
+                        <field name="subject"/>
+                        <field name="content" colspan="2"/>
+                    </group>
+                    <newline/>
+                    <group>
+                        <field name="sms_server_id" readonly="1"/>
+                    </group>
                 </form>
             </field>
         </record>
@@ -36,12 +44,10 @@
             <field name="model">sms.sms</field>
             <field name="arch" type="xml">
                 <tree string="sms List">
-                    <field name="from"/>
-                    <field name="to"/>
-                    <field name="sent_date"/>
-                    <field name="res_id"/>
-                    <field name="sms_server_id"/>
                     <field name="state"/>
+                    <field name="type"/>
+                    <field name="content"/>
+                    <field name="sent_date"/>
                 </tree>
             </field>
         </record>

@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="workflow" id="wkf_up_project_active_tasking">
+            <field name="name">project.project.active.tasking.workflow</field>
+            <field name="osv">project.project.active.tasking</field>
+            <field name="on_create">True</field>
+        </record>
+        <!-- Activities -->
+        <record id="act_active_tasking_start" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
+            <field name="name">Project Active Tasking Start Point</field>
+            <field name="flow_start">True</field>
+            <field name="kind">dummy</field>
+        </record>
+        <record id="act_active_tasking_open" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
+            <field name="name">提出申请</field>
+            <field name="kind">function</field>
+            <field name="action">write({'state':'open','status_code':10101})</field>
+            <field name="action_id" eval="False"/>
+            <!--field name="action_id" ref="project_active_tasking_open_send_sms"/-->
+        </record>
+        <record id="act_active_tasking_director_apply" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
+            <field name="name">所长审批</field>
+            <field name="kind">function</field>
+            <field name="action">workflow_director_submit()</field>
+            <field name="action_id" ref="project_active_tasking_director_apply_send_sms"/>
+        </record>
+        <record id="act_active_tasking_operator_room" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
+            <field name="name">经营室指定设计部门</field>
+            <field name="kind">function</field>
+            <field name="action">workflow_operator_room()</field>
+            <field name="action_id" ref="project_active_tasking_operator_room_send_sms"/>
+        </record>
+        <record id="act_active_tasking_engineer_room" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
+            <field name="name">总师室指定负责人</field>
+            <field name="kind">function</field>
+            <field name="action">workflow_engineer_room()</field>
+            <field name="action_id" ref="project_active_tasking_engineer_room_send_sms"/>
+
+        </record>
+        <record id="act_active_tasking_director_approve" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
+            <field name="name">负责人签字</field>
+            <field name="kind">function</field>
+            <field name="action">write({'state':'suozhangqianzi','status_code':10105})</field>
+            <field name="action_id" ref="project_active_tasking_manager_send_sms"/>
+        </record>
+        <record id="act_active_tasking_stop" model="workflow.activity">
+            <field name="wkf_id" ref="wkf_up_project_active_tasking"/>
+            <field name="name">Project Active End Point</field>
+            <field name="kind">function</field>
+            <field name="flow_stop">True</field>
+            <field name="signal_send">subflow.pro_act_task_end</field>
+            <field name="action">workflow_manager_room()</field>
+            <field name="action_id" ref="project_active_tasking_end_send_sms"/>
+        </record>
+
+        <!-- Transitions -->
+        <record id="t_project_active_tasking_0" model="workflow.transition">
+            <field name="act_from" ref="act_active_tasking_start"/>
+            <field name="act_to" ref="act_active_tasking_open"/>
+        </record>
+        <record id="t_project_active_tasking_end" model="workflow.transition">
+            <field name="act_from" ref="act_active_tasking_director_approve"/>
+            <field name="act_to" ref="act_active_tasking_stop"/>
+            <field name="group_id" eval="None"/>
+            <field name="signal">fuzeren_submit</field>
+        </record>
+        <record id="t_project_active_tasking_start_end" model="workflow.transition">
+            <field name="act_from" ref="act_active_tasking_open"/>
+            <field name="act_to" ref="act_active_tasking_stop"/>
+            <field name="signal">temp_start_to_end</field>
+        </record>
+
+
+        <record id="t_project_active_tasking_1" model="workflow.transition">
+            <field name="act_from" ref="act_active_tasking_open"/>
+            <field name="act_to" ref="act_active_tasking_director_apply"/>
+            <field name="group_id" ref="project.group_project_user"/>
+            <field name="signal">draft_submit</field>
+        </record>
+        <record id="t_project_active_tasking_2" model="workflow.transition">
+            <field name="act_from" ref="act_active_tasking_director_apply"/>
+            <field name="act_to" ref="act_active_tasking_open"/>
+            <field name="group_id" eval="None"/>
+            <field name="signal">draft_reject</field>
+        </record>
+
+        <record id="t_project_active_tasking_3" model="workflow.transition">
+            <field name="act_from" ref="act_active_tasking_director_apply"/>
+            <field name="act_to" ref="act_active_tasking_operator_room"/>
+            <field name="group_id" eval="None"/>
+            <field name="signal">suozhangshenpi_submit</field>
+        </record>
+        <record id="t_project_active_tasking_4" model="workflow.transition">
+            <field name="act_from" ref="act_active_tasking_operator_room"/>
+            <field name="act_to" ref="act_active_tasking_director_apply"/>
+            <field name="group_id" ref="up_project.group_up_project_jingyingshi"/>
+            <field name="signal">suozhangshenpi_reject</field>
+        </record>
+
+        <record id="t_project_active_tasking_5" model="workflow.transition">
+            <field name="act_from" ref="act_active_tasking_operator_room"/>
+            <field name="act_to" ref="act_active_tasking_engineer_room"/>
+            <field name="group_id" ref="up_project.group_up_project_jingyingshi"/>
+            <field name="signal">jingyinshi_submit</field>
+        </record>
+        <record id="t_project_active_tasking_6" model="workflow.transition">
+            <field name="act_from" ref="act_active_tasking_engineer_room"/>
+            <field name="act_to" ref="act_active_tasking_operator_room"/>
+            <field name="group_id" ref="up_project.group_up_project_zongshishi"/>
+            <field name="signal">jingyinshi_reject</field>
+        </record>
+
+        <record id="t_project_active_tasking_7" model="workflow.transition">
+            <field name="act_from" ref="act_active_tasking_engineer_room"/>
+            <field name="act_to" ref="act_active_tasking_director_approve"/>
+            <field name="group_id" ref="up_project.group_up_project_zongshishi"/>
+            <field name="signal">zongshishi_submit</field>
+        </record>
+        <record id="t_project_active_tasking_8" model="workflow.transition">
+            <field name="act_from" ref="act_active_tasking_director_approve"/>
+            <field name="act_to" ref="act_active_tasking_engineer_room"/>
+            <field name="group_id" eval="None"/>
+            <field name="signal">zongshishi_reject</field>
+        </record>
+    </data>
+</openerp>

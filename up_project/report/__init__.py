@@ -1,6 +1,2 @@
-import renwuxiada
-
-# from reportlab.pdfbase import pdfmetrics
-# from reportlab.pdfbase.ttfonts import TTFont
-
-# pdfmetrics.registerFont(TTFont('simsun', 'simsun.ttf'))
+__author__ = 'cysnake4713'
+from . import active

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+         <record id="group_up_contract_partial_user" model="res.groups">
+            <field name="name">Limited User(Only own department's Contract)</field>
+            <field name="category_id" ref="base.module_category_up_contract_management"/>
+        </record>
+        <record id="group_up_contract_all_limit" model="res.groups">
+            <field name="name">Unlimited User(All Contract)</field>
+            <field name="category_id" ref="base.module_category_up_contract_management"/>
+        </record>
+        <record id="group_up_contract_user" model="res.groups">
+            <field name="name">common User</field>
+            <field name="category_id" ref="base.module_category_up_contract_management"/>
+        </record>
+        <record id="group_up_contract_file_user" model="res.groups">
+            <field name="name">可以查看合同附件</field>
+            <field name="category_id" ref="base.module_category_up_contract_management"/>
+        </record>
+        <record id="group_up_contract_manager" model="res.groups">
+            <field name="name">经理</field>
+            <field name="category_id" ref="base.module_category_up_contract_management"/>
+            <field name="implied_ids" eval="[(4, ref('up_contract.group_up_contract_user'))]"/>
+        </record>
+        <record id="group_up_contract_partial_admin" model="res.groups">
+            <field name="name">partial admin</field>
+            <field name="category_id" ref="base.module_category_up_contract_management"/>
+            <field name="implied_ids" eval="[(4, ref('up_contract.group_up_contract_manager'))]"/>
+        </record>
+        <record id="group_up_contract_admin" model="res.groups">
+            <field name="name">管理员</field>
+            <field name="category_id" ref="base.module_category_up_contract_management"/>
+            <field name="implied_ids" eval="[(4, ref('up_contract.group_up_contract_partial_admin')),(4, ref('up_contract.group_up_contract_file_user'))]"/>
+        </record>
+    </data>
+</openerp>

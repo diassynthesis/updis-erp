@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <record id="view_employee_form_project_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.form.inherit.project</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@string='Public Information']/group" position="after">
+                    <group>
+                        <separator string="Related Projects" colspan="2"/>
+                        <field name="related_project_members" nolabel="1" colspan="2">
+                            <tree>
+                                <field name="begin_date"/>
+                                <field name="name"/>
+                                <field name="state"/>
+                            </tree>
+                        </field>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

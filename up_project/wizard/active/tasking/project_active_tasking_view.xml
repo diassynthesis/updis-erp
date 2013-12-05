@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <record id="project_project_active_tasking_form" model="ir.ui.view">
+            <field name="name">project.project.active.tasking.form</field>
+            <field name="model">project.project.active.tasking</field>
+            <field name="arch" type="xml">
+                <form string="Project" version="7.0">
+                    <header>
+                        <field name="state" widget="statusbar"
+                               readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div class="sheet-title">
+                            <h1>产品要求评审及任务下达记录</h1>
+                        </div>
+                        <div class="oe_right inline-item">
+                            建表人：
+                            <field name="create_uid" readonly="1"/>
+                        </div>
+                        <group invisible="1">
+                            <field name="is_project_creater"/>
+                            <field name="is_project_director"/>
+                            <field name="is_display_button"/>
+                            <field name="is_user_in_operator_group"/>
+                            <field name="is_user_in_engineer_group"/>
+                            <field name="is_chief"/>
+                            <field name="is_admin"/>
+                            <field name="category_name"/>
+                            <field name="is_user_is_project_manager"/>
+                            <field name="director_reviewer_groups"/>
+                            <field name="is_cover_sign"/>
+                            <field name="is_cover_sign_final"/>
+                        </group>
+                        <group colspan="2" name="project_num"
+                               attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}">
+                            <field name="xiangmubianhao" readonly="1"/>
+                        </group>
+                        <group class="activetable" col="4">
+                            <field name="name" string="Project Name"
+                                   attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
+                                   colspan="4"/>
+                            <field name="partner_id" domain="[('is_company','=',True)]"
+                                   on_change="onchange_partner_id(partner_id)" string="甲方"
+                                   attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
+                                    />
+                            <field name="partner_type"
+                                   attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
+                                    />
+                            <field name="partner_address" readonly="1"/>
+                            <field name="customer_contact" domain="[('is_company','=',False)]"
+                                   attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
+                            <field name="guimo" colspan="4"
+                                   attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
+                                    />
+                        </group>
+                        <table class="oe_form_group activetable" col="5">
+                            <thead class="oe_form_group_row">
+                                <th class="oe_form_group_cell">序号</th>
+                                <th class="oe_form_group_cell" colspan="2">评审内容</th>
+                                <th class="oe_form_group_cell">评审意见</th>
+                                <th class="oe_form_group_cell">评审人</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td colspan="2">顾客要求形成文件否</td>
+                                    <td>
+                                        <field name="yaoqiuxingchengwenjian"
+                                               attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
+                                                />
+                                    </td>
+                                    <td rowspan="8">
+                                        <div class="inline-item"
+                                             attrs="{'invisible':[('state','not in',['open','suozhangshenpi'])]}">
+                                            <span>请求审评:</span>
+
+                                            <field name="director_reviewer_id"
+                                                   domain="[('id','=',director_reviewer_groups[0][2])]"
+                                                   class="oe_no_button"
+                                                   options='{"no_open": True}'
+                                                   attrs="{'required':[('state','in',['open','suozhangshenpi'])],'invisible':[('state','not in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
+                                        </div>
+                                        <button name="director_review_submit"
+                                                class="oe_highlight"
+                                                string="提交所长审批"
+                                                confirm="确定提交到所长审批?"
+                                                type="object"
+                                                attrs="{'invisible':['|',('is_project_creater','!=',True),('state','!=','open')]}"
+                                                groups="project.group_project_user"/>
+                                        <button name="director_review_accept"
+                                                class="oe_highlight"
+                                                string="审批通过并提交经营室"
+                                                confirm="确定审批通过并且提交到经营室审批?"
+                                                type="object"
+                                                attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangshenpi')]}"/>
+                                        <button name="%(project_active_tasking_reject_wizard_action)d" string="打回申请单"
+                                                type="action"
+                                                attrs="{'invisible':['|',('is_display_button','!=',True),('state','!=','suozhangshenpi')]}"/>
+                                        <field name="director_reviewer_apply_id" readonly="1" invisible="1"/>
+                                        <div attrs="{'invisible':[('state','in',['open','suozhangshenpi'])]}">
+                                            <field name="director_reviewer_apply_image" widget="image"
+                                                   class="oe_avatar no_shadow oe_left" readonly="1"/>
+                                        </div>
+                                        <div attrs="{'invisible':['|',('state','in',['open','suozhangshenpi']),('director_reviewer_apply_image','!=',False)]}">
+                                            <field name="director_reviewer_apply_id" readonly="1"/>
+                                        </div>
+                                        <field name="director_reviewer_apply_time" readonly="1"/>
+                                        <div attrs="{'invisible':[('is_cover_sign','=',False)]}">
+                                                (代签)
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="4">2</td>
+                                    <td rowspan="4">设计要求是否得到规定</td>
+                                    <td>明示要求</td>
+                                    <td>
+                                        <div class="inline-item">
+                                            是否投标:
+                                            <field name="shifoutoubiao"
+                                                   attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
+                                                    />
+                                            <field name="toubiaoleibie"
+                                                   attrs="{'required':[('shifoutoubiao','=',True)],'invisible':[('shifoutoubiao','=',False)],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"
+                                                    />
+                                        </div>
+                                        <field name="express_requirement"
+                                               attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
+                                        <div>
+                                            <field name="attachments" widget="many2many_binary"
+                                                   domain="[('res_model','=','project.project.active.tasking')]"
+                                                   attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])],
+                                                   'invisible':[('is_project_director','!=',True),('is_project_creater','!=',True),('is_user_in_operator_group','!=',True),('is_user_in_engineer_group','!=',True),('is_chief','!=',True),('is_admin','!=',True)]}"
+                                                    />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>隐含要求</td>
+                                    <td>
+                                        <field name="yinhanyaoqiu"
+                                               attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>地方规范或特殊法律法规</td>
+                                    <td>
+                                        <field name="difangfagui"
+                                               attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>附加要求</td>
+                                    <td>
+                                        <field name="fujiayaoqiu"
+                                               attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td colspan="2">与以前表述不一致的合同/协议要求是否解决</td>
+                                    <td>
+                                        <field name="hetongyizhi"
+                                               attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td colspan="2">本院是否有能力满足规定要求</td>
+                                    <td>
+                                        <field name="ziyuan"
+                                               attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
+                                        <field name="shebei"
+                                               attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
+                                        <field name="gongqi"
+                                               attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
+                                        <field name="shejifei"
+                                               attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td colspan="2">其它</td>
+                                    <td>
+                                        <div class="inline-item"
+                                             attrs="{'invisible':[('state','not in',['open','suozhangshenpi','zhidingbumen'])]}">
+                                            建议设计部门:
+                                            <field name="jianyishejibumen_id" class="oe_no_button"
+                                                   options='{"no_open": True}' domain="[('deleted','=',False)]"
+                                                   attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
+                                        </div>
+                                        <div class="inline-item"
+                                             attrs="{'invisible':[('state','not in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren'])]}">
+                                            建议项目负责人:
+                                            <field name="jianyixiangmufuzeren_id" class="oe_no_button"
+                                                   widget="many2many_tags"
+                                                   options='{"no_open": True}'
+                                                   attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
+                                        </div>
+                                        <div class="inline-item">
+                                            是否外包:
+                                            <field name="waibao"
+                                                   attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
+                                        </div>
+                                        <div class="inline-item">
+                                            市政配套:
+                                            <field name="shizhenpeitao"
+                                                   attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
+                                        </div>
+                                        <div class="inline-item">
+                                            多方合同:
+                                            <field name="duofanghetong"
+                                                   attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div attrs="{'invisible':[('state','in',['open','suozhangshenpi'])]}">
+                            <button name="%(project_active_tasking_operator_form_action)d" class="oe_highlight"
+                                    string="提交总师室审批"
+                                    states="zhidingbumen"
+                                    type="action" groups="up_project.group_up_project_jingyingshi"/>
+                            <button name="%(project_active_tasking_reject_wizard_action)d" string="打回申请"
+                                    states="zhidingbumen"
+                                    type="action"
+                                    groups="up_project.group_up_project_jingyingshi"/>
+                        </div>
+                        <div id="operator">
+                            <group class="activetable" col="6"
+                                   attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}">
+                                <field name="pingshenfangshi" readonly="1"
+                                       colspan="3"/>
+                                <field name="yinfacuoshi" readonly="1"
+                                       colspan="3"/>
+                                <field name="renwuyaoqiu" readonly="1"
+                                       colspan="6"/>
+                                <field name="chenjiebumen_id" readonly="1"
+                                       colspan="3"/>
+                                <div>
+                                    <field name="jinyinshi_submitter_id_image" widget="image"
+                                           class="oe_avatar  no_shadow oe_left" readonly="1"
+                                           colspan="2"/>
+                                    <div attrs="{'invisible':[('jinyinshi_submitter_id_image','!=',False)]}">
+                                        <field name="jinyinshi_submitter_id" readonly="1"/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <field name="jinyinshi_submitter_datetime" readonly="1" colspan="1"/>
+                                </div>
+
+                            </group>
+                        </div>
+                        <div>
+                            <group class="activetable" col="4"
+                                   attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}">
+                                <field name="else_attachments" widget="many2many_binary"
+                                       attrs="{'readonly':[('state','not in',['zhidingbumen','zhidingfuzeren','suozhangqianzi'])]}"
+                                       colspan="4"/>
+
+                            </group>
+                        </div>
+                        <div>
+                            <button name="%(project_active_tasking_engineer_form_action)d" class="oe_highlight"
+                                    groups="up_project.group_up_project_zongshishi" string="审批通过"
+                                    states="zhidingfuzeren"
+                                    type="action"/>
+                            <button name="%(project_active_tasking_reject_wizard_action)d" string="打回申请单"
+                                    groups="up_project.group_up_project_zongshishi"
+                                    states="zhidingfuzeren" type="action"/>
+                        </div>
+                        <div id="engineer"
+                             attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen','zhidingfuzeren'])]}">
+                            <table class="oe_form_group activetable">
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="3">
+                                            <div class="inline-item">类别:
+                                                <field name="categories_id" class="oe_no_button"
+                                                       options='{"no_open": True}' readonly="1"
+                                                        />
+                                                <field name="categories_else" readonly="1"
+                                                       attrs="{'invisible':[('category_name','!=',u'其它')]}"
+                                                        />
+                                            </div>
+                                            <div class="inline-item">投标类别:
+
+                                                <field name="tender_category" readonly="1"
+                                                       attrs="{'invisible':[('shifoutoubiao','=',False)]}"/>
+                                            </div>
+                                            <div class="inline-item">项目管理级别:
+                                                <field name="guanlijibie" readonly="1"/>
+                                            </div>
+                                            <div class="inline-item">项目负责人:
+                                                <field name="user_id" class="oe_no_button" widget="many2many_tags"
+                                                       options='{"no_open": True}' readonly="1"/>
+                                            </div>
+                                            <div class="inline-item">主管总师:
+                                                <field name="zhuguanzongshi_id" class="oe_no_button"
+                                                       widget="many2many_tags"
+                                                       options='{"no_open": True}'
+                                                       readonly="1"
+                                                       attrs="{'invisible':[('guanlijibie','!=',u'LH200307240001')]}"/>
+                                            </div>
+                                        </td>
+                                        <td colspan="2">会签栏</td>
+                                    </tr>
+                                    <tr>
+                                        <td>总师室</td>
+                                        <td>
+                                            <field name="zongshishi_submitter_id_image" widget="image"
+                                                   class="oe_avatar no_shadow oe_left" readonly="1"/>
+                                            <div attrs="{'invisible':[('zongshishi_submitter_id_image','!=',False)]}">
+                                                <field name="zongshishi_submitter_id" readonly="1"/>
+                                            </div>
+                                            <field name="zongshishi_submit_datetime" readonly="1"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>承接部门负责人</td>
+                                        <td>
+                                            <div attrs="{'invisible':[('state','!=','end')]}">
+                                                <field name="director_approve_image" readonly="1" widget="image"
+                                                       class="oe_avatar no_shadow oe_left"/>
+                                                <field name="director_approve"
+                                                       attrs="{'invisible':[('director_approve_image','!=',False)]}"
+                                                       readonly="1"/>
+                                            </div>
+                                            <field name="director_approve_time" readonly="1"/>
+                                            <button name="manager_review_accept"
+                                                    class="oe_highlight"
+                                                    string="确认启动项目"
+                                                    confirm="确定启动项目?"
+                                                    type="object"
+                                                    attrs="{'invisible':['|',('state','!=','suozhangqianzi'),('is_project_director','=',False)]}"/>
+                                            <button name="%(project_active_tasking_reject_wizard_action)d"
+                                                    string="打回申请单"
+                                                    type="action"
+                                                    attrs="{'invisible':['|',('state','!=','suozhangqianzi'),('is_project_director','=',False)]}"/>
+                                            <div attrs="{'invisible':[('is_cover_sign_final','=',False)]}">
+                                                (代签)
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </sheet>
+                    <notebook>
+                        <page string="Reject">
+                            <field name="reject_logs" readonly="1">
+                                <tree>
+                                    <field name="create_date"/>
+                                    <field name="state"/>
+                                    <field name="comment"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record id="project_project_active_tasking_inherit" model="ir.ui.view">
+            <field name="name">project.project.active.tasking.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="edit_project_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='related_forms']" position="before">
+                    <!--button name="btn_active_tasking"
+                            class="oe_highlight"
+                            string="产品要求评审及任务下达记录"
+                            type="object"
+                            groups="project.group_project_user"/-->
+                    <tr>
+                        <td>
+                            <field name="active_tasking" readonly="1" required="0" class="oe_inline" nolabel="1"
+                                   target="new" attrs="{'invisible':[('is_import','=',True)]}"/>
+                        </td>
+                        <td>
+                            <field name="active_tasking_state" readonly="1"/>
+                        </td>
+                        <td>
+                            <field name="active_tasking_is_wait_user_process" invisible="1"/>
+                            <field name="is_import" invisible="1"/>
+                            <div attrs="{'invisible':[('active_tasking_is_wait_user_process','=',False)]}">
+                                <span class="hint-red">
+                                    等待处理
+                                </span>
+                            </div>
+                            <div attrs="{'invisible':[('is_import','=',False)]}">
+                                <span>
+                                    导入项目,不存在下达记录
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

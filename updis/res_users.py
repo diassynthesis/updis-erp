@@ -31,13 +31,15 @@ class res_users(osv.osv):
         'home_phone': fields.char('Home Phone', size=32, readonly=False),
         'devices': fields.many2many("updis.device", "res_users_device_rel", "res_users_id", "device_id",
                                     "User Device Relative"),
+        'big_ant_login_name': fields.char('Big Ant Login Name', size=128),
     }
 
     SELF_WRITEABLE_FIELDS = ['password', 'signature', 'action_id', 'company_id', 'email', 'name', 'image',
                              'image_medium', 'image_small', 'lang', 'tz', 'address_id', 'work_email', 'work_phone',
                              'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone']
 
-    OTHER_WRITEABLE_FIELDS = ['address_id', 'work_email', 'work_phone',
+    OTHER_WRITEABLE_FIELDS = ['address_id', 'work_email', 'work_phone', 'image', 'image_medium', 'image_small',
+                              'has_image',
                               'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone',
                               'devices']
 
@@ -76,3 +78,41 @@ class res_users(osv.osv):
                     del self._uid_cache[db][id]
         self.context_get.clear_cache(self)
         return res
+
+    def create(self, cr, uid, vals, context=None):
+        if self.user_has_groups(cr, uid, 'updis.group_res_user_manager'):
+            return super(res_users, self).create(cr, 1, vals, context)
+        else:
+            return super(res_users, self).create(cr, uid, vals, context)
+
+
+    def on_change_login(self, cr, uid, ids, login, big_ant_name, context=None):
+        ret = {'value': {}}
+        if not big_ant_name:
+            vals = {
+                'big_ant_login_name': login,
+            }
+            ret['value'].update(vals)
+        return ret
+
+    def _get_group(self, cr, uid, context=None):
+        dataobj = self.pool.get('ir.model.data')
+        result = []
+        try:
+            dummy, group_id = dataobj.get_object_reference(cr, SUPERUSER_ID, 'base', 'group_user')
+            result.append(group_id)
+            dummy, group_id = dataobj.get_object_reference(cr, SUPERUSER_ID, 'base', 'group_partner_manager')
+            result.append(group_id)
+            dummy, group_id = dataobj.get_object_reference(cr, SUPERUSER_ID, 'project', 'group_project_user')
+            result.append(group_id)
+            dummy, group_id = dataobj.get_object_reference(cr, SUPERUSER_ID, 'up_project',
+                                                           'group_up_project_common_user')
+            result.append(group_id)
+        except ValueError:
+            # If these groups does not exists anymore
+            pass
+        return result
+
+    _defaults = {
+        'groups_id': _get_group,
+    }

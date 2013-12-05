@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <record id="edit_project_inherit_active" model="ir.ui.view">
+            <field name="name">project.project.active.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="edit_project_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header[@name='project_header']" position="after">
+                    <header attrs="{'invisible':[('state','!=','project_active')]}">
+                        <button name="action_end_active" string="结束启动流程" confirm="确定要跳过启动流程么？" type="object" groups="up_project.group_up_project_admin"/>
+                        <button name="action_active_cancel"  string="项目取消" confirm="确定要取消项目么?" type="object" groups="up_project.group_up_project_admin"/>
+                        <field name="state_active" widget="statusbar" readonly="1"/>
+                    </header>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
