@@ -39,11 +39,14 @@ def _get_field_type(self, cr, uid, column_info, context):
     elif column._type is 'datetime':
         return [column._type, DEFAULT_SERVER_DATETIME_FORMAT]
     elif column._type is 'many2one':
-        return [column._type, column._obj]
+        rec_name = self.pool.get(column._obj)._rec_name
+        return [column._type, column._obj, rec_name]
     elif column._type is 'one2many':
-        return [column._type, column._obj]
+        rec_name = self.pool.get(column._obj)._rec_name
+        return [column._type, column._obj, rec_name]
     elif column._type is 'many2many':
-        return [column._type, column._obj]
+        rec_name = self.pool.get(column._obj)._rec_name
+        return [column._type, column._obj, rec_name]
     elif column._type is 'selection':
         selection = _get_selection_translated(self, cr, 1, column_info.name, 'zh_CN', column.selection,
                                               context)
@@ -65,9 +68,9 @@ def monkey_get_fields_type(self, cr, uid, request_fields, context=None):
                     'field_name':['float'],
                     'field_name':['date','Y m d'],
                     'field_name':['datetime','y m d hh:mm:ss],
-                    'field_name':['many2one','related_obj'],
-                    'field_name':['one2many','related_obj'],
-                    'field_name':['many2many','related_obj'],
+                    'field_name':['many2one','related_obj','rec_name'],
+                    'field_name':['one2many','related_obj','rec_name'],
+                    'field_name':['many2many','related_obj','rec_name'],
                     'field_name':['selection',[('selection1','Value'),('selection2','Value')]],
                     'field_name':['unknown'],#else type all return unknown
                     ##related, function type will auto convert,
