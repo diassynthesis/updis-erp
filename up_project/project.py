@@ -587,7 +587,7 @@ class project_members(osv.osv):
                                                'employee_id', string="Proofread Members"),
         'drawing_user_ids': fields.many2many('hr.employee', 'project_members_drawing_hr_employee', 'project_member_id',
                                              'employee_id', string="Drawing/Writing Members"),
-        'project_id': fields.many2one('project.project', string="Project"),
+        'project_id': fields.many2one('project.project', string="Project", ondelete="cascade"),
     }
     _defaults = {
     }
