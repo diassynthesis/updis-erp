@@ -8,7 +8,7 @@
 UPDIS Asset Management Module.""",
     'author': 'Matt Cai',
     'website': 'http://cysnake.com',
-    'depends': ['base','hr'],
+    'depends': ['base', 'hr', 'up_tools'],
     'data': [
         'data/updis.asset.category.csv',
         'security/up_asset_security.xml',

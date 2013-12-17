@@ -17,6 +17,7 @@ class up_asset_category(osv.osv):
 
 class up_asset_asset(osv.osv):
     _name = 'updis.asset.asset'
+    _inherit = 'tools.log.log'
     _description = 'Asset Asset'
     _log_access = True
 
@@ -52,9 +53,7 @@ class up_asset_asset(osv.osv):
 
         #for import
         'is_import': fields.boolean(string='Is Import'),
-
-        'log_ids': fields.one2many('updis.asset.log', 'asset_id', string='Logs'),
-
+        'log_ids': fields.one2many('updis.asset.log', 'log_item_id', string='Logs'),
     }
     _defaults = {
         'is_import': False,
@@ -62,11 +61,6 @@ class up_asset_asset(osv.osv):
         'purchase_date': lambda *a: str(datetime.date.today()),
         'usage': 'in_use',
     }
-
-    def write(self, cr, uid, ids, vals, context=None):
-        if self._log_access is True:
-            self._write_log(cr, uid, ids, vals, context)
-        return super(up_asset_asset, self).write(cr, uid, ids, vals, context=context)
 
     def _write_log(self, cr, uid, ids, vals, context=None):
         old_assets = self.browse(cr, uid, ids, context)
@@ -92,18 +86,9 @@ class up_asset_asset(osv.osv):
 
 class up_asset_log(osv.osv):
     _name = 'updis.asset.log'
-    _description = 'Asset Log'
-    _log_access = True
-    _order = 'date desc'
+    _inherit = 'tools.log.record'
 
     _columns = {
         'asset_id': fields.many2one('updis.asset.asset', string='Related Asset'),
-        'user_id': fields.many2one('res.users', 'User', required=True),
-        'date': fields.datetime('Datetime', required=True),
-        'log_info': fields.text(string='Info'),
     }
 
-    _defaults = {
-        'date': lambda *args: datetime.datetime.now(),
-        'user_id': lambda self, cr, uid, ctx: uid
-    }
