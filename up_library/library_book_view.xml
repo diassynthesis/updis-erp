@@ -6,8 +6,10 @@
             <field name="name">library.book.record.my.tree</field>
             <field name="model">library.book.record</field>
             <field name="arch" type="xml">
-                <tree string="Borrowing Record" version="7.0" create="false" delete="false">
-                    <field name="borrower"/>
+                <tree string="Borrowing Record" version="7.0">
+                    <field name="book_id"/>
+                    <field name="borrow_date"/>
+                    <field name="due_to_return_date"/>
                 </tree>
             </field>
         </record>
@@ -17,6 +19,52 @@
             <field name="arch" type="xml">
                 <form string="Borrowing Record" version="7.0">
                     <field name="borrower"/>
+                </form>
+            </field>
+        </record>
+        <!--library.book.wish-->
+        <record id="view_up_library_book_wish_tree" model="ir.ui.view">
+            <field name="name">library.book.wish.tree</field>
+            <field name="model">library.book.wish</field>
+            <field name="arch" type="xml">
+                <tree string="Wish Book" version="7.0">
+                    <field name="name"/>
+                    <field name="author"/>
+                    <field name="publisher"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_up_library_book_wish_form" model="ir.ui.view">
+            <field name="name">library.book.wish.form</field>
+            <field name="model">library.book.wish</field>
+            <field name="arch" type="xml">
+                <form string="Wish Book" version="7.0">
+                    <header>
+                        <button name="" type="action" string="Marked As bought" class="oe_highlight"
+                                groups="up_library.library_manager"/>
+                        <button name="reject_wish_request" type="object" string="Marked As Un bought"
+                                groups="up_library.library_manager"/>
+                        <field name="state" widget="statusbar" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Book Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="author"/>
+                                <field name="publisher"/>
+                                <field name="price"/>
+                            </group>
+                            <group>
+                                <field name="comment"/>
+                            </group>
+                        </group>
+                    </sheet>
+
                 </form>
             </field>
         </record>

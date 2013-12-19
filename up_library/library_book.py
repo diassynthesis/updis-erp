@@ -13,10 +13,35 @@ class LibraryRecord(osv.osv):
     _columns = {
         'borrower': fields.many2one('res.users', string='Book Borrower'),
         'borrow_date': fields.date(string='Borrow Date'),
-        #TODO:use function or Date??? 'due_to_return_date': fields.date(string='Due To Return Date'),
+        #TODO:use function or Date???
+        'due_to_return_date': fields.date(string='Due To Return Date'),
         'return_date': fields.date(string='Return Date'),
-        'rel_book':fields.many2one('library.book.book',string='Book'),
+        'book_id': fields.many2one('library.book.book', string='Book'),
     }
+
+
+class LibraryBookWish(osv.osv):
+    _name = 'library.book.wish'
+    _description = 'Wish Book'
+    _log_access = True
+
+    _columns = {
+        'name': fields.char(size=256, string='Book Name', required=True),
+        'author': fields.char(size=32, string='Book Author'),
+        'publisher': fields.char(size=128, string='Publisher'),
+        'price': fields.float(digits=(16, 2), string='Price'),
+        'comment': fields.text(string='Comment'),
+        'state': fields.selection(selection=[('apply', 'Apply'), ('fail', 'Fail'), ('bought', 'Bought')],
+                                  string='State', required=True),
+    }
+
+    _defaults = {
+        'state': 'apply',
+    }
+    #TODO: need do the success wizard
+    def reject_wish_request(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'state': 'fail'}, context=context)
+        return True
 
 
 class LibraryBook(osv.osv):
@@ -28,7 +53,8 @@ class LibraryBook(osv.osv):
     _log_fields = ['name']
 
     _columns = {
-        'code': fields.char(size=64, string='Code', states=""), #TODO:State set miss
+        #TODO:State set miss
+        'code': fields.char(size=64, string='Code', states=""),
         'name': fields.char(size=256, string='Book Name', required=True),
         'category': fields.many2one('library.book.category', string='Category'),
         'type': fields.many2one('library.book.type', string='Type'),
@@ -39,8 +65,9 @@ class LibraryBook(osv.osv):
         'comment': fields.text(string='Comment'),
         'create_date': fields.datetime('Created on', select=True),
         'create_uid': fields.many2one('res.users', 'Author', select=True),
-        'state': fields.selection(selection=[('wish', 'in_store', 'borrowed', 'scrap', 'lost')]),
-        'log_ids': fields.one2many('library.book.log', 'log_id', string="Logs"),
+        'state': fields.selection(selection=[('in_store', 'borrowed', 'scrap', 'lost')]),
+        'log_ids': fields.one2many('library.book.log', 'log_id', string='Logs'),
+        'record_ids': fields.one2many('library.book.record', 'book_id', string='Records'),
     }
 
     _defaults = {

@@ -7,3 +7,4 @@ access_library_book_type_admin,access_library_book_type_admin,model_library_book
 access_library_book_record_user,access_library_book_record_user,model_library_book_record,,1,0,0,0
 access_library_book_record_admin,access_library_book_record_admin,model_library_book_record,up_library.library_admin,1,1,1,1
 access_library_book_log,access_library_book_log,model_library_book_log,,1,1,1,1
+access_library_book_wish,access_library_book_wish,model_library_book_wish,,1,1,1,1
