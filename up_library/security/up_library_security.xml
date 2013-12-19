@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="up_library.library_manager" model="res.groups">
+            <field name="name">Library Manager</field>
+            <field name="category_id" ref="base.module_category_up_library"/>
+            <field name="comment">the Library Manager will be able to control all book.</field>
+        </record>
+        <record id="up_library.library_admin" model="res.groups">
+            <field name="name">Library Admin</field>
+            <field name="category_id" ref="base.module_category_up_library"/>
+            <field name="comment">the Library Admin will be able to control all library config.</field>
+            <field name="implied_ids" eval="[(4, ref('up_library.library_manager'))]"/>
+        </record>
+
+    </data>
+</openerp>

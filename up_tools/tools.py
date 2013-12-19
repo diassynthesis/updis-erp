@@ -10,6 +10,6 @@ def get_id_by_external_id(cr, pool, model, extends_id, context=None):
 
 def get_parent_name(obj, rec_name='name'):
     if obj.parent_id:
-        return get_parent_name(obj.parent_id) + '/' + obj.get(rec_name)
+        return get_parent_name(obj.parent_id) + '/' + obj.__getitem__(rec_name)
     else:
-        return obj.get(rec_name)
+        return obj.__getitem__(rec_name)

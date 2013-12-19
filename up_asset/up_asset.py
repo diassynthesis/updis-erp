@@ -17,7 +17,7 @@ class up_asset_category(osv.osv):
 
 class up_asset_asset(osv.osv):
     _name = 'updis.asset.asset'
-    _inherit = 'tools.log.log'
+    _inherit = 'log.log'
     _description = 'Asset Asset'
     _log_access = True
 
@@ -53,7 +53,7 @@ class up_asset_asset(osv.osv):
 
         #for import
         'is_import': fields.boolean(string='Is Import'),
-        'log_ids': fields.one2many('updis.asset.log', 'log_item_id', string='Logs'),
+        'log_ids': fields.one2many('updis.asset.log', 'log_id', string='Logs'),
     }
     _defaults = {
         'is_import': False,
@@ -81,14 +81,18 @@ class up_asset_asset(osv.osv):
                     old_asset.user if old_asset.user else "", vals['user'] if vals['user'] else "")
 
             if info:
-                log_obj.create(cr, uid, {'asset_id': old_asset.id, 'log_info': info})
+                log_obj.create(cr, uid, {'log_id': old_asset.id, 'log_info': info})
+
+    _sql_constraints = [
+        ('code_unique', 'unique (code)', 'The code of the asset must be unique!')
+    ]
 
 
 class up_asset_log(osv.osv):
     _name = 'updis.asset.log'
-    _inherit = 'tools.log.record'
+    _inherit = 'log.record'
 
     _columns = {
-        'asset_id': fields.many2one('updis.asset.asset', string='Related Asset'),
+        'log_id': fields.many2one('updis.asset.asset', string='Related Asset'),
     }
 

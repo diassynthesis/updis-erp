@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!--library.book.record-->
+        <record id="view_up_library_my_borrowing_tree" model="ir.ui.view">
+            <field name="name">library.book.record.my.tree</field>
+            <field name="model">library.book.record</field>
+            <field name="arch" type="xml">
+                <tree string="Borrowing Record" version="7.0" create="false" delete="false">
+                    <field name="borrower"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_up_library_my_borrowing_form" model="ir.ui.view">
+            <field name="name">library.book.record.my.form</field>
+            <field name="model">library.book.record</field>
+            <field name="arch" type="xml">
+                <form string="Borrowing Record" version="7.0">
+                    <field name="borrower"/>
+                </form>
+            </field>
+        </record>
+    </data>
+</openerp>
