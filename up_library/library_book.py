@@ -1,4 +1,5 @@
 # -*- encoding:utf-8 -*-
+import datetime
 from openerp.osv import osv
 from openerp.osv import fields
 from up_tools import tools
@@ -9,14 +10,24 @@ __author__ = 'cysnake4713'
 class LibraryRecord(osv.osv):
     _name = 'library.book.record'
     _description = 'Book Record'
+    _order = 'borrow_date desc'
 
     _columns = {
-        'borrower': fields.many2one('res.users', string='Book Borrower'),
-        'borrow_date': fields.date(string='Borrow Date'),
+        'borrower': fields.many2one('res.users', string='Book Borrower', required=True),
+        'borrow_date': fields.date(string='Borrow Date', required=True),
         #TODO:use function or Date???
+        #TODO:onchange method
         'due_to_return_date': fields.date(string='Due To Return Date'),
+        #TODO:is_returned onchange to return date set today
+        'is_returned': fields.boolean(string='Is Book Returned'),
         'return_date': fields.date(string='Return Date'),
-        'book_id': fields.many2one('library.book.book', string='Book'),
+        #TODO:relation between books is not limited
+        'book_id': fields.many2one('library.book.book', string='Book', required=True, ondelete="cascade"),
+    }
+
+    _defaults = {
+        'borrow_date': lambda *a: str(datetime.date.today()),
+        'is_returned': False,
     }
 
 
@@ -50,11 +61,16 @@ class LibraryBook(osv.osv):
     _description = 'Book Info'
     _log_access = True
     _log_osv = 'library.book.log'
-    _log_fields = ['name']
+    _log_fields = {
+        #TODO:Need Finish the auto log system
+        # 'name': None,
+        #            'author': [None, lambda o, n: u"作者变更:%s --> %s" % (o, n)],
+        #            'category': [lambda o, n: o.id if o else 0 != n, lambda o, n: "分项变成: %s --> %s" % (o.full_name if o else "", n)],
+    }
 
     _columns = {
         #TODO:State set miss
-        'code': fields.char(size=64, string='Code', states=""),
+        'code': fields.char(size=64, string='Code', required=True),
         'name': fields.char(size=256, string='Book Name', required=True),
         'category': fields.many2one('library.book.category', string='Category'),
         'type': fields.many2one('library.book.type', string='Type'),
@@ -62,10 +78,11 @@ class LibraryBook(osv.osv):
         'publisher': fields.char(size=128, string='Publisher'),
         'price': fields.float(digits=(16, 2), string='Price'),
         'quantity': fields.integer(string='Quantity'),
+        'purchase_date': fields.date(string='Purchase Date'),
         'comment': fields.text(string='Comment'),
-        'create_date': fields.datetime('Created on', select=True),
-        'create_uid': fields.many2one('res.users', 'Author', select=True),
-        'state': fields.selection(selection=[('in_store', 'borrowed', 'scrap', 'lost')]),
+        'state': fields.selection(string='State',
+                                  selection=[('in_store', 'In Store'), ('borrowed', 'Borrowed'), ('scrap', 'Scrap'),
+                                             ('lost', 'Lost')]),
         'log_ids': fields.one2many('library.book.log', 'log_id', string='Logs'),
         'record_ids': fields.one2many('library.book.record', 'book_id', string='Records'),
     }
@@ -73,10 +90,13 @@ class LibraryBook(osv.osv):
     _defaults = {
         'quantity': 1,
         'state': 'in_store',
+        'purchase_date': lambda *a: str(datetime.date.today()),
     }
 
-    def _write_log(self, cr, uid, ids, vals, context=None):
-        pass
+    #TODO:state button haven't done
+    def mark_as_scrap(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'state': 'scrap'}, context=context)
+        return True
 
 
 # noinspection PyUnusedLocal
@@ -129,5 +149,5 @@ class LibraryLog(osv.osv):
     _inherit = 'log.record'
 
     _columns = {
-        'log_id': fields.many2one('library.book.book', string='Related Book'),
+        'log_id': fields.many2one('library.book.book', string='Related Book', ondelete="cascade"),
     }

@@ -93,6 +93,6 @@ class up_asset_log(osv.osv):
     _inherit = 'log.record'
 
     _columns = {
-        'log_id': fields.many2one('updis.asset.asset', string='Related Asset'),
+        'log_id': fields.many2one('updis.asset.asset', string='Related Asset', ondelete="cascade"),
     }
 

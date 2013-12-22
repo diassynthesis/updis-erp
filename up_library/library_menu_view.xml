@@ -3,28 +3,45 @@
     <data>
         <!--My Actions-->
         <record id="action_up_library_my_borrowing" model="ir.actions.act_window">
-            <field name="name">My Borrowing</field>
+            <field name="name">My Borrowing Book</field>
             <field name="res_model">library.book.record</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('borrower.id','=',uid),('is_returned','=',False)]</field>
         </record>
-        <record id="action_view_my_borrowing_tree" model="ir.actions.act_window.view">
-            <field name="view_id" ref="view_up_library_my_borrowing_tree"/>
-            <field name="view_mode">tree</field>
-            <field name="act_window_id" ref="action_up_library_my_borrowing"/>
+        <record id="action_up_library_my_borrowed" model="ir.actions.act_window">
+            <field name="name">My Borrowed Book</field>
+            <field name="res_model">library.book.record</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('borrower.id','=',uid)]</field>
         </record>
-        <record id="action_view_my_borrowing_form" model="ir.actions.act_window.view">
-            <field name="view_id" ref="view_up_library_my_borrowing_form"/>
-            <field name="view_mode">form</field>
-            <field name="act_window_id" ref="action_up_library_my_borrowing"/>
-        </record>
-        <!--wish action-->
         <record id="action_up_library_my_wish_book" model="ir.actions.act_window">
             <field name="name">My Wish Book</field>
             <field name="res_model">library.book.wish</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('create_uid','=',uid)]</field>
+        </record>
+        <!--Manage Action-->
+        <record id="action_up_library_all_books" model="ir.actions.act_window">
+            <field name="name">All Books</field>
+            <field name="res_model">library.book.book</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_up_library_all_borrowing" model="ir.actions.act_window">
+            <field name="name">All Borrowing Book</field>
+            <field name="res_model">library.book.record</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_returned','=',False)]</field>
+        </record>
+        <record id="action_up_library_all_borrowed" model="ir.actions.act_window">
+            <field name="name">All Borrowed Book</field>
+            <field name="res_model">library.book.record</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
         </record>
         <record id="action_up_library_all_wish_book" model="ir.actions.act_window">
             <field name="name">all Wish Book</field>
@@ -51,24 +68,25 @@
         <!--My MenuItems-->
         <menuitem name="My Library" id="menu_up_library_my_library" sequence="10"
                   parent="menu_up_library_management_root"/>
-        <menuitem name="My Borrowed Record" id="menu_up_library_my_borrowed_book" sequence="20"
+        <menuitem name="My Borrowing Record" id="menu_up_library_my_borrowing_book" sequence="20"
                   parent="menu_up_library_my_library" action="action_up_library_my_borrowing"/>
-        <menuitem name="My Borrowed History" id="menu_up_library_my_borrowed_history" sequence="30"
-                  parent="menu_up_library_my_library"/>
+        <menuitem name="My Borrowed Record" id="menu_up_library_my_borrowed_book" sequence="30"
+                  parent="menu_up_library_my_library" action="action_up_library_my_borrowed"/>
         <menuitem name="My Wished Book" id="menu_up_library_my_wished_book" sequence="40"
                   parent="menu_up_library_my_library" action="action_up_library_my_wish_book"/>
         <!--Manage MenuItems-->
         <menuitem name="Library Manage" id="menu_up_library_management" sequence="20"
                   parent="menu_up_library_management_root"/>
-        <menuitem name="All Wish Books" id="menu_up_library_all_wish_books" sequence="8"
+        <menuitem name="Library Books" id="menu_up_library_all_books" sequence="10"
+                  parent="menu_up_library_management" action="action_up_library_all_books"/>
+        <menuitem name="Library Borrowing Record" id="menu_up_library_library_borrowing_record" sequence="20"
+                  parent="menu_up_library_management" action="action_up_library_all_borrowing"
+                  groups="library_manager"/>
+        <menuitem name="Library Borrowed Record" id="menu_up_library_library_borrowed_history" sequence="30"
+                  parent="menu_up_library_management" action="action_up_library_all_borrowed" groups="library_manager"/>
+        <menuitem name="All Wish Books" id="menu_up_library_all_wish_books" sequence="40"
                   parent="menu_up_library_management" action="action_up_library_all_wish_book"
                   groups="library_manager"/>
-        <menuitem name="Library Books" id="menu_up_library_all_books" sequence="10"
-                  parent="menu_up_library_management"/>
-        <menuitem name="Library Borrowed Record" id="menu_up_library_library_borrow_record" sequence="20"
-                  parent="menu_up_library_management"/>
-        <menuitem name="Library Borrowed History" id="menu_up_library_library_borrow_history" sequence="30"
-                  parent="menu_up_library_management"/>
         <!--Admin MenuItems-->
         <menuitem name="Library Config" id="menu_up_library_config" sequence="30"
                   parent="menu_up_library_management_root" groups="library_admin"/>
