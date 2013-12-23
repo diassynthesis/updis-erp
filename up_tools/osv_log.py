@@ -29,7 +29,7 @@ class OsvLog(osv.osv_abstract):
         return result
 
     def _get_translated_field_name(self, cr, uid, src_field_name, lang, context=None):
-        #TODO:
+        #TODO:get field name Translated
         return src_field_name
 
     def _default_is_not_equal(self, old, new, need_log_field):

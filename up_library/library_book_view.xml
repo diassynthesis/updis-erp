@@ -23,6 +23,8 @@
             <field name="arch" type="xml">
                 <form string="Books" version="7.0">
                     <header>
+                        <button name="mark_as_scrap" type="object" string="Mask As Scrap" class=""/>
+                        <button name="mark_as_lost" type="object" string="Mask As Lost" class=""/>
                         <field name="state" widget="statusbar" readonly="1"/>
                     </header>
                     <sheet>
@@ -43,6 +45,7 @@
                                 <field name="purchase_date"/>
                                 <field name="price"/>
                                 <field name="quantity"/>
+                                <field name="quantity_left"/>
                             </group>
                         </group>
                         <group>
@@ -57,14 +60,17 @@
                                                 <field name="borrower" required="1"/>
                                             </group>
                                             <group>
-                                                <field name="borrow_date"/>
+                                                <field name="borrow_date"
+                                                       on_change="on_change_borrow_date(borrow_date)"/>
                                                 <field name="due_to_return_date"/>
                                             </group>
                                             <group>
-                                                <field name="is_returned"/>
+                                                <field name="is_returned"
+                                                       on_change="on_change_is_returned(is_returned)"/>
                                             </group>
                                             <group>
-                                                <field name="return_date"/>
+                                                <field name="return_date"
+                                                       attrs="{'required':[('is_returned','=',True)]}"/>
                                             </group>
                                         </group>
                                     </form>
@@ -110,11 +116,11 @@
                                     <field name="borrower" required="1"/>
                                 </group>
                                 <group>
-                                    <field name="borrow_date"/>
+                                    <field name="borrow_date" on_change="on_change_borrow_date(borrow_date)"/>
                                     <field name="due_to_return_date"/>
                                 </group>
                                 <group>
-                                    <field name="is_returned"/>
+                                    <field name="is_returned" on_change="on_change_is_returned(is_returned)"/>
                                 </group>
                                 <group>
                                     <field name="return_date" attrs="{'required':[('is_returned','=',True)]}"/>
