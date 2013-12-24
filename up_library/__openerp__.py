@@ -17,6 +17,8 @@ Book Library Management Module.""",
         'library_config_view.xml',
         'library_menu_view.xml',
 
+        'data/library.book.config.csv',
+
     ],
     'demo': [],
     'test': [],

@@ -6,7 +6,7 @@
             <field name="name">library.book.record.wizard.form</field>
             <field name="model">library.book.record.wizard</field>
             <field name="arch" type="xml">
-                <form string="Borrowing Record" version="7.0" create="false" delete="false">
+                <form string="Borrowing Record" version="7.0">
                     <sheet>
                         <div class="oe_title">
                             <h1>
@@ -36,7 +36,46 @@
                         </group>
                     </sheet>
                     <footer>
-                        <button string="Save" class="oe_highlight" name="save" type="object"/> or
+                        <button string="Save" class="oe_highlight" name="save" type="object"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="view_up_library_book_wiz_form" model="ir.ui.view">
+            <field name="name">library.book.book.wizard.form</field>
+            <field name="model">library.book.book.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Books" version="7.0">
+                    <sheet>
+                        <field name="image" widget='image' class="oe_left oe_avatar"
+                               options='{"preview_image": "image_medium", "size": [90,90]}'/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Book Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="code"/>
+                                <field name="category"/>
+                                <field name="type"/>
+                                <field name="author"/>
+                                <field name="publisher"/>
+                            </group>
+                            <group>
+                                <field name="purchase_date"/>
+                                <field name="price"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="comment" nolabel="1" placeholder="Comment"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Save" class="oe_highlight" name="save" type="object"/>
+                        or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
@@ -62,6 +101,16 @@
             <field name="view_id" ref="view_up_library_book_record_wiz_form"/>
             <field name="target">new</field>
             <field name="context">{'is_in_book_view':1,'to_return':True}</field>
+        </record>
+        <record id="mark_as_bought" model="ir.actions.act_window">
+            <field name="name">Mark As Bought Action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">library.book.book.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_up_library_book_wiz_form"/>
+            <field name="target">new</field>
+            <field name="context">{'to_bought':True}</field>
         </record>
         <!--library.book.book-->
         <record id="view_up_library_book_tree" model="ir.ui.view">
@@ -217,13 +266,20 @@
             <field name="arch" type="xml">
                 <form string="Wish Book" version="7.0">
                     <header>
-                        <button name="" type="action" string="Marked As bought" class="oe_highlight"
+                        <button name="%(mark_as_bought)d" type="action"
+                                string="Marked As bought" class="oe_highlight"
+                                states="apply"
                                 groups="up_library.library_manager"/>
-                        <button name="reject_wish_request" type="object" string="Marked As Un bought"
-                                groups="up_library.library_manager"/>
+                        <button name="reject_wish_request" type="object"
+                                string="Marked As Un bought"
+                                states="apply"
+                                groups="up_library.library_manager"
+                                confirm="Are you sure you want reject this wish book?"/>
                         <field name="state" widget="statusbar" readonly="1"/>
                     </header>
                     <sheet>
+                        <field name="image" widget='image' class="oe_left oe_avatar"
+                               options='{"preview_image": "image_medium", "size": [90,90]}'/>
                         <div class="oe_title">
                             <h1>
                                 <field name="name" placeholder="Book Name"/>
