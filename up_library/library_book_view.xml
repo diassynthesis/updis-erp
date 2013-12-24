@@ -1,6 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
+        <!--wizard-->
+        <record id="view_up_library_book_record_wiz_form" model="ir.ui.view">
+            <field name="name">library.book.record.wizard.form</field>
+            <field name="model">library.book.record.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Borrowing Record" version="7.0" create="false" delete="false">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="book_id" placeholder="Book Name"
+                                       readonly="context.get('is_in_book_view',0)"/>
+                            </h1>
+                        </div>
+                        <group invisible="1">
+                            <field name="record_id"/>
+                        </group>
+                        <group>
+                            <group>
+                                <group>
+                                    <field name="borrower"/>
+                                </group>
+                                <group>
+                                    <field name="borrow_date" on_change="on_change_borrow_date(borrow_date)"/>
+                                    <field name="due_to_return_date"/>
+                                </group>
+                                <group>
+                                    <field name="is_returned" on_change="on_change_is_returned(is_returned)"/>
+                                </group>
+                                <group>
+                                    <field name="return_date" attrs="{'required':[('is_returned','=',True)]}"/>
+                                </group>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Save" class="oe_highlight" name="save" type="object"/> or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <!--actions-->
+        <record id="mark_as_borrowed" model="ir.actions.act_window">
+            <field name="name">Mark As Borrowed Action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">library.book.record.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_up_library_book_record_wiz_form"/>
+            <field name="target">new</field>
+            <field name="context">{'is_in_book_view':1,'to_borrowed':True}</field>
+        </record>
+        <record id="mark_as_return" model="ir.actions.act_window">
+            <field name="name">Mark As Returned Action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">library.book.record.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_up_library_book_record_wiz_form"/>
+            <field name="target">new</field>
+            <field name="context">{'is_in_book_view':1,'to_return':True}</field>
+        </record>
         <!--library.book.book-->
         <record id="view_up_library_book_tree" model="ir.ui.view">
             <field name="name">library.book.book.tree</field>
@@ -23,19 +85,42 @@
             <field name="arch" type="xml">
                 <form string="Books" version="7.0">
                     <header>
-                        <button name="mark_as_scrap" type="object" string="Mask As Scrap"
-                                confirm="Are you sure this book is scrap?" groups="up_library.library_manager"/>
-                        <button name="mark_as_lost" type="object" string="Mask As Lost" class=""
-                                confirm="Are you sure this book is lost?" groups="up_library.library_manager"/>
+                        <button name="%(mark_as_borrowed)d" type="action"
+                                string="Mask As Borrowed" class="oe_highlight"
+                                groups="up_library.library_manager"
+                                attrs="{'invisible':['|',('is_borrowable','=',False),('state','in',['scrap','lost'])]}"/>
+                        <button name="%(mark_as_return)d" type="action"
+                                string="Mask As Returned" class="oe_highlight"
+                                groups="up_library.library_manager"
+                                attrs="{'invisible':['|',('is_borrowable','=',True),('state','in',['scrap','lost'])]}"/>
+                        <button name="mark_as_scrap" type="object"
+                                string="Mask As Scrap"
+                                groups="up_library.library_manager"
+                                states="in_store,borrowed,lost"
+                                confirm="Are you sure this book is scrap?"/>
+                        <button name="mark_as_lost" type="object"
+                                string="Mask As Lost"
+                                groups="up_library.library_manager"
+                                states="in_store,borrowed,scrap"
+                                confirm="Are you sure this book is lost?"/>
+                        <button name="recover" type="object"
+                                string="Recover"
+                                groups="up_library.library_manager"
+                                states="scrap,lost"
+                                confirm="Are you sure this book recovered?"/>
                         <field name="state" widget="statusbar" readonly="1"/>
                     </header>
                     <sheet>
-                        <field name="image" widget='image' class="oe_left oe_avatar" options='{"preview_image": "image_medium", "size": [90,90]}'/>
+                        <field name="image" widget='image' class="oe_left oe_avatar"
+                               options='{"preview_image": "image_medium", "size": [90,90]}'/>
                         <div class="oe_title">
                             <h1>
                                 <field name="name" placeholder="Book Name"/>
                             </h1>
                         </div>
+                        <group invisible="1">
+                            <field name="is_borrowable"/>
+                        </group>
                         <group>
                             <group>
                                 <field name="code"/>
@@ -54,28 +139,8 @@
                         </group>
                         <notebook>
                             <page string="Borrow Record">
-                                <field name="record_ids">
-                                    <form>
-                                        <group>
-                                            <group>
-                                                <field name="borrower" required="1"/>
-                                            </group>
-                                            <group>
-                                                <field name="borrow_date"
-                                                       on_change="on_change_borrow_date(borrow_date)"/>
-                                                <field name="due_to_return_date"/>
-                                            </group>
-                                            <group>
-                                                <field name="is_returned"
-                                                       on_change="on_change_is_returned(is_returned)"/>
-                                            </group>
-                                            <group>
-                                                <field name="return_date"
-                                                       attrs="{'required':[('is_returned','=',True)]}"/>
-                                            </group>
-                                        </group>
-                                    </form>
-                                </field>
+                                <field name="record_ids" readonly="1"
+                                       context="{'is_in_book_view':1,'is_in_book_view_footer':0}"/>
                             </page>
                             <page string="Log">
                                 <field name="log_ids" readonly="1"/>
@@ -90,8 +155,8 @@
             <field name="name">library.book.record.tree</field>
             <field name="model">library.book.record</field>
             <field name="arch" type="xml">
-                <tree string="Borrowing Record" version="7.0">
-                    <field name="book_id"/>
+                <tree string="Borrowing Record" version="7.0" create="false">
+                    <field name="book_id" invisible="context.get('is_in_book_view',0)"/>
                     <field name="borrower"/>
                     <field name="borrow_date"/>
                     <field name="due_to_return_date"/>
@@ -104,17 +169,18 @@
             <field name="name">library.book.record.form</field>
             <field name="model">library.book.record</field>
             <field name="arch" type="xml">
-                <form string="Borrowing Record" version="7.0">
+                <form string="Borrowing Record" version="7.0" create="false">
                     <sheet>
                         <div class="oe_title">
                             <h1>
-                                <field name="book_id" placeholder="Book Name"/>
+                                <field name="book_id" placeholder="Book Name"
+                                       readonly="context.get('is_in_book_view',0)"/>
                             </h1>
                         </div>
                         <group>
                             <group>
                                 <group>
-                                    <field name="borrower" required="1"/>
+                                    <field name="borrower"/>
                                 </group>
                                 <group>
                                     <field name="borrow_date" on_change="on_change_borrow_date(borrow_date)"/>
@@ -129,7 +195,6 @@
                             </group>
                         </group>
                     </sheet>
-
                 </form>
             </field>
         </record>
