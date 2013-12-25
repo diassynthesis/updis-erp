@@ -29,6 +29,7 @@
             <field name="res_model">library.book.book</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_by-category':1}</field>
         </record>
         <record id="action_up_library_all_borrowing" model="ir.actions.act_window">
             <field name="name">All Borrowing Book</field>

@@ -15,6 +15,27 @@ class LibraryRecord(osv.osv):
     _order = 'borrow_date desc'
     _rec_name = 'borrower'
 
+    #0 is returned
+    #1 is over time
+    #2 need return
+    #3 good
+    def _need_return(self, cr, uid, ids, name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            if not obj.is_returned:
+                due_to_return_date = datetime.datetime.strptime(obj.due_to_return_date, DEFAULT_SERVER_DATE_FORMAT)
+                borrow_date = datetime.datetime.strptime(obj.borrow_date, DEFAULT_SERVER_DATE_FORMAT)
+                between_date = (due_to_return_date - borrow_date).days
+                if between_date < 0:
+                    result[obj.id] = 1
+                elif 0 <= between_date < 10:
+                    result[obj.id] = 2
+                else:
+                    result[obj.id] = 3
+            else:
+                result[obj.id] = 0
+        return result
+
     _columns = {
         'borrower': fields.many2one('res.users', string='Book Borrower', required=True),
         'borrow_date': fields.date(string='Borrow Date', required=True),
@@ -22,6 +43,7 @@ class LibraryRecord(osv.osv):
         'is_returned': fields.boolean(string='Is Book Returned'),
         'return_date': fields.date(string='Return Date'),
         'book_id': fields.many2one('library.book.book', string='Book', required=True, ondelete="cascade"),
+        'need_return': fields.function(_need_return, type='integer', string='Need Return'),
     }
 
     _defaults = {
@@ -156,7 +178,6 @@ class LibraryRecordWizard(osv.osv_memory):
             values.update({'book_id': self_record.book_id.id})
             record_obj.create(cr, uid, values, context=context)
 
-        # return self.pool.get('library.book.book').sync_book_status(cr, uid, self_record.book_id.id, context=context)
         return True
 
 
@@ -204,6 +225,7 @@ class LibraryBookWish(osv.osv):
                                                lambda self, cr, uid, ids, c={}: ids, ['image'], 10),
                                        }),
         'has_image': fields.function(_has_image, type="boolean", string='Have Image'),
+        'link_book_id': fields.many2one('library.book.book', string='Link Book'),
     }
 
     _defaults = {
@@ -294,6 +316,10 @@ class LibraryBook(osv.osv):
         'state': 'in_store',
         'purchase_date': lambda *a: str(datetime.date.today()),
     }
+
+    _sql_constraints = [
+        ('book_code_unique', 'unique (code)', 'The code of the book must be unique!')
+    ]
 
     def mark_as_scrap(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'state': 'scrap'}, context=context)
@@ -402,8 +428,9 @@ class LibraryBookWizard(osv.osv_memory):
             'comment': self_record.comment,
             'image': self_record.image,
         }
-        book_obj.create(cr, uid, values, context=context)
-        self.pool.get('library.book.wish').write(cr, uid, context['active_id'], {'state': 'bought'}, context=context)
+        book_id = book_obj.create(cr, uid, values, context=context)
+        self.pool.get('library.book.wish').write(cr, uid, context['active_id'],
+                                                 {'state': 'bought', 'link_book_id': book_id}, context=context)
 
         return True
 
@@ -450,8 +477,6 @@ class LibraryType(osv.osv):
     _columns = {
         'name': fields.char(size=50, string='Book Type Name'),
     }
-
-
 
 
 class LibraryConfig(osv.osv):

@@ -144,13 +144,12 @@
             <field name="name">library.book.book.tree</field>
             <field name="model">library.book.book</field>
             <field name="arch" type="xml">
-                <tree string="Books" version="7.0">
+                <tree string="Books" version="7.0" colors="grey:state in ('lost','scrap');red:state=='borrowed'">
                     <field name="name"/>
                     <field name="code"/>
                     <field name="category"/>
                     <field name="type"/>
                     <field name="author"/>
-                    <field name="price"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -211,7 +210,7 @@
                             </group>
                         </group>
                         <group>
-                            <field name="comment" nolabel="1" placeholder="Comment"/>
+                            <field name="comment"/>
                         </group>
                         <notebook>
                             <page string="Borrow Record">
@@ -242,13 +241,15 @@
             <field name="name">library.book.record.tree</field>
             <field name="model">library.book.record</field>
             <field name="arch" type="xml">
-                <tree string="Borrowing Record" version="7.0" create="false">
+                <tree string="Borrowing Record" version="7.0" create="false"
+                      colors="grey:need_return==0;red:need_return==1;orange:need_return==2">
                     <field name="book_id" invisible="context.get('is_in_book_view',0)"/>
                     <field name="borrower"/>
                     <field name="borrow_date"/>
                     <field name="due_to_return_date"/>
                     <field name="is_returned"/>
                     <field name="return_date"/>
+                    <field name="need_return" invisible="1"/>
                 </tree>
             </field>
         </record>
@@ -295,6 +296,7 @@
                     <field name="author"/>
                     <field name="publisher"/>
                     <field name="state"/>
+                    <filter name="need-process" string="Need Process" domain="[('state','=','apply')]"/>
                     <group expand="0" string="Group by...">
                         <filter name="by-state" string="By State" domain="[]"
                                 context="{'group_by':'state'}"/>
@@ -306,12 +308,11 @@
             <field name="name">library.book.wish.tree</field>
             <field name="model">library.book.wish</field>
             <field name="arch" type="xml">
-                <tree string="Wish Book" version="7.0">
+                <tree string="Wish Book" version="7.0" colors="red:state=='apply';grey:state=='fail'">
                     <field name="name"/>
                     <field name="author"/>
                     <field name="publisher"/>
                     <field name="state"/>
-
                 </tree>
             </field>
         </record>
@@ -344,10 +345,16 @@
                             <group>
                                 <field name="author"/>
                                 <field name="publisher"/>
-                                <field name="price"/>
                             </group>
                             <group>
-                                <field name="comment"/>
+                                <field name="price"/>
+                            </group>
+                            <group colspan="2">
+                                <label for="comment" string="Comment"/>
+                                <field name="comment" nolabel="1" placeholder="Comment" colspan="2"/>
+                            </group>
+                            <group>
+                                <field name="link_book_id" attrs="{'invisible':[('state','!=','bought')]}" readonly="1"/>
                             </group>
                         </group>
                     </sheet>
