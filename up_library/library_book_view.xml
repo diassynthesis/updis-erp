@@ -113,6 +113,33 @@
             <field name="context">{'to_bought':True}</field>
         </record>
         <!--library.book.book-->
+        <record id="view_up_library_book_search" model="ir.ui.view">
+            <field name="name">library.book.book.search</field>
+            <field name="model">library.book.book</field>
+            <field name="arch" type="xml">
+                <search string="Book Search">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="category"/>
+                    <field name="type"/>
+                    <field name="author"/>
+                    <field name="price"/>
+                    <field name="state"/>
+                    <filter name="be-borrowed" string="Be Borrowed" domain="[('state','in',['borrowed'])]"/>
+                    <filter name="in-store" string="In Store" domain="[('state','in',['in_store'])]"/>
+                    <filter name="be-lost-a-scrap" string="Be Lost And Scrap"
+                            domain="[('state','in',['scrap','lost'])]"/>
+                    <group expand="0" string="Group by...">
+                        <filter name="by-category" string="By Category" domain="[]"
+                                context="{'group_by':'category'}"/>
+                        <filter name="by-type" string="By Type" domain="[]"
+                                context="{'group_by':'type'}"/>
+                        <filter name="by-state" string="By State" domain="[]"
+                                context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
         <record id="view_up_library_book_tree" model="ir.ui.view">
             <field name="name">library.book.book.tree</field>
             <field name="model">library.book.book</field>
@@ -191,15 +218,26 @@
                                 <field name="record_ids" readonly="1"
                                        context="{'is_in_book_view':1,'is_in_book_view_footer':0}"/>
                             </page>
-                            <page string="Log">
-                                <field name="log_ids" readonly="1"/>
-                            </page>
                         </notebook>
                     </sheet>
                 </form>
             </field>
         </record>
         <!--library.book.record-->
+        <record id="view_up_library_record_search" model="ir.ui.view">
+            <field name="name">library.book.record.search</field>
+            <field name="model">library.book.record</field>
+            <field name="arch" type="xml">
+                <search string="Book Record Search">
+                    <field name="book_id"/>
+                    <field name="borrower"/>
+                    <field name="borrow_date"/>
+                    <field name="due_to_return_date"/>
+                    <field name="is_returned"/>
+                    <field name="return_date"/>
+                </search>
+            </field>
+        </record>
         <record id="view_up_library_book_record_tree" model="ir.ui.view">
             <field name="name">library.book.record.tree</field>
             <field name="model">library.book.record</field>
@@ -248,6 +286,22 @@
             </field>
         </record>
         <!--library.book.wish-->
+        <record id="view_up_library_wish_search" model="ir.ui.view">
+            <field name="name">library.book.wish.search</field>
+            <field name="model">library.book.wish</field>
+            <field name="arch" type="xml">
+                <search string="Book Wish Search">
+                    <field name="name"/>
+                    <field name="author"/>
+                    <field name="publisher"/>
+                    <field name="state"/>
+                    <group expand="0" string="Group by...">
+                        <filter name="by-state" string="By State" domain="[]"
+                                context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
         <record id="view_up_library_book_wish_tree" model="ir.ui.view">
             <field name="name">library.book.wish.tree</field>
             <field name="model">library.book.wish</field>
@@ -257,6 +311,7 @@
                     <field name="author"/>
                     <field name="publisher"/>
                     <field name="state"/>
+
                 </tree>
             </field>
         </record>
@@ -297,18 +352,6 @@
                         </group>
                     </sheet>
                 </form>
-            </field>
-        </record>
-        <!--library.book.log-->
-        <record id="view_up_library_book_log_tree" model="ir.ui.view">
-            <field name="name">library.book.log.tree</field>
-            <field name="model">library.book.log</field>
-            <field name="arch" type="xml">
-                <tree string="log" version="7.0">
-                    <field name="date"/>
-                    <field name="user_id"/>
-                    <field name="log_info"/>
-                </tree>
             </field>
         </record>
     </data>

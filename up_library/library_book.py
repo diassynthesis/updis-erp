@@ -217,16 +217,8 @@ class LibraryBookWish(osv.osv):
 
 class LibraryBook(osv.osv):
     _name = 'library.book.book'
-    _inherit = 'log.log'
     _description = 'Book Info'
     _log_access = True
-    _log_osv = 'library.book.log'
-    _log_fields = {
-        #TODO:Need Finish the auto log system
-        # 'name': None,
-        #            'author': [None, lambda o, n: u"作者变更:%s --> %s" % (o, n)],
-        #            'category': [lambda o, n: o.id if o else 0 != n, lambda o, n: "分项变成: %s --> %s" % (o.full_name if o else "", n)],
-    }
 
     def _image_resize_image_medium(self, cr, uid, ids, name, args, context=None):
         result = dict.fromkeys(ids, False)
@@ -294,7 +286,6 @@ class LibraryBook(osv.osv):
         'state': fields.selection(string='State',
                                   selection=[('in_store', 'In Store'), ('borrowed', 'Borrowed'), ('scrap', 'Scrap'),
                                              ('lost', 'Lost')]),
-        'log_ids': fields.one2many('library.book.log', 'log_id', string='Logs'),
         'record_ids': fields.one2many('library.book.record', 'book_id', string='Records'),
         'is_borrowable': fields.function(_is_borrowable, type='boolean', string='Is Borrowable'),
     }
@@ -461,13 +452,6 @@ class LibraryType(osv.osv):
     }
 
 
-class LibraryLog(osv.osv):
-    _name = 'library.book.log'
-    _inherit = 'log.record'
-
-    _columns = {
-        'log_id': fields.many2one('library.book.book', string='Related Book', ondelete="cascade"),
-    }
 
 
 class LibraryConfig(osv.osv):
