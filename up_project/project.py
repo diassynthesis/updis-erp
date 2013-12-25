@@ -186,7 +186,7 @@ class project_log(osv.osv):
     _order = "log_date desc"
     _columns = {
         'log_date': fields.datetime('Created on'),
-        'project_id': fields.many2one('project.project', "related Project"),
+        'project_id': fields.many2one('project.project', "related Project", ondelete="cascade"),
         'log_user': fields.many2one('res.users', 'Log User'),
         'log_info': fields.char(size=256, string="Log Info"),
     }
