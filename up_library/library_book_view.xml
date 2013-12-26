@@ -49,8 +49,13 @@
             <field name="arch" type="xml">
                 <form string="Books" version="7.0">
                     <sheet>
-                        <field name="image" widget='image' class="oe_left oe_avatar"
-                               options='{"preview_image": "image_medium", "size": [90,90]}'/>
+                        <div class="oe_left">
+                            <field name="image" widget='image' class="oe_avatar" placeholder="封面上传"
+                                   options='{"preview_image": "image_medium", "size": [90,90]}'/>
+                            <div style="color:grey;margin-left: 20px;">
+                                封面上传
+                            </div>
+                        </div>
                         <div class="oe_title">
                             <h1>
                                 <field name="name" placeholder="Book Name"/>
@@ -186,8 +191,13 @@
                         <field name="state" widget="statusbar" readonly="1"/>
                     </header>
                     <sheet>
-                        <field name="image" widget='image' class="oe_left oe_avatar"
-                               options='{"preview_image": "image_medium", "size": [90,90]}'/>
+                        <div class="oe_left">
+                            <field name="image" widget='image' class="oe_avatar" placeholder="封面上传"
+                                   options='{"preview_image": "image_medium", "size": [90,90]}'/>
+                            <div style="color:grey;margin-left: 20px;">
+                                封面上传
+                            </div>
+                        </div>
                         <div class="oe_title">
                             <h1>
                                 <field name="name" placeholder="Book Name"/>
@@ -334,8 +344,13 @@
                         <field name="state" widget="statusbar" readonly="1"/>
                     </header>
                     <sheet>
-                        <field name="image" widget='image' class="oe_left oe_avatar"
-                               options='{"preview_image": "image_medium", "size": [90,90]}'/>
+                        <div class="oe_left">
+                            <field name="image" widget='image' class="oe_avatar" placeholder="封面上传"
+                                   options='{"preview_image": "image_medium", "size": [90,90]}'/>
+                            <div style="color:grey;margin-left: 20px;">
+                                封面上传
+                            </div>
+                        </div>
                         <div class="oe_title">
                             <h1>
                                 <field name="name" placeholder="Book Name"/>
@@ -354,7 +369,8 @@
                                 <field name="comment" nolabel="1" placeholder="Comment" colspan="2"/>
                             </group>
                             <group>
-                                <field name="link_book_id" attrs="{'invisible':[('state','!=','bought')]}" readonly="1"/>
+                                <field name="link_book_id" attrs="{'invisible':[('state','!=','bought')]}"
+                                       readonly="1"/>
                             </group>
                         </group>
                     </sheet>
