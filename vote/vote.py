@@ -99,7 +99,7 @@ class VoteRecord(osv.osv):
 
     _columns = {
         'name': fields.char(size=100, required=True, string="Vote Record Name"),
-        'vote_category': fields.many2one('updis.vote', string='Vote Category', required=True),
+        'vote_category': fields.many2one('updis.vote', string='Vote Category', required=True, ondelete="cascade"),
         'author': fields.many2one('hr.employee', string='Author'),
         'have_image': fields.boolean("is vote record photo upload"),
         'image': fields.binary("Vote Record Photo Basic",
@@ -135,7 +135,7 @@ class VoteLog(osv.osv):
     _description = 'UPDIS Vote Log'
     _columns = {
         'voter': fields.many2one('res.users', string='Voter'),
-        'vote_category': fields.many2one('updis.vote', string='Vote Category'),
+        'vote_category': fields.many2one('updis.vote', string='Vote Category', ondelete="cascade"),
         'vote_time': fields.datetime('Vote Time'),
         'vote_for': fields.many2many("updis.vote.record", "vote_log_vote_record_rel",
                                      "vote_log_id", "vote_record_id",

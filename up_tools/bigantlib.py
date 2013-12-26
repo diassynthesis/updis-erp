@@ -15,7 +15,6 @@ try:
 except ImportError:
     from StringIO import StringIO
 
-
 _HTTP_GET = 0
 _HTTP_POST = 1
 _METHOD_MAP = {'GET': _HTTP_GET, 'POST': _HTTP_POST}
@@ -24,18 +23,16 @@ _BIG_ANT_PORT = 6664
 
 
 class APIError(StandardError):
-    '''
+    """
     raise APIError if receiving json message indicating failure.
-    '''
+    """
 
-    def __init__(self, error_code, error, request):
-        self.error_code = error_code
+    def __init__(self, error):
         self.error = error
-        self.request = request
         StandardError.__init__(self, error)
 
     def __str__(self):
-        return 'APIError: %s: %s, request: %s' % (self.error_code, self.error, self.request)
+        return 'APIError: %s' % (self.error)
 
 
 def _read_body(obj):
@@ -50,14 +47,14 @@ def _read_body(obj):
 
 
 def _encode_params(**kw):
-    '''
+    """
     do url-encode parameters
 
     >>> _encode_params(a=1, b='R&D')
     'a=1&b=R%26D'
     >>> _encode_params(a=u'\u4e2d\u6587', b=['A', 'B', 123])
     'a=%E4%B8%AD%E6%96%87&b=A&b=B&b=123'
-    '''
+    """
     args = []
     for k, v in kw.iteritems():
         if isinstance(v, basestring):
@@ -73,12 +70,10 @@ def _encode_params(**kw):
     return '&'.join(args)
 
 
-def _http_call(the_url, method, authorization, **kw):
-    '''
+def _http_call(the_url, method, **kw):
+    """
     send an http request and return a xml object if no error occurred.
-    '''
-    params = None
-    boundary = None
+    """
     params = _encode_params(**kw)
     http_url = '%s?%s' % (the_url, params) if method == _HTTP_GET else the_url
     http_body = None if method == _HTTP_GET else params
@@ -92,11 +87,12 @@ def _http_call(the_url, method, authorization, **kw):
     except urllib2.HTTPError, e:
         try:
             r = _read_body(e)
-        except:
+        except Exception:
             r = None
-        if hasattr(r, 'error_code'):
-            raise APIError(r.error_code, r.get('error', ''), r.get('request', ''))
-        raise e
+        if r:
+            raise APIError(r)
+        else:
+            raise e
 
 
 class HttpObject(object):
@@ -131,7 +127,7 @@ class _Executable(object):
 
     def __call__(self, **kw):
         method = _METHOD_MAP[self._method]
-        return _http_call('%s%s' % (self._client.api_url, self._path), method, self._client.access_token, **kw)
+        return _http_call('%s%s' % (self._client.api_url, self._path), method, **kw)
 
     def __str__(self):
         return '_Executable (%s %s)' % (self._method, self._path)
@@ -160,10 +156,33 @@ class _Callable(object):
 
 if __name__ == "__main__":
     client = BigAntClient()
-    result = client.Employee___asmx.SendMessenge.post(bigantServer="10.100.100.200", port=6660, sendLoginName="xinxi",
-                                                      passwordType=0,
-                                                      sendPassword="xinxi", contentType='Text/Html', sendUserName="",
-                                                      msgId="",
-                                                      recvLoginNames="caiyang", subject=u"测试",
-                                                      content=u"<a href='#'>asdfasdf</a>")
+    # result = client.Employee___asmx.SendMessenge.post(bigantServer="10.100.100.200", port=6660, sendLoginName="xinxi",
+    #                                                   passwordType=0,
+    #                                                   sendPassword="xinxi", contentType='Text/Html', sendUserName="",
+    #                                                   msgId="",
+    #                                                   recvLoginNames="caiyang", subject=u"测试",
+    #                                                   content=u"<a href='#'>asdfasdf</a>")
+
+
+    values = {
+        'userName': "蔡测试",
+        'loginName': 'testcaiyang1',
+        'password': 'test',
+        'entype': '0',
+        'Path': u"深圳规划院@@@其他",
+        'sex': '1',
+        'email': '',
+        'jobTitle':'',
+        'phone':'',
+        'mobile':'',
+        'note':'',
+        'disabled':'false',
+
+    }
+    result = client.Employee___asmx.UserAdd.post(**values)
+
+    # values = {
+    #     'loginName': 'testcaiyang1',
+    # }
+    # result = client.Employee___asmx.UserDelete.post(**values)
     print (result)

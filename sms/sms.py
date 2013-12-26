@@ -12,6 +12,7 @@ class sms(osv.Model):
     _sms_gateway = "http://web.mobset.com/SDK/Sms_Send.asp"
     _name = "sms.sms"
     _order = "id desc"
+    _bigAntClient = BigAntClient()
     _columns = {
         'subject': fields.char('Subject', size=256),
         'content': fields.text("Content", size=2000),
@@ -55,8 +56,7 @@ class sms(osv.Model):
                 params['recvLoginNames'] = sms.to
                 params['subject'] = sms.subject
                 params['content'] = sms.content
-                bigAntClient = BigAntClient()
-                resp = bigAntClient.Employee___asmx.SendMessenge.post(**params)
+                resp = self._bigAntClient.Employee___asmx.SendMessenge.post(**params)
 
                 if resp.text == "1":
                     sms_server_id = 'Success'
