@@ -446,7 +446,7 @@ class updis_project(osv.osv):
             'context': context,
         }
 
-    def project_need_process_action(self, cr, uid, context=None):
+    def get_need_process_action_domain(self, cr, uid, context=None):
         domain = ['&', ('create_uid', '=', uid), ('status_code', '=', 10101)]
         status_code = []
 
@@ -492,19 +492,16 @@ class updis_project(osv.osv):
             status_code += [30101]
 
         domain = ['|', ('status_code', 'in', status_code)] + domain
-        domain = manager_domain + domain
+        return manager_domain + domain
 
-        view_form = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
-                                                                  ('name', '=',
-                                                                   'edit_project_inherit')],
-                                                          context=context)
-        view_form_id = self.pool.get('ir.model.data').read(cr, 1, view_form[0], ['res_id'])
-
-        view_tree = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
-                                                                  ('name', '=',
-                                                                   'view_project_tree_need_process')],
-                                                          context=context)
-        view_tree_id = self.pool.get('ir.model.data').read(cr, 1, view_tree[0], ['res_id'])
+    def project_need_process_action(self, cr, uid, context=None):
+        domain = self.get_need_process_action_domain(cr, uid, context=context)
+        view_form_id = tools.get_id_by_external_id(cr, self.pool,
+                                                   extends_id="edit_project_inherit",
+                                                   model="ir.ui.view")
+        view_tree_id = tools.get_id_by_external_id(cr, self.pool,
+                                                   extends_id="view_project_tree_need_process",
+                                                   model="ir.ui.view")
 
         return {
             'name': u'待处理项目',
@@ -515,7 +512,7 @@ class updis_project(osv.osv):
             'target': 'current',
             'domain': domain,
             'context': context,
-            'views': [(view_tree_id['res_id'], 'tree'), (view_form_id['res_id'], 'form')],
+            'views': [(view_tree_id, 'tree'), (view_form_id, 'form')],
         }
 
     def all_projects_action(self, cr, uid, context=None):
