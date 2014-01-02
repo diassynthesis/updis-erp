@@ -117,6 +117,8 @@
                     <group expand="0" string="Group by...">
                         <filter name="by-category" string="By Category" domain="[]"
                                 context="{'group_by':'category_id'}"/>
+                        <filter name="by-usage" string="By Usage" domain="[]"
+                                context="{'group_by':'usage'}"/>
                     </group>
                 </search>
             </field>
