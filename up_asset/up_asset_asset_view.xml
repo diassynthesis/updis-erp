@@ -7,28 +7,20 @@
             <field name="arch" type="xml">
                 <form string="Asset" version="7.0">
                     <sheet>
-                        <div class="oe_title">
-                            <label for="name" class="oe_edit_only"/>
-                            <h1>
-                                <field name="name" placeholder="Name" class="oe_inline"/>
-                            </h1>
-
-                            <label for="model_and_type" class="oe_edit_only"/>
-                            <h2>
-                                <field name="model_and_type" class="oe_inline"/>
-                            </h2>
-                        </div>
-                        <group col="4">
-                            <group col="2" colspan="2">
-                                <field name="category_id" widget="selection"/>
+                        <group>
+                            <group>
+                                <field name="code" placeholder="Code"/>
+                                <field name="name" placeholder="Name"/>
                             </group>
-                            <group></group>
+                            <group>
+                                <field name="category_id" widget="selection"/>
+                                <field name="model_and_type"/>
+                            </group>
                         </group>
                         <notebook>
                             <page string="Info">
                                 <group>
                                     <group string="Code Info">
-                                        <field name="code"/>
                                         <field name="financial_code"/>
                                     </group>
                                     <group string="Location Info">
