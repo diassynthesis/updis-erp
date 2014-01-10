@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!--My Actions-->
+        <record id="action_sfile_config" model="ir.actions.act_window">
+            <field name="name">File Config</field>
+            <field name="res_model">sfile.file.config</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+
+        <!--MenuItems-->
+        <menuitem name="File Management" id="menu_sfile_root" sequence="115"/>
+        <!--public MenuItems-->
+        <menuitem name="Public Directory" id="menu_sfile_directory_public" sequence="10"
+                  parent="menu_sfile_root"/>
+        <!--Manage MenuItems-->
+        <!--Admin MenuItems-->
+        <menuitem name="File Config" id="menu_sfile_config" sequence="50"
+                  parent="menu_sfile_root"/>
+        <menuitem name="File Parameter Config" id="menu_sfile_parameter_config" sequence="10"
+                  parent="menu_sfile_config" action="action_sfile_config"/>
+    </data>
+</openerp>
