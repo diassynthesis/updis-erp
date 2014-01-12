@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
+        <!--Directroy Actions-->
+        <record id="action_sfile_directory_config" model="ir.actions.act_window">
+            <field name="name">Directory Config</field>
+            <field name="res_model">sfile.file.file</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_directory','=',True)]</field>
+            <field name="context">{'default_is_directory':True}</field>
+        </record>
+        <record id="act_wd_sfile_directory_config_tree" model="ir.actions.act_window.view">
+            <field name="view_id" ref="view_sfile_file_directory_config_tree"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_sfile_directory_config"/>
+            <field name="sequence">10</field>
+        </record>
+        <record id="act_wd_sfile_directory_config_form" model="ir.actions.act_window.view">
+            <field name="view_id" ref="view_sfile_file_directory_config_form"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_sfile_directory_config"/>
+            <field name="sequence">15</field>
+        </record>
         <!--My Actions-->
         <record id="action_sfile_config" model="ir.actions.act_window">
             <field name="name">File Config</field>
@@ -13,13 +34,13 @@
         <!--MenuItems-->
         <menuitem name="File Management" id="menu_sfile_root" sequence="115"/>
         <!--public MenuItems-->
-        <menuitem name="Public Directory" id="menu_sfile_directory_public" sequence="10"
-                  parent="menu_sfile_root"/>
         <!--Manage MenuItems-->
         <!--Admin MenuItems-->
         <menuitem name="File Config" id="menu_sfile_config" sequence="50"
                   parent="menu_sfile_root"/>
         <menuitem name="File Parameter Config" id="menu_sfile_parameter_config" sequence="10"
                   parent="menu_sfile_config" action="action_sfile_config"/>
+        <menuitem name="Directory Config" id="menu_sfile_directory_config" sequence="10"
+                  parent="menu_sfile_config" action="action_sfile_directory_config"/>
     </data>
 </openerp>

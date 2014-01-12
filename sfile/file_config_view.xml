@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
-        <!--library.book.config-->
+        <!--sfile.file.direcotry-->
         <record id="view_sfile_config_tree" model="ir.ui.view">
             <field name="name">sfile.file.config.tree</field>
             <field name="model">sfile.file.config</field>
@@ -10,6 +10,51 @@
                     <field name="name" readonly="1"/>
                     <field name="value"/>
                 </tree>
+            </field>
+        </record>
+        <!--sfile.file.direcotry-->
+        <record id="view_sfile_file_directory_config_tree" model="ir.ui.view">
+            <field name="name">sfile.file.file.directory.config.tree</field>
+            <field name="model">sfile.file.file</field>
+            <field name="arch" type="xml">
+                <tree string="Directory" version="7.0">
+                    <field name="priority"/>
+                    <field name="full_name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_sfile_file_directory_config_form" model="ir.ui.view">
+            <field name="name">sfile.file.directory.config.form</field>
+            <field name="model">sfile.file.file</field>
+            <field name="arch" type="xml">
+                <form string="All Directory" version="7.0">
+                    <sheet>
+                        <group invisible="1">
+                            <field name="is_directory"/>
+                            <field name="is_vc"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="parent_id"/>
+                                <field name="priority"/>
+                            </group>
+                            <group>
+                                <field name="full_name"/>
+                                <field name="is_directory"/>
+                                <field name="tag_ids" widget="many2many_tags"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Groups">
+                                <field name="group_ids"/>
+                            </page>
+                            <page string="Child Directories">
+                                <field name="child_ids"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
             </field>
         </record>
     </data>
