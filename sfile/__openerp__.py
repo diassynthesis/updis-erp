@@ -11,6 +11,7 @@ Independent Super File Version control System
 """,
     'depends': ['base', 'up_tools'],
     'data': [
+        'file_file_view.xml',
         'file_config_view.xml',
 
         'file_menu_view.xml',

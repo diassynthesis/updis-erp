@@ -1,7 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
-        <!--Directroy Actions-->
+        <!--File Actions-->
+        <record id="action_sfile_all_file" model="ir.actions.act_window">
+            <field name="name">All Files</field>
+            <field name="res_model">sfile.file.file</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_directory','=',False)]</field>
+        </record>
+        <record id="act_wd_sfile_all_file_tree" model="ir.actions.act_window.view">
+            <field name="view_id" ref="view_sfile_file_tree"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_sfile_all_file"/>
+            <field name="sequence">10</field>
+        </record>
+        <record id="act_wd_sfile_all_file_form" model="ir.actions.act_window.view">
+            <field name="view_id" ref="view_sfile_file_file_form"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_sfile_all_file"/>
+            <field name="sequence">15</field>
+        </record>
+        <record id="action_sfile_all_file_tree" model="ir.actions.act_window">
+            <field name="name">All Files Tree</field>
+            <field name="res_model">sfile.file.file</field>
+            <field name="view_type">tree</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('parent_id','=',False)]</field>
+            <field name="context">{'tree_view_ref':'sfile.view_sfile_file_tree_dir'}</field>
+        </record>
+        <!--Config Actions-->
         <record id="action_sfile_directory_config" model="ir.actions.act_window">
             <field name="name">Directory Config</field>
             <field name="res_model">sfile.file.file</field>
@@ -22,7 +50,6 @@
             <field name="act_window_id" ref="action_sfile_directory_config"/>
             <field name="sequence">15</field>
         </record>
-        <!--My Actions-->
         <record id="action_sfile_config" model="ir.actions.act_window">
             <field name="name">File Config</field>
             <field name="res_model">sfile.file.config</field>
@@ -34,13 +61,20 @@
         <!--MenuItems-->
         <menuitem name="File Management" id="menu_sfile_root" sequence="115"/>
         <!--public MenuItems-->
+        <menuitem name="Files" id="menu_sfile_files" sequence="10"
+                  parent="menu_sfile_root"/>
+        <menuitem name="All Files" id="menu_sfile_all_file" sequence="10"
+                  action="action_sfile_all_file" parent="menu_sfile_files"/>\
+        <menuitem name="All Files Tree" id="menu_sfile_all_file_tree" sequence="15"
+                  action="action_sfile_all_file_tree" parent="menu_sfile_files"/>\
+
         <!--Manage MenuItems-->
         <!--Admin MenuItems-->
         <menuitem name="File Config" id="menu_sfile_config" sequence="50"
                   parent="menu_sfile_root"/>
-        <menuitem name="File Parameter Config" id="menu_sfile_parameter_config" sequence="10"
-                  parent="menu_sfile_config" action="action_sfile_config"/>
         <menuitem name="Directory Config" id="menu_sfile_directory_config" sequence="10"
-                  parent="menu_sfile_config" action="action_sfile_directory_config"/>
+                  action="action_sfile_directory_config" parent="menu_sfile_config"/>
+        <menuitem name="File Parameter Config" id="menu_sfile_parameter_config" sequence="20"
+                  action="action_sfile_config" parent="menu_sfile_config"/>
     </data>
 </openerp>
