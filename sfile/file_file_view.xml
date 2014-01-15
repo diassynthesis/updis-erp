@@ -34,7 +34,7 @@
                             <group>
                                 <field name="name"/>
                                 <field name="parent_id" domain="[('is_directory','=',True)]"
-                                       context="{'tree_view_ref':'sfile.view_sfile_file_directory_config_tree','form_view_ref':'sfile.view_sfile_file_directory_config_form','default_is_directory':True}"/>
+                                       context="{'tree_view_ref':'sfile.view_sfile_file_directory_management_tree','form_view_ref':'sfile.view_sfile_file_directory_management_form','default_is_directory':True}"/>
                             </group>
                             <group>
                                 <field name="full_name"/>

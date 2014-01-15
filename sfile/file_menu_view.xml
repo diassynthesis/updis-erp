@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
-        <!--File Actions-->
+        <!--File Management Actions-->
         <record id="action_sfile_all_file" model="ir.actions.act_window">
             <field name="name">All Files</field>
             <field name="res_model">sfile.file.file</field>
@@ -21,27 +21,28 @@
             <field name="act_window_id" ref="action_sfile_all_file"/>
             <field name="sequence">15</field>
         </record>
-        <!--Config Actions-->
-        <record id="action_sfile_directory_config" model="ir.actions.act_window">
-            <field name="name">Directory Config</field>
+        <!--Directory Managerment Actions-->
+        <record id="action_sfile_directory_management" model="ir.actions.act_window">
+            <field name="name">All Directory</field>
             <field name="res_model">sfile.file.file</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('is_directory','=',True)]</field>
             <field name="context">{'default_is_directory':True}</field>
         </record>
-        <record id="act_wd_sfile_directory_config_tree" model="ir.actions.act_window.view">
-            <field name="view_id" ref="view_sfile_file_directory_config_tree"/>
+        <record id="act_wd_sfile_directory_management_tree" model="ir.actions.act_window.view">
+            <field name="view_id" ref="view_sfile_file_directory_management_tree"/>
             <field name="view_mode">tree</field>
-            <field name="act_window_id" ref="action_sfile_directory_config"/>
+            <field name="act_window_id" ref="action_sfile_directory_management"/>
             <field name="sequence">10</field>
         </record>
-        <record id="act_wd_sfile_directory_config_form" model="ir.actions.act_window.view">
-            <field name="view_id" ref="view_sfile_file_directory_config_form"/>
+        <record id="act_wd_sfile_directory_management_form" model="ir.actions.act_window.view">
+            <field name="view_id" ref="view_sfile_file_directory_management_form"/>
             <field name="view_mode">form</field>
-            <field name="act_window_id" ref="action_sfile_directory_config"/>
+            <field name="act_window_id" ref="action_sfile_directory_management"/>
             <field name="sequence">15</field>
         </record>
+        <!--Config Actions-->
         <record id="action_sfile_config" model="ir.actions.act_window">
             <field name="name">File Config</field>
             <field name="res_model">sfile.file.config</field>
@@ -57,11 +58,11 @@
                   parent="menu_sfile_root"/>
         <menuitem name="All Files" id="menu_sfile_all_file" sequence="10"
                   action="action_sfile_all_file" parent="menu_sfile_files"/>
-        <!--Files Management-->
+        <!--Directories Management-->
         <menuitem name="Directory Management" id="menu_sfile_directory_manage" sequence="30"
                   parent="menu_sfile_root"/>
         <menuitem name="All Directories" id="menu_sfile_directory_config" sequence="10"
-                  action="action_sfile_directory_config" parent="menu_sfile_directory_manage"/>
+                  action="action_sfile_directory_management" parent="menu_sfile_directory_manage"/>
         <!--Admin MenuItems-->
         <menuitem name="Config" id="menu_sfile_config" sequence="50"
                   parent="menu_sfile_root"/>
