@@ -44,8 +44,16 @@
                             </group>
                         </group>
                         <notebook>
-                            <page string="Groups">
-                                <field name="group_ids"/>
+                            <page string="Access">
+                                <field name="access_ids">
+                                    <tree editable="bottom">
+                                        <field name="group_id"/>
+                                        <field name="perm_read"/>
+                                        <field name="perm_write"/>
+                                        <field name="perm_create"/>
+                                        <field name="perm_unlink"/>
+                                    </tree>
+                                </field>
                             </page>
                             <page string="Child Directories">
                                 <field name="child_ids"/>

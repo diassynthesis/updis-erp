@@ -7,6 +7,18 @@ from openerp.osv import fields
 from up_tools import tools as ctools
 
 
+class FileAccess(osv.osv):
+    _name = 'sfile.file.access'
+    _columns = {
+        'group_id': fields.many2one('res.groups', 'Group', ondelete='cascade', select=True, required=True),
+        'perm_read': fields.boolean('Read Access'),
+        'perm_write': fields.boolean('Write Access'),
+        'perm_create': fields.boolean('Create Access'),
+        'perm_unlink': fields.boolean('Delete Access'),
+        'file_id': fields.many2one('sfile.file.file', string='Related File ID'),
+    }
+
+
 class FileFile(osv.osv):
     _inherit = 'log.log'
     _log_access = True
@@ -33,9 +45,8 @@ class FileFile(osv.osv):
         'name': fields.char(size=512, string='Name', required=True),
         'full_name': fields.function(_get_full_name, type='char', readonly=True, string="Full Name"),
         'child_ids': fields.one2many('sfile.file.file', 'parent_id', "Child Name"),
-        'parent_id': fields.many2one('sfile.file.file', 'Parent Name'),
-        'group_ids': fields.many2many('res.groups', 'sfile_file_res_group_rel', 'file_id', 'group_id',
-                                      string='Groups'),
+        'parent_id': fields.many2one('sfile.file.file', 'Parent Name', ondelete="cascade"),
+        'access_ids': fields.one2many('sfile.file.access', 'file_id', string='access'),
         'tag_ids': fields.many2many('sfile.file.tag', 'sfile_file_tag_rel', 'file_id', 'tag_id', string='Tags'),
         'priority': fields.integer('Sequence', required=True),
 

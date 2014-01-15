@@ -44,9 +44,6 @@
                             </group>
                         </group>
                         <notebook>
-                            <page string="Groups">
-                                <field name="group_ids"/>
-                            </page>
                             <page string="Logs">
                                 <field name="log_ids" readonly="1"/>
                             </page>
