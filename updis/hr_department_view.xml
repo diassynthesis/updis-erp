@@ -29,7 +29,8 @@
                     <newline/>
                     <field name="have_image"/>
                     <newline/>
-                    <field name="image_medium" widget='image' colspan="4"/>
+                    <field name="image" widget="image" class="oe_avatar" placeholder="封面上传"
+                           colspan="4" options='{"preview_image": "image_medium", "size": [275,145]}'/>
                 </xpath>
                 <xpath expr="//field[@name='manager_id']" position="replace"/>
             </field>
