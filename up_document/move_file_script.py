@@ -34,7 +34,7 @@ if __name__ == "__main__":
         att = sock.execute(dbname, uid, pwd, 'ir.attachment', 'read', att_id, ['datas', 'parent_id'])
 
         migrate_attachment(att_id)
-        print 'Migrated ID %d (attachment %d of %d)' % (att_id, i, cnt)
+        print 'Migrated ID %d (attachment %d of %d)' % (att_id + 1, i, cnt)
         i += 1
 
     print "done ..."
