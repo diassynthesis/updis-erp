@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
 	<data>
-		<menuitem name="Internal Home Configuration" id="internal_home_configuration" parent="knowledge.menu_document" sequence="50" />
+        <menuitem name="Internal Home Configuration" id="internal_home_root" sequence="100" />
+		<menuitem name="Internal Home Configuration" id="internal_home_configuration" parent="internal_home_root" sequence="50" />
 		<record id="view_tree_internal_home_menu" model="ir.ui.view">
 			<field name="name">internal.home.menu.list</field>
 			<field name="model">internal.home.menu</field>

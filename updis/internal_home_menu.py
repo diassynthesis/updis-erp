@@ -7,9 +7,9 @@ class internal_home_menu(osv.osv):
     _name = "internal.home.menu"
     _inherit = "ir.ui.menu"
     _columns = {
-    'child_id': fields.one2many('internal.home.menu', 'parent_id', 'Child IDs', ondelete="cascade"),
-    'parent_id': fields.many2one('internal.home.menu', 'Parent Menu', select=True),
-    'name': fields.char('Menu', size=64, required=True, translate=False),
+        'child_id': fields.one2many('internal.home.menu', 'parent_id', 'Child IDs', ondelete="cascade"),
+        'parent_id': fields.many2one('internal.home.menu', 'Parent Menu', select=True),
+        'name': fields.char('Menu', size=64, required=True, translate=False),
     }
 
     def _filter_visible_menus(self, cr, uid, ids, context=None):
@@ -27,7 +27,7 @@ class internal_home_menu(osv.osv):
                 if key in self._cache:
                     if self._cache[key]:
                         result.append(menu.id)
-                    #elif not menu.groups_id and not menu.action:
+                        #elif not menu.groups_id and not menu.action:
                     #    result.append(menu.id)
                     continue
 
@@ -36,9 +36,9 @@ class internal_home_menu(osv.osv):
                     restrict_to_groups = [g.id for g in menu.groups_id]
                     if not user_groups.intersection(restrict_to_groups):
                         continue
-                    #result.append(menu.id)
-                    #self._cache[key] = True
-                    #continue
+                        #result.append(menu.id)
+                        #self._cache[key] = True
+                        #continue
 
                 if menu.action:
                     # we check if the user has access to the action of the menu
@@ -54,7 +54,7 @@ class internal_home_menu(osv.osv):
                         if field and data[field]:
                             if not modelaccess.check(cr, uid, data[field], 'read', False):
                                 continue
-                # else:
+                    # else:
                 #     # if there is no action, it's a 'folder' menu
                 #     if not menu.child_id:
                 #         # not displayed if there is no children
