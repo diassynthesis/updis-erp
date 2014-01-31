@@ -1,52 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-	<data>
-        <menuitem name="Internal Home Configuration" id="internal_home_root" sequence="100" />
-		<menuitem name="Internal Home Configuration" id="internal_home_configuration" parent="internal_home_root" sequence="50" />
-		<record id="view_tree_internal_home_menu" model="ir.ui.view">
-			<field name="name">internal.home.menu.list</field>
-			<field name="model">internal.home.menu</field>
-			<field name="arch" type="xml">
-				<tree string="Menu">
-					<field name="sequence" />
-					<field icon="icon" name="complete_name" string="Menu" />
-				</tree>
-			</field>
-		</record>
-		<record id="edit_internal_home_menu_access" model="ir.ui.view">
+    <data>
+        <menuitem name="Internal Home Configuration" id="internal_home_root" sequence="100"/>
+        <menuitem name="Internal Home Configuration" id="internal_home_configuration" parent="internal_home_root"
+                  sequence="50"/>
+        <record id="view_tree_internal_home_menu" model="ir.ui.view">
+            <field name="name">internal.home.menu.list</field>
+            <field name="model">internal.home.menu</field>
+            <field name="field_parent">child_id</field>
+            <field name="arch" type="xml">
+                <tree string="Menu">
+                    <field name="sequence"/>
+                    <field icon="icon" name="complete_name" string="Menu"/>
+                </tree>
+            </field>
+        </record>
+        <record id="edit_internal_home_menu_access" model="ir.ui.view">
             <field name="model">internal.home.menu</field>
             <field name="arch" type="xml">
                 <form string="Menu" version="7.0">
-                  <sheet>
-                    <group>
+                    <sheet>
                         <group>
-                            <field name="name"/>
-                            <field name="parent_id"/>
-                            <field name="sequence" attrs="{'readonly':[['parent_id','=',False]]}"/>
+                            <group>
+                                <field name="name"/>
+                                <field name="parent_id"/>
+                                <field name="sequence" attrs="{'readonly':[['parent_id','=',False]]}"/>
+                            </group>
+                            <group>
+                                <field name="complete_name"/>
+                                <field name="action"/>
+                                <field name="icon"/>
+                            </group>
                         </group>
-                        <group>
-                            <field name="complete_name"/>
-                            <field name="action"/>
-                            <field name="icon"/>
-                        </group>
-                    </group>
-                    <notebook>
-                        <page string="Groups">
-                            <field name="groups_id"/>
-                        </page>
-                        <page string="Submenus">
-                            <!-- Note: make sure you have 'ir.ui.menu.full_list'
-                                 in the context to see all submenus! -->
-                            <field name="child_id"
-                                    context="{'default_parent_id': active_id}">
-                                <tree string="Menu">
-                                    <field name="sequence"/>
-                                    <field icon="icon" name="name" string="Menu"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
-                   </sheet> 
+                        <notebook>
+                            <page string="Sub Menus">
+                                <!-- Note: make sure you have 'ir.ui.menu.full_list'
+                                     in the context to see all submenus! -->
+                                <field name="child_id"
+                                       context="{'default_parent_id': active_id}">
+                                    <tree string="Menu">
+                                        <field name="sequence"/>
+                                        <field icon="icon" name="name" string="Menu"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
                 </form>
             </field>
         </record>
@@ -67,8 +66,38 @@
             <!-- <field name="view_id" ref="edit_internal_home_menu_access"/> -->
             <field name="context">{'internal.home.menu.full_list':True}</field>
             <field name="search_view_id" ref="edit_internal_home_menu_access_search"/>
-            <field name="help">Manage and customize the items available and displayed in Internal Home Page. You can delete an item by clicking on the box at the beginning of each line and then delete it through the button that appeared. Items can be assigned to specific groups in order to make them accessible to some users within the system.</field>
+            <field name="help">Manage and customize the items available and displayed in Internal Home Page. You can
+                delete an item by clicking on the box at the beginning of each line and then delete it through the
+                button that appeared. Items can be assigned to specific groups in order to make them accessible to some
+                users within the system.
+            </field>
         </record>
-        <menuitem action="grant_internal_home_menu_access" id="menu_grant_internal_home_menu_access" parent="internal_home_configuration" sequence="1"/>
-	</data>
+        <record id="internal_home_menu_tree" model="ir.actions.act_window">
+            <field name="name">Internal Home Menu Tree</field>
+            <field name="res_model">internal.home.menu</field>
+            <field name="view_type">tree</field>
+            <field name="context">{'internal.home.menu.full_list':True}</field>
+            <field name="search_view_id" ref="edit_internal_home_menu_access_search"/>
+            <field name="domain">[('parent_id','=',None)]</field>
+        </record>
+        <menuitem action="grant_internal_home_menu_access" id="menu_grant_internal_home_menu_access"
+                  parent="internal_home_configuration" sequence="1"/>
+        <menuitem name="Home Menu Tree" action="internal_home_menu_tree" id="menu__internal_home_menu_tree"
+                  parent="internal_home_configuration" sequence="2"/>
+
+        <record model="ir.actions.act_window" id="action_internal_home_menu_form">
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">internal.home.menu</field>
+            <field name="name">Menu</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('id','=',active_id)]</field>
+            <field name="context">{'parent_id':active_id}</field>
+        </record>
+        <record model="ir.values" id="ir_action_internal_home_menu_form">
+            <field name="key2" eval="'client_action_multi'"/>
+            <field name="model" eval="'internal.home.menu'"/>
+            <field name="name">Browse Files</field>
+            <field name="value" eval="'ir.actions.act_window,%d'%action_internal_home_menu_form"/>
+        </record>
+    </data>
 </openerp>
