@@ -10,6 +10,7 @@ class internal_home_menu(osv.osv):
         'child_id': fields.one2many('internal.home.menu', 'parent_id', 'Child IDs', ondelete="cascade"),
         'parent_id': fields.many2one('internal.home.menu', 'Parent Menu', select=True),
         'name': fields.char('Menu', size=64, required=True, translate=False),
+        'groups_id': fields.char(size=64, string='Menu'),
     }
 
     def _filter_visible_menus(self, cr, uid, ids, context=None):
@@ -54,8 +55,8 @@ class internal_home_menu(osv.osv):
                         if field and data[field]:
                             if not modelaccess.check(cr, uid, data[field], 'read', False):
                                 continue
-                    # else:
-                #     # if there is no action, it's a 'folder' menu
+                                # else:
+                    #     # if there is no action, it's a 'folder' menu
                 #     if not menu.child_id:
                 #         # not displayed if there is no children
                 #         continue
