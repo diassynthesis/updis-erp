@@ -12,6 +12,9 @@ Independent Super File Version control System
     'depends': ['base', 'attachment_size_limit'],
     'data': [
     ],
+    'js': [
+        'static/src/js/document.js',
+    ],
     'auto_install': False,
     'installable': True,
 }
