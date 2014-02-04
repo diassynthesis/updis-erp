@@ -3,8 +3,8 @@ import datetime
 from openerp.osv import osv
 from openerp.osv import fields
 from up_tools import tools as ctools
-from tools import DEFAULT_SERVER_DATE_FORMAT
-import tools
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
+import openerp.tools as tools
 
 __author__ = 'cysnake4713'
 
