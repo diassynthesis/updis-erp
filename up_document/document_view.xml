@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!--document.directory.access-->
+        <record id="view_document_directory_access_tree" model="ir.ui.view">
+            <field name="name">document.directory.access.tree</field>
+            <field name="model">document.directory.access</field>
+            <field name="arch" type="xml">
+                <tree string="Access" version="7.0" editable="bottom">
+                    <field name="group_id"/>
+                    <field name="perm_read"/>
+                    <field name="perm_write"/>
+                    <field name="perm_create"/>
+                    <field name="perm_unlink"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</openerp>
