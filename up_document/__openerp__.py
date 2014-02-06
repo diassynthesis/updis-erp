@@ -12,7 +12,7 @@ Independent Super File Version control System
     'depends': ['base', 'attachment_size_limit'],
     'data': [
         'security/document_security.xml',
-
+        'data/document.directory.csv',
         'document_view.xml',
         'document_menu_view.xml',
     ],
