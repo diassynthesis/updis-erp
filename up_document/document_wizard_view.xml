@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!--document.directory.action.wizard form-->
+        <record id="view_doc_dir_action_form" model="ir.ui.view">
+            <field name="name">document.directory.action.wizard.form</field>
+            <field name="model">document.directory.action.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Document Directory Action" version="7.0">
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <footer>
+                        <button string="Create" name="create_related_action" class="oe_highlight"
+                                type="object"/>or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="action_document_direct_action_wiz" model="ir.actions.act_window">
+            <field name="name">Document Directory Related Action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">document.directory.action.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_doc_dir_action_form"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</openerp>

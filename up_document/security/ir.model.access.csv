@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_document_directory_access_all,document.directory.access all,model_document_directory_access,,1,1,1,1
+access_document_storage,access_document_storage,document.model_document_storage,,1,1,1,1

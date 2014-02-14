@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data noupdate="0">
-        <record id="base.group_document_manager" model="res.groups">
-            <field name="name">Manager</field>
+        <record id="base.group_public_document_manager" model="res.groups">
+            <field name="name">Public Document Manager</field>
             <field name="category_id" ref="base.module_category_knowledge_management"/>
-        </record>
-        <record id="base.group_document_user" model="res.groups">
-            <field name="name">Admin</field>
-            <field name="implied_ids" eval="[(4, ref('base.group_document_manager'))]"/>
         </record>
 
         <record model="ir.ui.menu" id="knowledge.menu_document">
@@ -15,31 +11,30 @@
         </record>
         <record model="ir.ui.menu" id="document.menu_document_doc">
             <field name="sequence" eval="20"/>
-            <field name="groups_id" eval="[(4, ref('base.group_document_manager'))]"/>
+            <field name="groups_id" eval="[(4, ref('base.group_document_user'))]"/>
         </record>
         <record model="ir.ui.menu" id="document.menu_document_management_configuration">
             <field name="groups_id" eval="[(4, ref('base.group_document_user'))]"/>
         </record>
+    </data>
 
-
+    <data noupdate="0">
         <record id="document.ir_rule_readpublicdirectories0" model="ir.rule">
             <field name="model_id" ref="document.model_document_directory"/>
-            <field name="domain_force">['|','|',('group_ids.group_id','in',[g.id for g in user.groups_id]), ('user_id', '=',
+            <field name="domain_force">['|','|','&amp;',('group_ids.perm_read','=','True'),('group_ids.group_id','in',[g.id for g in user.groups_id]), ('user_id', '=',
                 user.id), '&amp;', ('user_id', '=', False), ('group_ids','=',False), '|','|', ('company_id','=',False),
                 ('company_id','child_of',[user.company_id.id]),('company_id.child_ids','child_of',[user.company_id.id])]
             </field>
             <field name="name">Read public directories</field>
-            <field eval="0" name="global"/>
-            <field eval="[(6,0,[ref('base.group_user')])]" name="groups"/>
+            <field eval="1" name="global"/>
             <field eval="0" name="perm_unlink"/>
             <field eval="0" name="perm_write"/>
             <field eval="1" name="perm_read"/>
             <field eval="0" name="perm_create"/>
         </record>
-
         <record id="document.ir_rule_documentmodifyowndirectories0" model="ir.rule">
             <field name="model_id" ref="document.model_document_directory"/>
-            <field name="domain_force">[ '|', ('user_id', '=', user.id), '&amp;', ('group_ids.group_id','in',[g.id for g in
+            <field name="domain_force">[ '|', ('user_id', '=', user.id), '&amp;', ('group_ids','in',[g.id for g in
                 user.groups_id]), ('user_id','=',False), '|','|', ('company_id','=',False),
                 ('company_id','child_of',[user.company_id.id]),('company_id.child_ids','child_of',[user.company_id.id])]
             </field>

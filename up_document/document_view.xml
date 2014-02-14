@@ -16,7 +16,7 @@
             </field>
         </record>
         <!--ir.attachment public tree-->
-        <record model="ir.ui.view" id="view_document_file_public_tree">
+        <record id="view_document_file_public_tree" model="ir.ui.view">
             <field name="name">ir.attachment.public.tree</field>
             <field name="model">ir.attachment</field>
             <field name="priority" eval="10"/>
@@ -28,8 +28,35 @@
                     <field name="user_id" invisible="1"/>
                     <field name="write_date"/>
                     <field name="type" invisible="1"/>
+
                 </tree>
             </field>
         </record>
+        <record id="view_document_directory_config_inherit" model="ir.ui.view">
+            <field name="name">document.directory.form.inherit</field>
+            <field name="model">document.directory</field>
+            <field name="inherit_id" ref="document.view_document_directory_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="related_action_id" readonly="1"/>
+                    <button string="Create Action" type="action" name="%(action_document_direct_action_wiz)d"
+                            attrs="{'invisible':[('related_action_id','!=',False)]}"
+                            groups="base.group_document_user"/>
+                    <button string="Delete Action" type="object" name="delete_related_action"
+                            attrs="{'invisible':[('related_action_id','=',False)]}"
+                            groups="base.group_document_user"/>
+                </xpath>
+            </field>
+        </record>
+        <!--record id="view_attach_filter_inherit3" model="ir.ui.view">
+            <field name="name">IR Attachment2 inherit</field>
+            <field name="model">ir.attachment</field>
+            <field name="inherit_id" ref="document.view_attach_filter_inherit2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@string='Directory']" position="attributes">
+                    <attribute name="name">by-directory</attribute>
+                </xpath>
+            </field>
+        </record-->
     </data>
 </openerp>
