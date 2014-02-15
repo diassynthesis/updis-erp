@@ -17,6 +17,10 @@ class DocumentDirectoryAccess(osv.osv):
         'directory_id': fields.many2one('document.directory', string='Related Directory ID', ondelete='cascade'),
     }
 
+    _defaults = {
+        'perm_read': True,
+    }
+
 
 class DocumentDirectoryAction(osv.osv_memory):
     _name = 'document.directory.action.wizard'
@@ -54,19 +58,15 @@ class DocumentDirectoryInherit(osv.osv):
     def get_public_directory(self, cr, uid, context=None):
         directory_id = self.pool.get('ir.model.data').get_object_reference(cr, SUPERUSER_ID, 'up_document',
                                                                            'doc_direct_000001')
-        domain = [('id', 'child_of', directory_id[1]), ('id', '!=', directory_id[1])]
-        # view_form = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
-        #                                                           ('name', '=',
-        #                                                            'project_contract_invoice_form_menu')],
-        #                                                   context=context)
-        # view_form_id = self.pool.get('ir.model.data').read(cr, 1, view_form[0], ['res_id'])
-        #
-        # view_tree = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
-        #                                                           ('name', '=',
-        #                                                            'project_contract_invoice_tree_menu')],
-        #                                                   context=context)
-        # view_tree_id = self.pool.get('ir.model.data').read(cr, 1, view_tree[0], ['res_id'])
-
+        user = self.pool.get('res.users').browse(cr, 1, uid, context=context)
+        group_ids = [g.id for g in user.groups_id]
+        domain = [('id', 'child_of', directory_id[1]), '|',
+                  '&', ('parent_id.group_ids.perm_read', '=', 'True'), ('parent_id.group_ids.group_id', 'in', group_ids),
+                  '&', ('group_ids.perm_read', '=', 'True'), ('group_ids.group_id', 'in', group_ids)]
+        context = {'tree_view_ref': 'up_document.view_document_directory_public_config_tree',
+                   'form_view_ref': 'up_document.view_document_directory_public_config_form',
+                   'default_user_id': '',
+        }
         return {
             'name': u'公共目录管理',
             'type': 'ir.actions.act_window',
@@ -76,7 +76,6 @@ class DocumentDirectoryInherit(osv.osv):
             'target': 'current',
             'domain': domain,
             'context': context,
-            # 'views': [(view_tree_id['res_id'], 'tree'), (view_form_id['res_id'], 'form')],
         }
 
     def delete_related_action(self, cr, uid, ids, context):

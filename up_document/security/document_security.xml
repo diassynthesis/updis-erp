@@ -21,17 +21,52 @@
     <data noupdate="0">
         <record id="document.ir_rule_readpublicdirectories0" model="ir.rule">
             <field name="model_id" ref="document.model_document_directory"/>
-            <field name="domain_force">['|','|','&amp;',('group_ids.perm_read','=','True'),('group_ids.group_id','in',[g.id for g in user.groups_id]), ('user_id', '=',
-                user.id), '&amp;', ('user_id', '=', False), ('group_ids','=',False), '|','|', ('company_id','=',False),
-                ('company_id','child_of',[user.company_id.id]),('company_id.child_ids','child_of',[user.company_id.id])]
-            </field>
+            <field name="domain_force">[(1,'=',1)]</field>
             <field name="name">Read public directories</field>
             <field eval="1" name="global"/>
             <field eval="0" name="perm_unlink"/>
             <field eval="0" name="perm_write"/>
             <field eval="1" name="perm_read"/>
             <field eval="0" name="perm_create"/>
+            <field eval="[(5)]" name="groups"/>
         </record>
+        <!--record id="document.ir_rule_readpublicdirectories1" model="ir.rule">
+            <field name="model_id" ref="document.model_document_directory"/>
+            <field name="domain_force">['&amp;',('parent_id.group_ids.perm_write','=','True'),('parent_id.group_ids.group_id','in',[g.id
+                for g in user.groups_id])]
+            </field>
+            <field name="name">Write public directories</field>
+            <field eval="1" name="global"/>
+            <field eval="0" name="perm_unlink"/>
+            <field eval="1" name="perm_write"/>
+            <field eval="0" name="perm_read"/>
+            <field eval="0" name="perm_create"/>
+        </record>
+        <record id="document.ir_rule_readpublicdirectories2" model="ir.rule">
+            <field name="model_id" ref="document.model_document_directory"/>
+            <field name="domain_force">['&amp;',('parent_id.group_ids.perm_create','=','True'),('parent_id.group_ids.group_id','in',[g.id
+                for g in user.groups_id])]
+            </field>
+            <field name="name">Create public directories</field>
+            <field eval="1" name="global"/>
+            <field eval="0" name="perm_unlink"/>
+            <field eval="0" name="perm_write"/>
+            <field eval="0" name="perm_read"/>
+            <field eval="1" name="perm_create"/>
+        </record>
+        <record id="document.ir_rule_readpublicdirectories3" model="ir.rule">
+            <field name="model_id" ref="document.model_document_directory"/>
+            <field name="domain_force">['&amp;',('parent_id.group_ids.perm_unlink','=','True'),('parent_id.group_ids.group_id','in',[g.id
+                for g in user.groups_id])]
+            </field>
+            <field name="name">Unlink public directories</field>
+            <field eval="1" name="global"/>
+            <field eval="1" name="perm_unlink"/>
+            <field eval="0" name="perm_write"/>
+            <field eval="0" name="perm_read"/>
+            <field eval="0" name="perm_create"/>
+        </record-->
+
         <record id="document.ir_rule_documentmodifyowndirectories0" model="ir.rule">
             <field name="model_id" ref="document.model_document_directory"/>
             <field name="domain_force">[ '|', ('user_id', '=', user.id), '&amp;', ('group_ids','in',[g.id for g in

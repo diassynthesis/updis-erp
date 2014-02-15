@@ -21,14 +21,13 @@
             <field name="model">ir.attachment</field>
             <field name="priority" eval="10"/>
             <field name="arch" type="xml">
-                <tree colors="blue:type in ('url',)" string="Attachments" create="false" delete="false" edit="false">
-                    <field name="datas" filename="datas_fname"/>
-                    <field name="datas_fname" invisible="1"/>
+                <tree colors="blue:type in ('url',)" string="Attachments">
+                    <field name="datas" filename="name"/>
+                    <field name="name" invisible="1"/>
                     <field name="parent_id" invisible="1"/>
                     <field name="user_id" invisible="1"/>
                     <field name="write_date"/>
                     <field name="type" invisible="1"/>
-
                 </tree>
             </field>
         </record>
@@ -38,7 +37,8 @@
             <field name="inherit_id" ref="document.view_document_directory_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='company_id']" position="after">
-                    <field name="related_action_id" readonly="1"/>
+                    <field name="related_action_id" readonly="1"
+                           groups="base.group_document_user"/>
                     <button string="Create Action" type="action" name="%(action_document_direct_action_wiz)d"
                             attrs="{'invisible':[('related_action_id','!=',False)]}"
                             groups="base.group_document_user"/>
@@ -46,6 +46,46 @@
                             attrs="{'invisible':[('related_action_id','=',False)]}"
                             groups="base.group_document_user"/>
                 </xpath>
+            </field>
+        </record>
+        <record id="view_document_directory_public_config_tree" model="ir.ui.view">
+            <field name="name">document.directory.public.tree</field>
+            <field name="model">document.directory</field>
+            <field name="field_parent">child_ids</field>
+            <field name="arch" type="xml">
+                <tree string="Public Directories">
+                    <field name="name"/>
+                    <field name="parent_id"/>
+                    <field name="type"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="write_date"/>
+                </tree>
+            </field>
+        </record>
+        <record  id="view_document_directory_public_config_form" model="ir.ui.view">
+            <field name="name">document.directory</field>
+            <field name="model">document.directory</field>
+            <field name="arch" type="xml">
+                <form string="Public Directories" col="4" version="7.0">
+                    <group col="4">
+                        <field name="name"/>
+                        <field name="parent_id" required="1" domain="[('id','child_of',%(up_document.doc_direct_000001)d),('id','!=',%(up_document.doc_direct_000001)d)]"/>
+                        <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                        <field name="user_id" invisible="1"/>
+                    </group>
+                    <notebook colspan="4">
+                        <page string="Documents">
+                            <field name="file_ids" context="{'tree_view_ref':'up_document.view_document_file_public_tree'}"/>
+                        </page>
+                        <page string="Security">
+                            <label colspan="4"
+                                   string="Only members of these groups will have access to this directory and its files."/>
+                            <label colspan="4"
+                                   string="These groups, however, do NOT apply to children directories, which must define their own groups."/>
+                            <field name="group_ids" colspan="4" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </form>
             </field>
         </record>
         <!--record id="view_attach_filter_inherit3" model="ir.ui.view">
