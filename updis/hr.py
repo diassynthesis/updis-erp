@@ -85,6 +85,8 @@ class hr_employee_updis(osv.osv):
         'trains': fields.one2many('updis.hr.training.record', 'employee',
                                   # 'employee_training_rel', 'employee_id', 'training_id',
                                   'Trains'),
+        'speciality_id': fields.many2many('hr.employee.speciality', 'hr_employee_with_special_rel', 'employee_id', 'speciality_id',
+                                          string='Specialities'),
     }
 
     def clear_have_vac_days(self, cr, uid, ids, context=None):
@@ -93,3 +95,12 @@ class hr_employee_updis(osv.osv):
 
     def onchange_address_id(self, cr, uid, ids, address, context=None):
         return {'value': {}}
+
+
+class EmployeeSpeciality(osv.osv):
+    _description = "Employee Speciality"
+    _name = 'hr.employee.speciality'
+
+    _columns = {
+        'name': fields.char(size=128, string='Name'),
+    }
