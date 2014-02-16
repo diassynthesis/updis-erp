@@ -65,8 +65,7 @@ class DocumentDirectoryInherit(osv.osv):
                   '&', ('group_ids.perm_read', '=', 'True'), ('group_ids.group_id', 'in', group_ids)]
         context = {'tree_view_ref': 'up_document.view_document_directory_public_config_tree',
                    'form_view_ref': 'up_document.view_document_directory_public_config_form',
-                   'default_user_id': '',
-        }
+                   'default_user_id': '', }
         return {
             'name': u'公共目录管理',
             'type': 'ir.actions.act_window',
@@ -86,6 +85,24 @@ class DocumentDirectoryInherit(osv.osv):
             self.pool.get("ir.actions.act_window").unlink(cr, 1, action_id, context)
         return True
 
+    def onchange_parent_id(self, cr, uid, ids, parent_id, context=None):
+        ret = {'value': {}}
+        if parent_id:
+            parent_directory = self.browse(cr, uid, parent_id, context)
+            new_group_ids = [(5,)]
+            new_group_ids += [(0, 0, {'group_id': g.group_id.id,
+                                      'perm_read': g.perm_read,
+                                      'perm_write': g.perm_write,
+                                      'perm_create': g.perm_create,
+                                      'perm_unlink': g.perm_unlink, }) for g in parent_directory.group_ids]
+            # directory = self.browse(cr, uid, ids[0], context=context)
+            # directory.write({'group_ids': (5), }, context=context)
+            # self.write(cr, uid, ids[0], {'group_ids': (2, [g.id for g in directory.group_ids])}, context=context)
+            sms_vals = {
+                'group_ids': new_group_ids,
+            }
+            ret['value'].update(sms_vals)
+        return ret
 
 # class FileConfig(osv.osv):
 #     _name = 'sfile.file.config'

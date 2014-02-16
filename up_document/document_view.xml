@@ -63,13 +63,14 @@
             </field>
         </record>
         <record  id="view_document_directory_public_config_form" model="ir.ui.view">
-            <field name="name">document.directory</field>
+            <field name="name">document.directory.public.config.form</field>
             <field name="model">document.directory</field>
             <field name="arch" type="xml">
                 <form string="Public Directories" col="4" version="7.0">
                     <group col="4">
                         <field name="name"/>
-                        <field name="parent_id" required="1" domain="[('id','child_of',%(up_document.doc_direct_000001)d),('id','!=',%(up_document.doc_direct_000001)d)]"/>
+                        <field name="parent_id" required="1" on_change="onchange_parent_id(parent_id)"
+                               domain="[('id','child_of',%(up_document.doc_direct_000001)d),('id','!=',%(up_document.doc_direct_000001)d)]"/>
                         <field name="company_id" groups="base.group_multi_company" widget="selection"/>
                         <field name="user_id" invisible="1"/>
                     </group>
