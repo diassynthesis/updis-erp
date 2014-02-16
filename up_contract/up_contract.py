@@ -50,7 +50,7 @@ class updis_contract_invoice(osv.osv):
                                                 selection=[('WT200508180001', u'深圳规划局'), ('WT200508180002', u"深圳市其他"),
                                                            ('WT200508180003', u"市外"),
                                                            ('WT200509020001', u"其他")]
-            , readonly=1, string="Entrust Type"),
+                                                , readonly=1, string="Entrust Type"),
         'contract_sign_date': fields.date(string="Sign Date"),
 
         'project_id': fields.related('contract_id', 'project_id', type="many2one", relation='project.project',
@@ -147,7 +147,7 @@ class updis_contract_income(osv.osv):
                                                 selection=[('WT200508180001', u'深圳规划局'), ('WT200508180002', u"深圳市其他"),
                                                            ('WT200508180003', u"市外"),
                                                            ('WT200509020001', u"其他")]
-            , readonly=1, string="Entrust Type"),
+                                                , readonly=1, string="Entrust Type"),
         'contract_sign_date': fields.date(string="Sign Date"),
 
         'project_id': fields.related('contract_id', 'project_id', type="many2one", relation='project.project',
@@ -485,8 +485,9 @@ class updis_contract_contract(osv.osv):
             'show_project_id': 0,
             'show_third_party_company': 0,
             'show_sign_date': 0,
-
+            'show_name': 0,
         })
+        context.update({'tree_view_ref': 'up_contract.project_contract_third_party_tree'})
         return {
             'name': u'所有合同',
             'type': 'ir.actions.act_window',

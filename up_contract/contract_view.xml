@@ -283,6 +283,30 @@
                 </tree>
             </field>
         </record>
+        <record id="project_contract_third_party_tree" model="ir.ui.view">
+            <field name="name">project.contract.third.tree</field>
+            <field name="model">project.contract.contract</field>
+            <field name="priority" eval="30"/>
+            <field name="arch" type="xml">
+                <tree string="Project Contract" version="7.0">
+                    <field name="type" invisible="context.get('show_type',1)"/>
+                    <field name="number"/>
+                    <field name="design_department"/>
+                    <field name="project_id" string="相关项目名称" invisible="context.get('show_project_id',1)"/>
+                    <field name="third_party_company" invisible="context.get('show_third_party_company',1)"/>
+                    <field name="sign_date" invisible="context.get('show_sign_date',1)"/>
+                    <field name="name" string="外协合同名称" invisible="context.get('show_name',1)"/>
+                    <field name="project_category" invisible="context.get('show_project_category',1)"/>
+                    <field name="project_level" invisible="context.get('show_project_level',1)"/>
+                    <field name="project_manager" invisible="context.get('show_project_manager',1)"/>
+                    <field name="price"/>
+                    <field name="project_begin_date"/>
+                    <field name="customer" invisible="context.get('show_customer',1)"/>
+                    <field name="entrust_type" invisible="1"/>
+                    <field name="project_state" invisible="1"/>
+                </tree>
+            </field>
+        </record>
 
         <record id="project_contract_income_menu_search" model="ir.ui.view">
             <field name="name">project.contract.income.search</field>
