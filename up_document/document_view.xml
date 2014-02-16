@@ -62,7 +62,7 @@
                 </tree>
             </field>
         </record>
-        <record  id="view_document_directory_public_config_form" model="ir.ui.view">
+        <record id="view_document_directory_public_config_form" model="ir.ui.view">
             <field name="name">document.directory.public.config.form</field>
             <field name="model">document.directory</field>
             <field name="arch" type="xml">
@@ -79,10 +79,14 @@
                             <field name="file_ids" context="{'tree_view_ref':'up_document.view_document_file_public_tree'}"/>
                         </page>
                         <page string="Security">
-                            <label colspan="4"
-                                   string="Only members of these groups will have access to this directory and its files."/>
-                            <label colspan="4"
-                                   string="These groups, however, do NOT apply to children directories, which must define their own groups."/>
+                            <div>
+                                <label colspan="4"
+                                       string="Only members of these groups will have access to this directory and its files."/>
+                            </div>
+                            <div>
+                                <label colspan="4" style="color:red;"
+                                       string="These groups, however, will automatic add to children directories everytime,Please check the groups status everytime you change the parent directories!"/>
+                            </div>
                             <field name="group_ids" colspan="4" nolabel="1"/>
                         </page>
                     </notebook>
