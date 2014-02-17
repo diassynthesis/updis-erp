@@ -85,7 +85,8 @@ class hr_employee_updis(osv.osv):
         'trains': fields.one2many('updis.hr.training.record', 'employee',
                                   # 'employee_training_rel', 'employee_id', 'training_id',
                                   'Trains'),
-        'speciality_id': fields.many2many('hr.employee.speciality', 'hr_employee_with_special_rel', 'employee_id', 'speciality_id',
+        'speciality_id': fields.many2many('hr.employee.speciality', 'hr_employee_with_special_rel', 'employee_id',
+                                          'speciality_id',
                                           string='Specialities'),
     }
 
@@ -102,5 +103,25 @@ class EmployeeSpeciality(osv.osv):
     _name = 'hr.employee.speciality'
 
     _columns = {
-        'name': fields.char(size=128, string='Name'),
+        'name': fields.char(size=128, string='Name', required=1),
+        'parent_id': fields.many2one('hr.employee.speciality', string='Parent Name'),
+        'child_ids': fields.one2many('hr.employee.speciality', 'parent_id', string='Children Name'),
+
     }
+
+    def _check_recursion(self, cr, uid, ids, context=None):
+        level = 100
+        ids = [ids] if isinstance(ids, int) else ids
+        while len(ids):
+            cr.execute('select distinct parent_id from hr_employee_speciality where id IN %s', (tuple(ids), ))
+            ids = filter(None, map(lambda x: x[0], cr.fetchall()))
+            if not level:
+                return False
+            level -= 1
+        return True
+
+    _constraints = [
+        (_check_recursion, 'Error! You cannot create recursive Speciality.', ['parent_id'])
+    ]
+
+    _sql_constraints = [('speciality_name_unique', 'unique(name)', 'name must be unique !')]

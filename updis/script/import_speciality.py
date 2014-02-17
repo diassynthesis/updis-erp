@@ -13,7 +13,6 @@ sock_common = xmlrpclib.ServerProxy('http://' + OPENERP_URL + '/xmlrpc/common')
 uid = sock_common.login(dbname, username, pwd)
 sock = xmlrpclib.ServerProxy('http://' + OPENERP_URL + '/xmlrpc/object')
 
-
 if __name__ == "__main__":
     # SELECT attachments:
     employee_ids = sock.execute(dbname, uid, pwd, 'hr.employee', 'search', [])
@@ -21,17 +20,13 @@ if __name__ == "__main__":
 
     for employee_data in employee_datas:
         if employee_data['strong_point']:
+            print('process employee ... %s' % employee_data['id'])
             strong_points = employee_data['strong_point'].split(',')
             for strong_point in strong_points:
                 try:
-                    speciality_id = sock.execute(dbname, uid, pwd, 'ir.model.data', 'get_object_reference', 'updis', strong_point)
-                    sock.execute(dbname, uid, pwd, 'hr.employee', 'write', employee_data['id'], {'speciality_id': [(4, speciality_id[0])]})
-                except Exception:
+                    speciality_id = sock.execute(dbname, uid, pwd, 'ir.model.data', 'get_object_reference', '', strong_point)
+                    sock.execute(dbname, uid, pwd, 'hr.employee', 'write', employee_data['id'], {'speciality_id': [(4, speciality_id[1])]})
+                    print('           ... %s' % speciality_id[1])
+                except Exception as e:
                     print("didn't find %s" % strong_point)
-
-
-                    # att = sock.execute(dbname, uid, pwd, 'ir.attachment', 'read', att_id, ['datas', 'parent_id'])
-
-                    # migrate_attachment(att_id)
-                    # print 'Migrated ID %d (attachment %d of %d)' % (att_id, i, cnt)
     print "done ..."

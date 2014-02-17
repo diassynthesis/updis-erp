@@ -475,7 +475,7 @@ class LibraryType(osv.osv):
     _description = 'Book Type'
 
     _columns = {
-        'name': fields.char(size=50, string='Book Type Name'),
+        'name': fields.char(size=50, string='Book Type Name',),
     }
 
 
