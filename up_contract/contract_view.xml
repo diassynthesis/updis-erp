@@ -247,13 +247,6 @@
                     <field name="project_state"/>
                     <field name="project_level"/>
                     <field name="third_party_company"/>
-                    <filter name="is-common-contract" string="Common Contract(s)" domain="[('type','=','common')]"
-                            help="Show All Common Contract(s)"/>
-                    <filter name="is-third-party-contract" string="Thrid Party Contract(s)"
-                            domain="[('type','=','third_party')]"
-                            help="Show All Thrid Party Contract(s)"/>
-                    <filter name="is-tender-contract" string="Tender Contract(s)" domain="[('type','=','tender')]"
-                            help="Show All Tender Contract(s)"/>
                     <filter string="Sign Date is Not Null" domain="[('sign_date','!=',None)]"
                             help="Sign Date is Not Null" icon="terp-personal"/>
                 </search>
