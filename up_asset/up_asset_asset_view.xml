@@ -86,6 +86,7 @@
                     <field name="name"/>
                     <field name="model_and_type"/>
                     <field name="department_id"/>
+                    <field name="user"/>
                     <field name="usage"/>
                     <field name="unit_price"/>
                 </tree>

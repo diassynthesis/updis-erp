@@ -457,7 +457,7 @@ class updis_contract_contract(osv.osv):
 
     def all_contract_action(self, cr, uid, context=None):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
-        context['search_default_is-common-contract'] = 1
+        #context['search_default_is-common-contract'] = 1
         context.update({
             'show_sign_date': 0,
             'show_name': 0,
@@ -474,19 +474,20 @@ class updis_contract_contract(osv.osv):
             'view_type': 'form',
             'res_model': 'project.contract.contract',
             'target': 'current',
-            'domain': domain,
+            'domain': domain + [('type', '=', 'common')],
             'context': context,
         }
 
     def third_party_contract_action(self, cr, uid, context=None):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
-        context['search_default_is-third-party-contract'] = 1
+        #context['search_default_is-third-party-contract'] = 1
         context.update({
             'show_project_id': 0,
             'show_third_party_company': 0,
             'show_sign_date': 0,
-
+            'show_name': 0,
         })
+        context.update({'tree_view_ref': 'up_contract.project_contract_third_party_tree'})
         return {
             'name': u'所有合同',
             'type': 'ir.actions.act_window',
@@ -494,14 +495,14 @@ class updis_contract_contract(osv.osv):
             'view_type': 'form',
             'res_model': 'project.contract.contract',
             'target': 'current',
-            'domain': domain,
+            'domain': domain + [('type', '=', 'third_party')],
             'context': context,
         }
 
 
     def tender_contract_action(self, cr, uid, context=None):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
-        context['search_default_is-tender-contract'] = 1
+        #context['search_default_is-tender-contract'] = 1
         context['default_type'] = 'tender'
         context.update({
             'show_name': 0,
@@ -517,6 +518,6 @@ class updis_contract_contract(osv.osv):
             'view_type': 'form',
             'res_model': 'project.contract.contract',
             'target': 'current',
-            'domain': domain,
+            'domain': domain + [('type', '=', 'tender')],
             'context': context,
         }

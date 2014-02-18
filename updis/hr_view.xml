@@ -91,7 +91,7 @@
                         <field name="interest"/>
                         <field name="practice"/>
                         <field name="go_abroad_list"/>
-                        <field name="strong_point"/>
+                        <field name="speciality_id" widget="many2many_tags"/>
                     </group>
                 </xpath>
                 <xpath expr="//group[@string='Position']" position="replace"/>
@@ -144,11 +144,13 @@
             <field name="name">hr.employee.leave.tree.inherit</field>
             <field name="model">hr.employee</field>
             <field name="arch" type="xml">
-                <field name="name"/>
-                <field name="department_id"/>
-                <field name="business"/>
-                <field name="mobile_phone"/>
-                <field name="out_date"/>
+                <tree string="Leave Employee" version="7.0">
+                    <field name="name"/>
+                    <field name="department_id"/>
+                    <field name="business"/>
+                    <field name="mobile_phone"/>
+                    <field name="out_date"/>
+                </tree>
             </field>
         </record>
         <record id="action_view_leave_employee" model="ir.actions.act_window">
@@ -211,6 +213,24 @@
             </field>
         </record>
 
-
+        <!--Employee Speciality-->
+        <record id="view_employee_speciality_tree" model="ir.ui.view">
+            <field name="name">hr.employee.speciality.tree</field>
+            <field name="model">hr.employee.speciality</field>
+            <field name="arch" type="xml">
+                <tree string="Leave Employee" version="7.0" editable="top">
+                    <field name="name"/>
+                    <field name="parent_id"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_employee_speciality" model="ir.actions.act_window">
+            <field name="name">Employee Speciality Config</field>
+            <field name="res_model">hr.employee.speciality</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+        <menuitem name="Speciality Config" id="base.menu_employee_speciality_config" parent="hr.menu_hr_configuration"
+                  action="action_employee_speciality" groups="base.group_hr_manager" sequence="100" />
     </data>
 </openerp>
