@@ -4,13 +4,15 @@ __author__ = 'cysnake4713'
 from openerp.osv import osv
 from openerp.osv import fields
 from openerp import SUPERUSER_ID
+from openerp.tools.translate import _
 
 
 class DocumentDirectoryAccess(osv.osv):
     _name = 'document.directory.access'
+
     _columns = {
         'group_id': fields.many2one('res.groups', 'Group', ondelete='cascade', select=True, required=True),
-        'perm_read': fields.boolean('Read Access'),
+        'perm_read': fields.boolean('Read Access', readonly=True),
         'perm_write': fields.boolean('Write Access'),
         'perm_create': fields.boolean('Create Access'),
         'perm_unlink': fields.boolean('Delete Access'),
@@ -103,6 +105,48 @@ class DocumentDirectoryInherit(osv.osv):
             }
             ret['value'].update(sms_vals)
         return ret
+
+    def check_directory_privilege(self, cr, uid, obj, method, context):
+        user = self.pool.get('res.users').read(cr, 1, uid, ['groups_id'], context)
+        user_group = user['groups_id']
+        flag = False
+        for group in obj.group_ids:
+            if group.group_id.id in user_group and group[method] is True:
+                flag = True
+                break
+        return flag
+
+    def _check_group_unlink_privilege(self, cr, uid, ids, context=None):
+        for directory in self.browse(cr, uid, ids, context):
+            if not self.check_directory_privilege(cr, uid, directory, 'perm_unlink', context):
+                raise osv.except_osv(_('Warning!'), _('You have no privilege to Unlink some of the directories.'))
+
+    def _check_group_write_privilege(self, cr, uid, ids, context=None):
+        for directory in self.browse(cr, uid, ids, context):
+            if not self.check_directory_privilege(cr, uid, directory, 'perm_write', context):
+                raise osv.except_osv(_('Warning!'), _('You have no privilege to Write some of the directories.'))
+
+    def _check_group_create_privilege(self, cr, uid, vals, context=None):
+        parent_id = vals['parent_id']
+        if parent_id:
+            directory = self.browse(cr, uid, parent_id, context=context)
+            if not self.check_directory_privilege(cr, uid, directory, 'perm_create', context):
+                raise osv.except_osv(_('Warning!'), _('You have no privilege to Create the directory.'))
+
+    def create(self, cr, uid, vals, context=None):
+        if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
+            self._check_group_create_privilege(cr, uid, vals, context)
+        return super(DocumentDirectoryInherit, self).create(cr, uid, vals, context)
+
+    def unlink(self, cr, uid, ids, context=None):
+        if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
+            self._check_group_unlink_privilege(cr, uid, ids, context)
+        return super(DocumentDirectoryInherit, self).unlink(cr, uid, ids, context)
+
+    def write(self, cr, uid, ids, vals, context=None):
+        if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
+            self._check_group_write_privilege(cr, uid, ids, context)
+        return super(DocumentDirectoryInherit, self).write(cr, uid, ids, vals, context)
 
 # class FileConfig(osv.osv):
 #     _name = 'sfile.file.config'
