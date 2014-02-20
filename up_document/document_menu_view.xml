@@ -11,6 +11,15 @@
                 action = self.get_public_directory(cr,uid,context=context)
             </field>
         </record>
+        <record id="action_public_document_directory_tree" model="ir.actions.server">
+            <field name="name">Public Directories' Structure</field>
+            <field name="state">code</field>
+            <field name="condition" eval="True"/>
+            <field name="model_id" ref="document.model_document_directory"/>
+            <field name="code">
+                action = self.get_public_directory_structure(cr,uid,context=context)
+            </field>
+        </record>
         <!--record id="act_wd_sfile_all_file_form" model="ir.actions.act_window.view">
             <field name="view_id" ref="view_sfile_file_file_form"/>
             <field name="view_mode">form</field>
@@ -23,8 +32,9 @@
         <!--Public Document Config-->
         <menuitem name="Public Document Config" id="menu_document_public_config" sequence="15"
                   parent="knowledge.menu_document"/>
-        <menuitem name="Public Document Management" id="menu_document_public_menagement" sequence="11"
-                  parent="menu_document_public_config" groups="base.group_public_document_manager"/>
+        <menuitem name="Public Directory Structure" id="menu_document_directories_tree"
+                  action="action_public_document_directory_tree"
+                  parent="menu_document_public_config" sequence="10"/>
         <menuitem name="Public Directory Management" id="menu_document_dir_public_menagement" sequence="20"
                   parent="menu_document_public_config" groups="base.group_public_document_manager"
                   action="action_document_dir_public_config"/>

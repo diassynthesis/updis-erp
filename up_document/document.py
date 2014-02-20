@@ -12,10 +12,10 @@ class DocumentDirectoryAccess(osv.osv):
 
     _columns = {
         'group_id': fields.many2one('res.groups', 'Group', ondelete='cascade', select=True, required=True),
-        'perm_read': fields.boolean('Read Access', readonly=True),
-        'perm_write': fields.boolean('Write Access'),
-        'perm_create': fields.boolean('Create Access'),
-        'perm_unlink': fields.boolean('Delete Access'),
+        'perm_read': fields.boolean('Directory & File Read Access', readonly=True),
+        'perm_write': fields.boolean('Directory Write & File Modify Access'),
+        'perm_create': fields.boolean('Sub Directory Create Access'),
+        'perm_unlink': fields.boolean('Sub Directory Delete Access'),
         'directory_id': fields.many2one('document.directory', string='Related Directory ID', ondelete='cascade'),
     }
 
@@ -73,6 +73,24 @@ class DocumentDirectoryInherit(osv.osv):
             'type': 'ir.actions.act_window',
             'view_mode': 'tree,form',
             'view_type': 'form',
+            'res_model': 'document.directory',
+            'target': 'current',
+            'domain': domain,
+            'context': context,
+        }
+
+    def get_public_directory_structure(self, cr, uid, context=None):
+        directory_id = self.pool.get('ir.model.data').get_object_reference(cr, SUPERUSER_ID, 'up_document',
+                                                                           'doc_direct_000001')
+        user = self.pool.get('res.users').browse(cr, 1, uid, context=context)
+        group_ids = [g.id for g in user.groups_id]
+        domain = [('parent_id', '=', False), ('id', 'child_of', directory_id[1])]
+        context = {'tree_view_ref': 'up_document.view_document_directory_public_struct_tree', }
+        return {
+            'name': _('Public Directories Structure'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree,form',
+            'view_type': 'tree',
             'res_model': 'document.directory',
             'target': 'current',
             'domain': domain,
@@ -147,6 +165,47 @@ class DocumentDirectoryInherit(osv.osv):
         if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
             self._check_group_write_privilege(cr, uid, ids, context)
         return super(DocumentDirectoryInherit, self).write(cr, uid, ids, vals, context)
+
+
+class IrAttachmentInherit(osv.osv):
+    _inherit = 'ir.attachment'
+
+    def _check_group_unlink_privilege(self, cr, uid, ids, context=None):
+        directory_obj = self.pool.get('document.directory')
+        for attachment in self.browse(cr, uid, ids, context):
+            if attachment.parent_id:
+                if not directory_obj.check_directory_privilege(cr, uid, attachment.parent_id, 'perm_write', context):
+                    raise osv.except_osv(_('Warning!'), _('You have no privilege to Unlink some of the attachments.'))
+
+    def _check_group_write_privilege(self, cr, uid, ids, context=None):
+        directory_obj = self.pool.get('document.directory')
+        for attachment in self.browse(cr, uid, ids, context):
+            if attachment.parent_id:
+                if not directory_obj.check_directory_privilege(cr, uid, attachment.parent_id, 'perm_write', context):
+                    raise osv.except_osv(_('Warning!'), _('You have no privilege to Write some of the attachments.'))
+
+    def _check_group_create_privilege(self, cr, uid, vals, context=None):
+        directory_obj = self.pool.get('document.directory')
+        parent_id = vals['parent_id'] if 'parent_id' in vals else (context['parent_id'] if 'parent_id' in context else None)
+        if parent_id:
+            directory = directory_obj.browse(cr, uid, parent_id, context=context)
+            if not directory_obj.check_directory_privilege(cr, uid, directory, 'perm_write', context):
+                raise osv.except_osv(_('Warning!'), _('You have no privilege to create attachments in this directory.'))
+
+    def create(self, cr, uid, vals, context=None):
+        if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
+            self._check_group_create_privilege(cr, uid, vals, context)
+        return super(IrAttachmentInherit, self).create(cr, uid, vals, context)
+
+    def unlink(self, cr, uid, ids, context=None):
+        if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
+            self._check_group_unlink_privilege(cr, uid, ids, context)
+        return super(IrAttachmentInherit, self).unlink(cr, uid, ids, context)
+
+    def write(self, cr, uid, ids, vals, context=None):
+        if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
+            self._check_group_write_privilege(cr, uid, ids, context)
+        return super(IrAttachmentInherit, self).write(cr, uid, ids, vals, context)
 
 # class FileConfig(osv.osv):
 #     _name = 'sfile.file.config'

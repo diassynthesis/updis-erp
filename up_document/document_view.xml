@@ -48,6 +48,16 @@
                 </xpath>
             </field>
         </record>
+        <record model="ir.ui.view" id="view_document_directory_public_struct_tree">
+            <field name="name">document.directory.structure.tree</field>
+            <field name="model">document.directory</field>
+            <field name="field_parent">child_ids</field>
+            <field name="arch" type="xml">
+                <tree string="Directories" toolbar="1">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
         <record id="view_document_directory_public_config_tree" model="ir.ui.view">
             <field name="name">document.directory.public.tree</field>
             <field name="model">document.directory</field>
