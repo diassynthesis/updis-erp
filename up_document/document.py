@@ -57,43 +57,6 @@ class DocumentDirectoryInherit(osv.osv):
         'related_action_id': fields.many2one('ir.actions.act_window', string='Related Menu Action', ondelete='cascade'),
     }
 
-    def get_public_directory(self, cr, uid, context=None):
-        directory_id = self.pool.get('ir.model.data').get_object_reference(cr, SUPERUSER_ID, 'up_document',
-                                                                           'doc_direct_000001')
-        user = self.pool.get('res.users').browse(cr, 1, uid, context=context)
-        group_ids = [g.id for g in user.groups_id]
-        domain = [('id', 'child_of', directory_id[1]), '|',
-                  '&', ('parent_id.group_ids.perm_read', '=', 'True'), ('parent_id.group_ids.group_id', 'in', group_ids),
-                  '&', ('group_ids.perm_read', '=', 'True'), ('group_ids.group_id', 'in', group_ids)]
-        context = {'tree_view_ref': 'up_document.view_document_directory_public_config_tree',
-                   'form_view_ref': 'up_document.view_document_directory_public_config_form',
-                   'default_user_id': '', }
-        return {
-            'name': u'公共目录管理',
-            'type': 'ir.actions.act_window',
-            'view_mode': 'tree,form',
-            'view_type': 'form',
-            'res_model': 'document.directory',
-            'target': 'current',
-            'domain': domain,
-            'context': context,
-        }
-
-    def get_public_directory_structure(self, cr, uid, context=None):
-        directory_id = self.pool.get('ir.model.data').get_object_reference(cr, SUPERUSER_ID, 'up_document',
-                                                                           'doc_direct_000001')
-        domain = [('parent_id', '=', False), ('id', 'child_of', directory_id[1])]
-        context = {'tree_view_ref': 'up_document.view_document_directory_public_struct_tree', }
-        return {
-            'name': _('Public Directories Structure'),
-            'type': 'ir.actions.act_window',
-            'view_mode': 'tree,form',
-            'view_type': 'tree',
-            'res_model': 'document.directory',
-            'target': 'current',
-            'domain': domain,
-            'context': context,
-        }
 
     def delete_related_action(self, cr, uid, ids, context):
         directory_records = self.browse(cr, uid, ids, context)
