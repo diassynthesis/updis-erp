@@ -174,7 +174,7 @@
                         <button name="%(project_project_wizard_action)d"
                                 string="修改项目基本属性"
                                 type="action" groups="up_project.group_project_base_info_admin"/>
-                        <field name="state" widget="statusbar"
+                        <field name="state" widget="statusbar" statusbar_visible="project_active,project_processing,project_filed,project_finish"
                                readonly="1"/>
                     </header>
                     <sheet>
