@@ -8,7 +8,7 @@
 UPDIS Project Module.""",
     'author': 'cysnake4713',
     'website': 'http://openerp.com',
-    'depends': ['base', 'project', 'oecn_base_fonts', 'report_webkit'],
+    'depends': ['base', 'project', 'oecn_base_fonts', 'report_webkit', 'attachment_upload_dir'],
     'init_xml': [
 
     ],
@@ -17,6 +17,7 @@ UPDIS Project Module.""",
         'security/updis_security.xml',
         'security/ir.model.access.csv',
         'project_view.xml',
+        'data/updis_data.xml',
 
         'wizard/active/project_active_view.xml',
         'wizard/active/tasking/project_active_tasking_action.xml',
@@ -35,7 +36,7 @@ UPDIS Project Module.""",
         'project_workflow.xml',
 
         'report/active/renwuxiada.xml',
-        'data/updis_data.xml',
+
 
         'hr_view.xml',
         'res_partner.xml',

@@ -128,7 +128,7 @@
                                         <field name="express_requirement"
                                                attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
                                         <div>
-                                            <field name="attachments" widget="many2many_binary"
+                                            <field name="attachments" widget="many2many_binary" context="{'parent_id':%(dir_project_active)d}"
                                                    domain="[('res_model','=','project.project.active.tasking')]"
                                                    attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])],
                                                    'invisible':[('is_project_director','!=',True),('is_project_creater','!=',True),('is_user_in_operator_group','!=',True),('is_user_in_engineer_group','!=',True),('is_chief','!=',True),('is_admin','!=',True)]}"

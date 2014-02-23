@@ -97,5 +97,13 @@
         <record id="project_active_tasking_config_record" model="project.active.tasking.config">
             <field name="name">任务下达单配置</field>
         </record>
+
+        <!--document.directory-->
+        <record model="document.directory" id="dir_project_active">
+            <field name="name">任务下达</field>
+            <field name="user_id" eval="False"/>
+            <field name="parent_id" ref="document.dir_project"/>
+            <field name="ressource_id">0</field>
+        </record>
     </data>
 </openerp>
