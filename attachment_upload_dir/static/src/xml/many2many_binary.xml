@@ -16,6 +16,8 @@
                     <t t-set="fileupload_id" t-value="widget.fileupload_id"/>
                     <t t-set="upload_context" t-value="widget.node.attrs.context"/>
                     <t t-set="fileupload_action" t-translation="off">/web/binary/upload_attachment</t>
+                    <t t-set="index_model" t-value="widget.index_model"/>
+                    <t t-set="index_id" t-value="widget.index_id"/>
                     <input type="hidden" name="model" t-att-value="widget.view.model"/>
                     <input type="hidden" name="id" value="0"/>
                     <input type="hidden" name="session_id" t-att-value="widget.session.session_id"/>
@@ -30,6 +32,8 @@
                 <input type="hidden" name="session_id" value=""/>
                 <input type="hidden" name="callback" t-att-value="fileupload_id"/>
                 <input type="hidden" name="upload_context" t-att-value="upload_context"/>
+                <input type="hidden" name="index_model" t-att-value="index_model"/>
+                <input type="hidden" name="index_id" t-att-value="index_id"/>
                 <t t-raw="__content__"/>
                 <input type="file" class="oe_form_binary_file" name="ufile" t-if="widget.widget!='image'"/>
                 <input type="file" class="oe_form_binary_file" name="ufile" accept="image/*" t-if="widget.widget=='image'"/>

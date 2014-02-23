@@ -284,6 +284,14 @@ openerp.up_web = function (instance) {
         },
         render_value: function () {
             var self = this;
+            self.index_model = self.node.attrs.index_model ? self.node.attrs.index_model : "";
+            if (typeof self.node.attrs.index_id == "string") {
+                var index_name = self.node.attrs.index_id;
+                self.index_id = self.view.fields[index_name].get_value();
+            } else {
+                self.index_id = 0
+            }
+
             this.read_name_values().then(function (datas) {
 
                 var render = $(instance.web.qweb.render('FieldBinaryFileUploader.files', {'widget': self}));

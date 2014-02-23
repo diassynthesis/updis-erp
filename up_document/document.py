@@ -82,8 +82,6 @@ class DocumentDirectoryInherit(osv.osv):
     def get_public_directory_structure(self, cr, uid, context=None):
         directory_id = self.pool.get('ir.model.data').get_object_reference(cr, SUPERUSER_ID, 'up_document',
                                                                            'doc_direct_000001')
-        user = self.pool.get('res.users').browse(cr, 1, uid, context=context)
-        group_ids = [g.id for g in user.groups_id]
         domain = [('parent_id', '=', False), ('id', 'child_of', directory_id[1])]
         context = {'tree_view_ref': 'up_document.view_document_directory_public_struct_tree', }
         return {

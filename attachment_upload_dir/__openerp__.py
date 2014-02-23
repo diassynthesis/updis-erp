@@ -9,8 +9,9 @@
     'description': """
 Document Upload Plugin Directory Support
 """,
-    'depends': ['web'],
+    'depends': ['web', 'base'],
     'data': [
+        'attachment_view.xml',
     ],
     'qweb': [
         'static/src/xml/*.xml',
