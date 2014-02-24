@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
     <data>
+        <record id="action_project_related_document" model="ir.actions.act_window">
+            <field name="name">Project Directories</field>
+            <field name="res_model">document.directory</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+            <field name="domain" eval="[('parent_id', '!=', False),('id', 'child_of', ref('up_project.dir_up_project'))]"/>
+            <field name="context">{
+                'tree_view_ref': 'up_document.view_document_directory_public_struct_tree',
+                'search_index_model': ('index_model', '=', 'project.project'),
+                'search_index_id': ('index_id', '=', active_id),
+                'default_index_model': 'project.project',
+                'default_index_id': active_id,
+                'eval_domain': True,
+                'eval_context': True,
+                }
+            </field>
+        </record>
         <record id="project_project_wizard_form" model="ir.ui.view">
             <field name="name">project.project.wizard.form</field>
             <field name="model">project.project.wizard</field>
@@ -184,6 +202,7 @@
                             <field name="is_user_in_operator_group"/>
                             <field name="is_user_in_engineer_group"/>
                             <field name="is_user_is_project_manager"/>
+                            <field name="id"/>
                         </group>
                         <div class="oe_title oe_long_title">
                             <h1>
@@ -222,79 +241,87 @@
                             </span>
                         </div>
                         <group attrs="{'invisible':[('is_project_created','=',False)]}">
-                            <group string="Partner Info">
-                                <field name="partner_type" readonly="1"/>
+                            <group>
                                 <field name="partner_id" string="甲方" readonly="1"/>
-                                <field name="customer_contact" readonly="1"/>
-                            </group>
-                            <group string="Project Type">
                                 <field name="project_type" class="oe_no_button" readonly="1"/>
                                 <field name="categories_id" readonly="1"/>
-                                <field name="shifoutoubiao" readonly="1"/>
-                                <field name="toubiaoleibie" readonly="1"/>
+                                <field name="guanlijibie" readonly="1"/>
                             </group>
-                            <group string="In charge Relate">
+                            <group>
                                 <field name="zhuguanzongshi_id" widget="many2many_tags" readonly="1"/>
                                 <field name="chenjiebumen_id" readonly="1"/>
                                 <field name="user_id" readonly="1" widget="many2many_tags"/>
-                                <field name="guanlijibie" readonly="1"/>
-                            </group>
-                            <group string="Other Info">
-                                <field name="guimo" readonly="1"/>
-                                <field name="waibao" readonly="1"/>
-                                <field name="shizhenpeitao" readonly="1"/>
                                 <field name="begin_date" readonly="1"/>
                             </group>
                         </group>
-                    </sheet>
-                    <notebook>
-                        <page name="project_related_info" string="Project Process">
-                            <div>
-                                <div name="project_active_area">
-                                    <div class="area-header">
-                                        <h3>项目启动流程</h3>
-                                        <table class="oe_form_group">
-                                            <thead>
-                                                <th>流程</th>
-                                                <th>状态</th>
-                                                <th>提示</th>
-                                            </thead>
-                                            <tbody>
-                                                <div name="related_forms"/>
-                                            </tbody>
-                                        </table>
+
+                        <notebook>
+                            <page name="project_related_info" string="Project Process">
+                                <div>
+                                    <div name="project_active_area">
+                                        <div class="area-header">
+                                            <h3>项目启动流程</h3>
+                                            <table class="oe_form_group">
+                                                <thead>
+                                                    <th>流程</th>
+                                                    <th>状态</th>
+                                                    <th>提示</th>
+                                                </thead>
+                                                <tbody>
+                                                    <div name="related_forms"/>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </page>
-                        <page name="project_comment" string="Project Comments">
-                            <group>
-                                <field name="questions"
-                                       attrs="{'readonly':[('is_user_is_project_manager','=',False)]}"/>
-                                <field name="primary_work"
-                                       attrs="{'readonly':[('is_user_is_project_manager','=',False)]}"/>
-                                <field name="next_work_plan"
-                                       attrs="{'readonly':[('is_user_is_project_manager','=',False)]}"/>
-                            </group>
-                        </page>
-                        <page name="attachments" string="Attachments">
-                            <group>
-                                <field name="attachments" nolabel="1" readonly="1" widget="many2many_binary"
-                                       invisible="1"/>
-                            </group>
-                        </page>
-                        <page name="project_log" string="Project Logs">
-                            <field name="project_logs" nolabel="1" readonly="1">
-                                <tree>
-                                    <field name="log_date"/>
-                                    <field name="log_user"/>
-                                    <field name="log_info"/>
-                                </tree>
-                            </field>
-                        </page>
+                            </page>
+                            <page string="Project Extra Info">
+                                <group attrs="{'invisible':[('is_project_created','=',False)]}">
+                                    <group string="Partner Info">
+                                        <field name="partner_type" readonly="1"/>
+                                        <field name="customer_contact" readonly="1"/>
+                                    </group>
+                                    <group string="Project Type">
+                                        <field name="shifoutoubiao" readonly="1"/>
+                                        <field name="toubiaoleibie" readonly="1"/>
+                                    </group>
+                                    <group string="Other Info">
+                                        <field name="guimo" readonly="1"/>
+                                        <field name="waibao" readonly="1"/>
+                                        <field name="shizhenpeitao" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page name="attachments" string="Attachments">
+                                <!--button name="get_project_directory_structure" class="oe_link"
+                                    string="点击查看项目文件"
+                                    type="object"/-->
+                                <button name="%(action_project_related_document)d" class="oe_link"
+                                        string="点击查看项目文件"
+                                        type="action"/>
 
-                    </notebook>
-
+                            </page>
+                            <page name="project_log" string="Project Logs">
+                                <field name="project_logs" nolabel="1" readonly="1">
+                                    <tree>
+                                        <field name="log_date"/>
+                                        <field name="log_user"/>
+                                        <field name="log_info"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="project_comment" string="Project Comments">
+                                <group>
+                                    <field name="questions"
+                                           attrs="{'readonly':[('is_user_is_project_manager','=',False)]}"/>
+                                    <field name="primary_work"
+                                           attrs="{'readonly':[('is_user_is_project_manager','=',False)]}"/>
+                                    <field name="next_work_plan"
+                                           attrs="{'readonly':[('is_user_is_project_manager','=',False)]}"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
                 </form>
             </field>
         </record>

@@ -31,6 +31,7 @@
                             <field name="director_reviewer_groups"/>
                             <field name="is_cover_sign"/>
                             <field name="is_cover_sign_final"/>
+                            <field name="project_id"/>
                         </group>
                         <group colspan="2" name="project_num"
                                attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}">
@@ -107,7 +108,7 @@
                                         </div>
                                         <field name="director_reviewer_apply_time" readonly="1"/>
                                         <div attrs="{'invisible':[('is_cover_sign','=',False)]}">
-                                                (代签)
+                                            (代签)
                                         </div>
                                     </td>
                                 </tr>
@@ -128,8 +129,9 @@
                                         <field name="express_requirement"
                                                attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
                                         <div>
-                                            <field name="attachments" widget="many2many_binary" context="{'parent_id':%(dir_project_active)d}"
-                                                   domain="[('res_model','=','project.project.active.tasking')]"
+                                            <field name="attachments" widget="many2many_binary"
+                                                   index_model="project.project" index_id="project_id"
+                                                   context="{'parent_id':%(dir_up_project_active)d}"
                                                    attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])],
                                                    'invisible':[('is_project_director','!=',True),('is_project_creater','!=',True),('is_user_in_operator_group','!=',True),('is_user_in_engineer_group','!=',True),('is_chief','!=',True),('is_admin','!=',True)]}"
                                                     />

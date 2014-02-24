@@ -78,14 +78,13 @@ class project_active_tasking(osv.osv):
                         result_flag = True
 
                     config_group_id = tools.get_id_by_external_id(cr, self.pool,
-                                                          extends_id="project_active_tasking_config_record",
-                                                          model="project.active.tasking.config")
+                                                                  extends_id="project_active_tasking_config_record",
+                                                                  model="project.active.tasking.config")
                     config_group = self.pool.get('project.active.tasking.config').browse(cr, 1, config_group_id,
                                                                                          context=context)
                     config_group_ids = [z.id for z in config_group.cover_director_config]
                     if user_department_id == project_department_id and current_uid in config_group_ids:
                         result_flag = True
-
 
             result[obj.id] = result_flag
         return result
@@ -172,9 +171,9 @@ class project_active_tasking(osv.osv):
         "hetongyizhi": fields.selection([(u"合同/协议要求表述不一致已解决", u"合同/协议要求表述不一致已解决"),
                                          (u"没有出现不一致", u"没有出现不一致")], u"不一致是否解决", ),
         "ziyuan": fields.selection([(u'人力资源满足', u'人力资源满足'), (u'人力资源不足', u'人力资源不足')], u'人力资源', ),
-        "shebei": fields.selection([(u'设备满足', u'设备满足'), (u'设备不满足', u'设备不满足')], u"设备", ), #本院是否有能力满足规定要求
-        "gongqi": fields.selection([(u'工期可接受', u'工期可接受'), (u'工期太紧', u'工期太紧')], u"工期", ), #本院是否有能力满足规定要求
-        "shejifei": fields.selection([(u'设计费合理', u'设计费合理'), (u'设计费太低', u'设计费太低')], u'设计费', ), #本院是否有能力满足规定要求
+        "shebei": fields.selection([(u'设备满足', u'设备满足'), (u'设备不满足', u'设备不满足')], u"设备", ),  #本院是否有能力满足规定要求
+        "gongqi": fields.selection([(u'工期可接受', u'工期可接受'), (u'工期太紧', u'工期太紧')], u"工期", ),  #本院是否有能力满足规定要求
+        "shejifei": fields.selection([(u'设计费合理', u'设计费合理'), (u'设计费太低', u'设计费太低')], u'设计费', ),  #本院是否有能力满足规定要求
 
 
         "duofanghetong": fields.boolean(u"多方合同"),
@@ -187,7 +186,7 @@ class project_active_tasking(osv.osv):
         'is_cover_sign': fields.function(_is_cover_sign, type="boolean",
                                          string="Is Sign by Cover Director"),
         'is_cover_sign_final': fields.function(_is_cover_sign_final, type="boolean",
-                                         string="Is Sign by Cover Director Final"),
+                                               string="Is Sign by Cover Director Final"),
         'director_reviewer_apply_id': fields.many2one('res.users', string=u'Review Apply By'),
         'director_reviewer_apply_image': fields.related('director_reviewer_apply_id', "sign_image", type="binary",
                                                         string=u'Review Image'),
@@ -231,6 +230,8 @@ class project_active_tasking(osv.osv):
         'else_attachments': fields.many2many("ir.attachment", "project_tasking_attachments", "tasking_id",
                                              "attachment_id",
                                              string="Related files"),
+        'attachments': fields.many2many("ir.attachment", "project_attachments", "project_id", "attachment_id",
+                                        string="related_files"),
         'reject_logs': fields.many2many("project.project.active.tasking.reject.log", "project_tasking_reject_log",
                                         "tasking_id", "log_id", string="Reject Log"),
 

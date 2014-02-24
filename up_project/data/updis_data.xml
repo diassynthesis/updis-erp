@@ -99,10 +99,16 @@
         </record>
 
         <!--document.directory-->
-        <record model="document.directory" id="dir_project_active">
+        <record model="document.directory" id="dir_up_project">
+            <field name="name">项目</field>
+            <field name="user_id" eval="False"/>
+            <field name="parent_id" eval="False"/>
+            <field name="ressource_id">0</field>
+        </record>
+        <record model="document.directory" id="dir_up_project_active">
             <field name="name">任务下达</field>
             <field name="user_id" eval="False"/>
-            <field name="parent_id" ref="document.dir_project"/>
+            <field name="parent_id" ref="dir_up_project"/>
             <field name="ressource_id">0</field>
         </record>
     </data>
