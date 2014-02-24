@@ -4,20 +4,12 @@
         <record id="action_project_related_document" model="ir.actions.act_window">
             <field name="name">Project Directories</field>
             <field name="res_model">document.directory</field>
-            <field name="view_type">form</field>
+            <field name="view_type">tree</field>
             <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="up_document.view_document_directory_public_struct_tree"/>
             <field name="target">current</field>
-            <field name="domain" eval="[('parent_id', '!=', False),('id', 'child_of', ref('up_project.dir_up_project'))]"/>
-            <field name="context">{
-                'tree_view_ref': 'up_document.view_document_directory_public_struct_tree',
-                'search_index_model': ('index_model', '=', 'project.project'),
-                'search_index_id': ('index_id', '=', active_id),
-                'default_index_model': 'project.project',
-                'default_index_id': active_id,
-                'eval_domain': True,
-                'eval_context': True,
-                }
-            </field>
+            <field name="domain" eval="[('parent_id', '=', False),('id', 'child_of', ref('up_project.dir_up_project'))]"/>
+            <field name="context">{'search_index_model': ('index_model', '=', 'project.project'),'search_index_id': ('index_id', '=', active_id),'default_index_model': 'project.project','default_index_id':active_id,'eval_domain': True,'eval_context': True}</field>
         </record>
         <record id="project_project_wizard_form" model="ir.ui.view">
             <field name="name">project.project.wizard.form</field>

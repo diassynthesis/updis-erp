@@ -16,8 +16,9 @@ UPDIS Project Module.""",
 
         'security/updis_security.xml',
         'security/ir.model.access.csv',
-        'project_view.xml',
         'data/updis_data.xml',
+        'project_view.xml',
+
 
         'wizard/active/project_active_view.xml',
         'wizard/active/tasking/project_active_tasking_action.xml',
