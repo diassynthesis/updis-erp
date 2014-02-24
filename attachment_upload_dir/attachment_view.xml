@@ -14,5 +14,25 @@
                 </xpath>
             </field>
         </record>
+
+        <record model="ir.actions.act_window" id="document.action_document_file_directory_form">
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ir.attachment</field>
+            <field name="name">Directory</field>
+            <field name="view_type">form</field>
+            <field name="view_model">tree,form</field>
+            <field name="domain">
+                [('parent_id','child_of',active_id), context.get('search_index_model',('parent_id','child_of',active_id)), context.get('search_index_id',('parent_id','child_of',active_id))]
+            </field>
+            <field name="context">
+                {'parent_id':active_id,'tree_view_ref': 'up_document.view_document_file_public_tree'}
+            </field>
+        </record>
+        <record model="ir.values" id="document.ir_action_document_file_directory_form">
+            <field name="key2" eval="'tree_but_open'"/>
+            <field name="model" eval="'document.directory'"/>
+            <field name="name">Browse Files</field>
+            <field name="value" eval="'ir.actions.act_window,%d'% ref('document.action_document_file_directory_form')"/>
+        </record>
     </data>
 </openerp>
