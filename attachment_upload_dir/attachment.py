@@ -69,12 +69,13 @@ class IrValuesInherit(osv.osv):
             # FIXME: needs cleanup
             try:
                 action_def = self.pool.get(action_model).read(cr, uid, int(id), fields, context)
-                domain_ref = action_def['domain'] if 'domain' in action_def else None
                 context_ref = action_def['context'] if 'context' in action_def else None
                 #TODO: replace the find to re
-                if domain_ref and context and 'eval_domain' in context and context['eval_domain'] is True:
-                    domain_ref = eval(domain_ref, context, {'context': context})
-                    action_def['domain'] = str(domain_ref)
+                #TODO: domain seems no need
+                domain_ref = action_def['domain'] if 'domain' in action_def else None
+                # if domain_ref and context and 'eval_domain' in context and context['eval_domain'] is True:
+                #     domain_ref = eval(domain_ref, context, {'context': context})
+                #     action_def['domain'] = str(domain_ref)
                 if context_ref and context and 'eval_context' in context and context['eval_context'] is True:
                     context_local = eval(context_ref, context, {'context': context})
                     context.update(context_local)
