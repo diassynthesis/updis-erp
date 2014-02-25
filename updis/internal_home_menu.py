@@ -1,16 +1,41 @@
 from openerp import SUPERUSER_ID
 
-from osv import osv, fields
+from openerp.osv import osv, fields
 
 
 class internal_home_menu(osv.osv):
     _name = "internal.home.menu"
     _inherit = "ir.ui.menu"
+
+    def _action(self, cursor, user, ids, name, arg, context=None):
+        res = {}
+        ir_values_obj = self.pool.get('ir.values')
+        value_ids = ir_values_obj.search(cursor, user, [
+            ('model', '=', self._name), ('key', '=', 'action'),
+            ('key2', '=', 'tree_but_open'), ('res_id', 'in', ids)],
+                                         context=context)
+        values_action = {}
+        for value in ir_values_obj.browse(cursor, user, value_ids, context=context):
+            values_action[value.res_id] = value.value
+        for menu_id in ids:
+            res[menu_id] = values_action.get(menu_id, False)
+        return res
+
     _columns = {
         'child_id': fields.one2many('internal.home.menu', 'parent_id', 'Child IDs', ondelete="cascade"),
         'parent_id': fields.many2one('internal.home.menu', 'Parent Menu', select=True),
         'name': fields.char('Menu', size=64, required=True, translate=False),
         'groups_id': fields.char(size=64, string='Menu'),
+        'action': fields.function(_action,
+                                  type='reference', string='Action',
+                                  selection=[
+                                      ('ir.actions.report.xml', 'ir.actions.report.xml'),
+                                      ('ir.actions.act_window', 'ir.actions.act_window'),
+                                      ('ir.actions.wizard', 'ir.actions.wizard'),
+                                      ('ir.actions.act_url', 'ir.actions.act_url'),
+                                      ('ir.actions.server', 'ir.actions.server'),
+                                      ('ir.actions.client', 'ir.actions.client'),
+                                  ]),
     }
 
     def _filter_visible_menus(self, cr, uid, ids, context=None):
@@ -56,7 +81,7 @@ class internal_home_menu(osv.osv):
                             if not modelaccess.check(cr, uid, data[field], 'read', False):
                                 continue
                                 # else:
-                    #     # if there is no action, it's a 'folder' menu
+                                #     # if there is no action, it's a 'folder' menu
                 #     if not menu.child_id:
                 #         # not displayed if there is no children
                 #         continue

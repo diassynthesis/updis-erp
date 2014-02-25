@@ -91,13 +91,13 @@
             <field name="res_model">internal.home.menu</field>
             <field name="name">Menu</field>
             <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
             <field name="domain">[('id','=',active_id)]</field>
-            <field name="context">{'parent_id':active_id}</field>
         </record>
         <record model="ir.values" id="ir_action_internal_home_menu_form">
-            <field name="key2" eval="'client_action_multi'"/>
+            <field name="key2">tree_but_open</field>
             <field name="model" eval="'internal.home.menu'"/>
-            <field name="name">Browse Files</field>
+            <field name="name">Internal Home Menu</field>
             <field name="value" eval="'ir.actions.act_window,%d'%action_internal_home_menu_form"/>
         </record>
     </data>
