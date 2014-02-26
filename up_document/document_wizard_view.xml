@@ -33,21 +33,33 @@
             <field name="model">ir.attachment.download.wizard</field>
             <field name="arch" type="xml">
                 <form string="Download Attachments" version="7.0">
-                    <group col="1">
+                    <group>
+                        <field name="state" invisible="1"/>
+                    </group>
+                    <group col="1" states="choose">
                         <label string="Are you sure you want download attachments below?"/>
                         <label style="color:red;"
                                string="If some of the attachments is too large it may cost lot of time, please Download it seperatily."/>
                         <field name="attachment_ids" nolabel="1" readonly="1">
-                            <tree>
+                            <tree colors="red:file_size_human > 100">
                                 <field name="name"/>
                                 <field name="file_size_human"/>
                             </tree>
                         </field>
                     </group>
-                    <footer>
-                        <button string="Create" name="create_related_action" class="oe_highlight"
+                    <div states="get">
+                        <h2>Export Complete</h2>
+                        <p>Here is the exported file: <field name="data" readonly="1" filename="name"/></p>
+                        <p>This file was generated using the universal <strong>zip</strong> file encoding, please be sure to view and edit
+                           using supported software.</p>
+                    </div>
+                    <footer states="choose">
+                        <button string="Download" name="button_download_files" class="oe_highlight"
                                 type="object"/>or
                         <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                    <footer states="get">
+                         <button string="Close" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
             </field>
