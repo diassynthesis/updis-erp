@@ -5,7 +5,7 @@ import urllib2
 from up_tools.bigantlib import BigAntClient
 from urllib import urlencode
 
-from osv import osv, fields
+from openerp.osv import osv, fields
 
 
 class sms(osv.Model):

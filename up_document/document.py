@@ -168,6 +168,64 @@ class IrAttachmentInherit(osv.osv):
             self._check_group_write_privilege(cr, uid, ids, context)
         return super(IrAttachmentInherit, self).write(cr, uid, ids, vals, context)
 
+
+    def _get_file_size(self, cr, uid, ids, field_name, arg, context):
+        """
+            Either way, it must return a dictionary of values of the form
+            {'id_1_': 'value_1_', 'id_2_': 'value_2_',...}.
+
+            If multi is set, then field_name is replaced by field_names:
+            a list of the field names that should be calculated.
+            Each value in the returned dictionary is also a dictionary from field name to value.
+            For example, if the fields 'name', and 'age' are both based on the vital_statistics function,
+            then the return value of vital_statistics might look like this when ids is [1, 2, 5]:
+            {
+                1: {'name': 'Bob', 'age': 23},
+                2: {'name': 'Sally', 'age', 19},
+                5: {'name': 'Ed', 'age': 62}
+            }
+        """
+        result = dict.fromkeys(ids, False)
+        for attachment in self.browse(cr, uid, ids, context=context):
+            result[attachment.id] = attachment.file_size / (1024.0 * 1024.0)
+        return result
+
+    _columns = {
+        'file_size_human': fields.function(_get_file_size, type='float', digits=[10, 3], method=True, string='File Size Human (MB)'),
+    }
+
+
+class IrAttachmentDownloadWizard(osv.osv_memory):
+    _name = "ir.attachment.download.wizard"
+
+    def default_get(self, cr, uid, fields, context=None):
+        """
+        This function gets default values
+        """
+        res = super(IrAttachmentDownloadWizard, self).default_get(cr, uid, fields, context=context)
+        if context is None:
+            context = {}
+        record_ids = context and context.get('active_ids', False) or False
+        if not record_ids:
+            return res
+        attachment_obj = self.pool.get('ir.attachment')
+        attachments = attachment_obj.browse(cr, uid, record_ids, context=context)
+        if 'attachment_ids' in fields:
+            res['attachment_ids'] = [a.id for a in attachments]
+        return res
+
+
+    _columns = {
+        'name': fields.char('File Name', readonly=True),
+        # 'format': fields.selection([('csv', 'CSV File'),
+        #                             ('po', 'PO File'),
+        #                             ('tgz', 'TGZ Archive')], 'File Format', required=True),
+        'attachment_ids': fields.many2many('ir.attachment', 'rel_attachment_download_wizard', 'wizard_id', 'attachment_id', string='Attachments'),
+        'data': fields.binary('File', readonly=True),
+        'state': fields.selection([('choose', 'choose'),  # choose language
+                                   ('get', 'get')])  # get the file
+    }
+
 # class FileConfig(osv.osv):
 #     _name = 'sfile.file.config'
 #     _description = 'File Config'

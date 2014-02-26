@@ -104,6 +104,12 @@
                 </form>
             </field>
         </record>
+        <act_window id="acttion_download_attachments_wiz"
+            name="Download Attachments"
+            src_model="ir.attachment"
+            res_model="ir.attachment.download.wizard"
+            view_type="form" view_mode="form"
+            key2="client_action_relate" target="new"/>
         <!--record id="view_attach_filter_inherit3" model="ir.ui.view">
             <field name="name">IR Attachment2 inherit</field>
             <field name="model">ir.attachment</field>
