@@ -10,6 +10,9 @@ UPDIS Project Contract Module.""",
     'website': 'http://openerp.com',
     'depends': ['up_project'],
     'init_xml': [],
+    'data': [
+        'data/document.directory.csv',
+    ],
     'update_xml': [
         'security/security.xml',
         'security/ir.model.access.csv',

@@ -134,6 +134,9 @@
             <field name="arch" type="xml">
                 <form string="Project Contract" version="7.0">
                     <sheet>
+                        <group invisible="1">
+                            <field name="id"/>
+                        </group>
                         <div class="oe_title">
                             <h1>
                                 <field name="name" placeholder="Please Input Contract Name"/>
@@ -170,6 +173,7 @@
                                 </group>
                                 <field name="comment"/>
                                 <field name="attachments" widget="many2many_binary"
+                                       res_model="project.contract.contract" res_id="id" context="{'parent_id':%(dir_contract_root)d}"
                                        groups="up_contract.group_up_contract_file_user"/>
                             </group>
                             <group string="Project Info">

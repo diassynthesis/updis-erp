@@ -26,3 +26,10 @@ set
 	),
 	parent_id=(select res_id from ir_model_data where name='dir_up_project_active')
 where id in (select attachment_id from project_tasking_attachments);
+
+--update huiyi contract
+update ir_attachment as ir
+set
+  res_id=(select contract_id from contract_attatchment_many where attachment_id=ir.id),
+  parent_id=(select res_id from ir_model_data where name='dir_contract_root')
+where res_model='project.contract.contract'
