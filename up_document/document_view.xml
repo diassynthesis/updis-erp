@@ -30,19 +30,26 @@
             </field>
         </record>
         <!--ir.attachment public tree-->
-        <record id="view_document_file_public_tree" model="ir.ui.view">
-            <field name="name">ir.attachment.public.tree</field>
+        <record model="ir.ui.view" id="view_document_file_tree_inherit">
+            <field name="name">ir.attachment.tree.inherit</field>
             <field name="model">ir.attachment</field>
-            <field name="priority" eval="10"/>
+            <field name="inherit_id" ref="document.view_document_file_tree"/>
             <field name="arch" type="xml">
-                <tree colors="blue:type in ('url',)" string="Attachments">
+                <xpath expr="//field[@name='name']" position="before">
                     <field name="datas" filename="name"/>
-                    <field name="name" invisible="1"/>
-                    <field name="parent_id" invisible="1"/>
-                    <field name="user_id" invisible="1"/>
-                    <field name="write_date"/>
-                    <field name="type" invisible="1"/>
-                </tree>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
             </field>
         </record>
         <record id="view_document_directory_config_inherit" model="ir.ui.view">

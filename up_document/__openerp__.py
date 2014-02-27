@@ -16,6 +16,7 @@ Independent Super File Version control System
 
         'data/document.directory.csv',
 
+        'attachment_view.xml',
         'document_wizard_view.xml',
         'document_view.xml',
         'document_menu_view.xml',

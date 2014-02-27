@@ -2,19 +2,6 @@
 <openerp>
     <data>
         <!--ir.attachment.access-->
-        <record model="ir.ui.view" id="view_document_file_form_inherit">
-            <field name="name">ir.attachment.form.inherit</field>
-            <field name="model">ir.attachment</field>
-            <field name="priority" eval="1"/>
-            <field name="inherit_id" ref="base.view_attachment_form"/>
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='res_name']" position="after">
-                    <field name="index_model"/>
-                    <field name="index_id"/>
-                </xpath>
-            </field>
-        </record>
-
         <record model="ir.actions.act_window" id="document.action_document_file_directory_form">
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">ir.attachment</field>
@@ -25,7 +12,7 @@
                 [('parent_id','child_of',active_id), context.get('search_index_model',('parent_id','child_of',active_id)), context.get('search_index_id',('parent_id','child_of',active_id))]
             </field>
             <field name="context">
-                {'parent_id':active_id,'tree_view_ref': 'up_document.view_document_file_public_tree'}
+                {'parent_id':active_id}
             </field>
         </record>
         <record model="ir.values" id="document.ir_action_document_file_directory_form">

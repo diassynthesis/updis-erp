@@ -104,9 +104,23 @@
             <field name="user_id" eval="False"/>
             <field name="parent_id" eval="False"/>
             <field name="ressource_id">0</field>
+            <field name="type">ressource</field>
+            <field name="ressource_type_id" ref="model_project_project"/>
+        </record>
+        <record model="document.directory" id="dir_up_project_activing">
+            <field name="name">任务下达进行中</field>
+            <field name="user_id" eval="False"/>
+            <field name="parent_id" ref="dir_up_project"/>
+            <field name="ressource_id">0</field>
         </record>
         <record model="document.directory" id="dir_up_project_active">
-            <field name="name">任务下达</field>
+            <field name="name">任务下达归档</field>
+            <field name="user_id" eval="False"/>
+            <field name="parent_id" ref="dir_up_project"/>
+            <field name="ressource_id">0</field>
+        </record>
+        <record model="document.directory" id="dir_up_project_trash">
+            <field name="name">垃圾桶</field>
             <field name="user_id" eval="False"/>
             <field name="parent_id" ref="dir_up_project"/>
             <field name="ressource_id">0</field>

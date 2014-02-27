@@ -7,13 +7,15 @@ import simplejson
 
 
 @openerpweb.httprequest
-def upload_attachment(self, req, callback, model, id, ufile, upload_context="{}", index_model="", index_id=0):
+def upload_attachment(self, req, callback, model, id, ufile, res_id=None, res_model=None, res_context="{}"):
     Model = req.session.model('ir.attachment')
     out = """<script language="javascript" type="text/javascript">
                     var win = window.top.window;
                     win.jQuery(win).trigger(%s, %s);
                 </script>"""
-    context = eval(upload_context)
+    context = eval(res_context)
+    model = res_model or model
+    id = res_id or id
     try:
         attachment_id = Model.create(
             {
@@ -22,8 +24,6 @@ def upload_attachment(self, req, callback, model, id, ufile, upload_context="{}"
                 'datas_fname': ufile.filename,
                 'res_model': model,
                 'res_id': int(id),
-                'index_id': int(index_id),
-                'index_model': index_model,
             }, context)
         args = {
             'filename': ufile.filename,

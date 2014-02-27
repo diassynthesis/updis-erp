@@ -357,7 +357,8 @@ class updis_project(osv.osv):
         'import_alinkman': fields.char(size=256, string='Import Alinkman'),
         'import_proejct_number': fields.char(size=256, string='Import Project Num'),
         'temp_status': fields.char(size=56, string="Temp Status"),
-
+        'attachments': fields.many2many("ir.attachment", "project_attachments", "project_id", "attachment_id",
+                                        string="related_files"),
         'project_manager_name': fields.function(_get_project_manager_name, type='char', readonly=True,
                                                 string="Project Manager Name For export"),
     }

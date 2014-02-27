@@ -9,8 +9,8 @@
             <field name="view_id" ref="up_document.view_document_directory_public_struct_tree"/>
             <field name="target">current</field>
             <field name="domain" eval="[('parent_id', '=', False),('id', 'child_of', ref('up_project.dir_up_project'))]"/>
-            <field name="context">{'search_index_model': ('index_model', '=', 'project.project'),'search_index_id': ('index_id', '=',
-                active_id),'default_index_model': 'project.project','default_index_id':active_id,'eval_domain': True,'eval_context': True}
+            <field name="context">{'search_index_model': ('res_model', '=', 'project.project'),'search_index_id': ('res_id', '=',
+                active_id),'default_res_model': 'project.project','default_res_id':active_id,'eval_context': True}
             </field>
         </record>
         <record id="project_project_wizard_form" model="ir.ui.view">
@@ -277,7 +277,7 @@
                                     </div>
                                 </div>
                             </page>
-                            <page name="attachments" string="Attachments">
+                            <page name="attachments" string="Attachments" attrs="{'invisible':[('state','=','project_active')]}">
                                 <!--button name="get_project_directory_structure" class="oe_link"
                                     string="点击查看项目文件"
                                     type="object"/-->

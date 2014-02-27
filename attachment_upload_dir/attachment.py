@@ -17,14 +17,6 @@ ACTION_SLOTS = [
 ]
 
 
-class IrAttachmentInherit(osv.osv):
-    _inherit = 'ir.attachment'
-    _columns = {
-        'index_id': fields.integer('Index Id'),
-        'index_model': fields.char('Index Model', 256),
-    }
-
-
 class IrValuesInherit(osv.osv):
     _inherit = 'ir.values'
 
@@ -72,7 +64,7 @@ class IrValuesInherit(osv.osv):
                 context_ref = action_def['context'] if 'context' in action_def else None
                 #TODO: replace the find to re
                 #TODO: domain seems no need
-                domain_ref = action_def['domain'] if 'domain' in action_def else None
+                # domain_ref = action_def['domain'] if 'domain' in action_def else None
                 # if domain_ref and context and 'eval_domain' in context and context['eval_domain'] is True:
                 #     domain_ref = eval(domain_ref, context, {'context': context})
                 #     action_def['domain'] = str(domain_ref)

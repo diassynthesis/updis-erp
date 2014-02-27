@@ -284,12 +284,13 @@ openerp.up_web = function (instance) {
         },
         render_value: function () {
             var self = this;
-            self.index_model = self.node.attrs.index_model ? self.node.attrs.index_model : "";
-            if (typeof self.node.attrs.index_id == "string") {
-                var index_name = self.node.attrs.index_id;
-                self.index_id = self.view.fields[index_name].get_value();
+            self.res_context = self.node.attrs.context ? self.node.attrs.context : "{}";
+            self.res_model = self.node.attrs.res_model ? self.node.attrs.res_model : self.view.model;
+            if (typeof self.node.attrs.res_id == "string") {
+                var index_name = self.node.attrs.res_id;
+                self.res_id = self.view.fields[index_name].get_value();
             } else {
-                self.index_id = 0
+                self.res_id = 0
             }
 
             this.read_name_values().then(function (datas) {

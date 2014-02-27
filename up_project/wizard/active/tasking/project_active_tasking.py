@@ -230,8 +230,6 @@ class project_active_tasking(osv.osv):
         'else_attachments': fields.many2many("ir.attachment", "project_tasking_attachments", "tasking_id",
                                              "attachment_id",
                                              string="Related files"),
-        'attachments': fields.many2many("ir.attachment", "project_attachments", "project_id", "attachment_id",
-                                        string="related_files"),
         'reject_logs': fields.many2many("project.project.active.tasking.reject.log", "project_tasking_reject_log",
                                         "tasking_id", "log_id", string="Reject Log"),
 
@@ -342,9 +340,21 @@ class project_active_tasking(osv.osv):
         log_info = u'总师室打回申请单'
         return self._send_workflow_signal(cr, uid, ids, log_info, 'jingyinshi_reject')
 
+    def _update_attachments(self, cr, uid, ids, context=None):
+        attachment_obj = self.pool.get('ir.attachment')
+        dummy, trash_dir_id = self.pool.get('ir.model.data').get_object_reference(cr, 1, 'up_project', 'dir_up_project_trash')
+        dummy, actived_dir_id = self.pool.get('ir.model.data').get_object_reference(cr, 1, 'up_project', 'dir_up_project_active')
+        for tasking in self.browse(cr, uid, ids, context):
+            all_attachments = attachment_obj.search(cr, uid, [('res_model', '=', 'project.project'), ('res_id', '=', tasking.project_id)], context)
+            saved_attachment_ids = [a.id for a in tasking.project_id.attachments] + [a.id for a in tasking.else_attachments]
+            trash_attachment_ids = set(all_attachments) - set(saved_attachment_ids)
+            if saved_attachment_ids: attachment_obj.write(cr, 1, saved_attachment_ids, {'parent_id': actived_dir_id}, context)
+            if trash_attachment_ids: attachment_obj.write(cr, 1, list(trash_attachment_ids), {'parent_id': trash_dir_id}, context)
+
 
     def manager_review_accept(self, cr, uid, ids, context=None):
         self._sign_form(cr, uid, ids, 'director_approve', 'director_approve_time', context=context)
+        self._update_attachments(cr, uid, ids, context=None)
         log_info = u'负责人确认,启动项目'
         return self._send_workflow_signal(cr, uid, ids, log_info, 'fuzeren_submit')
 

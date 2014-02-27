@@ -130,8 +130,7 @@
                                                attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
                                         <div>
                                             <field name="attachments" widget="many2many_binary"
-                                                   index_model="project.project" index_id="project_id"
-                                                   context="{'parent_id':%(dir_up_project_active)d}"
+                                                   res_model="project.project" res_id="project_id" context="{'parent_id':%(dir_up_project_activing)d}"
                                                    attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])],
                                                    'invisible':[('is_project_director','!=',True),('is_project_creater','!=',True),('is_user_in_operator_group','!=',True),('is_user_in_engineer_group','!=',True),('is_chief','!=',True),('is_admin','!=',True)]}"
                                                     />
@@ -259,6 +258,7 @@
                             <group class="activetable" col="4"
                                    attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}">
                                 <field name="else_attachments" widget="many2many_binary"
+                                       res_model="project.project" res_id="project_id" context="{'parent_id':%(dir_up_project_activing)d}"
                                        attrs="{'readonly':[('state','not in',['zhidingbumen','zhidingfuzeren','suozhangqianzi'])]}"
                                        colspan="4"/>
 
