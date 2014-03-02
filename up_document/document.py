@@ -184,6 +184,10 @@ class IrAttachmentInherit(osv.osv):
         'file_size_human': fields.function(_get_file_size, type='float', digits=[10, 3], method=True, string='File Size Human (MB)'),
     }
 
+    _sql_constraints = [
+        ('dirname_uniq', 'unique (name,parent_id,res_model,res_id)', 'The directory name must be unique !'),
+    ]
+
     def on_change_name(self, cr, uid, ids, context=None):
         attachment = self.browse(cr, uid, ids, context)[0]
         self.write(cr, uid, attachment.id, {'name': attachment.datas_fname}, context)

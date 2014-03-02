@@ -100,7 +100,15 @@
 
         <!--document.directory-->
         <record model="document.directory" id="dir_up_project">
-            <field name="name">项目</field>
+            <field name="name">项目文档</field>
+            <field name="user_id" eval="False"/>
+            <field name="parent_id" eval="False"/>
+            <field name="ressource_id">0</field>
+            <field name="type">ressource</field>
+            <field name="ressource_type_id" ref="model_project_project"/>
+        </record>
+        <record model="document.directory" id="dir_up_project_provisional">
+            <field name="name">项目临时目录</field>
             <field name="user_id" eval="False"/>
             <field name="parent_id" eval="False"/>
             <field name="ressource_id">0</field>
@@ -110,7 +118,7 @@
         <record model="document.directory" id="dir_up_project_activing">
             <field name="name">任务下达进行中</field>
             <field name="user_id" eval="False"/>
-            <field name="parent_id" ref="dir_up_project"/>
+            <field name="parent_id" ref="dir_up_project_provisional"/>
             <field name="ressource_id">0</field>
         </record>
         <record model="document.directory" id="dir_up_project_active">
@@ -122,7 +130,7 @@
         <record model="document.directory" id="dir_up_project_trash">
             <field name="name">垃圾桶</field>
             <field name="user_id" eval="False"/>
-            <field name="parent_id" ref="dir_up_project"/>
+            <field name="parent_id" ref="dir_up_project_provisional"/>
             <field name="ressource_id">0</field>
         </record>
     </data>
