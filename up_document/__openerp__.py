@@ -24,6 +24,9 @@ Independent Super File Version control System
     'js': [
         'static/src/js/document.js',
     ],
+    'qweb': [
+        'static/src/xml/*.xml',
+    ],
     'auto_install': False,
     'installable': True,
 }
