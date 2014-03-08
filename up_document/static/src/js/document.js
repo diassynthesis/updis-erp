@@ -42,14 +42,23 @@ openerp.up_document = function (instance, m) {
                         if (responseJSON.success) {
                             self.reload();
                         } else {
-                            alert('上传文件出错!\n' + responseJSON.error);
+                            instance.web.dialog($(QWeb.render("CrashManager.error", responseJSON)), {
+                                width: '70%',
+                                title: "上传文件出错!",
+                                modal: true,
+                                buttons: [
+                                    {text: _t("Ok"), click: function () {
+                                        $(this).dialog("close");
+                                    }}
+                                ]
+                            });
                         }
                     }
                 });
                 this.ViewManager.$el.find('.multi_file_uploader_container div.qq-upload-button').bind('mouseover', function (e) {
                     $('.multi_file_uploader_container .qq-uploader .qq-upload-list').css('display', 'block');
                 });
-                $(document).bind('click',function(){
+                $(document).bind('click', function () {
                     $('.multi_file_uploader_container .qq-uploader .qq-upload-list').css('display', 'none');
                 })
 

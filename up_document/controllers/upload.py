@@ -1,5 +1,6 @@
 import base64
 import simplejson
+from xmlrpclib import Fault
 from web_clupload.controllers.main import InternalHome
 import openerp
 
@@ -35,6 +36,10 @@ class InternalHomeExtend(InternalHome):
         #     args['id'] = 'v' + args['filename'].split(".")[0][18:25]
         #     args['filename'] = qqfile
 
+        except Fault, e:
+            error = {'message': e.faultCode, 'data': {'debug': ''}}
+            args = {'error': error, 'filename': qqfile}
         except Exception, e:
-            args = {'error': e.faultCode, 'filename': qqfile}
+            error = {'message': e.message, 'data': {'debug': ''}}
+            args = {'error': error, 'filename': qqfile}
         return req.make_response(simplejson.dumps(args))
