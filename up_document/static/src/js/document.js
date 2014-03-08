@@ -4,84 +4,54 @@ openerp.up_document = function (instance, m) {
     var _t = instance.web._t,
         QWeb = instance.web.qweb;
 
-//    instance.web.Sidebar.include({
-//        init: function (parent) {
-//            var model = parent.dataset ? parent.dataset.model : undefined;
-//            var template = parent.__template__;
-//            if (model == 'ir.attachment' && template == 'ListView') {
-//                var self = this;
-//                this._super.apply(this, arguments);
-//                $('.oe_view_manager_sidebar').after(QWeb.render('AddGoogleDocumentItem', {widget: self}))
-//                $('.oe_sidebar_add_multi_doc').bind('click', function (e) {
-//                    alert('asdf');
-//                });
-//            } else {
-//                this._super.apply(this, arguments);
-//            }
-//
-//        },
-//        on_google_doc: function () {
-//            var self = this;
-//            var view = self.getParent();
-//            var ids = ( view.fields_view.type != "form" ) ? view.groups.get_selection().ids : [ view.datarecord.id ];
-//            if (!_.isEmpty(ids)) {
-//                view.sidebar_eval_context().done(function (context) {
-//                    var ds = new instance.web.DataSet(this, 'ir.attachment', context);
-//                    ds.call('google_doc_get', [view.dataset.model, ids, context]).done(function (r) {
-//                        if (r == 'False') {
-//                            var params = {
-//                                error: response,
-//                                message: _t("The user google credentials are not set yet. Contact your administrator for help.")
-//                            }
-//                            $(openerp.web.qweb.render("DialogWarning", params)).dialog({
-//                                title: _t("User Google credentials are not yet set."),
-//                                modal: true
-//                            });
-//                        }
-//                    }).done(function (r) {
-//                        window.open(r.url, "_blank");
-//                        view.reload();
-//                    });
-//                });
-//            }
-//        }
-//    });
-    instance.web.ListView.prototype.import_enabled = false;
     instance.web.ListView.include({
-        load_list: function (parent) {
-            var add_button = false;
-            if (!this.$buttons) {
-                add_button = true;
-            }
+        init: function (parent, dataset, view_id, options) {
             this._super.apply(this, arguments);
-            if (add_button) {
-                this.$buttons.on('click', '.oe_list_button_multi_upload', function () {
-//                    self.do_action({
-//                        type: 'ir.actions.client',
-//                        tag: 'import',
-//                        params: {
-//                            model: self.dataset.model
-//                        }
-//                    }, {
-//                        on_reverse_breadcrumb: function () {
-//                            self.reload();
-//                        },
-//                    });
-                    alert('aa');
-                    return false;
-                });
+            $('div.oe_view_manager_sidebar').after("<div class='oe_sidebar multi_file_uploader_container'/>")
+        },
+
+        select_record: function (index, view) {
+            this._super.apply(this, arguments);
+            if (this.ViewManager.$el.find('div.multi_file_uploader_container')) {
+                this.ViewManager.$el.find('div.multi_file_uploader_container').replaceWith("<div class='oe_sidebar multi_file_uploader_container'/>");
             }
+        },
+
+        view_loading: function (parent) {
+            this._super.apply(this, arguments);
             var model = parent.model;
             var type = parent.type;
-            if (model == 'ir.attachment' && type == 'tree') {
-
+            var context = this.dataset.context;
+            var active_id = context.active_id;
+            var active_model = context.active_model;
+            var res_model = context.default_res_model ? context.default_res_model : '';
+            var res_id = context.default_res_id ? context.default_res_id : 0;
+            if (model == 'ir.attachment' && type == 'tree' && active_id && active_model == 'document.directory') {
+                var uploader = new qq.FileUploader({
+                    element: this.ViewManager.$el.find('div.multi_file_uploader_container')[0],
+                    action: '/web/clupload/multi_upload',
+                    params: {
+                        'session_id': openerp.instances.instance0.session.session_id,
+                        'parent_id': active_id,
+                        'res_model': res_model,
+                        'res_id': res_id
+                    },
+                    uploadButtonText: "批量上传",
+                    onComplete: function (id, fileName, responseJSON) {
+                        if (responseJSON.success) {
+                        } else {
+                            alert('上传文件出错!\n' + responseJSON.error);
+                        }
+                    }
+                });
 
             } else {
-                $('.oe_list_button_multi_upload').css('display', 'none');
-                $('.oe_list_span_multi_upload').css('display', 'none');
+//                $('.oe_list_button_multi_upload').css('display', 'none');
+//                $('.oe_list_span_multi_upload').css('display', 'none');
             }
 
         }
+
     });
 };
 
