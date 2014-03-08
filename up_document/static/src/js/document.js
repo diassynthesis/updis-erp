@@ -7,7 +7,7 @@ openerp.up_document = function (instance, m) {
     instance.web.ListView.include({
         init: function (parent, dataset, view_id, options) {
             this._super.apply(this, arguments);
-            $('div.oe_view_manager_sidebar').after("<div class='oe_sidebar multi_file_uploader_container'/>")
+            $('div.oe_view_manager_sidebar').append("<div class='oe_multi_container'><div class='oe_sidebar multi_file_uploader_container'/></div>");
         },
 
         select_record: function (index, view) {
@@ -19,6 +19,7 @@ openerp.up_document = function (instance, m) {
 
         view_loading: function (parent) {
             this._super.apply(this, arguments);
+            var self = this;
             var model = parent.model;
             var type = parent.type;
             var context = this.dataset.context;
@@ -27,7 +28,7 @@ openerp.up_document = function (instance, m) {
             var res_model = context.default_res_model ? context.default_res_model : '';
             var res_id = context.default_res_id ? context.default_res_id : 0;
             if (model == 'ir.attachment' && type == 'tree' && active_id && active_model == 'document.directory') {
-                var uploader = new qq.FileUploader({
+                new qq.FileUploader({
                     element: this.ViewManager.$el.find('div.multi_file_uploader_container')[0],
                     action: '/web/clupload/multi_upload',
                     params: {
@@ -39,11 +40,18 @@ openerp.up_document = function (instance, m) {
                     uploadButtonText: "批量上传",
                     onComplete: function (id, fileName, responseJSON) {
                         if (responseJSON.success) {
+                            self.reload();
                         } else {
                             alert('上传文件出错!\n' + responseJSON.error);
                         }
                     }
                 });
+                this.ViewManager.$el.find('.multi_file_uploader_container div.qq-upload-button').bind('mouseover', function (e) {
+                    $('.multi_file_uploader_container .qq-uploader .qq-upload-list').css('display', 'block');
+                });
+                $(document).bind('click',function(){
+                    $('.multi_file_uploader_container .qq-uploader .qq-upload-list').css('display', 'none');
+                })
 
             } else {
 //                $('.oe_list_button_multi_upload').css('display', 'none');

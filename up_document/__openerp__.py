@@ -24,6 +24,9 @@ Independent Super File Version control System
     'js': [
         'static/src/js/document.js',
     ],
+    'css': [
+        'static/src/css/up_document.css',
+    ],
     'auto_install': False,
     'installable': True,
 }
