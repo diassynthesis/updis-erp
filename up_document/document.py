@@ -211,8 +211,11 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         attachments = attachment_obj.browse(cr, uid, record_ids, context=context)
         total_size = reduce(lambda x, y: y.file_size + x, attachments, 0)
         # total_size = reduce(self.test, attachments)
+        for attach in attachments:
+            if attach.file_size > 10 * 1024*1024:
+                raise osv.except_osv(_('Warning!'), _('Some of the selected file is large than 10MB!'))
         # TODO: need some much useful limit
-        if total_size > 200 * 1024 * 1024:
+        if total_size > 50 * 1024 * 1024:
             raise osv.except_osv(_('Warning!'), _('Too Large the file will be generate!'))
         if len(record_ids) > 20:
             raise osv.except_osv(_('Warning!'), _('Too Many Attachments you choose!'))
