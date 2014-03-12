@@ -44,6 +44,15 @@
                             attrs="{'invisible':[('related_action_id','=',False)]}"
                             groups="base.group_document_user"/>
                 </xpath>
+                <xpath expr="//field[@name='parent_id']" position="attributes">
+                    <attribute name="on_change">onchange_parent_id(parent_id)</attribute>
+                </xpath>
+                <xpath expr="//page[@string='Security']/label[2]" position="replace">
+                    <label colspan="4"
+                           string="Only members of these groups will have access to this directory and its files."/>
+                    <label colspan="4" style="color:red;"
+                           string="These groups, however, will automatic add to children directories everytime,Please check the groups status everytime you change the parent directories!"/>
+                </xpath>
             </field>
         </record>
         <record model="ir.ui.view" id="view_document_directory_public_struct_tree">
@@ -84,9 +93,9 @@
                         <field name="user_id" invisible="1"/>
                     </group>
                     <notebook colspan="4">
-                        <page string="Documents">
+                        <!--page string="Documents">
                             <field name="file_ids" context="{'tree_view_ref':'up_document.view_document_file_public_tree'}"/>
-                        </page>
+                        </page-->
                         <page string="Security">
                             <div>
                                 <label colspan="4"
