@@ -226,6 +226,8 @@ class LibraryBookWish(osv.osv):
                                        }),
         'has_image': fields.function(_has_image, type="boolean", string='Have Image'),
         'link_book_id': fields.many2one('library.book.book', string='Link Book'),
+        'create_date': fields.datetime('Created on', select=True),
+        'create_uid': fields.many2one('res.users', 'Author', select=True),
     }
 
     _defaults = {
@@ -475,7 +477,7 @@ class LibraryType(osv.osv):
     _description = 'Book Type'
 
     _columns = {
-        'name': fields.char(size=50, string='Book Type Name',),
+        'name': fields.char(size=50, string='Book Type Name', ),
     }
 
 
