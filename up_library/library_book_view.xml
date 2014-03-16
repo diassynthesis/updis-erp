@@ -323,6 +323,8 @@
                     <field name="author"/>
                     <field name="publisher"/>
                     <field name="state"/>
+                    <field name="create_uid"/>
+                    <field name="create_date"/>
                 </tree>
             </field>
         </record>
@@ -371,6 +373,12 @@
                             <group>
                                 <field name="link_book_id" attrs="{'invisible':[('state','!=','bought')]}"
                                        readonly="1"/>
+                            </group>
+                            <newline/>
+
+                            <group col="4">
+                                <field name="create_uid" readonly="1"/>
+                                <field name="create_date" readonly="1"/>
                             </group>
                         </group>
                     </sheet>
