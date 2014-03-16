@@ -11,10 +11,9 @@ class DocumentDirectoryAccess(osv.osv):
 
     _columns = {
         'group_id': fields.many2one('res.groups', 'Group', ondelete='cascade', select=True, required=True),
-        'perm_read': fields.boolean('Directory & File Read Access', readonly=True),
-        'perm_write': fields.boolean('Directory Write & File Modify Access'),
-        'perm_create': fields.boolean('Sub Directory Create Access'),
-        'perm_unlink': fields.boolean('Sub Directory Delete Access'),
+        'perm_read': fields.boolean('Directory / Sub File Read Access', readonly=True),
+        'perm_write': fields.boolean('Sub File Write / Modify Access'),
+        'perm_create_unlink': fields.boolean('Sub Directory Create / Unlink Access'),
         'directory_id': fields.many2one('document.directory', string='Related Directory ID', ondelete='cascade'),
     }
 
@@ -74,8 +73,8 @@ class DocumentDirectoryInherit(osv.osv):
             new_group_ids += [(0, 0, {'group_id': g.group_id.id,
                                       'perm_read': g.perm_read,
                                       'perm_write': g.perm_write,
-                                      'perm_create': g.perm_create,
-                                      'perm_unlink': g.perm_unlink, }) for g in parent_directory.group_ids]
+                                      'perm_create_unlink': g.perm_create_unlink,
+            }) for g in parent_directory.group_ids]
             # directory = self.browse(cr, uid, ids[0], context=context)
             # directory.write({'group_ids': (5), }, context=context)
             # self.write(cr, uid, ids[0], {'group_ids': (2, [g.id for g in directory.group_ids])}, context=context)
@@ -96,31 +95,24 @@ class DocumentDirectoryInherit(osv.osv):
                 break
         return flag
 
-    def _check_group_unlink_privilege(self, cr, uid, ids, context=None):
+    def _check_group_create_unlink_privilege(self, cr, uid, ids, context=None):
         for directory in self.browse(cr, uid, ids, context):
             if not self.check_directory_privilege(cr, uid, directory, 'perm_unlink', context):
-                raise osv.except_osv(_('Warning!'), _('You have no privilege to Unlink some of the directories.'))
+                raise osv.except_osv(_('Warning!'), _('You have no privilege to Create / Unlink some of the directories.'))
 
     def _check_group_write_privilege(self, cr, uid, ids, context=None):
         for directory in self.browse(cr, uid, ids, context):
             if not self.check_directory_privilege(cr, uid, directory, 'perm_write', context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Write some of the directories.'))
 
-    def _check_group_create_privilege(self, cr, uid, vals, context=None):
-        parent_id = vals['parent_id']
-        if parent_id:
-            directory = self.browse(cr, uid, parent_id, context=context)
-            if not self.check_directory_privilege(cr, uid, directory, 'perm_create', context):
-                raise osv.except_osv(_('Warning!'), _('You have no privilege to Create the directory.'))
-
     def create(self, cr, uid, vals, context=None):
         if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
-            self._check_group_create_privilege(cr, uid, vals, context)
+            self._check_group_create_unlink_privilege(cr, uid, vals, context)
         return super(DocumentDirectoryInherit, self).create(cr, uid, vals, context)
 
     def unlink(self, cr, uid, ids, context=None):
         if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
-            self._check_group_unlink_privilege(cr, uid, ids, context)
+            self._check_group_create_unlink_privilege(cr, uid, ids, context)
         return super(DocumentDirectoryInherit, self).unlink(cr, uid, ids, context)
 
     def write(self, cr, uid, ids, vals, context=None):

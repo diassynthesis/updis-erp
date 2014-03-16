@@ -100,7 +100,7 @@
 
         <!--document.directory-->
         <record model="document.directory" id="dir_up_project">
-            <field name="name">项目文档</field>
+            <field name="name">项目目录</field>
             <field name="user_id" eval="False"/>
             <field name="parent_id" eval="False"/>
             <field name="ressource_id">0</field>
@@ -108,7 +108,7 @@
             <field name="ressource_type_id" ref="model_project_project"/>
         </record>
         <record model="document.directory" id="dir_up_project_provisional">
-            <field name="name">项目临时目录</field>
+            <field name="name">项目临时</field>
             <field name="user_id" eval="False"/>
             <field name="parent_id" eval="False"/>
             <field name="ressource_id">0</field>

@@ -24,8 +24,7 @@
                     <field name="group_id"/>
                     <field name="perm_read"/>
                     <field name="perm_write"/>
-                    <field name="perm_create"/>
-                    <field name="perm_unlink"/>
+                    <field name="perm_create_unlink"/>
                 </tree>
             </field>
         </record>
@@ -48,8 +47,6 @@
                     <attribute name="on_change">onchange_parent_id(parent_id)</attribute>
                 </xpath>
                 <xpath expr="//page[@string='Security']/label[2]" position="replace">
-                    <label colspan="4"
-                           string="Only members of these groups will have access to this directory and its files."/>
                     <label colspan="4" style="color:red;"
                            string="These groups, however, will automatic add to children directories everytime,Please check the groups status everytime you change the parent directories!"/>
                 </xpath>

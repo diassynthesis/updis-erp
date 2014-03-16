@@ -1,0 +1,277 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* up_document
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0-20131022-232438\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-03-16 15:46+0000\n"
+"PO-Revision-Date: 2014-03-16 15:46+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: up_document
+#: field:document.directory.access,group_id:0
+msgid "Group"
+msgstr "组"
+
+#. module: up_document
+#: view:document.directory.action.wizard:0
+msgid "Create"
+msgstr "创建"
+
+#. module: up_document
+#: view:document.directory.access:0
+msgid "Access"
+msgstr "权限"
+
+#. module: up_document
+#: model:ir.model,name:up_document.model_document_directory_access
+msgid "document.directory.access"
+msgstr "目录权限"
+
+#. module: up_document
+#: view:document.directory:0
+msgid "Security"
+msgstr "安全设定"
+
+#. module: up_document
+#: model:ir.ui.menu,name:up_document.menu_document_directories_tree
+msgid "Public Directory Structure"
+msgstr "公共目录结构"
+
+#. module: up_document
+#: field:document.directory.action.wizard,name:0
+msgid "Action Name"
+msgstr "动作名称"
+
+#. module: up_document
+#: view:ir.attachment.download.wizard:0
+msgid "Are you sure you want download attachments below?"
+msgstr "你确定要批量下载下面的文件吗?"
+
+#. module: up_document
+#: view:document.directory:0
+msgid "Create Action"
+msgstr "创建动作"
+
+#. module: up_document
+#: view:ir.attachment.download.wizard:0
+msgid "file encoding, please be sure to view and edit\n"
+"                           using supported software."
+msgstr "文件处理中,请确保使用正确的\n"
+"                       软件打开."
+
+#. module: up_document
+#: view:document.directory:0
+msgid "Delete Action"
+msgstr "删除动作"
+
+#. module: up_document
+#: model:ir.actions.act_window,name:up_document.acttion_download_attachments_wiz
+#: view:ir.attachment.download.wizard:0
+msgid "Download Attachments"
+msgstr "批量下载附件"
+
+#. module: up_document
+#: field:ir.attachment,file_size_human:0
+msgid "File Size Human (MB)"
+msgstr "文件大小(MB)"
+
+#. module: up_document
+#: model:ir.model,name:up_document.model_ir_attachment_download_wizard
+msgid "ir.attachment.download.wizard"
+msgstr "附件下载"
+
+#. module: up_document
+#: model:ir.ui.menu,name:up_document.menu_document_public_all
+msgid "Public Document"
+msgstr "公共文件"
+
+#. module: up_document
+#: field:document.directory,related_action_id:0
+msgid "Related Menu Action"
+msgstr "相关菜单动作"
+
+#. module: up_document
+#: selection:ir.attachment.download.wizard,state:0
+msgid "choose"
+msgstr "选择"
+
+#. module: up_document
+#: field:document.directory.access,directory_id:0
+msgid "Related Directory ID"
+msgstr "相关目录"
+
+#. module: up_document
+#: sql_constraint:ir.attachment:0
+msgid "The directory name must be unique !"
+msgstr "目录名必须唯一!"
+
+#. module: up_document
+#: model:ir.actions.act_window,name:up_document.action_document_direct_action_wiz
+msgid "Document Directory Related Action"
+msgstr "目录相关动作"
+
+#. module: up_document
+#: view:ir.attachment.download.wizard:0
+msgid "Here is the exported file:"
+msgstr "这是已经导出的文件:"
+
+#. module: up_document
+#: view:ir.attachment.download.wizard:0
+msgid "zip"
+msgstr "zip"
+
+#. module: up_document
+#: view:document.directory.action.wizard:0
+msgid "Document Directory Action"
+msgstr "目录"
+
+#. module: up_document
+#: selection:ir.attachment.download.wizard,state:0
+msgid "get"
+msgstr "下载"
+
+#. module: up_document
+#: view:document.directory:0
+msgid "Directories"
+msgstr "目录"
+
+#. module: up_document
+#: view:ir.attachment.download.wizard:0
+msgid "This file was generated using the universal"
+msgstr "此文件使用通用的 Unicode/UTF-8 文件编码"
+
+#. module: up_document
+#: view:document.directory.action.wizard:0
+#: view:ir.attachment.download.wizard:0
+msgid "Cancel"
+msgstr "取消"
+
+#. module: up_document
+#: model:ir.ui.menu,name:up_document.menu_document_public_config
+msgid "Public Document Config"
+msgstr "公共文件管理"
+
+#. module: up_document
+#: model:ir.ui.menu,name:up_document.menu_document_dir_public_menagement
+msgid "Public Directory Management"
+msgstr "公共目录管理"
+
+#. module: up_document
+#: model:ir.model,name:up_document.model_document_directory_action_wizard
+msgid "document.directory.action.wizard"
+msgstr "目录"
+
+#. module: up_document
+#: model:ir.model,name:up_document.model_document_directory
+msgid "Directory"
+msgstr "目录"
+
+#. module: up_document
+#: model:ir.actions.act_window,name:up_document.action_public_document_directory_tree
+msgid "Public Directories Structure"
+msgstr "公共目录结构"
+
+#. module: up_document
+#: view:ir.attachment.download.wizard:0
+msgid "If some of the attachments is too large it may cost lot of time, please Download it seperatily."
+msgstr "如果以下的文件中存在较大的文件(红色),请返回上一个菜单单独下载他们."
+
+#. module: up_document
+#: view:ir.attachment.download.wizard:0
+msgid "Export Complete"
+msgstr "导出完成"
+
+#. module: up_document
+#: view:document.directory:0
+msgid "Only members of these groups will have access to this directory and its files."
+msgstr "只有这些用户组的成员才有权限访问该目录和其中的文件。"
+
+#. module: up_document
+#: field:ir.attachment.download.wizard,attachment_ids:0
+msgid "Attachments"
+msgstr "文件"
+
+#. module: up_document
+#: model:ir.actions.act_window,name:up_document.action_document_dir_public_config
+msgid "Public Document Directories Config"
+msgstr "公共目录配置"
+
+#. module: up_document
+#: view:ir.attachment:0
+msgid "Sync Name"
+msgstr "同步文件名"
+
+#. module: up_document
+#: field:ir.attachment.download.wizard,name:0
+msgid "File Name"
+msgstr "文件名"
+
+#. module: up_document
+#: field:document.directory.access,perm_create_unlink:0
+msgid "Sub Directory Create / Unlink Access"
+msgstr "子目录创建/删除权限"
+
+#. module: up_document
+#: field:document.directory.access,perm_read:0
+msgid "Directory / Sub File Read Access"
+msgstr "目录/下属文件访问权限"
+
+#. module: up_document
+#: field:document.directory.access,perm_write:0
+msgid "Sub File Write / Modify Access"
+msgstr "下属文件写入权限"
+
+#. module: up_document
+#: view:document.directory:0
+msgid "onchange_parent_id(parent_id)"
+msgstr "onchange_parent_id(parent_id)"
+
+#. module: up_document
+#: view:document.directory:0
+msgid "Public Directories"
+msgstr "公共目录"
+
+#. module: up_document
+#: view:document.directory:0
+msgid "These groups, however, will automatic add to children directories everytime,Please check the groups status everytime you change the parent directories!"
+msgstr "下列的权限配置,在创建子目录时会默认添加到子目录的权限配置中,如果你变更了上级目录的权限,请检查下属目录的权限是否符合你的需求配置."
+
+#. module: up_document
+#: field:ir.attachment.download.wizard,data:0
+msgid "File"
+msgstr "文件"
+
+#. module: up_document
+#: field:ir.attachment.download.wizard,state:0
+msgid "unknown"
+msgstr "unknown"
+
+#. module: up_document
+#: view:ir.attachment.download.wizard:0
+msgid "Download"
+msgstr "下载"
+
+#. module: up_document
+#: view:ir.attachment.download.wizard:0
+msgid "Close"
+msgstr "关闭"
+
+#. module: up_document
+#: model:ir.model,name:up_document.model_ir_attachment
+msgid "ir.attachment"
+msgstr "文件"
+
+#. module: up_document
+#: view:document.directory.action.wizard:0
+#: view:ir.attachment.download.wizard:0
+msgid "or"
+msgstr "或"
+
