@@ -1,7 +1,7 @@
 __author__ = 'cysnake4713'
 
 import openerp.osv.orm
-from tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT
 
 
 def _get_selection_translated(self, cr, uid, field_name, lang, selections, context=None):
