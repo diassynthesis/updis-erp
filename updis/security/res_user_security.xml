@@ -42,5 +42,10 @@
         <record model="ir.ui.menu" id="base.menu_res_company_global">
             <field eval="[(4, ref('base.group_system'))]" name="groups_id"/>
         </record>
+
+        <!-- add cellphone group zhaotoubiao -->
+        <record model="res.groups" id="updis.group_cellphone_tender">
+            <field name="name">Cellphone Tender Group</field>
+        </record>
     </data>
 </openerp>
