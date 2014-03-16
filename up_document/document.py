@@ -13,7 +13,7 @@ class DocumentDirectoryAccess(osv.osv):
         'group_id': fields.many2one('res.groups', 'Group', ondelete='cascade', select=True, required=True),
         'perm_read': fields.boolean('Directory / Sub File Read Access', readonly=True),
         'perm_write': fields.boolean('Sub File Write / Modify Access'),
-        'perm_create_unlink': fields.boolean('Sub Directory Create / Unlink Access'),
+        'perm_create_unlink': fields.boolean('Sub Directory Create / Write / Unlink Access'),
         'directory_id': fields.many2one('document.directory', string='Related Directory ID', ondelete='cascade'),
     }
 
@@ -95,46 +95,34 @@ class DocumentDirectoryInherit(osv.osv):
                 break
         return flag
 
-    def _check_group_create_unlink_privilege(self, cr, uid, ids, context=None):
+    def _check_group_unlink_privilege(self, cr, uid, ids, context=None):
         for directory in self.browse(cr, uid, ids, context):
-            if not self.check_directory_privilege(cr, uid, directory, 'perm_unlink', context):
-                raise osv.except_osv(_('Warning!'), _('You have no privilege to Create / Unlink some of the directories.'))
+            if not self.check_directory_privilege(cr, uid, directory, 'perm_create_unlink', context):
+                raise osv.except_osv(_('Warning!'), _('You have no privilege to Unlink some of the directories.'))
+
+    def _check_group_create_privilege(self, cr, uid, vals, context=None):
+        parent_id = vals['parent_id']
+        if parent_id:
+            directory = self.browse(cr, uid, parent_id, context=context)
+            if not self.check_directory_privilege(cr, uid, directory, 'perm_create_unlink', context):
+                raise osv.except_osv(_('Warning!'), _('You have no privilege to Create the directory.'))
 
     def _check_group_write_privilege(self, cr, uid, ids, context=None):
         for directory in self.browse(cr, uid, ids, context):
-            if not self.check_directory_privilege(cr, uid, directory, 'perm_write', context):
+            if not self.check_directory_privilege(cr, uid, directory, 'perm_create_unlink', context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Write some of the directories.'))
 
     def create(self, cr, uid, vals, context=None):
         if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
-            self._check_group_create_unlink_privilege(cr, uid, vals, context)
+            self._check_group_create_privilege(cr, uid, vals, context)
         return super(DocumentDirectoryInherit, self).create(cr, uid, vals, context)
 
     def unlink(self, cr, uid, ids, context=None):
         if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
-            self._check_group_create_unlink_privilege(cr, uid, ids, context)
+            self._check_group_unlink_privilege(cr, uid, ids, context)
         return super(DocumentDirectoryInherit, self).unlink(cr, uid, ids, context)
 
     def write(self, cr, uid, ids, vals, context=None):
         if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
             self._check_group_write_privilege(cr, uid, ids, context)
         return super(DocumentDirectoryInherit, self).write(cr, uid, ids, vals, context)
-
-
-# class FileConfig(osv.osv):
-#     _name = 'sfile.file.config'
-#     _description = 'File Config'
-#
-#     _columns = {
-#         'name': fields.char(size=256, string='Name'),
-#         'value': fields.char(size=512, string='Value'),
-#     }
-#
-#
-# class FileTag(osv.osv):
-#     _name = 'sfile.file.tag'
-#     _description = 'File Tag'
-#
-#     _columns = {
-#         'name': fields.char(size=256, string='Tag Name'),
-#     }

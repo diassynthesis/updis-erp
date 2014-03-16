@@ -33,7 +33,7 @@ msgstr "权限"
 #. module: up_document
 #: model:ir.model,name:up_document.model_document_directory_access
 msgid "document.directory.access"
-msgstr "目录权限"
+msgstr "文件夹权限"
 
 #. module: up_document
 #: view:document.directory:0
@@ -43,7 +43,7 @@ msgstr "安全设定"
 #. module: up_document
 #: model:ir.ui.menu,name:up_document.menu_document_directories_tree
 msgid "Public Directory Structure"
-msgstr "公共目录结构"
+msgstr "公共文件夹结构"
 
 #. module: up_document
 #: field:document.directory.action.wizard,name:0
@@ -64,8 +64,7 @@ msgstr "创建动作"
 #: view:ir.attachment.download.wizard:0
 msgid "file encoding, please be sure to view and edit\n"
 "                           using supported software."
-msgstr "文件处理中,请确保使用正确的\n"
-"                       软件打开."
+msgstr "文件压缩,请确保使用正确的软件打开."
 
 #. module: up_document
 #: view:document.directory:0
@@ -106,17 +105,17 @@ msgstr "选择"
 #. module: up_document
 #: field:document.directory.access,directory_id:0
 msgid "Related Directory ID"
-msgstr "相关目录"
+msgstr "相关文件夹"
 
 #. module: up_document
 #: sql_constraint:ir.attachment:0
 msgid "The directory name must be unique !"
-msgstr "目录名必须唯一!"
+msgstr "文件夹名必须唯一!"
 
 #. module: up_document
 #: model:ir.actions.act_window,name:up_document.action_document_direct_action_wiz
 msgid "Document Directory Related Action"
-msgstr "目录相关动作"
+msgstr "文件夹相关动作"
 
 #. module: up_document
 #: view:ir.attachment.download.wizard:0
@@ -131,7 +130,7 @@ msgstr "zip"
 #. module: up_document
 #: view:document.directory.action.wizard:0
 msgid "Document Directory Action"
-msgstr "目录"
+msgstr "文件夹"
 
 #. module: up_document
 #: selection:ir.attachment.download.wizard,state:0
@@ -141,12 +140,12 @@ msgstr "下载"
 #. module: up_document
 #: view:document.directory:0
 msgid "Directories"
-msgstr "目录"
+msgstr "文件夹"
 
 #. module: up_document
 #: view:ir.attachment.download.wizard:0
 msgid "This file was generated using the universal"
-msgstr "此文件使用通用的 Unicode/UTF-8 文件编码"
+msgstr "此文件使用通用的 GBK 文件编码"
 
 #. module: up_document
 #: view:document.directory.action.wizard:0
@@ -162,22 +161,22 @@ msgstr "公共文件管理"
 #. module: up_document
 #: model:ir.ui.menu,name:up_document.menu_document_dir_public_menagement
 msgid "Public Directory Management"
-msgstr "公共目录管理"
+msgstr "公共文件夹管理"
 
 #. module: up_document
 #: model:ir.model,name:up_document.model_document_directory_action_wizard
 msgid "document.directory.action.wizard"
-msgstr "目录"
+msgstr "文件夹"
 
 #. module: up_document
 #: model:ir.model,name:up_document.model_document_directory
 msgid "Directory"
-msgstr "目录"
+msgstr "文件夹"
 
 #. module: up_document
 #: model:ir.actions.act_window,name:up_document.action_public_document_directory_tree
 msgid "Public Directories Structure"
-msgstr "公共目录结构"
+msgstr "公共文件夹结构"
 
 #. module: up_document
 #: view:ir.attachment.download.wizard:0
@@ -192,7 +191,7 @@ msgstr "导出完成"
 #. module: up_document
 #: view:document.directory:0
 msgid "Only members of these groups will have access to this directory and its files."
-msgstr "只有这些用户组的成员才有权限访问该目录和其中的文件。"
+msgstr "只有这些用户组的成员才有权限访问该文件夹和其中的文件。"
 
 #. module: up_document
 #: field:ir.attachment.download.wizard,attachment_ids:0
@@ -202,7 +201,7 @@ msgstr "文件"
 #. module: up_document
 #: model:ir.actions.act_window,name:up_document.action_document_dir_public_config
 msgid "Public Document Directories Config"
-msgstr "公共目录配置"
+msgstr "公共文件夹配置"
 
 #. module: up_document
 #: view:ir.attachment:0
@@ -216,18 +215,18 @@ msgstr "文件名"
 
 #. module: up_document
 #: field:document.directory.access,perm_create_unlink:0
-msgid "Sub Directory Create / Unlink Access"
-msgstr "子目录创建/删除权限"
+msgid "Sub Directory Create / Write / Unlink Access"
+msgstr "文件夹创建/修改/删除权限"
 
 #. module: up_document
 #: field:document.directory.access,perm_read:0
 msgid "Directory / Sub File Read Access"
-msgstr "目录/下属文件访问权限"
+msgstr "文件夹/下属文件访问权限"
 
 #. module: up_document
 #: field:document.directory.access,perm_write:0
 msgid "Sub File Write / Modify Access"
-msgstr "下属文件写入权限"
+msgstr "下属文件/添加/修改/删除权限"
 
 #. module: up_document
 #: view:document.directory:0
@@ -237,12 +236,12 @@ msgstr "onchange_parent_id(parent_id)"
 #. module: up_document
 #: view:document.directory:0
 msgid "Public Directories"
-msgstr "公共目录"
+msgstr "公共文件夹"
 
 #. module: up_document
 #: view:document.directory:0
 msgid "These groups, however, will automatic add to children directories everytime,Please check the groups status everytime you change the parent directories!"
-msgstr "下列的权限配置,在创建子目录时会默认添加到子目录的权限配置中,如果你变更了上级目录的权限,请检查下属目录的权限是否符合你的需求配置."
+msgstr "下列的权限配置,在创建子文件夹时会默认添加到子文件夹的权限配置中,如果你变更了上级文件夹的权限,请检查下属文件夹的权限是否符合你的需求配置."
 
 #. module: up_document
 #: field:ir.attachment.download.wizard,data:0
@@ -274,4 +273,59 @@ msgstr "文件"
 #: view:ir.attachment.download.wizard:0
 msgid "or"
 msgstr "或"
+
+#. module: up_document
+#: code:addons/up_document/ir_attachment.py:42
+#, python-format
+msgid "You have no privilege to create attachments in this directory."
+msgstr "你没有权限在此文件夹下创建文件."
+
+#. module: up_document
+#: code:addons/up_document/ir_attachment.py:27
+#, python-format
+msgid "You have no privilege to Unlink some of the attachments."
+msgstr "你没有权限删除选中的某些文件."
+
+#. module: up_document
+#: code:addons/up_document/ir_attachment.py:34
+#, python-format
+msgid "You have no privilege to Write some of the attachments."
+msgstr "你没有权限修改选中的某些文件."
+
+#. module: up_document
+#: code:addons/up_document/ir_attachment.py:99
+#, python-format
+msgid "Some of the selected file is large than 10MB!"
+msgstr "有大于10MB的文件存在!"
+
+#. module: up_document
+#: code:addons/up_document/ir_attachment.py:102
+#, python-format
+msgid "Too Large the file will be generate!"
+msgstr "生成的文件将过大!请减少选中的文件数目."
+
+#. module: up_document
+#: code:addons/up_document/ir_attachment.py:104
+#, python-format
+msgid "Too Many Attachments you choose!"
+msgstr "选中的文件数目过多,请保证选中的文件数目不超过20个!"
+
+#. module: up_document
+#: code:addons/up_document/document.py:101
+#, python-format
+msgid "You have no privilege to Unlink some of the directories."
+msgstr "你没有权限删除某些文件夹!"
+
+#. module: up_document
+#: code:addons/up_document/document.py:107
+#, python-format
+msgid "You have no privilege to Create the directory."
+msgstr "你没有权限创建某些文件夹!"
+
+#. module: up_document
+#: code:addons/up_document/document.py:106
+#, python-format
+msgid "You have no privilege to Write some of the directories."
+msgstr "你没有权限修改文件夹!"
+
 
