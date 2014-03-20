@@ -545,6 +545,19 @@ class updis_project(osv.osv):
         self._workflow_signal(cr, uid, ids, signal)
         return True
 
+    def message_get_suggested_recipients(self, cr, uid, ids, context=None):
+        """ Returns suggested recipients for ids. Those are a list of
+            tuple (partner_id, partner_name, reason), to be managed by Chatter. """
+        result = dict.fromkeys(ids, list())
+        if self._all_columns.get('user_id'):
+            for obj in self.browse(cr, SUPERUSER_ID, ids, context=context):  # SUPERUSER because of a read on res.users that would crash otherwise
+                if not obj.user_id or not [u.partner_id for u in obj.user_id]:
+                    continue
+                for partner_id in [u.partner_id for u in obj.user_id]:
+                    self._message_add_suggested_recipient(cr, uid, result, obj, partner=partner_id,
+                                                          reason=self._all_columns['user_id'].column.string, context=context)
+        return result
+
 
 class project_profession(osv.Model):
     """Profession"""
