@@ -1,6 +1,8 @@
 #-*- encoding: utf-8 -*-
 import datetime
-from osv import fields, osv
+import random
+import math
+from openerp.osv import fields, osv
 
 
 class hr_employee_updis(osv.osv):
@@ -125,3 +127,22 @@ class EmployeeSpeciality(osv.osv):
     ]
 
     _sql_constraints = [('speciality_name_unique', 'unique(name)', 'name must be unique !')]
+
+
+class EmployeeBirthdayWish(osv.osv):
+    _description = "Birthday Wish"
+    _name = 'hr.birthday.wish'
+    _columns = {
+        'name': fields.text('Wish'),
+    }
+
+    def get_today_birthday(self, cr, uid):
+        cr.execute(
+            "select id from hr_employee " +
+            "Where date_part('day', birthday) = date_part('day', CURRENT_DATE) And date_part('MONTH', birthday) = date_part('MONTH', CURRENT_DATE)")
+        employee_ids = cr.fetchall()
+        employees = self.pool.get('hr.employee').read(cr, uid, list(reduce(lambda x, y: x + y, employee_ids)), ['name'])
+        total_wish = len(self.search(cr, 1, []))
+        random_wish = int(math.ceil(total_wish * random.random()))
+        wishes = self.browse(cr, 1, random_wish).name if random_wish > 0 else ''
+        return [e['name'] for e in employees], wishes
