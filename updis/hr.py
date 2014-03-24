@@ -1,5 +1,6 @@
 #-*- encoding: utf-8 -*-
 import datetime
+from operator import itemgetter
 import random
 import math
 from openerp.osv import fields, osv
@@ -140,8 +141,7 @@ class EmployeeBirthdayWish(osv.osv):
         cr.execute(
             "select id from hr_employee " +
             "Where date_part('day', birthday) = date_part('day', CURRENT_DATE) And date_part('MONTH', birthday) = date_part('MONTH', CURRENT_DATE)")
-        employee_ids = cr.fetchall()
-        employees = self.pool.get('hr.employee').read(cr, uid, list(reduce(lambda x, y: x + y, employee_ids, [])), ['name'])
+        employees = self.pool.get('hr.employee').read(cr, uid, map(itemgetter(0), cr.fetchall()), ['name'])
         total_wish = len(self.search(cr, 1, []))
         random_wish = int(math.ceil(total_wish * random.random()))
         wishes = self.browse(cr, 1, random_wish).name if random_wish > 0 else ''
