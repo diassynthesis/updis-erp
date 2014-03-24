@@ -139,7 +139,7 @@ class EmployeeBirthdayWish(osv.osv):
 
     def get_today_birthday(self, cr, uid):
         cr.execute(
-            "select id from hr_employee " +
+            "select DISTINCT id from hr_employee " +
             "Where date_part('day', birthday) = date_part('day', CURRENT_DATE) And date_part('MONTH', birthday) = date_part('MONTH', CURRENT_DATE)")
         employees = self.pool.get('hr.employee').read(cr, uid, map(itemgetter(0), cr.fetchall()), ['name'])
         total_wish = len(self.search(cr, 1, []))
