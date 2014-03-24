@@ -134,7 +134,7 @@ class EmployeeBirthdayWish(osv.osv):
     _description = "Birthday Wish"
     _name = 'hr.birthday.wish'
     _columns = {
-        'name': fields.text('Wish'),
+        'name': fields.char(string='Wish',size=1024),
     }
 
     def get_today_birthday(self, cr, uid):
