@@ -134,7 +134,7 @@ class EmployeeBirthdayWish(osv.osv):
     _description = "Birthday Wish"
     _name = 'hr.birthday.wish'
     _columns = {
-        'wish': fields.text('Wish'),
+        'name': fields.text('Wish'),
     }
 
     def get_today_birthday(self, cr, uid):
@@ -144,5 +144,5 @@ class EmployeeBirthdayWish(osv.osv):
         employees = self.pool.get('hr.employee').read(cr, uid, map(itemgetter(0), cr.fetchall()), ['name'])
         total_wish = len(self.search(cr, 1, []))
         random_wish = int(math.ceil(total_wish * random.random()))
-        wishes = self.browse(cr, 1, random_wish).wish if random_wish > 0 else ''
+        wishes = self.browse(cr, 1, random_wish).name if random_wish > 0 else ''
         return [e['name'] for e in employees], wishes

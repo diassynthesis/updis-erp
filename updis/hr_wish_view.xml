@@ -6,7 +6,7 @@
             <field name="model">hr.birthday.wish</field>
             <field name="arch" type="xml">
                 <tree string="Birthday wishes" editable="top" version="7.0">
-                    <field name="wish"/>
+                    <field name="name"/>
                 </tree>
             </field>
         </record>
