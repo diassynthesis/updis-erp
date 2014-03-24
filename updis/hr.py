@@ -140,8 +140,12 @@ class EmployeeBirthdayWish(osv.osv):
 
     def get_today_birthday(self, cr, uid):
         total_wish = self.search(cr, 1, [])
-        random_wish = total_wish[int(len(total_wish) * random.random())]
-        wishes = self.browse(cr, SUPERUSER_ID, random_wish).name if random_wish > 0 else ''
+        no = int(len(total_wish) * random.random()) if total_wish else None
+        if no:
+            random_wish = total_wish[no]
+        else:
+            random_wish = None
+        wishes = self.browse(cr, SUPERUSER_ID, random_wish).name if random_wish else ''
         cr.execute(
             "select DISTINCT id from hr_employee " +
             "Where date_part('day', birthday) = date_part('day', CURRENT_DATE) And date_part('MONTH', birthday) = date_part('MONTH', CURRENT_DATE)")
