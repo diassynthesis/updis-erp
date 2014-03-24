@@ -3,6 +3,7 @@ import datetime
 from operator import itemgetter
 import random
 import math
+from openerp import SUPERUSER_ID
 from openerp.osv import fields, osv
 
 
@@ -134,15 +135,16 @@ class EmployeeBirthdayWish(osv.osv):
     _description = "Birthday Wish"
     _name = 'hr.birthday.wish'
     _columns = {
-        'name': fields.char(string='Wish',size=1024),
+        'name': fields.text('Wish'),
     }
 
     def get_today_birthday(self, cr, uid):
+        total_wish = self.search(cr, 1, [])
+        random_wish = total_wish[int(len(total_wish) * random.random())]
+        wishes = self.browse(cr, SUPERUSER_ID, random_wish).name if random_wish > 0 else ''
         cr.execute(
             "select DISTINCT id from hr_employee " +
             "Where date_part('day', birthday) = date_part('day', CURRENT_DATE) And date_part('MONTH', birthday) = date_part('MONTH', CURRENT_DATE)")
         employees = self.pool.get('hr.employee').read(cr, uid, map(itemgetter(0), cr.fetchall()), ['name'])
-        total_wish = len(self.search(cr, 1, []))
-        random_wish = int(math.ceil(total_wish * random.random()))
-        wishes = self.browse(cr, 1, random_wish).name if random_wish > 0 else ''
+
         return [e['name'] for e in employees], wishes
