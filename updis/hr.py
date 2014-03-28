@@ -147,8 +147,10 @@ class EmployeeBirthdayWish(osv.osv):
             random_wish = None
         wishes = self.browse(cr, SUPERUSER_ID, random_wish).name if random_wish else ''
         cr.execute(
-            "select DISTINCT id from hr_employee " +
-            "Where date_part('day', birthday) = date_part('day', CURRENT_DATE) And date_part('MONTH', birthday) = date_part('MONTH', CURRENT_DATE)")
+            "select DISTINCT h.id as id from hr_employee as h , resource_resource as r " +
+            "Where date_part('day', h.birthday) = date_part('day', CURRENT_DATE) And " +
+            "date_part('MONTH', h.birthday) = date_part('MONTH', CURRENT_DATE) AND " +
+            "r.active is true and h.resource_id = r.id")
         employees = self.pool.get('hr.employee').read(cr, uid, map(itemgetter(0), cr.fetchall()), ['name'])
 
         return [e['name'] for e in employees], wishes
