@@ -205,12 +205,9 @@ class updis_project(osv.osv):
     _order = "id desc"
 
     _track = {
-        'user_id': {
-            'up_project.subtype_up_project_change_member': lambda self, cr, uid, obj, context=None: True,
-        },
-        'zhuguanzongshi_id': {
-            'up_project.subtype_up_project_change_member': lambda self, cr, uid, obj, context=None: True,
-        },
+        'user_id': {},
+        'zhuguanzongshi_id': {},
+        'state': {},
     }
 
     def _is_project_creater(self, cr, uid, ids, field_name, args, context=None):
@@ -309,7 +306,7 @@ class updis_project(osv.osv):
                                    ("project_pause", u"Project Pause"),
                                    ("project_filed", u"Project Filing"),
                                    ("project_finish", u"Project Filed"),
-                                  ], string="State", track_visibility='on_change'),
+                                  ], string="State", track_visibility='onchange'),
         'project_log': fields.html(u"Project Log Info", readonly=True),
         "xiangmubianhao": fields.char(u"Project Num", select=True, size=128, ),
         "chenjiebumen_id": fields.many2one("hr.department", u"In Charge Department"),
