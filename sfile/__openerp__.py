@@ -18,5 +18,5 @@ Independent Super File Version control System
         'file_menu_view.xml',
     ],
     'auto_install': False,
-    'installable': True,
+    'installable': False,
 }
