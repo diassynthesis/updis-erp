@@ -18,11 +18,11 @@ class project_active_tasking(osv.osv):
 
     _rec_name = 'form_name'
 
-    # _track = {
-    #     'state': {
-    #         'up_project.subtype_up_project_tasking': lambda self, cr, uid, obj, context=None: True,
-    #     },
-    # }
+    _track = {
+        'state': {
+            'up_project.subtype_up_project_tasking': lambda self, cr, uid, obj, context=None: True,
+        },
+    }
 
     def workflow_signal(self, cr, uid, ids, signal):
         return self._workflow_signal(cr, uid, ids, signal)

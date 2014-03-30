@@ -204,6 +204,15 @@ class updis_project(osv.osv):
     _name = "project.project"
     _order = "id desc"
 
+    _track = {
+        'user_id': {
+            'up_project.subtype_up_project_change_member': lambda self, cr, uid, obj, context=None: True,
+        },
+        'zhuguanzongshi_id': {
+            'up_project.subtype_up_project_change_member': lambda self, cr, uid, obj, context=None: True,
+        },
+    }
+
     def _is_project_creater(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
@@ -279,7 +288,7 @@ class updis_project(osv.osv):
 
         'user_id': fields.many2many('res.users', 'project_user_id_res_user', 'project_user_id', 'res_user_id',
                                     string='Project Manager',
-                                    domain=['|', ("active", "=", True), ("active", "=", False)], track_visibility='on_change'),
+                                    domain=['|', ("active", "=", True), ("active", "=", False)], track_visibility='onchange'),
         'director_reviewer_id': fields.many2one('res.users', string=u'Review Director'),
         'related_user_id': fields.many2one('res.users', string="Related Users ID"),
         'status_code': fields.integer(string='Status Code'),
@@ -347,7 +356,7 @@ class updis_project(osv.osv):
              ('CC200511210004', u'县级市'), ('CC200511210005', u'其它'), ('plan_city', u'计划单列市')], string="City Type"),
         "zhuguanzongshi_id": fields.many2many("res.users", "project_zhuangguan_res_user", "project_id", "res_user_id",
                                               string=u"主管总师",
-                                              domain=['|', ("active", "=", True), ("active", "=", False)]),
+                                              domain=['|', ("active", "=", True), ("active", "=", False)], track_visibility='onchange'),
         'import_is_hidden': fields.char(size=8, string="Import Is Hidden"),
         'import_sum_up_flag': fields.char(size=8, string="Import Sum Up Flag"),
         'import_flag': fields.char(size=8, string="Import Flag"),

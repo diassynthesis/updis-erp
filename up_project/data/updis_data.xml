@@ -140,5 +140,18 @@
         <delete model="mail.message.subtype" id="project.mt_project_task_blocked"/>
         <delete model="mail.message.subtype" id="project.mt_project_task_started"/>
 
+        <record id="subtype_up_project_tasking" model="mail.message.subtype">
+            <field name="name">Active Tasking</field>
+            <field name="res_model">project.project.active.tasking</field>
+            <field name="default" eval="True"/>
+            <field name="description">Active Tasking</field>
+        </record>
+
+        <record id="subtype_up_project_change_member" model="mail.message.subtype">
+            <field name="name">Member Change</field>
+            <field name="res_model">project.project</field>
+            <field name="default" eval="True"/>
+            <field name="description">Member Change</field>
+        </record>
     </data>
 </openerp>
