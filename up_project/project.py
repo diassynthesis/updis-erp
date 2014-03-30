@@ -279,7 +279,7 @@ class updis_project(osv.osv):
 
         'user_id': fields.many2many('res.users', 'project_user_id_res_user', 'project_user_id', 'res_user_id',
                                     string='Project Manager',
-                                    domain=['|', ("active", "=", True), ("active", "=", False)]),
+                                    domain=['|', ("active", "=", True), ("active", "=", False)], track_visibility='on_change'),
         'director_reviewer_id': fields.many2one('res.users', string=u'Review Director'),
         'related_user_id': fields.many2one('res.users', string="Related Users ID"),
         'status_code': fields.integer(string='Status Code'),
@@ -300,7 +300,7 @@ class updis_project(osv.osv):
                                    ("project_pause", u"Project Pause"),
                                    ("project_filed", u"Project Filing"),
                                    ("project_finish", u"Project Filed"),
-                                  ], string="State"),
+                                  ], string="State", track_visibility='on_change'),
         'project_log': fields.html(u"Project Log Info", readonly=True),
         "xiangmubianhao": fields.char(u"Project Num", select=True, size=128, ),
         "chenjiebumen_id": fields.many2one("hr.department", u"In Charge Department"),

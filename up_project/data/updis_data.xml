@@ -133,5 +133,12 @@
             <field name="parent_id" ref="dir_up_project_provisional"/>
             <field name="ressource_id">0</field>
         </record>
+
+        <delete model="mail.message.subtype" id="project.mt_project_task_new"/>
+        <delete model="mail.message.subtype" id="project.mt_project_task_stage"/>
+        <delete model="mail.message.subtype" id="project.mt_project_task_closed"/>
+        <delete model="mail.message.subtype" id="project.mt_project_task_blocked"/>
+        <delete model="mail.message.subtype" id="project.mt_project_task_started"/>
+
     </data>
 </openerp>
