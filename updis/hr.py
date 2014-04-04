@@ -1,6 +1,10 @@
 #-*- encoding: utf-8 -*-
 import datetime
-from osv import fields, osv
+from operator import itemgetter
+import random
+import math
+from openerp import SUPERUSER_ID
+from openerp.osv import fields, osv
 
 
 class hr_employee_updis(osv.osv):
@@ -125,3 +129,28 @@ class EmployeeSpeciality(osv.osv):
     ]
 
     _sql_constraints = [('speciality_name_unique', 'unique(name)', 'name must be unique !')]
+
+
+class EmployeeBirthdayWish(osv.osv):
+    _description = "Birthday Wish"
+    _name = 'hr.birthday.wish'
+    _columns = {
+        'name': fields.text('Wish'),
+    }
+
+    def get_today_birthday(self, cr, uid):
+        total_wish = self.search(cr, 1, [])
+        no = int(len(total_wish) * random.random()) if total_wish else None
+        if no:
+            random_wish = total_wish[no]
+        else:
+            random_wish = None
+        wishes = self.browse(cr, SUPERUSER_ID, random_wish).name if random_wish else ''
+        cr.execute(
+            "select DISTINCT h.id as id from hr_employee as h , resource_resource as r " +
+            "Where date_part('day', h.birthday) = date_part('day', CURRENT_DATE) And " +
+            "date_part('MONTH', h.birthday) = date_part('MONTH', CURRENT_DATE) AND " +
+            "r.active is true and h.resource_id = r.id")
+        employees = self.pool.get('hr.employee').read(cr, uid, map(itemgetter(0), cr.fetchall()), ['name'])
+
+        return [e['name'] for e in employees], wishes
