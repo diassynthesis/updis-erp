@@ -151,6 +151,6 @@ class EmployeeBirthdayWish(osv.osv):
             "Where date_part('day', h.birthday) = date_part('day', CURRENT_DATE) And " +
             "date_part('MONTH', h.birthday) = date_part('MONTH', CURRENT_DATE) AND " +
             "r.active is true and h.resource_id = r.id")
-        employees = self.pool.get('hr.employee').read(cr, uid, map(itemgetter(0), cr.fetchall()), ['name'])
-
-        return [e['name'] for e in employees], wishes
+        employees = self.pool.get('hr.employee').browse(cr, uid, map(itemgetter(0), cr.fetchall()))
+        result = '<p style="grey">%s</p>&nbsp;<p style="color: rgb(186, 38, 54);">%s</p>'
+        return [result % (e.department_id.name, e.name) for e in employees], wishes
