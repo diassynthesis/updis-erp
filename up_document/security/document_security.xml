@@ -46,7 +46,7 @@
             <field eval="1" name="perm_write"/>
             <field eval="0" name="perm_read"/>
             <field eval="0" name="perm_create"/>
-        </record-->
+        </record>
 
         <record id="document.ir_rule_documentmodifyowndirectories0" model="ir.rule">
             <field name="model_id" ref="document.model_document_directory"/>
@@ -60,6 +60,6 @@
             <field eval="1" name="perm_write"/>
             <field eval="0" name="perm_read"/>
             <field eval="1" name="perm_create"/>
-        </record>
+        </record-->
     </data>
 </openerp>
