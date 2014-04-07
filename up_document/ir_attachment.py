@@ -68,7 +68,7 @@ class IrAttachmentInherit(osv.osv):
     }
 
     _sql_constraints = [
-        ('dirname_uniq', 'unique (name,parent_id,res_model,res_id)', 'The directory name must be unique !'),
+        ('filename_unique', 'unique (name,parent_id,res_model,res_id)', 'The file name in directory must be unique !'),
     ]
 
     def on_change_name(self, cr, uid, ids, context=None):
