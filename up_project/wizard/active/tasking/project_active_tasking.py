@@ -411,6 +411,23 @@ class project_active_tasking(osv.osv):
 
         return super(project_active_tasking, self).write(cr, uid, ids, vals, context=context)
 
+    def reject_commit_phone(self, cr, uid, id, comment, context=None):
+        if context is None:
+            context = {}
+        record_id = id
+        tasking = self.pool.get("project.project.active.tasking").browse(cr, uid, record_id, context)
+        tasking.write({
+            'reject_logs': [(0, 0, {'comment': comment, 'state': tasking.state})],
+        })
+        if tasking.state == "suozhangshenpi":
+            return tasking.draft_reject()
+        if tasking.state == "zhidingbumen":
+            return tasking.operator_reject()
+        if tasking.state == "zhidingfuzeren":
+            return tasking.engineer_reject()
+        if tasking.state == "suozhangqianzi":
+            return tasking.manager_reject()
+
 
 class project_project_inherit(osv.osv):
     _inherit = 'project.project'
