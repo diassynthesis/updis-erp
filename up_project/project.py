@@ -1,5 +1,6 @@
 # -*- encoding:utf-8 -*-
 import datetime
+from operator import itemgetter
 from openerp import SUPERUSER_ID
 from openerp.osv import osv, fields
 from up_tools import tools
@@ -163,6 +164,13 @@ class project_upcategory(osv.osv):
         res = self.name_get(cr, uid, ids, context=context)
         return dict(res)
 
+    def _get_sequence(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        SQL = "SELECT count(*) FROM project_project WHERE categories_id = %d"
+        for obj in self.browse(cr, uid, ids, context=context):
+            cr.execute(SQL % obj.id)
+            result[obj.id] = map(itemgetter(0), cr.fetchall())[0]
+        return result
 
     _columns = {
         "name": fields.char("Category", size=64, required=True),
@@ -171,12 +179,13 @@ class project_upcategory(osv.osv):
         'summary': fields.text("Summary"),
         'parent_id': fields.many2one('project.upcategory', "Parent Category", ondelete='set null', select=True),
         'child_ids': fields.one2many('project.upcategory', 'parent_id', 'Child Categories'),
+        'index': fields.function(_get_sequence, type='integer', store=True, string='Sequence'),
 
     }
     _sql_constraints = [
         ('name', 'unique(parent_id,name)', 'The name of the category must be unique')
     ]
-    _order = 'parent_id,name asc'
+    _order = 'index desc'
     _constraints = [
         (osv.osv._check_recursion, 'Error! You cannot create recursive categories', ['parent_id'])
     ]
