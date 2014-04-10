@@ -54,7 +54,9 @@ class DocumentDirectoryInherit(osv.osv):
     _columns = {
         'group_ids': fields.one2many('document.directory.access', 'directory_id', string='Access'),
         'related_action_id': fields.many2one('ir.actions.act_window', string='Related Menu Action', ondelete='cascade'),
+        'index': fields.integer('Sequence'),
     }
+    _order = 'index asc'
 
     def delete_related_action(self, cr, uid, ids, context):
         directory_records = self.browse(cr, uid, ids, context)
