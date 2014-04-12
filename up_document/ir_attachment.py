@@ -14,8 +14,6 @@ from openerp.osv import fields
 from openerp.tools.translate import _
 
 
-
-
 class IrAttachmentInherit(osv.osv):
     _inherit = 'ir.attachment'
 
@@ -23,14 +21,18 @@ class IrAttachmentInherit(osv.osv):
         directory_obj = self.pool.get('document.directory')
         for attachment in self.browse(cr, uid, ids, context):
             if attachment.parent_id:
-                if not directory_obj.check_directory_privilege(cr, uid, attachment.parent_id, 'perm_write', context):
+                if not directory_obj.check_directory_privilege(cr, uid, attachment.parent_id, 'perm_write', context,
+                                                               res_model=attachment.res_model,
+                                                               res_id=attachment.res_id):
                     raise osv.except_osv(_('Warning!'), _('You have no privilege to Unlink some of the attachments.'))
 
     def _check_group_write_privilege(self, cr, uid, ids, context=None):
         directory_obj = self.pool.get('document.directory')
         for attachment in self.browse(cr, uid, ids, context):
             if attachment.parent_id:
-                if not directory_obj.check_directory_privilege(cr, uid, attachment.parent_id, 'perm_write', context):
+                if not directory_obj.check_directory_privilege(cr, uid, attachment.parent_id, 'perm_write', context,
+                                                               res_model=attachment.res_model,
+                                                               res_id=attachment.res_id):
                     raise osv.except_osv(_('Warning!'), _('You have no privilege to Write some of the attachments.'))
 
     def _check_group_create_privilege(self, cr, uid, vals, context=None):
@@ -38,7 +40,8 @@ class IrAttachmentInherit(osv.osv):
         parent_id = vals['parent_id'] if 'parent_id' in vals else (context['parent_id'] if 'parent_id' in context else None)
         if parent_id:
             directory = directory_obj.browse(cr, uid, parent_id, context=context)
-            if not directory_obj.check_directory_privilege(cr, uid, directory, 'perm_write', context):
+            if not directory_obj.check_directory_privilege(cr, uid, directory, 'perm_write', context, res_model=vals.get('res_model', None),
+                                                           res_id=vals.get('res_id', None)):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to create attachments in this directory.'))
 
     def create(self, cr, uid, vals, context=None):
@@ -95,7 +98,7 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         total_size = reduce(lambda x, y: y.file_size + x, attachments, 0)
         # total_size = reduce(self.test, attachments)
         for attach in attachments:
-            if attach.file_size > 10 * 1024*1024:
+            if attach.file_size > 10 * 1024 * 1024:
                 raise osv.except_osv(_('Warning!'), _('Some of the selected file is large than 10MB!'))
         # TODO: need some much useful limit
         if total_size > 50 * 1024 * 1024:

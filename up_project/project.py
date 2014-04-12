@@ -224,17 +224,6 @@ class updis_project(osv.osv):
 
         return result
 
-    def _is_project_director(self, cr, uid, ids, field_name, args, context=None):
-        result = dict.fromkeys(ids, False)
-        for obj in self.browse(cr, uid, ids, context=context):
-            review_id = obj.director_reviewer_id.id
-            if review_id == uid:
-                result[obj.id] = True
-            else:
-                result[obj.id] = False
-
-        return result
-
     def _is_project_created(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
@@ -282,6 +271,21 @@ class updis_project(osv.osv):
             result[obj.id] = ','.join(project_manager_name)
         return result
 
+    def is_project_director(self, cr, uid, project_id, context):
+        project = self.browse(cr, uid, project_id, context=context)
+        hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
+        if hr_id and self.user_has_groups(cr, uid, "up_project.group_up_project_suozhang", context=context):
+            hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
+            user_department_id = hr_record.department_id.id if hr_record.department_id else "-1"
+            project_department_id = project.chenjiebumen_id.id if project.chenjiebumen_id else None
+            job_name = hr_record.job_id.name if hr_record.job_id else None
+            if user_department_id == project_department_id and (job_name == u"所长" or job_name == u"分院院长"):
+                return True
+            else:
+                return False
+        else:
+            return False
+
     _columns = {
         # 基础信息
         #  'analytic_account_id': fields.boolean("Over Ride"),
@@ -322,8 +326,6 @@ class updis_project(osv.osv):
         "waibao": fields.boolean("Is Outsourcing"),
         'is_project_creater': fields.function(_is_project_creater, type="boolean",
                                               string="Is Project Creater"),
-        'is_project_director': fields.function(_is_project_director, type="boolean",
-                                               string="Is Project Director"),
         'is_project_created': fields.function(_is_project_created, type="boolean",
                                               string="Is Project Created"),
         'member_ids': fields.one2many('project.members', 'project_id', string="Members"),

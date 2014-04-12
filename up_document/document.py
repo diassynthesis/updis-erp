@@ -94,34 +94,39 @@ class DocumentDirectoryInherit(osv.osv):
             ret['value'].update(sms_vals)
         return ret
 
-    def check_directory_privilege(self, cr, uid, obj, method, context):
+    def check_directory_privilege(self, cr, uid, obj, method, context=None, res_model=None, res_id=None):
         if context is None:
             context = {}
-        user = self.pool.get('res.users').read(cr, 1, uid, ['groups_id'], context)
-        user_group = user['groups_id']
-        current_user = self.pool.get('res.users').browse(cr, uid, uid)
+        user = self.pool.get('res.users').browse(cr, uid, uid)
+        user_group = [u.id for u in user.groups_id]
         flag = False
         for group in obj.group_ids:
-            if group.group_id.id in user_group and group[method] is True:
-                if group.code.strip():
-                    obj = None
-                    cxt = {
-                        'self': self,
-                        'object': obj,
-                        'obj': obj,
-                        'pool': self.pool,
-                        'time': time,
-                        'cr': cr,
-                        'context': dict(context),  # copy context to prevent side-effects of eval
-                        'uid': uid,
-                        'user': current_user,
-                        'result': None,
-                    }
-                    eval(group.code.strip(), cxt, mode="exec", nocopy=True)  # nocopy allows to return 'action'
-                    if 'result' in cxt and cxt['result'] is True:
+            if group.group_id.id in user_group:
+                if method in ['perm_write', 'is_downloadable'] and group[method] is True:
+                    if group.code.strip():
+                        obj = None
+                        cxt = {
+                            'self': self,
+                            'object': obj,
+                            'obj': obj,
+                            'pool': self.pool,
+                            'time': time,
+                            'cr': cr,
+                            'context': dict(context),  # copy context to prevent side-effects of eval
+                            'uid': uid,
+                            'user': user,
+                            'result': None,
+                            'res_model': res_model,
+                            'res_id': res_id,
+                        }
+                        eval(group.code.strip(), cxt, mode="exec", nocopy=True)  # nocopy allows to return 'action'
+                        if cxt.get('result', None) is True:
+                            flag = True
+                            break
+                    else:
                         flag = True
                         break
-                else:
+                elif group[method] is True:
                     flag = True
                     break
         return flag
