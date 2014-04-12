@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
 __author__ = 'cysnake4713'
 
+import time
+from openerp.tools.safe_eval import safe_eval as eval
 from openerp.osv import osv
 from openerp.osv import fields
 from openerp.tools.translate import _
@@ -15,10 +17,14 @@ class DocumentDirectoryAccess(osv.osv):
         'perm_write': fields.boolean('Sub File Write / Modify Access'),
         'perm_create_unlink': fields.boolean('Sub Directory Create / Write / Unlink Access'),
         'directory_id': fields.many2one('document.directory', string='Related Directory ID', ondelete='cascade'),
+        'is_downloadable': fields.boolean('Is Downloadable'),
+        # 'is_need_approval': fields.boolean('Is Need Approval'),
+        'code': fields.text('Domain'),
     }
 
     _defaults = {
         'perm_read': True,
+        'code': '',
     }
 
 
@@ -72,10 +78,11 @@ class DocumentDirectoryInherit(osv.osv):
         if parent_id:
             parent_directory = self.browse(cr, uid, parent_id, context)
             new_group_ids = [(5,)]
-            new_group_ids += [(0, 0, {'group_id': g.group_id.id,
-                                      'perm_read': g.perm_read,
-                                      'perm_write': g.perm_write,
-                                      'perm_create_unlink': g.perm_create_unlink,
+            new_group_ids += [(0, 0, {
+                'group_id': g.group_id.id,
+                'perm_read': g.perm_read,
+                'perm_write': g.perm_write,
+                'perm_create_unlink': g.perm_create_unlink,
             }) for g in parent_directory.group_ids]
             # directory = self.browse(cr, uid, ids[0], context=context)
             # directory.write({'group_ids': (5), }, context=context)
@@ -88,13 +95,35 @@ class DocumentDirectoryInherit(osv.osv):
         return ret
 
     def check_directory_privilege(self, cr, uid, obj, method, context):
+        if context is None:
+            context = {}
         user = self.pool.get('res.users').read(cr, 1, uid, ['groups_id'], context)
         user_group = user['groups_id']
+        current_user = self.pool.get('res.users').browse(cr, uid, uid)
         flag = False
         for group in obj.group_ids:
             if group.group_id.id in user_group and group[method] is True:
-                flag = True
-                break
+                if group.code.strip():
+                    obj = None
+                    cxt = {
+                        'self': self,
+                        'object': obj,
+                        'obj': obj,
+                        'pool': self.pool,
+                        'time': time,
+                        'cr': cr,
+                        'context': dict(context),  # copy context to prevent side-effects of eval
+                        'uid': uid,
+                        'user': current_user,
+                        'result': None,
+                    }
+                    eval(group.code.strip(), cxt, mode="exec", nocopy=True)  # nocopy allows to return 'action'
+                    if 'result' in cxt and cxt['result'] is True:
+                        flag = True
+                        break
+                else:
+                    flag = True
+                    break
         return flag
 
     def _check_group_unlink_privilege(self, cr, uid, ids, context=None):

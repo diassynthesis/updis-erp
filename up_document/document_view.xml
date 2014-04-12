@@ -24,6 +24,8 @@
                     <field name="group_id"/>
                     <field name="perm_read"/>
                     <field name="perm_write"/>
+                    <field name="is_downloadable"/>
+                    <field name="code"/>
                     <field name="perm_create_unlink"/>
                 </tree>
             </field>
