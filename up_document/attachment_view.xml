@@ -9,6 +9,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='name']" position="before">
                     <field name="datas" filename="name"/>
+                    <field name="is_downloadable" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='name']" position="attributes">
                     <attribute name="invisible">1</attribute>

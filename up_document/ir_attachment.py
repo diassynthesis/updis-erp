@@ -63,8 +63,15 @@ class IrAttachmentInherit(osv.osv):
             result[attachment.id] = attachment.file_size / (1024.0 * 1024.0)
         return result
 
+    def _is_download_able(self, cr, uid, ids, field_name, arg, context):
+        result = dict.fromkeys(ids, False)
+        for attachment in self.browse(cr, uid, ids, context=context):
+            result[attachment.id] = attachment.check_downloadable()
+        return result
+
     _columns = {
         'file_size_human': fields.function(_get_file_size, type='float', digits=[10, 3], method=True, string='File Size Human (MB)'),
+        'is_downloadable': fields.function(_is_download_able, type='boolean', string='Is Downloadable'),
     }
 
     _sql_constraints = [
