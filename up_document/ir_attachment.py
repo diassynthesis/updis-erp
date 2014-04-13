@@ -69,6 +69,8 @@ class IrAttachmentInherit(osv.osv):
             result[attachment.id] = attachment.check_downloadable()
         return result
 
+
+
     _columns = {
         'file_size_human': fields.function(_get_file_size, type='float', digits=[10, 3], method=True, string='File Size Human (MB)'),
         'is_downloadable': fields.function(_is_download_able, type='boolean', string='Is Downloadable'),
@@ -86,7 +88,7 @@ class IrAttachmentInherit(osv.osv):
     def check_downloadable(self, cr, uid, ids, context=None):
         attachments = self.browse(cr, uid, list(ids), context)
         for attachment in attachments:
-            if not attachment.parent_id.check_directory_privilege('is_downloadable', attachment.res_model, attachment.res_id):
+            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('is_downloadable', attachment.res_model, attachment.res_id):
                 return False
         return True
 
