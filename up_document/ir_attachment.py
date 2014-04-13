@@ -79,7 +79,7 @@ class IrAttachmentInherit(osv.osv):
     def check_downloadable(self, cr, uid, ids, context=None):
         attachments = self.browse(cr, uid, list(ids), context)
         for attachment in attachments:
-            if not attachment.parent_id.check_directory_privilege('is_downloadable', attachment.res_model, attachment.res_id, context):
+            if not attachment.parent_id.check_directory_privilege('is_downloadable', attachment.res_model, attachment.res_id):
                 return False
         return True
 
@@ -104,6 +104,8 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         for attach in attachments:
             if attach.file_size > 10 * 1024 * 1024:
                 raise osv.except_osv(_('Warning!'), _('Some of the selected file is large than 10MB!'))
+            if not attach.check_downloadable():
+                raise osv.except_osv(_('Warning!'), _('You have no privilege to download some of the attachments'))
         # TODO: need some much useful limit
         if total_size > 50 * 1024 * 1024:
             raise osv.except_osv(_('Warning!'), _('Too Large the file will be generate!'))
