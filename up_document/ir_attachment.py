@@ -20,43 +20,40 @@ class IrAttachmentInherit(osv.osv):
     def _check_group_unlink_privilege(self, cr, uid, ids, context=None):
         directory_obj = self.pool.get('document.directory')
         for attachment in self.browse(cr, uid, ids, context):
-            if attachment.parent_id:
-                if not directory_obj.check_directory_privilege(cr, uid, attachment.parent_id, 'perm_write', context,
-                                                               res_model=attachment.res_model,
-                                                               res_id=attachment.res_id):
-                    raise osv.except_osv(_('Warning!'), _('You have no privilege to Unlink some of the attachments.'))
+            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('perm_write',
+                                                                                           res_model=attachment.res_model,
+                                                                                           res_id=attachment.res_id,
+                                                                                           context=context):
+                raise osv.except_osv(_('Warning!'), _('You have no privilege to Unlink some of the attachments.'))
 
     def _check_group_write_privilege(self, cr, uid, ids, context=None):
         directory_obj = self.pool.get('document.directory')
         for attachment in self.browse(cr, uid, ids, context):
-            if attachment.parent_id:
-                if not directory_obj.check_directory_privilege(cr, uid, attachment.parent_id, 'perm_write', context,
-                                                               res_model=attachment.res_model,
-                                                               res_id=attachment.res_id):
-                    raise osv.except_osv(_('Warning!'), _('You have no privilege to Write some of the attachments.'))
+            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('perm_write',
+                                                                                           res_model=attachment.res_model,
+                                                                                           res_id=attachment.res_id,
+                                                                                           context=context):
+                raise osv.except_osv(_('Warning!'), _('You have no privilege to Write some of the attachments.'))
 
     def _check_group_create_privilege(self, cr, uid, vals, context=None):
         directory_obj = self.pool.get('document.directory')
         parent_id = vals['parent_id'] if 'parent_id' in vals else (context['parent_id'] if 'parent_id' in context else None)
         if parent_id:
             directory = directory_obj.browse(cr, uid, parent_id, context=context)
-            if not directory_obj.check_directory_privilege(cr, uid, directory, 'perm_write', context, res_model=vals.get('res_model', None),
-                                                           res_id=vals.get('res_id', None)):
+            if not directory.check_directory_privilege('perm_write', res_model=vals.get('res_model', None),
+                                                       res_id=vals.get('res_id', None), context=context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to create attachments in this directory.'))
 
     def create(self, cr, uid, vals, context=None):
-        if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
-            self._check_group_create_privilege(cr, uid, vals, context)
+        self._check_group_create_privilege(cr, uid, vals, context)
         return super(IrAttachmentInherit, self).create(cr, uid, vals, context)
 
     def unlink(self, cr, uid, ids, context=None):
-        if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
-            self._check_group_unlink_privilege(cr, uid, ids, context)
+        self._check_group_unlink_privilege(cr, uid, ids, context)
         return super(IrAttachmentInherit, self).unlink(cr, uid, ids, context)
 
     def write(self, cr, uid, ids, vals, context=None):
-        if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
-            self._check_group_write_privilege(cr, uid, ids, context)
+        self._check_group_write_privilege(cr, uid, ids, context)
         return super(IrAttachmentInherit, self).write(cr, uid, ids, vals, context)
 
     # noinspection PyUnusedLocal
@@ -77,6 +74,13 @@ class IrAttachmentInherit(osv.osv):
     def on_change_name(self, cr, uid, ids, context=None):
         attachment = self.browse(cr, uid, ids, context)[0]
         self.write(cr, uid, attachment.id, {'name': attachment.datas_fname}, context)
+        return True
+
+    def check_downloadable(self, cr, uid, ids, context=None):
+        attachments = self.browse(cr, uid, list(ids), context)
+        for attachment in attachments:
+            if not attachment.parent_id.check_directory_privilege('is_downloadable', attachment.res_model, attachment.res_id, context):
+                return False
         return True
 
 

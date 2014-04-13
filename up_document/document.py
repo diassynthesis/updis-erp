@@ -24,6 +24,7 @@ class DocumentDirectoryAccess(osv.osv):
 
     _defaults = {
         'perm_read': True,
+        'is_downloadable': True,
         'code': '',
     }
 
@@ -94,71 +95,71 @@ class DocumentDirectoryInherit(osv.osv):
             ret['value'].update(sms_vals)
         return ret
 
-    def check_directory_privilege(self, cr, uid, obj, method, context=None, res_model=None, res_id=None):
-        if context is None:
-            context = {}
-        user = self.pool.get('res.users').browse(cr, uid, uid)
-        user_group = [u.id for u in user.groups_id]
-        flag = False
-        for group in obj.group_ids:
-            if group.group_id.id in user_group:
-                if method in ['perm_write', 'is_downloadable'] and group[method] is True:
-                    if group.code.strip():
-                        obj = None
-                        cxt = {
-                            'self': self,
-                            'object': obj,
-                            'obj': obj,
-                            'pool': self.pool,
-                            'time': time,
-                            'cr': cr,
-                            'context': dict(context),  # copy context to prevent side-effects of eval
-                            'uid': uid,
-                            'user': user,
-                            'result': None,
-                            'res_model': res_model,
-                            'res_id': res_id,
-                        }
-                        eval(group.code.strip(), cxt, mode="exec", nocopy=True)  # nocopy allows to return 'action'
-                        if cxt.get('result', None) is True:
+    def check_directory_privilege(self, cr, uid, directory_id, method, res_model=None, res_id=None, context=None):
+        if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
+            if context is None:
+                context = {}
+            user = self.pool.get('res.users').browse(cr, uid, uid)
+            user_group = [u.id for u in user.groups_id]
+            flag = False
+            for directory in self.browse(cr, uid, directory_id, context):
+                for group in directory.group_ids:
+                    if group.group_id.id in user_group:
+                        if method in ['perm_write', 'is_downloadable'] and group[method] is True:
+                            if group.code.strip():
+                                cxt = {
+                                    'self': self,
+                                    'object': directory,
+                                    'obj': directory,
+                                    'pool': self.pool,
+                                    'time': time,
+                                    'cr': cr,
+                                    'context': dict(context),  # copy context to prevent side-effects of eval
+                                    'uid': uid,
+                                    'user': user,
+                                    'res_model': res_model,
+                                    'res_id': res_id,
+                                    'result': None,
+                                }
+                                eval(group.code.strip(), cxt, mode="exec", nocopy=True)  # nocopy allows to return 'action'
+                                if cxt.get('result', None) is True:
+                                    flag = True
+                                    break
+                            else:
+                                flag = True
+                                break
+                        elif group[method] is True:
                             flag = True
                             break
-                    else:
-                        flag = True
-                        break
-                elif group[method] is True:
-                    flag = True
-                    break
-        return flag
+            return flag
+        else:
+            return True
 
     def _check_group_unlink_privilege(self, cr, uid, ids, context=None):
         for directory in self.browse(cr, uid, ids, context):
-            if not self.check_directory_privilege(cr, uid, directory, 'perm_create_unlink', context):
+            if not directory.check_directory_privilege('perm_create_unlink', context=context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Unlink some of the directories.'))
 
     def _check_group_create_privilege(self, cr, uid, vals, context=None):
         parent_id = vals['parent_id']
         if parent_id:
             directory = self.browse(cr, uid, parent_id, context=context)
-            if not self.check_directory_privilege(cr, uid, directory, 'perm_create_unlink', context):
+            if not directory.check_directory_privilege('perm_create_unlink', context=context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Create the directory.'))
 
     def _check_group_write_privilege(self, cr, uid, ids, context=None):
         for directory in self.browse(cr, uid, ids, context):
-            if not self.check_directory_privilege(cr, uid, directory, 'perm_create_unlink', context):
+            if not directory.check_directory_privilege('perm_create_unlink', context=context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Write some of the directories.'))
 
     def create(self, cr, uid, vals, context=None):
-        if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
-            self._check_group_create_privilege(cr, uid, vals, context)
+        self._check_group_create_privilege(cr, uid, vals, context)
         return super(DocumentDirectoryInherit, self).create(cr, uid, vals, context)
 
     def unlink(self, cr, uid, ids, context=None):
-        if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
-            self._check_group_unlink_privilege(cr, uid, ids, context)
+        self._check_group_unlink_privilege(cr, uid, ids, context)
         return super(DocumentDirectoryInherit, self).unlink(cr, uid, ids, context)
 
     def write(self, cr, uid, ids, vals, context=None):
-        if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
-            self._check_group_write_privilege(cr, uid, ids, context)
+        self._check_group_write_privilege(cr, uid, ids, context)
         return super(DocumentDirectoryInherit, self).write(cr, uid, ids, vals, context)
