@@ -328,4 +328,23 @@ msgstr "你没有权限创建某些文件夹!"
 msgid "You have no privilege to Write some of the directories."
 msgstr "你没有权限修改文件夹!"
 
+#. module: up_document
+#: code:addons/up_document/ir_attachment.py:117
+#, python-format
+msgid "You have no privilege to download some of the attachments."
+msgstr "你没有下载某些文件!"
+
+#. module: up_document
+#: code:addons/up_document/controllers/upload.py:62
+#, python-format
+msgid "You have no privilege to download some of the attachments"
+msgstr "你没有下载某些文件!"
+
+#. module: up_document
+#: code:addons/up_document/controllers/upload.py:77
+#, python-format
+msgid "You have no privilege to download some of the attachments"
+msgstr "你没有下载某些文件!"
+
+
 
