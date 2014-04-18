@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
     <t t-name="ListView.row.binary">
         <t t-if="is_downloadable">
-            <a t-att-href="href"><t t-esc="text"/></a> (<t t-esc="size"/>)
+            <a t-att-href="href" target="_blank"><t t-esc="text"/></a> (<t t-esc="size"/>)
         </t>
         <t t-if="! is_downloadable">
             <a style="text-decoration:none; color:#4c4c4c;"><t t-esc="text"/></a> (<t t-esc="size"/>)(无权限下载)
