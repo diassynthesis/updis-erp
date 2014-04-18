@@ -70,7 +70,6 @@ class IrAttachmentInherit(osv.osv):
         return result
 
 
-
     _columns = {
         'file_size_human': fields.function(_get_file_size, type='float', digits=[10, 3], method=True, string='File Size Human (MB)'),
         'is_downloadable': fields.function(_is_download_able, type='boolean', string='Is Downloadable'),
@@ -88,7 +87,8 @@ class IrAttachmentInherit(osv.osv):
     def check_downloadable(self, cr, uid, ids, context=None):
         attachments = self.browse(cr, uid, list(ids), context)
         for attachment in attachments:
-            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('is_downloadable', attachment.res_model, attachment.res_id):
+            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('is_downloadable', attachment.res_model,
+                                                                                           attachment.res_id):
                 return False
         return True
 
@@ -167,3 +167,15 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
             'views': [(False, 'form')],
             'target': 'new',
         }
+
+
+class IrAttachmentApplication(osv.osv):
+    _name = 'ir.attachment.application'
+    _columns = {
+        'apply_user_id': fields.many2one('res.users', 'Apply User'),
+        'apply_date': fields.date('Apply Date'),
+        'expire_date': fields.date('Expire Date'),
+        'approve_user_id': fields.many2one('res.users', 'Approver User'),
+        'approve_date': fields.date('Approve Date'),
+        'is_approve': fields.boolean('Is Approve'),
+    }

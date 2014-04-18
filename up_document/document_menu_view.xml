@@ -25,6 +25,20 @@
             <field name="act_window_id" ref="action_ir_attach_public"/>
             <field name="sequence">15</field>
         </record-->
+        <!-- Document Download Application Management-->
+        <record id="action_attachment_download_my" model="ir.actions.act_window">
+            <field name="name">My Attachment Download Application</field>
+            <field name="res_model">ir.attachment.application</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('apply_user_id','=',uid)]</field>
+        </record>
+        <record id="action_attachment_download_manage" model="ir.actions.act_window">
+            <field name="name">Attachment Download Application Management</field>
+            <field name="res_model">ir.attachment.application</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
         <!--Public Document-->
         <menuitem name="Public Document" id="menu_document_public_all" sequence="10"
                   parent="knowledge.menu_document"/>
@@ -37,6 +51,13 @@
         <menuitem name="Public Directory Management" id="menu_document_dir_public_menagement" sequence="30"
                   parent="menu_document_public_config" groups="base.group_public_document_manager"
                   action="action_document_dir_public_config"/>
+
+        <menuitem name="Attachment Download Manage" id="menu_attachment_download_root" sequence="12"
+                  parent="knowledge.menu_document"/>
+        <menuitem name="My Attachment Download Application" id="menu_attachment_download_my" sequence="10"
+                  parent="menu_attachment_download_root" action="action_attachment_download_my"/>
+        <menuitem name="Attachment Download Application Manage" id="menu_attachment_download_manage" sequence="20"
+                  parent="menu_attachment_download_root" action="action_attachment_download_manage"/>
 
     </data>
 </openerp>

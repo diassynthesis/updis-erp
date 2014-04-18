@@ -45,5 +45,39 @@
             <field name="name">Browse Files</field>
             <field name="value" eval="'ir.actions.act_window,%d'% ref('document.action_document_file_directory_form')"/>
         </record>
+
+        <!--Document Download Management-->
+        <record model="ir.ui.view" id="view_attachment_download_tree">
+            <field name="name">ir.attachment.application.tree</field>
+            <field name="model">ir.attachment.application</field>
+            <field name="arch" type="xml">
+                <tree string="Attachment Download Management" version="7.0">
+                    <field name="apply_user_id"/>
+                    <field name="apply_date"/>
+                    <field name="expire_date"/>
+                    <field name="approve_user_id"/>
+                    <field name="is_approve"/>
+                    <field name="approve_date"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_attachment_download_form">
+            <field name="name">ir.attachment.application.form</field>
+            <field name="model">ir.attachment.application</field>
+            <field name="arch" type="xml">
+                <form string="Attachment Download Management" version="7.0">
+                    <sheet>
+                        <group col="4">
+                            <field name="apply_user_id"/>
+                            <field name="apply_date"/>
+                            <field name="expire_date"/>
+                            <field name="approve_user_id"/>
+                            <field name="is_approve"/>
+                            <field name="approve_date"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
     </data>
 </openerp>
