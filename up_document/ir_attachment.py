@@ -1,8 +1,4 @@
 # -*- encoding: utf-8 -*-
-import hashlib
-import os
-import random
-import time
 
 __author__ = 'cysnake4713'
 import base64
@@ -18,7 +14,6 @@ class IrAttachmentInherit(osv.osv):
     _inherit = 'ir.attachment'
 
     def _check_group_unlink_privilege(self, cr, uid, ids, context=None):
-        directory_obj = self.pool.get('document.directory')
         for attachment in self.browse(cr, uid, ids, context):
             if attachment.parent_id and not attachment.parent_id.check_directory_privilege('perm_write',
                                                                                            res_model=attachment.res_model,
@@ -27,7 +22,6 @@ class IrAttachmentInherit(osv.osv):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Unlink some of the attachments.'))
 
     def _check_group_write_privilege(self, cr, uid, ids, context=None):
-        directory_obj = self.pool.get('document.directory')
         for attachment in self.browse(cr, uid, ids, context):
             if attachment.parent_id and not attachment.parent_id.check_directory_privilege('perm_write',
                                                                                            res_model=attachment.res_model,
@@ -69,10 +63,10 @@ class IrAttachmentInherit(osv.osv):
             result[attachment.id] = attachment.check_downloadable()
         return result
 
-
     _columns = {
         'file_size_human': fields.function(_get_file_size, type='float', digits=[10, 3], method=True, string='File Size Human (MB)'),
         'is_downloadable': fields.function(_is_download_able, type='boolean', string='Is Downloadable'),
+        'application_id': fields.one2many('ir.attachment.application', 'attachment_id', 'Applications'),
     }
 
     _sql_constraints = [
@@ -171,6 +165,21 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
 
 class IrAttachmentApplication(osv.osv):
     _name = 'ir.attachment.application'
+
+    def _data_get(self, cr, uid, ids, name, arg, context=None):
+        attachment_obj = self.pool.get('ir.attachment')
+        if context is None:
+            context = {}
+        result = {}
+        location = self.pool.get('ir.config_parameter').get_param(cr, uid, 'ir_attachment.location')
+        bin_size = context.get('bin_size')
+        for application in self.browse(cr, uid, ids, context=context):
+            if location and application.attachment_id.store_fname:
+                result[application.id] = attachment_obj._file_read(cr, uid, location, application.attachment_id.store_fname, bin_size)
+            else:
+                result[application.id] = application.attachment_id.db_datas
+        return result
+
     _columns = {
         'apply_user_id': fields.many2one('res.users', 'Apply User'),
         'apply_date': fields.date('Apply Date'),
@@ -178,4 +187,7 @@ class IrAttachmentApplication(osv.osv):
         'approve_user_id': fields.many2one('res.users', 'Approver User'),
         'approve_date': fields.date('Approve Date'),
         'is_approve': fields.boolean('Is Approve'),
+        'attachment_id': fields.many2one('ir.attachment', 'Attachment'),
+        'attachment_datas': fields.related('attachment_id', 'datas', type='binary', string='Attachment Datas'),
+        'attachment_name': fields.related('attachment_id', 'name', type='char', string='Attachment Name'),
     }

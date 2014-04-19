@@ -117,14 +117,14 @@ openerp.up_document = function (instance, m) {
                     download_url += '&filename_field=' + this.filename;
                 }
             }
-            if (this.filename && row_data[this.filename] && row_data['is_downloadable'].value == false) {
+            if (this.filename && row_data[this.filename] && row_data['is_downloadable'] && row_data['is_downloadable'].value == false) {
                 is_downloadable = false;
             }
             if (this.filename && row_data[this.filename]) {
-                if (is_downloadable == true){
+                if (is_downloadable == true) {
                     text = _.str.sprintf(_t("Download \"%s\""), instance.web.format_value(
                         row_data[this.filename].value, {type: 'char'}));
-                }else{
+                } else {
                     text = _.str.sprintf(_t("\"%s\""), instance.web.format_value(
                         row_data[this.filename].value, {type: 'char'}));
                 }
