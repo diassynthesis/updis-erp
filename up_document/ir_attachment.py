@@ -66,7 +66,7 @@ class IrAttachmentInherit(osv.osv):
     _columns = {
         'file_size_human': fields.function(_get_file_size, type='float', digits=[10, 3], method=True, string='File Size Human (MB)'),
         'is_downloadable': fields.function(_is_download_able, type='boolean', string='Is Downloadable'),
-        'application_id': fields.one2many('ir.attachment.application', 'attachment_id', 'Applications'),
+        'application_ids': fields.one2many('ir.attachment.application', 'attachment_id', 'Applications'),
     }
 
     _sql_constraints = [

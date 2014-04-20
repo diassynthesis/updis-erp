@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
+        <!--ir.attachment-->
+        <record model="ir.ui.view" id="view_document_file_onchange_form_inherit">
+            <field name="name">ir.attachment.form.onchange.inherit</field>
+            <field name="model">ir.attachment</field>
+            <field name="inherit_id" ref="document.view_document_file_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='datas_fname']" position="after">
+                    <group/>
+                    <group col="1">
+                        <button string="Sync Name" name="on_change_name" class="oe_edit_only oe_link" type="object"/>
+                    </group>
+                </xpath>
+                <xpath expr="//group[@string='Indexed Content']" position="replace">
+                    <group colspan="4">
+                        <notebook>
+                            <page string="Download Application">
+                                <field name="application_ids" readonly="1">
+                                    <tree>
+                                        <field name="apply_user_id"/>
+                                        <field name="apply_date"/>
+                                        <field name="is_approve"/>
+                                        <field name="expire_date"/>
+                                        <field name="approve_user_id"/>
+                                        <field name="approve_date"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Indexed Content">
+                                <field name="index_content" nolabel="1"/>
+                            </page>
+                        </notebook>
+                    </group>
+                </xpath>
+            </field>
+        </record>
         <!--ir.attachment public tree-->
         <record model="ir.ui.view" id="view_document_file_tree_inherit">
             <field name="name">ir.attachment.tree.inherit</field>
@@ -56,9 +91,9 @@
                     <field name="attachment_name" invisible="1"/>
                     <field name="apply_user_id"/>
                     <field name="apply_date"/>
+                    <field name="is_approve"/>
                     <field name="expire_date"/>
                     <field name="approve_user_id"/>
-                    <field name="is_approve"/>
                     <field name="approve_date"/>
                 </tree>
             </field>
