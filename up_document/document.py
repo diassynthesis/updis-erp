@@ -18,7 +18,7 @@ class DocumentDirectoryAccess(osv.osv):
         'perm_create_unlink': fields.boolean('Sub Directory Create / Write / Unlink Access'),
         'directory_id': fields.many2one('document.directory', string='Related Directory ID', ondelete='cascade'),
         'is_downloadable': fields.boolean('Is Downloadable'),
-        # 'is_need_approval': fields.boolean('Is Need Approval'),
+        'is_need_approval': fields.boolean('Is Need Approval',),
         'code': fields.text('Domain'),
     }
 
