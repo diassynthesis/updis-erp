@@ -18,7 +18,7 @@ class DocumentDirectoryAccess(osv.osv):
         'perm_create_unlink': fields.boolean('Sub Directory Create / Write / Unlink Access'),
         'directory_id': fields.many2one('document.directory', string='Related Directory ID', ondelete='cascade'),
         'is_downloadable': fields.boolean('Is Downloadable'),
-        'is_need_approval': fields.boolean('Is Need Approval',),
+        'is_need_approval': fields.boolean('Is Need Approval'),
         'code': fields.text('Domain'),
     }
 
@@ -27,6 +27,51 @@ class DocumentDirectoryAccess(osv.osv):
         'is_downloadable': True,
         'code': '',
     }
+
+    def calc_privilege(self, cr, uid, access_id, methods, context):
+        user = self.pool.get('res.users').browse(cr, uid, uid)
+        user_group = [u.id for u in user.groups_id]
+        access = self.browse(cr, uid, access_id[0], context)
+        flag = True
+        cxt = {
+            'self': self,
+            'object': access,
+            'obj': access,
+            'pool': self.pool,
+            'time': time,
+            'cr': cr,
+            'context': dict(context),  # copy context to prevent side-effects of eval
+            'uid': uid,
+            'user': user,
+            'result': None,
+        }
+        cxt.update(context['cxt'])
+        attachment = context['attachment']
+        if access.group_id.id not in user_group:
+            return False
+        for method in methods:
+            # If method need eval
+            if method in ['perm_write', 'is_downloadable']:
+                if access[method] is False:
+                    flag = flag and False
+                    break
+                if access.code.strip():
+                    eval(access.code.strip(), cxt, mode="exec", nocopy=True)  # nocopy allows to return 'action'
+                    flag = flag and True if cxt.get('result', None) else False
+                else:
+                    flag = flag and True
+            #If method need apply check
+            elif method in ['is_need_approval']:
+                if access['is_need_approval']:
+                    if attachment.is_pass_approval():
+                        flag = flag and True
+                    else:
+                        flag = flag and False
+                else:
+                    flag = flag and True
+            else:
+                flag = flag and access[method]
+        return flag
 
 
 class DocumentDirectoryAction(osv.osv_memory):
@@ -95,45 +140,20 @@ class DocumentDirectoryInherit(osv.osv):
             ret['value'].update(sms_vals)
         return ret
 
-    def check_directory_privilege(self, cr, uid, directory_id, method, res_model=None, res_id=None, context=None):
-        if not self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
-            if context is None:
-                context = {}
-            user = self.pool.get('res.users').browse(cr, uid, uid)
-            user_group = [u.id for u in user.groups_id]
-            flag = False
-            for directory in self.browse(cr, uid, directory_id, context):
-                for group in directory.group_ids:
-                    if group.group_id.id in user_group:
-                        if method in ['perm_write', 'is_downloadable'] and group[method] is True:
-                            if group.code.strip():
-                                cxt = {
-                                    'self': self,
-                                    'object': directory,
-                                    'obj': directory,
-                                    'pool': self.pool,
-                                    'time': time,
-                                    'cr': cr,
-                                    'context': dict(context),  # copy context to prevent side-effects of eval
-                                    'uid': uid,
-                                    'user': user,
-                                    'res_model': res_model,
-                                    'res_id': res_id,
-                                    'result': None,
-                                }
-                                eval(group.code.strip(), cxt, mode="exec", nocopy=True)  # nocopy allows to return 'action'
-                                if cxt.get('result', None) is True:
-                                    flag = True
-                                    break
-                            else:
-                                flag = True
-                                break
-                        elif group[method] is True:
-                            flag = True
-                            break
-            return flag
-        else:
+    def check_directory_privilege(self, cr, uid, directory_id, methods, context=None):
+        # if user is document admin
+        if self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
             return True
+        #init values
+        if context is None:
+            context = {}
+        user = self.pool.get('res.users').browse(cr, uid, uid)
+        # each directory
+        for directory in self.browse(cr, uid, directory_id, context):
+            for group in directory.group_ids:
+                if group.calc_privilege(list(methods), context=context):
+                    return True
+        return False
 
     def _check_group_unlink_privilege(self, cr, uid, ids, context=None):
         for directory in self.browse(cr, uid, ids, context):

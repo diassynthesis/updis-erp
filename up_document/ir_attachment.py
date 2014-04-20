@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 __author__ = 'cysnake4713'
+
 import base64
 import cStringIO
 from zipfile import ZipFile
@@ -15,18 +16,20 @@ class IrAttachmentInherit(osv.osv):
 
     def _check_group_unlink_privilege(self, cr, uid, ids, context=None):
         for attachment in self.browse(cr, uid, ids, context):
-            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('perm_write',
-                                                                                           res_model=attachment.res_model,
-                                                                                           res_id=attachment.res_id,
-                                                                                           context=context):
+            context['ctx'] = {
+                'res_model': attachment.res_model,
+                'res_id': attachment.res_id,
+            }
+            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('perm_write', context=context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Unlink some of the attachments.'))
 
     def _check_group_write_privilege(self, cr, uid, ids, context=None):
         for attachment in self.browse(cr, uid, ids, context):
-            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('perm_write',
-                                                                                           res_model=attachment.res_model,
-                                                                                           res_id=attachment.res_id,
-                                                                                           context=context):
+            context['ctx'] = {
+                'res_model': attachment.res_model,
+                'res_id': attachment.res_id,
+            }
+            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('perm_write', context=context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Write some of the attachments.'))
 
     def _check_group_create_privilege(self, cr, uid, vals, context=None):
@@ -34,8 +37,11 @@ class IrAttachmentInherit(osv.osv):
         parent_id = vals['parent_id'] if 'parent_id' in vals else (context['parent_id'] if 'parent_id' in context else None)
         if parent_id:
             directory = directory_obj.browse(cr, uid, parent_id, context=context)
-            if not directory.check_directory_privilege('perm_write', res_model=vals.get('res_model', None),
-                                                       res_id=vals.get('res_id', None), context=context):
+            context['ctx'] = {
+                'res_model': vals.get('res_model', None),
+                'res_id': vals.get('res_id', None),
+            }
+            if not directory.check_directory_privilege('perm_write', context=context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to create attachments in this directory.'))
 
     def create(self, cr, uid, vals, context=None):
@@ -81,10 +87,27 @@ class IrAttachmentInherit(osv.osv):
     def check_downloadable(self, cr, uid, ids, context=None):
         attachments = self.browse(cr, uid, list(ids), context)
         for attachment in attachments:
-            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('is_downloadable', attachment.res_model,
-                                                                                           attachment.res_id):
-                return False
-        return True
+            if attachment.parent_id:
+                cxt = {
+                    'res_model': attachment.res_model,
+                    'res_id': attachment.res_id,
+                }
+                context['cxt'] = cxt
+                context['attachment'] = attachment
+                if attachment.parent_id.check_directory_privilege(['is_downloadable', 'is_need_approval'], context=context):
+                    return True
+        return False
+
+    def is_pass_approval(self, cr, uid, attachment_id, context):
+        application_obj = self.pool.get('ir.attachment.application')
+        application_ids = application_obj.search(cr, uid,
+                                                 [('attachment_id', '=', attachment_id[0]), ('apply_user_id', '=', uid), ('is_approve', '=', True),
+                                                  ('expire_date', '>=', fields.datetime.now())],
+                                                 context=context)
+        if application_ids:
+            return True
+        else:
+            return False
 
 
 class IrAttachmentDownloadWizard(osv.osv_memory):
@@ -182,10 +205,10 @@ class IrAttachmentApplication(osv.osv):
 
     _columns = {
         'apply_user_id': fields.many2one('res.users', 'Apply User'),
-        'apply_date': fields.date('Apply Date'),
-        'expire_date': fields.date('Expire Date'),
+        'apply_date': fields.datetime('Apply Date'),
+        'expire_date': fields.datetime('Expire Date'),
         'approve_user_id': fields.many2one('res.users', 'Approver User'),
-        'approve_date': fields.date('Approve Date'),
+        'approve_date': fields.datetime('Approve Date'),
         'is_approve': fields.boolean('Is Approve'),
         'attachment_id': fields.many2one('ir.attachment', 'Attachment'),
         'attachment_datas': fields.related('attachment_id', 'datas', type='binary', string='Attachment Datas'),
