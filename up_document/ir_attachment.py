@@ -191,3 +191,7 @@ class IrAttachmentApplication(osv.osv):
         'attachment_datas': fields.related('attachment_id', 'datas', type='binary', string='Attachment Datas'),
         'attachment_name': fields.related('attachment_id', 'name', type='char', string='Attachment Name'),
     }
+
+
+class IrAttachmentApplicationWizard(osv.osv_memory):
+    _name = 'ir.attachment.application.wizard'
