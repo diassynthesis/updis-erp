@@ -52,14 +52,15 @@ class BinaryExtend(Binary):
     def saveas(self, req, model, field, id=None, filename_field=None, **kw):
         if model == 'ir.attachment':
             attachment_obj = req.session.model(model)
-            if attachment_obj.check_downloadable([int(id)], req.context):
+            download_able = attachment_obj.check_downloadable([int(id)], req.context)
+            if download_able == 3:
                 return super(BinaryExtend, self).saveas(req, model, field, id, filename_field, **kw)
             else:
-                out = """<script language="javascript" type="text/javascript">
-                    var win = window.top.window;
-                    win.jQuery(win).trigger(%s, %s);
-                </script>"""
-                args = {'error': {'message': _('You have no privilege to download some of the attachments'), 'data': {'debug': ''}}}
+                if download_able == 1:
+                    args = {'error': {'message': _('You apply download request but not approve yet! Please be patient'), 'data': {'debug': ''}}}
+                else:
+                    args = {'error': {'message': _('You have no privilege to download some of the attachments'), 'data': {'debug': ''}}}
+
                 return req.make_response(simplejson.dumps(args))
         else:
             return super(BinaryExtend, self).saveas(req, model, field, id, filename_field, **kw)
@@ -68,13 +69,18 @@ class BinaryExtend(Binary):
     def saveas_ajax(self, req, data, token):
         jdata = simplejson.loads(data)
         model = jdata['model']
-        id = jdata.get('id', None)
+        attachment_id = jdata.get('id', None)
         if model == 'ir.attachment':
             attachment_obj = req.session.model(model)
-            if attachment_obj.check_downloadable([int(id)], req.context):
+            download_able = attachment_obj.check_downloadable([int(attachment_id)], req.context)
+            if download_able == 3:
                 return super(BinaryExtend, self).saveas_ajax(req, data, token)
             else:
-                args =  {'message': _('You have no privilege to download some of the attachments'), 'data': {'debug': ''}}
+                if download_able == 1:
+                    args = {'error': {'message': _('You have no privilege to download some of the attachments, Please apply download request.'),
+                                      'data': {'debug': ''}}}
+                else:
+                    args = {'error': {'message': _('You have no privilege to download some of the attachments'), 'data': {'debug': ''}}}
                 return req.make_response(simplejson.dumps(args))
         else:
             return super(BinaryExtend, self).saveas_ajax(req, data, token)

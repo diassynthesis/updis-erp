@@ -28,50 +28,32 @@ class DocumentDirectoryAccess(osv.osv):
         'code': '',
     }
 
-    def calc_privilege(self, cr, uid, access_id, methods, context):
-        user = self.pool.get('res.users').browse(cr, uid, uid)
-        user_group = [u.id for u in user.groups_id]
+    def calc_privilege(self, cr, uid, access_id, method, context):
         access = self.browse(cr, uid, access_id[0], context)
-        flag = True
-        cxt = {
-            'self': self,
-            'object': access,
-            'obj': access,
-            'pool': self.pool,
-            'time': time,
-            'cr': cr,
-            'context': dict(context),  # copy context to prevent side-effects of eval
-            'uid': uid,
-            'user': user,
-            'result': None,
-        }
-        cxt.update(context['cxt'])
-        attachment = context['attachment']
-        if access.group_id.id not in user_group:
-            return False
-        for method in methods:
-            # If method need eval
-            if method in ['perm_write', 'is_downloadable']:
-                if access[method] is False:
-                    flag = flag and False
-                    break
-                if access.code.strip():
-                    eval(access.code.strip(), cxt, mode="exec", nocopy=True)  # nocopy allows to return 'action'
-                    flag = flag and True if cxt.get('result', None) else False
-                else:
-                    flag = flag and True
-            #If method need apply check
-            elif method in ['is_need_approval']:
-                if access['is_need_approval']:
-                    if attachment.is_pass_approval():
-                        flag = flag and True
-                    else:
-                        flag = flag and False
-                else:
-                    flag = flag and True
+        # If method need eval
+        if method in ['perm_write', 'is_downloadable']:
+            if access[method] is False:
+                return False
+            if access.code.strip():
+                cxt = {
+                    'self': self,
+                    'object': access,
+                    'obj': access,
+                    'pool': self.pool,
+                    'time': time,
+                    'cr': cr,
+                    'context': dict(context),  # copy context to prevent side-effects of eval
+                    'uid': uid,
+                    'user': self.pool.get('res.users').browse(cr, uid, uid),
+                    'result': None,
+                }
+                cxt.update(context.get('cxt', None))
+                eval(access.code.strip(), cxt, mode="exec", nocopy=True)  # nocopy allows to return 'action'
+                return True if cxt.get('result', None) else False
             else:
-                flag = flag and access[method]
-        return flag
+                return True
+        else:
+            return access[method]
 
 
 class DocumentDirectoryAction(osv.osv_memory):
@@ -140,7 +122,7 @@ class DocumentDirectoryInherit(osv.osv):
             ret['value'].update(sms_vals)
         return ret
 
-    def check_directory_privilege(self, cr, uid, directory_id, methods, context=None):
+    def check_directory_privilege(self, cr, uid, directory_id, method, context=None):
         # if user is document admin
         if self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
             return True
@@ -148,11 +130,13 @@ class DocumentDirectoryInherit(osv.osv):
         if context is None:
             context = {}
         user = self.pool.get('res.users').browse(cr, uid, uid)
+        user_group = [u.id for u in user.groups_id]
         # each directory
         for directory in self.browse(cr, uid, directory_id, context):
             for group in directory.group_ids:
-                if group.calc_privilege(list(methods), context=context):
-                    return True
+                if group.group_id.id in user_group:
+                    if group.calc_privilege(method, context=context):
+                        return True
         return False
 
     def _check_group_unlink_privilege(self, cr, uid, ids, context=None):

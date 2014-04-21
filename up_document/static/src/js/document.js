@@ -108,7 +108,7 @@ openerp.up_document = function (instance, m) {
             var text = _t("Download");
             var value = row_data[this.id].value;
             var download_url;
-            var is_downloadable = true;
+            var is_downloadable = 3;
             if (value && value.substr(0, 10).indexOf(' ') == -1) {
                 download_url = "data:application/octet-stream;base64," + value;
             } else {
@@ -117,11 +117,12 @@ openerp.up_document = function (instance, m) {
                     download_url += '&filename_field=' + this.filename;
                 }
             }
-            if (this.filename && row_data[this.filename] && row_data['is_downloadable'] && row_data['is_downloadable'].value == false) {
-                is_downloadable = false;
+
+            if (this.filename && row_data[this.filename] && row_data['is_downloadable'] && row_data['is_downloadable'].value < 3) {
+                is_downloadable = row_data['is_downloadable'].value;
             }
             if (this.filename && row_data[this.filename]) {
-                if (is_downloadable == true) {
+                if (is_downloadable == 3) {
                     text = _.str.sprintf(_t("Download \"%s\""), instance.web.format_value(
                         row_data[this.filename].value, {type: 'char'}));
                 } else {

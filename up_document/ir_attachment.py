@@ -15,6 +15,8 @@ class IrAttachmentInherit(osv.osv):
     _inherit = 'ir.attachment'
 
     def _check_group_unlink_privilege(self, cr, uid, ids, context=None):
+        if not context:
+            context = {}
         for attachment in self.browse(cr, uid, ids, context):
             context['ctx'] = {
                 'res_model': attachment.res_model,
@@ -24,6 +26,8 @@ class IrAttachmentInherit(osv.osv):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Unlink some of the attachments.'))
 
     def _check_group_write_privilege(self, cr, uid, ids, context=None):
+        if not context:
+            context = {}
         for attachment in self.browse(cr, uid, ids, context):
             context['ctx'] = {
                 'res_model': attachment.res_model,
@@ -33,13 +37,15 @@ class IrAttachmentInherit(osv.osv):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Write some of the attachments.'))
 
     def _check_group_create_privilege(self, cr, uid, vals, context=None):
+        if not context:
+            context = {}
         directory_obj = self.pool.get('document.directory')
         parent_id = vals['parent_id'] if 'parent_id' in vals else (context['parent_id'] if 'parent_id' in context else None)
         if parent_id:
             directory = directory_obj.browse(cr, uid, parent_id, context=context)
             context['ctx'] = {
                 'res_model': vals.get('res_model', None),
-                'res_id': vals.get('res_id', None),
+                'res_id': vals.get('res_id', 0),
             }
             if not directory.check_directory_privilege('perm_write', context=context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to create attachments in this directory.'))
@@ -71,7 +77,7 @@ class IrAttachmentInherit(osv.osv):
 
     _columns = {
         'file_size_human': fields.function(_get_file_size, type='float', digits=[10, 3], method=True, string='File Size Human (MB)'),
-        'is_downloadable': fields.function(_is_download_able, type='boolean', string='Is Downloadable'),
+        'is_downloadable': fields.function(_is_download_able, type='integer', string='Is Downloadable'),
         'application_ids': fields.one2many('ir.attachment.application', 'attachment_id', 'Applications'),
     }
 
@@ -84,19 +90,47 @@ class IrAttachmentInherit(osv.osv):
         self.write(cr, uid, attachment.id, {'name': attachment.datas_fname}, context)
         return True
 
-    def check_downloadable(self, cr, uid, ids, context=None):
-        attachments = self.browse(cr, uid, list(ids), context)
-        for attachment in attachments:
-            if attachment.parent_id:
-                cxt = {
-                    'res_model': attachment.res_model,
-                    'res_id': attachment.res_id,
-                }
-                context['cxt'] = cxt
-                context['attachment'] = attachment
-                if attachment.parent_id.check_directory_privilege(['is_downloadable', 'is_need_approval'], context=context):
-                    return True
-        return False
+    def check_downloadable(self, cr, uid, attachment_id, context=None):
+        """
+        return {
+            0: can't be download
+            1: can't be download but can apply
+            TODO:  2: can't be download but already apply
+            3: can be download
+        }
+        """
+        #Superuser can download anyway
+        if self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
+            return 3
+        # #init values
+        if context is None:
+            context = {}
+        attachment = self.browse(cr, uid, attachment_id[0], context)
+        is_pass_approval = attachment.is_pass_approval(context=context)
+        user = self.pool.get('res.users').browse(cr, uid, uid)
+        user_group = [u.id for u in user.groups_id]
+        # if attachment have no directory
+        if not attachment.parent_id:
+            return 3
+        else:
+            result = [0]
+            for group_id in attachment.parent_id.group_ids:
+                if group_id.group_id.id in user_group:
+                    # calc current group status
+                    is_download_able = group_id.calc_privilege('is_downloadable', context=context)
+                    # no download privilege means can't be download
+                    if not is_download_able:
+                        result += [0]
+                        continue
+                    is_need_approval = group_id.calc_privilege('is_need_approval', context=context)
+                    # can be download status:
+                    if (is_download_able and not is_need_approval) or (is_download_able and is_need_approval and is_pass_approval):
+                        return 3
+                    # can't be download but can apply
+                    if is_download_able and is_need_approval and not is_pass_approval:
+                        result += [1]
+                        # can't download do nothing
+            return max(result)
 
     def is_pass_approval(self, cr, uid, attachment_id, context):
         application_obj = self.pool.get('ir.attachment.application')
@@ -130,7 +164,7 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         for attach in attachments:
             if attach.file_size > 10 * 1024 * 1024:
                 raise osv.except_osv(_('Warning!'), _('Some of the selected file is large than 10MB!'))
-            if not attach.check_downloadable():
+            if attach.check_downloadable() != 3:
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to download some of the attachments'))
         # TODO: need some much useful limit
         if total_size > 50 * 1024 * 1024:
