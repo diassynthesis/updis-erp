@@ -47,7 +47,7 @@ class DocumentDirectoryAccess(osv.osv):
                     'user': self.pool.get('res.users').browse(cr, uid, uid),
                     'result': None,
                 }
-                cxt.update(context.get('cxt', None))
+                cxt.update(context.get('cxt', {}))
                 eval(access.code.strip(), cxt, mode="exec", nocopy=True)  # nocopy allows to return 'action'
                 return True if cxt.get('result', None) else False
             else:
