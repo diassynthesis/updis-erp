@@ -21,10 +21,10 @@
                                     <tree>
                                         <field name="apply_user_id"/>
                                         <field name="apply_date"/>
-                                        <field name="is_approve"/>
                                         <field name="expire_date"/>
                                         <field name="approve_user_id"/>
                                         <field name="approve_date"/>
+                                        <field name="state"/>
                                     </tree>
                                 </field>
                             </page>
@@ -45,6 +45,10 @@
                 <xpath expr="//field[@name='name']" position="before">
                     <field name="datas" filename="name"/>
                     <field name="is_downloadable" invisible="1"/>
+                    <button name="download_apply"
+                            string="Split inventory lines"
+                            attrs="{'invisible':[('is_downloadable','!=',1)]}"
+                            type="object" icon="gtk-save-as" confirm="Are you sure you want apply to download this document? After the application please check my document application menu for detail."/>
                 </xpath>
                 <xpath expr="//field[@name='name']" position="attributes">
                     <attribute name="invisible">1</attribute>
@@ -86,15 +90,16 @@
             <field name="name">ir.attachment.application.tree</field>
             <field name="model">ir.attachment.application</field>
             <field name="arch" type="xml">
-                <tree string="Attachment Download Management" version="7.0">
-                    <field name="attachment_datas" filename="attachment_name"/>
-                    <field name="attachment_name" invisible="1"/>
+                <tree string="Attachment Download Management" version="7.0"
+                      colors="grey:is_expired==True;red:state == 'disapprove';orange:state in 'approve'">
+                    <field name="attachment_id"/>
                     <field name="apply_user_id"/>
                     <field name="apply_date"/>
-                    <field name="is_approve"/>
                     <field name="expire_date"/>
                     <field name="approve_user_id"/>
                     <field name="approve_date"/>
+                    <field name="is_expired" invisible="1"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>
@@ -102,16 +107,34 @@
             <field name="name">ir.attachment.application.form</field>
             <field name="model">ir.attachment.application</field>
             <field name="arch" type="xml">
+
                 <form string="Attachment Download Management" version="7.0">
+                    <header>
+                        <button name="approve" type="object"
+                                string="Approve" class="oe_highlight"
+                                groups="up_document.group_attachment_download_manager"/>
+                        <button name="disapprove" type="object"
+                                string="Disapprove"
+                                groups="up_document.group_attachment_download_manager"/>
+                        <field name="state" widget="statusbar" readonly="1"/>
+                    </header>
                     <sheet>
-                        <group col="4">
+                        <group>
                             <field name="attachment_id"/>
-                            <field name="apply_user_id"/>
-                            <field name="apply_date"/>
-                            <field name="expire_date"/>
-                            <field name="approve_user_id"/>
-                            <field name="is_approve"/>
-                            <field name="approve_date"/>
+                        </group>
+                        <newline/>
+                        <group>
+                            <group>
+                                <field name="apply_user_id"/>
+                                <field name="apply_date"/>
+                            </group>
+                            <group>
+                                <field name="expire_date"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="approve_user_id" readonly="1"/>
+                            <field name="approve_date" readonly="1"/>
                         </group>
                     </sheet>
                 </form>

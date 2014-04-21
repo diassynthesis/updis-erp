@@ -1,4 +1,6 @@
 # -*- encoding: utf-8 -*-
+import datetime
+from openerp import tools
 
 __author__ = 'cysnake4713'
 
@@ -135,13 +137,26 @@ class IrAttachmentInherit(osv.osv):
     def is_pass_approval(self, cr, uid, attachment_id, context):
         application_obj = self.pool.get('ir.attachment.application')
         application_ids = application_obj.search(cr, uid,
-                                                 [('attachment_id', '=', attachment_id[0]), ('apply_user_id', '=', uid), ('is_approve', '=', True),
+                                                 [('attachment_id', '=', attachment_id[0]), ('apply_user_id', '=', uid), ('state', '=', 'approve'),
                                                   ('expire_date', '>=', fields.datetime.now())],
                                                  context=context)
         if application_ids:
             return True
         else:
             return False
+
+    def download_apply(self, cr, uid, ids, context):
+        application_obj = self.pool.get('ir.attachment.application')
+        for attachment in self.browse(cr, uid, ids, context):
+            application_ids = application_obj.search(cr, uid,
+                                                     [('attachment_id', '=', attachment.id), ('apply_user_id', '=', uid),
+                                                      ('state', '=', None)],
+                                                     context=context)
+            if not application_ids:
+                application_obj.create(cr, 1, {'attachment_id': attachment.id,
+                                               'apply_date': fields.datetime.now(),
+                                               'apply_user_id': uid}, context=context)
+        return True
 
 
 class IrAttachmentDownloadWizard(osv.osv_memory):
@@ -222,33 +237,42 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
 
 class IrAttachmentApplication(osv.osv):
     _name = 'ir.attachment.application'
+    _rec_name = 'attachment_id'
+    _order = 'apply_date desc'
 
-    def _data_get(self, cr, uid, ids, name, arg, context=None):
-        attachment_obj = self.pool.get('ir.attachment')
-        if context is None:
-            context = {}
-        result = {}
-        location = self.pool.get('ir.config_parameter').get_param(cr, uid, 'ir_attachment.location')
-        bin_size = context.get('bin_size')
-        for application in self.browse(cr, uid, ids, context=context):
-            if location and application.attachment_id.store_fname:
-                result[application.id] = attachment_obj._file_read(cr, uid, location, application.attachment_id.store_fname, bin_size)
-            else:
-                result[application.id] = application.attachment_id.db_datas
+    def _is_expired(self, cr, uid, ids, name, arg, context=None):
+        result = dict.fromkeys(ids, False)
+        for attachment in self.browse(cr, uid, ids, context=context):
+            if attachment.expire_date and datetime.datetime.strptime(attachment.expire_date,
+                                                                     tools.DEFAULT_SERVER_DATETIME_FORMAT) < datetime.datetime.now():
+                result[attachment.id] = True
         return result
 
     _columns = {
+        'attachment_id': fields.many2one('ir.attachment', 'Attachment', required=True, ondelete='cascade'),
         'apply_user_id': fields.many2one('res.users', 'Apply User'),
         'apply_date': fields.datetime('Apply Date'),
-        'expire_date': fields.datetime('Expire Date'),
         'approve_user_id': fields.many2one('res.users', 'Approver User'),
         'approve_date': fields.datetime('Approve Date'),
-        'is_approve': fields.boolean('Is Approve'),
-        'attachment_id': fields.many2one('ir.attachment', 'Attachment'),
-        'attachment_datas': fields.related('attachment_id', 'datas', type='binary', string='Attachment Datas'),
-        'attachment_name': fields.related('attachment_id', 'name', type='char', string='Attachment Name'),
+        'expire_date': fields.datetime('Expire Date'),
+        'is_expired': fields.function(_is_expired, type='boolean', string='Is expired'),
+        'state': fields.selection(selection=[('approve', 'Approve'), ('disapprove', 'Disapprove')], string='State'),
     }
 
+    def approve(self, cr, uid, ids, context):
+        self.write(cr, uid, ids, {
+            'approve_user_id': uid,
+            'approve_date': fields.datetime.now(),
+            'expire_date': (datetime.datetime.now() + datetime.timedelta(days=7)).strftime(tools.DEFAULT_SERVER_DATETIME_FORMAT),
+            'state': 'approve',
+        }, context=context)
+        return True
 
-class IrAttachmentApplicationWizard(osv.osv_memory):
-    _name = 'ir.attachment.application.wizard'
+    def disapprove(self, cr, uid, ids, context):
+        self.write(cr, uid, ids, {
+            'approve_user_id': uid,
+            'approve_date': fields.datetime.now(),
+            'expire_date': (datetime.datetime.now() + datetime.timedelta(days=7)).strftime(tools.DEFAULT_SERVER_DATETIME_FORMAT),
+            'state': 'disapprove',
+        }, context=context)
+        return True

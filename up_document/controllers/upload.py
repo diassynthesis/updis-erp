@@ -1,6 +1,7 @@
 import base64
 import simplejson
 from xmlrpclib import Fault
+from openerp.osv import osv
 from web_clupload.controllers.main import InternalHome
 from openerp.addons.web.controllers.main import Binary, openerpweb
 import openerp
@@ -77,10 +78,10 @@ class BinaryExtend(Binary):
                 return super(BinaryExtend, self).saveas_ajax(req, data, token)
             else:
                 if download_able == 1:
-                    args = {'error': {'message': _('You have no privilege to download some of the attachments, Please apply download request.'),
-                                      'data': {'debug': ''}}}
+                    args = {'message': _('You have no privilege to download some of the attachments, Please apply download request.'),
+                            'data': {}, }
                 else:
-                    args = {'error': {'message': _('You have no privilege to download some of the attachments'), 'data': {'debug': ''}}}
+                    args = {'message': _('You have no privilege to download some of the attachments'), 'data': {}, }
                 return req.make_response(simplejson.dumps(args))
         else:
             return super(BinaryExtend, self).saveas_ajax(req, data, token)
