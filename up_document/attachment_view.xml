@@ -91,7 +91,7 @@
             <field name="model">ir.attachment.application</field>
             <field name="arch" type="xml">
                 <tree string="Attachment Download Management" version="7.0"
-                      colors="grey:is_expired==True;red:state == 'disapprove';orange:state in 'approve'">
+                      colors="grey:is_expired==True;red:state == False;blue:state == 'approve';orange:state == 'disapprove'">
                     <field name="attachment_id"/>
                     <field name="apply_user_id"/>
                     <field name="apply_date"/>
