@@ -55,6 +55,7 @@ class BinaryExtend(Binary):
             attachment_obj = req.session.model(model)
             download_able = attachment_obj.check_downloadable([int(id)], req.context)
             if download_able == 3:
+                attachment_obj.log_info([int(id)], _('download this file'), context=req.context)
                 return super(BinaryExtend, self).saveas(req, model, field, id, filename_field, **kw)
             else:
                 if download_able == 1:
@@ -75,6 +76,7 @@ class BinaryExtend(Binary):
             attachment_obj = req.session.model(model)
             download_able = attachment_obj.check_downloadable([int(attachment_id)], req.context)
             if download_able == 3:
+                attachment_obj.log_info([int(attachment_id)], _('download this file'), context=req.context)
                 return super(BinaryExtend, self).saveas_ajax(req, data, token)
             else:
                 if download_able == 1:

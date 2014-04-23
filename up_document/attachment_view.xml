@@ -31,6 +31,15 @@
                             <page string="Indexed Content">
                                 <field name="index_content" nolabel="1"/>
                             </page>
+                            <page string="Logs">
+                                <field name="log_ids" readonly="1">
+                                    <tree>
+                                        <field name="create_date"/>
+                                        <field name="create_uid"/>
+                                        <field name="message"/>
+                                    </tree>
+                                </field>
+                            </page>
                         </notebook>
                     </group>
                 </xpath>
@@ -48,7 +57,8 @@
                     <button name="download_apply"
                             string="Split inventory lines"
                             attrs="{'invisible':[('is_downloadable','!=',1)]}"
-                            type="object" icon="gtk-save-as" confirm="Are you sure you want apply to download this document? After the application please check my document application menu for detail."/>
+                            type="object" icon="gtk-save-as"
+                            confirm="Are you sure you want apply to download this document? After the application please check my document application menu for detail."/>
                 </xpath>
                 <xpath expr="//field[@name='name']" position="attributes">
                     <attribute name="invisible">1</attribute>

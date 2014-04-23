@@ -54,15 +54,26 @@ class IrAttachmentInherit(osv.osv):
 
     def create(self, cr, uid, vals, context=None):
         self._check_group_create_privilege(cr, uid, vals, context)
-        return super(IrAttachmentInherit, self).create(cr, uid, vals, context)
+        attachment_id = super(IrAttachmentInherit, self).create(cr, uid, vals, context)
+        self.log_info(cr, uid, attachment_id, _('create this file'), context=context)
+        return attachment_id
 
     def unlink(self, cr, uid, ids, context=None):
         self._check_group_unlink_privilege(cr, uid, ids, context)
+        #TODO: what do we do about unlink file
         return super(IrAttachmentInherit, self).unlink(cr, uid, ids, context)
 
     def write(self, cr, uid, ids, vals, context=None):
         self._check_group_write_privilege(cr, uid, ids, context)
+        self.log_info(cr, uid, ids, _('update this file'), context=context)
         return super(IrAttachmentInherit, self).write(cr, uid, ids, vals, context)
+
+    def log_info(self, cr, uid, ids, message, context):
+        for attachment_id in ids if isinstance(ids, list) else [ids]:
+            self.pool.get('ir.attachment.log').create(cr, uid, {
+                'message': message,
+                'attachment_id': attachment_id,
+            }, context=context)
 
     # noinspection PyUnusedLocal
     def _get_file_size(self, cr, uid, ids, field_name, arg, context):
@@ -81,6 +92,7 @@ class IrAttachmentInherit(osv.osv):
         'file_size_human': fields.function(_get_file_size, type='float', digits=[10, 3], method=True, string='File Size Human (MB)'),
         'is_downloadable': fields.function(_is_download_able, type='integer', string='Is Downloadable'),
         'application_ids': fields.one2many('ir.attachment.application', 'attachment_id', 'Applications'),
+        'log_ids': fields.one2many('ir.attachment.log', 'attachment_id', 'Logs'),
     }
 
     _sql_constraints = [
@@ -108,7 +120,7 @@ class IrAttachmentInherit(osv.osv):
         if context is None:
             context = {}
         attachment = self.browse(cr, uid, attachment_id[0], context)
-        is_pass_approval = attachment.is_pass_approval()
+        is_pass_approval = attachment.is_pass_approval(context=context)
         user = self.pool.get('res.users').browse(cr, uid, uid)
         user_group = [u.id for u in user.groups_id]
         # if attachment have no directory
@@ -224,6 +236,7 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         self.write(cr, uid, ids, {'state': 'get',
                                   'data': out,
                                   'name': filename}, context=context)
+        self.pool.get('ir.attachment').log_info(cr, uid, record_ids, _('have been zipped and download'), context=context)
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'ir.attachment.download.wizard',
@@ -285,3 +298,19 @@ class IrAttachmentApplication(osv.osv):
             'state': 'disapprove',
         }, context=context)
         return True
+
+
+class IrAttachmentLog(osv.osv):
+    _name = 'ir.attachment.log'
+    _order = 'create_date desc'
+    _columns = {
+        'create_date': fields.datetime('Log Date'),
+        'create_uid': fields.many2one('res.users', 'Log User'),
+        'message': fields.char('Message', 1024),
+        'filed_period': fields.integer('Filed Period'),
+        'attachment_id': fields.many2one('ir.attachment', ondelete='cascade', string='Attachment'),
+    }
+    _defaults = {
+        'filed_period': 1,
+    }
+
