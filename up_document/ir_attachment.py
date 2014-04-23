@@ -102,13 +102,13 @@ class IrAttachmentInherit(osv.osv):
         }
         """
         #Superuser can download anyway
-        if self.user_has_groups(cr, uid, 'base.group_document_user', context=context):
+        if self.user_has_groups(cr, uid, 'base.group_document_user', context=context) or uid == 1:
             return 3
         # #init values
         if context is None:
             context = {}
         attachment = self.browse(cr, uid, attachment_id[0], context)
-        is_pass_approval = attachment.is_pass_approval(context=context)
+        is_pass_approval = attachment.is_pass_approval()
         user = self.pool.get('res.users').browse(cr, uid, uid)
         user_group = [u.id for u in user.groups_id]
         # if attachment have no directory
@@ -248,6 +248,12 @@ class IrAttachmentApplication(osv.osv):
                 result[attachment.id] = True
         return result
 
+    def _is_download_able(self, cr, uid, ids, field_name, arg, context):
+        result = dict.fromkeys(ids, False)
+        for application in self.browse(cr, uid, ids, context=context):
+            result[application.id] = application.attachment_id.check_downloadable()
+        return result
+
     _columns = {
         'attachment_id': fields.many2one('ir.attachment', 'Attachment', required=True, ondelete='cascade'),
         'apply_user_id': fields.many2one('res.users', 'Apply User'),
@@ -257,6 +263,9 @@ class IrAttachmentApplication(osv.osv):
         'expire_date': fields.datetime('Expire Date'),
         'is_expired': fields.function(_is_expired, type='boolean', string='Is expired'),
         'state': fields.selection(selection=[('approve', 'Approve'), ('disapprove', 'Disapprove')], string='State'),
+        'attachment_name': fields.related('attachment_id', 'name', type='char', string='Attachment Name'),
+        'attachment_datas': fields.related('attachment_id', 'datas', type='binary', string='Datas'),
+        'is_downloadable': fields.function(_is_download_able, type='integer', string='Is Downloadable'),
     }
 
     def approve(self, cr, uid, ids, context):
