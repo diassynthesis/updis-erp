@@ -7,3 +7,4 @@ access_message_message_internal_manager,message_message_internal_manager,message
 access_message_category_internal_manager,access_message_category_internal_manager,message.model_message_category,message.message_internal_manager,1,1,0,0
 access_message_message_admin,message_message_admin,message.model_message_message,message.message_admin,1,1,1,1
 access_message_category_admin,access_message_category_admin,message.model_message_category,message.message_admin,1,1,1,1
+access_message_vote,access_message_vote,model_message_vote,,1,1,1,1

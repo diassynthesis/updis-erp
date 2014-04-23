@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <record id="view_birthday_wish_tree" model="ir.ui.view">
+            <field name="name">hr.birthday.wish.tree</field>
+            <field name="model">hr.birthday.wish</field>
+            <field name="arch" type="xml">
+                <tree string="Birthday wishes" editable="top" version="7.0">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_birthday_wish" model="ir.actions.act_window">
+            <field name="name">Birthday Wishes</field>
+            <field name="res_model">hr.birthday.wish</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+        <menuitem name="Birthday Config" id="base.menu_birthday_wish_config" parent="hr.menu_hr_configuration"
+                  action="action_birthday_wish" groups="base.group_hr_manager" sequence="110" />
+    </data>
+</openerp>

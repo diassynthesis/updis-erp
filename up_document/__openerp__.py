@@ -27,6 +27,9 @@ Independent Super File Version control System
     'css': [
         'static/src/css/up_document.css',
     ],
+    'qweb': [
+        'static/src/xml/up_document.xml',
+    ],
     'auto_install': False,
     'installable': True,
 }
