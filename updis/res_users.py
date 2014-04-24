@@ -1,8 +1,9 @@
 from functools import partial
+from up_tools.bigantlib import BigAntClient
 
 from openerp import SUPERUSER_ID
 
-from osv import osv, fields
+from openerp.osv import osv, fields
 
 
 class user_device(osv.osv):
@@ -16,7 +17,7 @@ class user_device(osv.osv):
 
 class res_users(osv.osv):
     _inherit = "res.users"
-
+    _bigAntClient = BigAntClient()
     _columns = {
         'sign_image': fields.binary("Sign Image",
                                     help="This field holds the image used as siganture for this contact"),
@@ -36,12 +37,12 @@ class res_users(osv.osv):
 
     SELF_WRITEABLE_FIELDS = ['password', 'signature', 'action_id', 'company_id', 'email', 'name', 'image',
                              'image_medium', 'image_small', 'lang', 'tz', 'address_id', 'work_email', 'work_phone',
-                             'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone']
+                             'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone', ]
 
     OTHER_WRITEABLE_FIELDS = ['address_id', 'work_email', 'work_phone', 'image', 'image_medium', 'image_small',
                               'has_image',
                               'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone',
-                              'devices']
+                              'devices', ]
 
     def write(self, cr, uid, ids, values, context=None):
         if not hasattr(ids, '__iter__'):
@@ -55,15 +56,15 @@ class res_users(osv.osv):
                     if not (values['company_id'] in self.read(cr, SUPERUSER_ID, uid, ['company_ids'], context=context)[
                         'company_ids']):
                         del values['company_id']
-                uid = 1 # safe fields only, so we write as super-user to bypass access rights
+                uid = 1  # safe fields only, so we write as super-user to bypass access rights
         else:
-        #others can update user info, like hr manager
+            #others can update user info, like hr manager
             #TODO: need add hr manager validate
             for key in values.keys():
                 if not (key in self.OTHER_WRITEABLE_FIELDS or key.startswith('context_')):
                     break
                 else:
-                    uid = 1 # safe fields only, so we write as super-user to bypass access rights
+                    uid = 1  # safe fields only, so we write as super-user to bypass access rights
 
         res = super(res_users, self).write(cr, uid, ids, values, context=context)
 
@@ -116,3 +117,32 @@ class res_users(osv.osv):
     _defaults = {
         'groups_id': _get_group,
     }
+
+    def change_password(self, cr, uid, old_passwd, new_passwd, context=None):
+        result = super(res_users, self).change_password(cr, uid, old_passwd, new_passwd, context=context)
+        user = self.browse(cr, 1, uid, context)
+        if user.big_ant_login_name:
+            params = {
+                'loginName': user.big_ant_login_name,
+                'password': new_passwd,
+            }
+            #TODO: need test
+            self._bigAntClient.Employee___asmx.SendMessenge.post(**params)
+        return result
+
+
+class ChangePasswordUser(osv.TransientModel):
+    _inherit = 'change.password.user'
+    _bigAntClient = BigAntClient()
+
+    def change_password_button(self, cr, uid, ids, context=None):
+        for user in self.browse(cr, uid, ids, context=context):
+            self.pool.get('res.users').write(cr, uid, user.user_id.id, {'password': user.new_passwd})
+            res_user = self.pool.get('res.users').browse(cr, 1, user.user_id.id, context)
+            if res_user.big_ant_login_name:
+                params = {
+                    'loginName': res_user.big_ant_login_name,
+                    'password': user.new_passwd,
+                }
+                #TODO: need test
+                self._bigAntClient.Employee___asmx.SendMessenge.post(**params)
