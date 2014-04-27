@@ -271,8 +271,9 @@ class updis_project(osv.osv):
             result[obj.id] = ','.join(project_manager_name)
         return result
 
-    def is_project_director(self, cr, uid, project_id, context):
+    def is_project_member(self, cr, uid, project_id, context):
         project = self.browse(cr, uid, project_id, context=context)
+        # Is project director?
         hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
         if hr_id and self.user_has_groups(cr, uid, "up_project.group_up_project_suozhang", context=context):
             hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
@@ -281,10 +282,26 @@ class updis_project(osv.osv):
             job_name = hr_record.job_id.name if hr_record.job_id else None
             if user_department_id == project_department_id and (job_name == u"所长" or job_name == u"分院院长"):
                 return True
-            else:
-                return False
-        else:
-            return False
+        # Is Project Operator
+        if project.guanlijibie == 'LH200307240001' and uid in [z.id for z in project.zhuguanzongshi_id]:
+            return True
+        # Is Project Manager
+        user_id = self.read(cr, uid, project_id, ['user_id'], context=context)['user_id']
+        if uid in user_id:
+            return True
+        # Is Project common member
+        common_member = []
+        for member_job in project.member_ids:
+            common_member += [u.user_id.id for u in member_job.validation_user_ids if u.user_id]
+            common_member += [u.user_id.id for u in member_job.audit_user_ids if u.user_id]
+            common_member += [u.user_id.id for u in member_job.profession_manager_user_ids if u.user_id]
+            common_member += [u.user_id.id for u in member_job.design_user_ids if u.user_id]
+            common_member += [u.user_id.id for u in member_job.proofread_user_ids if u.user_id]
+            common_member += [u.user_id.id for u in member_job.drawing_user_ids if u.user_id]
+        if uid in set(common_member):
+            return True
+        # Not a Member
+        return False
 
     _columns = {
         # 基础信息

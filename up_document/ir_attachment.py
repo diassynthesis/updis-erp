@@ -120,6 +120,10 @@ class IrAttachmentInherit(osv.osv):
         if context is None:
             context = {}
         attachment = self.browse(cr, uid, attachment_id[0], context)
+        context['cxt'] = {
+            'res_id': attachment.res_id,
+            'res_model': attachment.res_model,
+        }
         is_pass_approval = attachment.is_pass_approval(context=context)
         user = self.pool.get('res.users').browse(cr, uid, uid)
         user_group = [u.id for u in user.groups_id]
