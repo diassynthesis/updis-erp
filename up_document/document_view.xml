@@ -6,7 +6,7 @@
             <field name="name">document.directory.access.tree</field>
             <field name="model">document.directory.access</field>
             <field name="arch" type="xml">
-                <tree string="Access" version="7.0" editable="bottom">
+                <tree string="Access" version="7.0">
                     <field name="group_id"/>
                     <field name="perm_read"/>
                     <field name="perm_write"/>
@@ -15,6 +15,34 @@
                     <field name="code"/>
                     <field name="perm_create_unlink"/>
                 </tree>
+            </field>
+        </record>
+        <record id="view_document_directory_access_form" model="ir.ui.view">
+            <field name="name">document.directory.access.form</field>
+            <field name="model">document.directory.access</field>
+            <field name="arch" type="xml">
+                <form string="Access" version="7.0" editable="bottom">
+                    <sheet>
+                        <group colspan="2">
+                            <field name="group_id"/>
+                        </group>
+                        <newline/>
+                        <group>
+                            <group>
+                                <field name="perm_write"/>
+                                <field name="perm_create_unlink"/>
+                            </group>
+                            <group>
+                                <field name="is_downloadable"/>
+                                <field name="is_need_approval" attrs="{'readonly':[('is_downloadable','=',False)]}"/>
+                            </group>
+                        </group>
+                        <newline/>
+                        <group>
+                            <field name="code"/>
+                        </group>
+                    </sheet>
+                </form>
             </field>
         </record>
         <record id="view_document_directory_config_inherit" model="ir.ui.view">
@@ -34,8 +62,13 @@
                     <newline/>
                     <field name="index"/>
                 </xpath>
-                <xpath expr="//field[@name='parent_id']" position="attributes">
-                    <attribute name="on_change">onchange_parent_id(parent_id)</attribute>
+                <xpath expr="//field[@name='parent_id']" position="replace">
+                    <field name="parent_id" on_change="onchange_parent_id(parent_id)">
+                        <tree>
+                            <field name="name"/>
+                            <field name="parent_id"/>
+                        </tree>
+                    </field>
                 </xpath>
                 <xpath expr="//page[@string='Security']/label[2]" position="replace">
                     <label colspan="4" style="color:red;"
