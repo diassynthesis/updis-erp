@@ -126,8 +126,7 @@ class res_users(osv.osv):
                 'loginName': user.big_ant_login_name,
                 'password': new_passwd,
             }
-            #TODO: need test
-            self._bigAntClient.Employee___asmx.SendMessenge.post(**params)
+            self._bigAntClient.Employee___asmx.SetPassword2.post(**params)
         return result
 
 
@@ -144,5 +143,4 @@ class ChangePasswordUser(osv.TransientModel):
                     'loginName': res_user.big_ant_login_name,
                     'password': user.new_passwd,
                 }
-                #TODO: need test
-                self._bigAntClient.Employee___asmx.SendMessenge.post(**params)
+                self._bigAntClient.Employee___asmx.SetPassword2.post(**params)

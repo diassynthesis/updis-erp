@@ -92,6 +92,10 @@ class DocumentDirectoryInherit(osv.osv):
     }
     _order = 'index asc'
 
+    _defaults = {
+        'user_id': None,
+    }
+
     def delete_related_action(self, cr, uid, ids, context):
         directory_records = self.browse(cr, uid, ids, context)
         for directory_record in directory_records:

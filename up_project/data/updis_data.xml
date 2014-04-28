@@ -97,41 +97,5 @@
         <record id="project_active_tasking_config_record" model="project.active.tasking.config">
             <field name="name">任务下达单配置</field>
         </record>
-
-        <!--document.directory-->
-        <record model="document.directory" id="dir_up_project">
-            <field name="name">项目目录</field>
-            <field name="user_id" eval="False"/>
-            <field name="parent_id" eval="False"/>
-            <field name="ressource_id">0</field>
-            <field name="type">ressource</field>
-            <field name="ressource_type_id" ref="model_project_project"/>
-        </record>
-        <record model="document.directory" id="dir_up_project_provisional">
-            <field name="name">项目临时</field>
-            <field name="user_id" eval="False"/>
-            <field name="parent_id" eval="False"/>
-            <field name="ressource_id">0</field>
-            <field name="type">ressource</field>
-            <field name="ressource_type_id" ref="model_project_project"/>
-        </record>
-        <record model="document.directory" id="dir_up_project_activing">
-            <field name="name">任务下达进行中</field>
-            <field name="user_id" eval="False"/>
-            <field name="parent_id" ref="dir_up_project_provisional"/>
-            <field name="ressource_id">0</field>
-        </record>
-        <record model="document.directory" id="dir_up_project_active">
-            <field name="name">任务下达归档</field>
-            <field name="user_id" eval="False"/>
-            <field name="parent_id" ref="dir_up_project"/>
-            <field name="ressource_id">0</field>
-        </record>
-        <record model="document.directory" id="dir_up_project_trash">
-            <field name="name">垃圾桶</field>
-            <field name="user_id" eval="False"/>
-            <field name="parent_id" ref="dir_up_project_provisional"/>
-            <field name="ressource_id">0</field>
-        </record>
     </data>
 </openerp>
