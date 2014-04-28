@@ -18,6 +18,15 @@
                 <xpath expr="//field[@name='login']" position="attributes">
                      <attribute name="on_change">on_change_login(login,big_ant_login_name)</attribute>
                 </xpath>
+                <xpath expr="//page[@string='Access Rights']" position="after">
+                    <page string="Device ID">
+                        <field name="devices" readonly="1">
+                            <tree>
+                                <field name="device_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
             </field>
         </record>
 
