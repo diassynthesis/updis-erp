@@ -104,6 +104,9 @@ class DocumentDirectoryInherit(osv.osv):
             self.pool.get("ir.actions.act_window").unlink(cr, 1, action_id, context)
         return True
 
+    def convert_child_privilege(self, cr, uid, ids, context):
+        pass
+
     # noinspection PyUnusedLocal
     def onchange_parent_id(self, cr, uid, ids, parent_id, context=None):
         ret = {'value': {}}

@@ -40,6 +40,11 @@
                 <xpath expr="//page[@string='Security']/label[2]" position="replace">
                     <label colspan="4" style="color:red;"
                            string="These groups, however, will automatic add to children directories everytime,Please check the groups status everytime you change the parent directories!"/>
+                    <group>
+                        <button name="convert_child_privilege" type="object" string="Convert child directories privilege"
+                                confirm="Are you sure you want override all chrild directories privilege? This operation can't rollback!"/>
+                    </group>
+                    <newline/>
                 </xpath>
             </field>
         </record>
