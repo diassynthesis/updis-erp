@@ -99,10 +99,19 @@
                 <tree string="Public Directories">
                     <field name="name"/>
                     <field name="parent_id"/>
-                    <field name="type"/>
                     <field name="company_id" groups="base.group_multi_company"/>
                     <field name="write_date"/>
                 </tree>
+            </field>
+        </record>
+        <record id="view_document_directory_tree_inherit" model="ir.ui.view">
+            <field name="name">document.directory.tree.inherit</field>
+            <field name="model">document.directory</field>
+            <field name="inherit_id" ref="document.view_document_directory_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='type']" position="replace">
+                    <field name="parent_id"/>
+                </xpath>
             </field>
         </record>
         <record id="view_document_directory_public_config_form" model="ir.ui.view">
