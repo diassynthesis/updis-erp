@@ -104,29 +104,44 @@ class DocumentDirectoryInherit(osv.osv):
             self.pool.get("ir.actions.act_window").unlink(cr, 1, action_id, context)
         return True
 
-    def convert_child_privilege(self, cr, uid, ids, context):
-        pass
+    def _get_child_ids(self, cr, uid, documents, context=None):
+        result_ids = [d.id for d in documents]
+        for document in documents:
+            if document.child_ids:
+                result_ids += self._get_child_ids(cr, uid, document.child_ids, context)
+        return set(result_ids)
 
-    # noinspection PyUnusedLocal
+    def convert_child_privilege(self, cr, uid, ids, context):
+        for document in self.browse(cr, uid, ids, context):
+            vals = self._copy_accesses(cr, 1, document.id, context)
+            child_ids = self._get_child_ids(cr, 1, document.child_ids, context)
+            for child_id in child_ids:
+                self.write(cr, 1, [child_id], vals, context=context)
+        return True
+
+    def _copy_accesses(self, cr, uid, document_id, context):
+        parent_directory = self.browse(cr, uid, document_id, context)
+        new_group_ids = [(5,)]
+        new_group_ids += [(0, 0, {
+            'group_id': g.group_id.id,
+            'perm_read': g.perm_read,
+            'perm_write': g.perm_write,
+            'perm_create_unlink': g.perm_create_unlink,
+            'is_downloadable': g.is_downloadable,
+            'is_need_approval': g.is_need_approval,
+            'code': g.code,
+        }) for g in parent_directory.group_ids]
+        sms_vals = {
+            'group_ids': new_group_ids,
+        }
+        return sms_vals
+
     def onchange_parent_id(self, cr, uid, ids, parent_id, context=None):
         ret = {'value': {}}
         if parent_id:
-            parent_directory = self.browse(cr, uid, parent_id, context)
-            new_group_ids = [(5,)]
-            new_group_ids += [(0, 0, {
-                'group_id': g.group_id.id,
-                'perm_read': g.perm_read,
-                'perm_write': g.perm_write,
-                'perm_create_unlink': g.perm_create_unlink,
-            }) for g in parent_directory.group_ids]
-            # directory = self.browse(cr, uid, ids[0], context=context)
-            # directory.write({'group_ids': (5), }, context=context)
-            # self.write(cr, uid, ids[0], {'group_ids': (2, [g.id for g in directory.group_ids])}, context=context)
-            sms_vals = {
-                'group_ids': new_group_ids,
-            }
+            vals = self._copy_accesses(cr, uid, parent_id, context)
             # noinspection PyTypeChecker
-            ret['value'].update(sms_vals)
+            ret['value'].update(vals)
         return ret
 
     def check_directory_privilege(self, cr, uid, directory_id, method, context=None):
