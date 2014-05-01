@@ -29,8 +29,6 @@
             <field name="view_mode">tree,form</field>
             <field name="context">{}</field>
         </record>
-        <menuitem name="Project Sms Config" id="project_config_sms_menu" parent="base.menu_definitions"
-                  action="act_project_config_sms" groups="up_project.group_up_project_admin"/>
         <!--project Profession config-->
         <record id="project_config_profession_form" model="ir.ui.view">
             <field name="name">project.profession.form</field>
@@ -65,8 +63,6 @@
             <field name="view_mode">tree,form</field>
             <field name="context">{}</field>
         </record>
-        <menuitem name="Project Profession Config" id="project_config_profession_menu" parent="base.menu_definitions"
-                  action="act_project_config_profession" groups="up_project.group_up_project_admin"/>
         <record id="project_config_upcategory_form" model="ir.ui.view">
             <field name="name">project.upcategory.form</field>
             <field name="model">project.upcategory</field>
@@ -79,6 +75,12 @@
                     </group>
                 </form>
             </field>
+        </record>
+        <record id="act_project_config_category" model="ir.actions.act_window">
+            <field name="name">Project Config Categories</field>
+            <field name="res_model">project.upcategory</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
         </record>
         <!-- project.engineer.room.right config part -->
         <record id="act_project_engineer_room_config" model="ir.actions.act_window">
@@ -115,11 +117,8 @@
         <record id="act_active_tasking_wizard" model="ir.actions.act_window">
             <field name="name">Project Tasking Config Action Wizard</field>
             <field name="res_model">project.active.tasking.config.wizard</field>
-            <field name="view_type">form</field>
-            <field name="target">new</field>
-            <field name="domain">[]</field>
+            <field name="target">inline</field>
             <field name="view_mode">form</field>
-            <field name="context">{}</field>
         </record>
         <record id="project_project_config_wizard_form" model="ir.ui.view">
             <field name="name">Project Config Wizard Form</field>
@@ -129,13 +128,31 @@
                     <sheet>
                         <h1 class="oe_title">项目表单配置</h1>
                         <group col="1">
-                            <group string="项目启动阶段表单">
+                            <group>
                                 <button name="%(act_active_tasking_wizard)d"
-                                        class="oe_form_field_with_button oe_inline"
-                                        string="配置任务下达单"
+                                        class="oe_form_field_with_button oe_inline oe_link"
+                                        string="项目启动-任务下达单配置"
                                         type="action"
                                         groups="up_project.group_up_project_admin"/>
                             </group>
+                        </group>
+                        <h1 class="oe_title">项目参数配置</h1>
+                        <group col="3">
+                            <button name="%(act_project_config_sms)d"
+                                    class="oe_form_field_with_button oe_inline oe_link"
+                                    string="项目短信配置"
+                                    type="action"
+                                    groups="up_project.group_up_project_admin"/>
+                            <button name="%(act_project_config_profession)d"
+                                    class="oe_form_field_with_button oe_inline oe_link"
+                                    string="项目配置"
+                                    type="action"
+                                    groups="up_project.group_up_project_admin"/>
+                            <button name="%(act_project_config_category)d"
+                                    class="oe_form_field_with_button oe_inline oe_link"
+                                    string="项目类别配置"
+                                    type="action"
+                                    groups="up_project.group_up_project_admin"/>
                         </group>
                     </sheet>
                 </form>
@@ -144,11 +161,8 @@
         <record id="act_wizard_project_config" model="ir.actions.act_window">
             <field name="name">Project Config Action Wizard</field>
             <field name="res_model">project.project.config.wizard</field>
-            <field name="view_type">form</field>
-            <field name="target">inline</field>
-            <field name="domain">[]</field>
             <field name="view_mode">form</field>
-            <field name="context">{}</field>
+            <field name="target">inline</field>
         </record>
         <menuitem name="Project Form Config" id="project_form_config" parent="base.menu_definitions"
                   action="act_wizard_project_config" groups="up_project.group_up_project_admin" sequence="110"/>

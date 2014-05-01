@@ -42,7 +42,7 @@ UPDIS Project Module.""",
 
         'hr_view.xml',
         'res_partner.xml',
-        'project_config.xml',
+        'config/project_config.xml',
     ],
     'css': [
         'static/src/css/up_project.css'

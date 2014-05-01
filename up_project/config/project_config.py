@@ -1,6 +1,7 @@
 __author__ = 'cysnake4713'
 from osv import osv, fields
 
+
 class project_engineer_room_config_wizard(osv.osv_memory):
     _name = "project.engineer.room.config.wizard"
     _description = "project Engineer Room Config"
@@ -44,8 +45,18 @@ class project_engineer_room_config_wizard(osv.osv_memory):
         return True
 
 
-class project_project_config(osv.osv_memory):
+class ProjectFiledSettings(osv.TransientModel):
+    _name = 'project.project.config.filed.settings'
+    _inherit = 'res.config.settings'
+    _columns = {
+
+    }
+
+
+class ProjectProjectConfig(osv.osv_memory):
     _name = "project.project.config.wizard"
+    _inherit = 'res.config.settings'
+
     _columns = {
 
     }
