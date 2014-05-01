@@ -270,7 +270,60 @@
                                                     <th>提示</th>
                                                 </thead>
                                                 <tbody>
-                                                    <div name="related_forms"/>
+                                                    <tr>
+                                                        <td>
+                                                            <field name="active_tasking" readonly="1" required="0" class="oe_inline" nolabel="1"
+                                                                   target="new" attrs="{'invisible':[('is_import','=',True)]}"/>
+                                                        </td>
+                                                        <td>
+                                                            <field name="active_tasking_state" readonly="1"/>
+                                                        </td>
+                                                        <td>
+                                                            <field name="active_tasking_is_wait_user_process" invisible="1"/>
+                                                            <field name="is_import" invisible="1"/>
+                                                            <div attrs="{'invisible':[('active_tasking_is_wait_user_process','=',False)]}">
+                                                                <span class="hint-red">
+                                                                    等待处理
+                                                                </span>
+                                                            </div>
+                                                            <div attrs="{'invisible':[('is_import','=',False)]}">
+                                                                <span>
+                                                                    导入项目,不存在下达记录
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div>
+                                                <br/>
+                                                <br/>
+                                            </div>
+                                            <h3>项目归档流程</h3>
+                                            <table class="oe_form_group">
+                                                <thead>
+                                                    <th>流程</th>
+                                                    <th>状态</th>
+                                                    <th>提示</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <button name="button_filed_filing_form" string="项目归档申请表"
+                                                                    class="oe_form_field_with_button oe_inline oe_link"
+                                                                    type="object"
+                                                                    attrs="{'invisible':[('is_import','=',True)]}"/>
+                                                        </td>
+                                                        <td>
+                                                        </td>
+                                                        <td>
+                                                            <div attrs="{'invisible':[('is_import','=',False)]}">
+                                                                <span>
+                                                                    导入项目,不存在下达记录
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
