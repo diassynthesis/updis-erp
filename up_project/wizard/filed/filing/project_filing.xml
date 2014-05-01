@@ -25,6 +25,14 @@
                             <field name="tag_ids" widget="many2many_tags"/>
                             <field name="description"/>
                             <field name="note"/>
+                            <field name="record_ids">
+                                <tree editable="bottom">
+                                    <field name="type_id"/>
+                                    <field name="name"/>
+                                    <field name="page_count"/>
+                                    <field name="copy_count"/>
+                                </tree>
+                            </field>
                         </group>
                     </sheet>
                 </form>

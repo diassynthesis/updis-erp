@@ -22,6 +22,7 @@ class ProjectFiledFiling(osv.Model):
         'tag_ids': fields.many2many('project.project.filed.tag', 'rel_project_filing_tag', 'filing_id', 'tag_id', string='Tags'),
         'description': fields.text('Description'),
         'note': fields.text('Note'),
+        'record_ids': fields.one2many('project.project.filed.record', 'filing_id', 'Records'),
 
 
     }
@@ -32,6 +33,26 @@ class ProjectFiledFilingTag(osv.Model):
 
     _columns = {
         'name': fields.char('Name', size=64),
+    }
+
+
+class ProjectFiledFilingType(osv.Model):
+    _name = 'project.project.filed.type'
+
+    _columns = {
+        'name': fields.char('Name', size=64),
+    }
+
+
+class ProjectFiledFilingRecord(osv.Model):
+    _name = 'project.project.filed.record'
+
+    _columns = {
+        'name': fields.char('Name', size=256),
+        'type_id': fields.many2one('project.project.filed.type', 'Type'),
+        'page_count': fields.integer('Page Count'),
+        'copy_count': fields.integer('Copy Count'),
+        'filing_id': fields.integer('Filing'),
     }
 
 
