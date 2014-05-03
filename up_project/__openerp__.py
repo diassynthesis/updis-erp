@@ -18,6 +18,7 @@ UPDIS Project Module.""",
         'security/ir.model.access.csv',
         'data/updis_data.xml',
         'data/document.directory.csv',
+        'data/project.project.filed.type.csv',
         'project_view.xml',
 
 

@@ -7,6 +7,9 @@
             <field name="arch" type="xml">
                 <form string="Project Filing" version="7.0">
                     <header>
+                        <button name="button_apply_filing" type="object" string="Apply Filing" class="oe_highlight" states="apply_filing"/>
+                        <button name="button_approve_filing" type="object" string="Approve Filing" class="oe_highlight" states="approve_filing"/>
+                        <button name="button_disapprove_filing" type="object" string="Dispprove Filing" states="approve_filing"/>
                         <field name="state" widget="statusbar" readonly="1"/>
                     </header>
                     <sheet>
@@ -15,24 +18,42 @@
                             <h1>项目文件归档表</h1>
                         </div>
                         <group>
-                            <field name="project_id"/>
-                            <field name="project_scale"/>
-                            <field name="project_category_id"/>
-                            <field name="project_country_id"/>
-                            <field name="project_state_id"/>
-                            <field name="project_city"/>
-                            <field name="project_begin_date"/>
-                            <field name="tag_ids" widget="many2many_tags"/>
-                            <field name="description"/>
-                            <field name="note"/>
-                            <field name="record_ids">
-                                <tree editable="bottom">
-                                    <field name="type_id"/>
-                                    <field name="name"/>
-                                    <field name="page_count"/>
-                                    <field name="copy_count"/>
-                                </tree>
-                            </field>
+                            <group string="Project Info" colspan="2" col="4">
+                                <field name="project_id" readonly="1"/>
+                                <field name="project_scale"/>
+                                <field name="project_category_id"/>
+                                <label string="Project Location" for="country_id"/>
+                                <div class="address_format">
+                                    <field name="project_country_id" class="oe_no_button" nolabel="1" style="width: 20%%"/>
+                                    <field name="project_state_id" widget="selection" options="{'no_open':True}"
+                                           placeholder="State" nolabel="1" style="width: 20%%"/>
+                                    <field name="project_city" nolabel="1" style="width: 20%%"/>
+                                </div>
+                            </group>
+                            <group string="Filing Info" colspan="2" col="4">
+                                <label for="project_begin_date" string="Project Period"/>
+                                <div>
+                                    <field name="project_begin_date" nolabel="1" style="width: 20%%"/>
+                                    --
+                                    <field name="project_end_date" nolabel="1" style="width: 20%%"/>
+                                </div>
+                                <field name="tag_ids" widget="many2many_tags"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="description"/>
+                                <field name="note"/>
+                            </group>
+                            <group colspan="2" col="1">
+                                <label for="record_ids"/>
+                                <field name="record_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="type_id"/>
+                                        <field name="name"/>
+                                        <field name="page_count"/>
+                                        <field name="copy_count"/>
+                                    </tree>
+                                </field>
+                            </group>
                         </group>
                     </sheet>
                 </form>

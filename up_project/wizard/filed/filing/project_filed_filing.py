@@ -8,8 +8,9 @@ class ProjectFiledFiling(osv.Model):
     _name = 'project.project.filed.filing'
 
     _columns = {
-        'state': fields.selection(selection=[('apply_filing', 'Apply Filing'), ('end_filing', 'End Filing')], string='State'),
-        'project_id': fields.many2one('project.project', 'Project'),
+        'state': fields.selection(
+            selection=[('apply_filing', 'Apply Filing'), ('approve_filing', 'Approve Filing'), ('end_filing', 'Filing Complete')], string='State'),
+        'project_id': fields.many2one('project.project', 'Project', required=True),
         'project_scale': fields.related('project_id', 'guimo', type='char', string='Project Scale', readonly=True),
         'project_category_id': fields.related('project_id', 'categories_id', type='many2one', relation='project.upcategory',
                                               string='Project Category', readonly=True),
@@ -19,20 +20,33 @@ class ProjectFiledFiling(osv.Model):
                                            readonly=True),
         'project_city': fields.related('project_id', 'city', type='char', string='Project City', readonly=True),
         'project_begin_date': fields.related('project_id', 'begin_date', type='date', string='Project Begin Date', readonly=True),
+        'project_end_date': fields.date('Project End Date', required=True),
         'tag_ids': fields.many2many('project.project.filed.tag', 'rel_project_filing_tag', 'filing_id', 'tag_id', string='Tags'),
         'description': fields.text('Description'),
         'note': fields.text('Note'),
-        'record_ids': fields.one2many('project.project.filed.record', 'filing_id', 'Records'),
-
-
+        'record_ids': fields.one2many('project.project.filed.record', 'filing_id', 'Document Records'),
     }
+
+    _defaults = {
+        'state': 'apply_filing',
+        'project_end_date': lambda *args: fields.date.today(),
+    }
+
+    def button_apply_filing(self, cr, uid, ids, context):
+        return self.write(cr, uid, ids, {'state': 'approve_filing'}, context)
+
+    def button_approve_filing(self, cr, uid, ids, context):
+        return self.write(cr, uid, ids, {'state': 'end_filing'}, context)
+
+    def button_disapprove_filing(self, cr, uid, ids, context):
+        return self.write(cr, uid, ids, {'state': 'apply_filing'}, context)
 
 
 class ProjectFiledFilingTag(osv.Model):
     _name = 'project.project.filed.tag'
 
     _columns = {
-        'name': fields.char('Name', size=64),
+        'name': fields.char('Name', size=64, required=True),
     }
 
 
@@ -40,7 +54,7 @@ class ProjectFiledFilingType(osv.Model):
     _name = 'project.project.filed.type'
 
     _columns = {
-        'name': fields.char('Name', size=64),
+        'name': fields.char('Name', size=64, required=True),
     }
 
 
@@ -48,8 +62,8 @@ class ProjectFiledFilingRecord(osv.Model):
     _name = 'project.project.filed.record'
 
     _columns = {
-        'name': fields.char('Name', size=256),
-        'type_id': fields.many2one('project.project.filed.type', 'Type'),
+        'name': fields.char('Name', size=256, required=True),
+        'type_id': fields.many2one('project.project.filed.type', 'Type', required=True),
         'page_count': fields.integer('Page Count'),
         'copy_count': fields.integer('Copy Count'),
         'filing_id': fields.integer('Filing'),
