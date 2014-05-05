@@ -121,7 +121,7 @@ class res_users(osv.osv):
     def change_password(self, cr, uid, old_passwd, new_passwd, context=None):
         result = super(res_users, self).change_password(cr, uid, old_passwd, new_passwd, context=context)
         user = self.browse(cr, 1, uid, context)
-        if user.big_ant_login_name:
+        if user.big_ant_login_name and self.pool.get('ir.config_parameter').get_param(cr, 1, 'bigant.password_sync') == 'True':
             params = {
                 'loginName': user.big_ant_login_name,
                 'password': new_passwd,
@@ -138,7 +138,7 @@ class ChangePasswordUser(osv.TransientModel):
         for user in self.browse(cr, uid, ids, context=context):
             self.pool.get('res.users').write(cr, uid, user.user_id.id, {'password': user.new_passwd})
             res_user = self.pool.get('res.users').browse(cr, 1, user.user_id.id, context)
-            if res_user.big_ant_login_name:
+            if res_user.big_ant_login_name and self.pool.get('ir.config_parameter').get_param(cr, 1, 'bigant.password_sync') == 'True':
                 params = {
                     'loginName': res_user.big_ant_login_name,
                     'password': user.new_passwd,
