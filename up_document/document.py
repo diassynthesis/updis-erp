@@ -34,7 +34,7 @@ class DocumentDirectoryAccess(osv.osv):
         if method in ['perm_write', 'is_downloadable']:
             if access[method] is False:
                 return False
-            if access.code.strip():
+            if access.code and access.code.strip():
                 cxt = {
                     'self': self,
                     'object': access,
