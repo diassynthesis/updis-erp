@@ -7,16 +7,16 @@ import simplejson
 
 
 @openerpweb.httprequest
-def upload_attachment(self, req, callback, model, id, ufile, res_id=None, res_model=None, res_context="{}"):
+def upload_attachment(self, req, callback, model, id, ufile, res_id=None, res_model=None, res_context=''):
     Model = req.session.model('ir.attachment')
     out = """<script language="javascript" type="text/javascript">
                     var win = window.top.window;
                     win.jQuery(win).trigger(%s, %s);
                 </script>"""
-    context = eval(res_context)
-    model = res_model or model
-    id = res_id or id
     try:
+        context = eval(res_context) if res_context != '' else {}
+        model = res_model or model
+        id = res_id or id
         attachment_id = Model.create(
             {
                 'name': ufile.filename,
@@ -31,6 +31,8 @@ def upload_attachment(self, req, callback, model, id, ufile, res_id=None, res_mo
         }
     except xmlrpclib.Fault, e:
         args = {'error': e.faultCode}
+    except Exception, e:
+        args = {'error': e.message}
     return out % (simplejson.dumps(callback), simplejson.dumps(args))
 
 

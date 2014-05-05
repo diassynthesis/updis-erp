@@ -1,0 +1,54 @@
+attachment_size_limit
+---------------------------------------------------------------
+oecn_base_fonts
+---------------------------------------------------------------
+/base/ir/ir_values
+    method:get_actions
+---------------------------------------------------------------
+/web/controllers/main.py#Binary.upload_attachment
+/web/controllers/main.py#html_template
+/web/controllers/main.py#set_cookie_and_redirect
+/web/static/src/xml/base.xml
+    xml:FieldBinaryFileUploader
+    xml:HiddenInputFile
+    xml:WebClient
+    xml:UserMenu.about
+    xml:Login
+    xml:UserMenu
+/web/static/src/js/chromes.js#CrashManager
+    rpc_error
+    show_warning
+    show_error
+/web/static/src/js/chromes.js#WebClient
+    set_title
+    on_logout
+/web/static/src/js/coresetup.js#Session
+    set_cookie
+/web/static/src/js/view_form.js#FieldTextHtml
+    initialize_content
+/web/static/src/js/view_form.js#FieldMany2ManyBinaryMultiFiles
+    *ALL
+/web/static/src/js/view_form.js#FieldMany2One
+    render_editable
+/web/http.py#Root
+    dispatch
+/web/static/src/js/view_list.js
+    init
+    select_record
+    view_loading
+---------------------------------------------------------------
+/mail/static/src/js/mail.js#ThreadMessage
+    init
+    format_data
+/mail/static/src/js/mail.js#Thread
+    do_send_message_post
+/mail/static/src/xml/mail.xml
+    mail.compose_message.add_attachment
+    mail.compose_message
+/mail/mail_message
+    _message_read_dict_postprocess
+    _message_read_dict
+/mail/mail_thread
+    message_auto_subscribe
+    message_track
+---------------------------------------------------------------

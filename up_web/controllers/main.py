@@ -3,7 +3,7 @@ __author__ = 'cysnake4713'
 
 from openerp.addons.web.controllers.main import *
 from openerp.addons.web.controllers import main
-from tools import config
+from openerp.tools import config
 
 
 def set_cookie_and_redirect(req, redirect_url):
@@ -44,6 +44,4 @@ html_template = """<!DOCTYPE html>
 """
 main.html_template = html_template
 main.set_cookie_and_redirect = set_cookie_and_redirect
-#import sys
-#sys.modules['|openerp.addons.web.controllers.main'].set_cookie_and_redirect = set_cookie_and_redirect
 

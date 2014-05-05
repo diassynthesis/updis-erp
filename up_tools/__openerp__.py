@@ -8,7 +8,7 @@
 Tools Module.""",
     'author': 'Matt Cai',
     'website': 'http://cysnake.com',
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
     'data': [
         'security/ir.model.access.csv',
     ],

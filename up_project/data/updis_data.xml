@@ -97,5 +97,12 @@
         <record id="project_active_tasking_config_record" model="project.active.tasking.config">
             <field name="name">任务下达单配置</field>
         </record>
+        
+        
+        <delete model="mail.message.subtype" id="project.mt_project_task_new"/>
+        <delete model="mail.message.subtype" id="project.mt_project_task_stage"/>
+        <delete model="mail.message.subtype" id="project.mt_project_task_closed"/>
+        <delete model="mail.message.subtype" id="project.mt_project_task_blocked"/>
+        <delete model="mail.message.subtype" id="project.mt_project_task_started"/>
     </data>
 </openerp>

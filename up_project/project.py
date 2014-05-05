@@ -213,6 +213,12 @@ class updis_project(osv.osv):
     _name = "project.project"
     _order = "id desc"
 
+    _track = {
+        'user_id': {},
+        'zhuguanzongshi_id': {},
+        'state': {},
+    }
+
     def _is_project_creater(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
@@ -309,7 +315,7 @@ class updis_project(osv.osv):
 
         'user_id': fields.many2many('res.users', 'project_user_id_res_user', 'project_user_id', 'res_user_id',
                                     string='Project Manager',
-                                    domain=['|', ("active", "=", True), ("active", "=", False)]),
+                                    domain=['|', ("active", "=", True), ("active", "=", False)], track_visibility='onchange'),
         'director_reviewer_id': fields.many2one('res.users', string=u'Review Director'),
         'related_user_id': fields.many2one('res.users', string="Related Users ID"),
         'status_code': fields.integer(string='Status Code'),
@@ -330,7 +336,7 @@ class updis_project(osv.osv):
                                    ("project_pause", u"Project Pause"),
                                    ("project_filed", u"Project Filing"),
                                    ("project_finish", u"Project Filed"),
-                                  ], string="State"),
+                                  ], string="State", track_visibility='onchange'),
         'project_log': fields.html(u"Project Log Info", readonly=True),
         "xiangmubianhao": fields.char(u"Project Num", select=True, size=128, ),
         "chenjiebumen_id": fields.many2one("hr.department", u"In Charge Department"),
@@ -375,7 +381,7 @@ class updis_project(osv.osv):
              ('CC200511210004', u'县级市'), ('CC200511210005', u'其它'), ('plan_city', u'计划单列市')], string="City Type"),
         "zhuguanzongshi_id": fields.many2many("res.users", "project_zhuangguan_res_user", "project_id", "res_user_id",
                                               string=u"主管总师",
-                                              domain=['|', ("active", "=", True), ("active", "=", False)]),
+                                              domain=['|', ("active", "=", True), ("active", "=", False)], track_visibility='onchange'),
         'import_is_hidden': fields.char(size=8, string="Import Is Hidden"),
         'import_sum_up_flag': fields.char(size=8, string="Import Sum Up Flag"),
         'import_flag': fields.char(size=8, string="Import Flag"),
@@ -571,6 +577,110 @@ class updis_project(osv.osv):
 
     def workflow_signal(self, cr, uid, ids, signal):
         self._workflow_signal(cr, uid, ids, signal)
+        return True
+
+    def message_get_suggested_recipients(self, cr, uid, ids, context=None):
+        """ Returns suggested recipients for ids. Those are a list of
+            tuple (partner_id, partner_name, reason), to be managed by Chatter. """
+        result = dict.fromkeys(ids, list())
+        if self._all_columns.get('user_id'):
+            for obj in self.browse(cr, SUPERUSER_ID, ids, context=context):  # SUPERUSER because of a read on res.users that would crash otherwise
+                if not obj.user_id or not [u.partner_id for u in obj.user_id]:
+                    continue
+                for partner_id in [u.partner_id for u in obj.user_id]:
+                    self._message_add_suggested_recipient(cr, uid, result, obj, partner=partner_id,
+                                                          reason=self._all_columns['user_id'].column.string, context=context)
+        # if self._all_columns.get('zhuguanzongshi_id'):
+        #     for obj in self.browse(cr, SUPERUSER_ID, ids, context=context):  # SUPERUSER because of a read on res.users that would crash otherwise
+        #         if not obj.zhuguanzongshi_id or not [u.partner_id for u in obj.zhuguanzongshi_id]:
+        #             continue
+        #         for zhuguanzongshi_id in [u.partner_id for u in obj.zhuguanzongshi_id]:
+        #             self._message_add_suggested_recipient(cr, uid, result, obj, partner=zhuguanzongshi_id,
+        #                                                   reason=self._all_columns['zhuguanzongshi_id'].column.string, context=context)
+
+        return result
+
+    def _message_get_auto_subscribe_fields(self, cr, uid, updated_fields, auto_follow_fields=['user_id', 'zhuguanzongshi_id'], context=None):
+        user_field_lst = []
+        for name, column_info in self._all_columns.items():
+            if name in auto_follow_fields and name in updated_fields and column_info.column._obj == 'res.users':
+                user_field_lst.append(name)
+        return user_field_lst
+
+    def message_auto_subscribe(self, cr, uid, ids, updated_fields, context=None):
+        """
+            1. fetch project subtype related to task (parent_id.res_model = 'project.task')
+            2. for each project subtype: subscribe the follower to the task
+        """
+        subtype_obj = self.pool.get('mail.message.subtype')
+        follower_obj = self.pool.get('mail.followers')
+
+        # fetch auto_follow_fields
+        user_field_lst = self._message_get_auto_subscribe_fields(cr, uid, updated_fields, context=context)
+
+        # fetch related record subtypes
+        related_subtype_ids = subtype_obj.search(cr, uid, ['|', ('res_model', '=', False), ('parent_id.res_model', '=', self._name)], context=context)
+        subtypes = subtype_obj.browse(cr, uid, related_subtype_ids, context=context)
+        default_subtypes = [subtype for subtype in subtypes if subtype.res_model == False]
+        related_subtypes = [subtype for subtype in subtypes if subtype.res_model != False]
+        relation_fields = set([subtype.relation_field for subtype in subtypes if subtype.relation_field != False])
+        if (not related_subtypes or not any(relation in updated_fields for relation in relation_fields)) and not user_field_lst:
+            return True
+
+        for record in self.browse(cr, uid, ids, context=context):
+            new_followers = dict()
+            parent_res_id = False
+            parent_model = False
+            for subtype in related_subtypes:
+                if not subtype.relation_field or not subtype.parent_id:
+                    continue
+                if not subtype.relation_field in self._columns or not getattr(record, subtype.relation_field, False):
+                    continue
+                parent_res_id = getattr(record, subtype.relation_field).id
+                parent_model = subtype.res_model
+                follower_ids = follower_obj.search(cr, SUPERUSER_ID, [
+                    ('res_model', '=', parent_model),
+                    ('res_id', '=', parent_res_id),
+                    ('subtype_ids', 'in', [subtype.id])
+                ], context=context)
+                for follower in follower_obj.browse(cr, SUPERUSER_ID, follower_ids, context=context):
+                    new_followers.setdefault(follower.partner_id.id, set()).add(subtype.parent_id.id)
+
+            if parent_res_id and parent_model:
+                for subtype in default_subtypes:
+                    follower_ids = follower_obj.search(cr, SUPERUSER_ID, [
+                        ('res_model', '=', parent_model),
+                        ('res_id', '=', parent_res_id),
+                        ('subtype_ids', 'in', [subtype.id])
+                    ], context=context)
+                    for follower in follower_obj.browse(cr, SUPERUSER_ID, follower_ids, context=context):
+                        new_followers.setdefault(follower.partner_id.id, set()).add(subtype.id)
+
+            # add followers coming from res.users relational fields that are tracked
+            user_ids = []
+            for name in user_field_lst:
+                if getattr(record, name):
+                    user_ids += [user.id for user in getattr(record, name)]
+
+            user_id_partner_ids = [user.partner_id.id for user in self.pool.get('res.users').browse(cr, SUPERUSER_ID, user_ids, context=context)]
+            for partner_id in user_id_partner_ids:
+                new_followers.setdefault(partner_id, None)
+
+            for pid, subtypes in new_followers.items():
+                subtypes = list(subtypes) if subtypes is not None else None
+                self.message_subscribe(cr, uid, [record.id], [pid], subtypes, context=context)
+
+            # find first email message, set it as unread for auto_subscribe fields for them to have a notification
+            if user_id_partner_ids:
+                msg_ids = self.pool.get('mail.message').search(cr, uid, [
+                    ('model', '=', self._name),
+                    ('res_id', '=', record.id),
+                    ('type', '=', 'email')], limit=1, context=context)
+                if not msg_ids and record.message_ids:
+                    msg_ids = [record.message_ids[-1].id]
+                if msg_ids:
+                    self.pool.get('mail.notification')._notify(cr, uid, msg_ids[0], partners_to_notify=user_id_partner_ids, context=context)
+
         return True
 
 
