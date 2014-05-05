@@ -2,7 +2,7 @@
 <openerp>
     <data>
         <record id="action_project_related_document" model="ir.actions.act_window">
-            <field name="name">Project Directories</field>
+            <field name="name">项目相关文件</field>
             <field name="res_model">document.directory</field>
             <field name="view_type">tree</field>
             <field name="view_mode">tree</field>
