@@ -271,6 +271,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr>
+                                                        <div name="related_forms"/>
                                                         <td>
                                                             <field name="active_tasking" readonly="1" required="0" class="oe_inline" nolabel="1"
                                                                    target="new" attrs="{'invisible':[('is_import','=',True)]}"/>
@@ -292,7 +293,6 @@
                                                                 </span>
                                                             </div>
                                                         </td>
-
                                                     </tr>
                                                 </tbody>
                                             </table>

@@ -5,7 +5,7 @@
             <field name="name">project.project.filed.filing.form</field>
             <field name="model">project.project.filed.filing</field>
             <field name="arch" type="xml">
-                <form string="Project Filing" version="7.0">
+                <form string="Project Filing" version="7.0" create="false" delete="false">
                     <header>
                         <button name="button_apply_filing" type="object" string="Apply Filing" class="oe_highlight" states="apply_filing"/>
                         <button name="button_approve_filing" type="object" string="Approve Filing" class="oe_highlight" states="approve_filing"/>
