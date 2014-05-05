@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
     <data>
+        <!--Project Active Tasking Config Wizard Form View-->
+        <record id="project_active_tasking_config_wizard_form" model="ir.ui.view">
+            <field name="name">project.active.tasking.config.wizard.form</field>
+            <field name="model">project.active.tasking.config.wizard</field>
+            <field name="arch" type="xml">
+                <form version="7.0" string="Reject">
+                    <header>
+                        <button name="config_accept" class="oe_highlight"
+                                string="保存" confirm="确定保存更改?"
+                                type="object"/>or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </header>
+                    <div>
+                        <span>本页配置内容直接修改任务启动->任务下达页面的信息和功能,请谨慎处理</span>
+                    </div>
+                    <group>
+                        <field name="chief_engineer_config"/>
+                        <field name="cover_director_config"/>
+                    </group>
+                </form>
+            </field>
+        </record>
         <!--project.project.filed.type-->
         <record id="view_project_project_filed_filing_type_tree" model="ir.ui.view">
             <field name="name">project.project.filed.type.tree</field>
@@ -165,7 +187,7 @@
                 <form version="7.0" string="Project Config">
                     <sheet>
                         <h1 class="oe_title">项目表单配置</h1>
-                        <group col="3">
+                        <group col="1">
                             <button name="%(act_active_tasking_wizard)d"
                                     class="oe_form_field_with_button oe_inline oe_link"
                                     string="项目启动-任务下达单配置"
@@ -175,10 +197,10 @@
                                     class="oe_form_field_with_button oe_inline oe_link"
                                     string="项目归档-项目文件归档表配置"
                                     type="action"
-                                    groups="up_project.group_up_project_admin"/>act_project_project_filed_filing_tags_settings
+                                    groups="up_project.group_up_project_admin"/>
                         </group>
                         <h1 class="oe_title">项目参数配置</h1>
-                        <group col="3">
+                        <group col="1">
                             <button name="%(act_project_config_sms)d"
                                     class="oe_form_field_with_button oe_inline oe_link"
                                     string="项目短信配置"
@@ -186,7 +208,7 @@
                                     groups="up_project.group_up_project_admin"/>
                             <button name="%(act_project_config_profession)d"
                                     class="oe_form_field_with_button oe_inline oe_link"
-                                    string="项目配置"
+                                    string="项目专业配置"
                                     type="action"
                                     groups="up_project.group_up_project_admin"/>
                             <button name="%(act_project_config_category)d"

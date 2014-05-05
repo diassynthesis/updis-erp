@@ -111,27 +111,5 @@
             <field name="view_id" ref="project_active_tasking_operator_form"/>
             <field name="target">new</field>
         </record>
-        <!--Project Active Tasking Config Wizard Form View-->
-        <record id="project_active_tasking_config_wizard_form" model="ir.ui.view">
-            <field name="name">project.active.tasking.config.wizard.form</field>
-            <field name="model">project.active.tasking.config.wizard</field>
-            <field name="arch" type="xml">
-                <form version="7.0" string="Reject">
-                    <div>
-                        <span>本页配置内容直接修改任务启动->任务下达页面的信息和功能,请谨慎处理</span>
-                    </div>
-                    <group>
-                        <field name="chief_engineer_config"/>
-                        <field name="cover_director_config"/>
-                    </group>
-                    <footer>
-                        <button name="config_accept" class="oe_highlight"
-                                string="保存" confirm="确定保存更改?"
-                                type="object"/>or
-                        <button string="Cancel" class="oe_link" special="cancel"/>
-                    </footer>
-                </form>
-            </field>
-        </record>
     </data>
 </openerp>
