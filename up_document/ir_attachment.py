@@ -82,6 +82,7 @@ class IrAttachmentInherit(osv.osv):
             result[attachment.id] = attachment.file_size / (1024.0 * 1024.0)
         return result
 
+    # noinspection PyUnusedLocal
     def _is_download_able(self, cr, uid, ids, field_name, arg, context):
         result = dict.fromkeys(ids, False)
         for attachment in self.browse(cr, uid, ids, context=context):
@@ -172,6 +173,13 @@ class IrAttachmentInherit(osv.osv):
                 application_obj.create(cr, 1, {'attachment_id': attachment.id,
                                                'apply_date': fields.datetime.now(),
                                                'apply_user_id': uid}, context=context)
+                from_rec = uid
+                subject = u"有新的文件下载请求需要处理"
+                content = u"有用户请求下载文件：%s, 请登陆系统处理" % attachment.name
+                model = 'ir.attachment'
+                res_id = attachment.id
+                group_id = 'up_document.group_attachment_download_manager'
+                self.pool.get('sms.sms').send_big_ant_to_group(cr, 1, from_rec, subject, content, model, res_id, group_id, context=None)
         return True
 
 
@@ -257,6 +265,7 @@ class IrAttachmentApplication(osv.osv):
     _rec_name = 'attachment_id'
     _order = 'apply_date desc'
 
+    # noinspection PyUnusedLocal
     def _is_expired(self, cr, uid, ids, name, arg, context=None):
         result = dict.fromkeys(ids, False)
         for attachment in self.browse(cr, uid, ids, context=context):
@@ -265,6 +274,7 @@ class IrAttachmentApplication(osv.osv):
                 result[attachment.id] = True
         return result
 
+    # noinspection PyUnusedLocal
     def _is_download_able(self, cr, uid, ids, field_name, arg, context):
         result = dict.fromkeys(ids, False)
         for application in self.browse(cr, uid, ids, context=context):
@@ -317,4 +327,3 @@ class IrAttachmentLog(osv.osv):
     _defaults = {
         'filed_period': 1,
     }
-
