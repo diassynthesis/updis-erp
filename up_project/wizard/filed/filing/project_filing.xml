@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
     <data>
+        <!--project.project.filed.tag-->
+        <record id="view_project_filed_filling_tag_tree" model="ir.ui.view">
+            <field name="name">project.project.filed.tag.tree</field>
+            <field name="model">project.project.filed.tag</field>
+            <field name="arch" type="xml">
+                <tree string="Project Tags" version="7.0" editable="top">
+                    <field name="name"/>
+                    <field name="tag_category_id"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_project_filed_filling_tag_form" model="ir.ui.view">
+            <field name="name">project.project.filed.tag.form</field>
+            <field name="model">project.project.filed.tag</field>
+            <field name="arch" type="xml">
+                <form string="Project Tags" version="7.0">
+                    <field name="name"/>
+                    <field name="tag_category_id"/>
+                </form>
+            </field>
+        </record>
+        <!--project.project.filed.filing-->
         <record id="view_project_filed_filing_form" model="ir.ui.view">
             <field name="name">project.project.filed.filing.form</field>
             <field name="model">project.project.filed.filing</field>

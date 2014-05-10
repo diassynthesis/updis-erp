@@ -1,5 +1,4 @@
 # -*- encoding:utf-8 -*-
-import datetime
 from openerp.osv import fields
 from openerp.osv import osv
 
@@ -42,12 +41,27 @@ class ProjectFiledFiling(osv.Model):
         return self.write(cr, uid, ids, {'state': 'apply_filing'}, context)
 
 
+class ProjectFiledTagCategory(osv.Model):
+    _name = 'project.project.filed.tag.category'
+    _columns = {
+        'name': fields.char('Name', size=256, required=True),
+    }
+    _sql_constraints = [
+        ('project_tag_category_name_unq', 'unique (name)', 'The name of the category must be unique !')
+    ]
+
+
 class ProjectFiledFilingTag(osv.Model):
     _name = 'project.project.filed.tag'
 
     _columns = {
         'name': fields.char('Name', size=64, required=True),
+        'tag_category_id': fields.many2one('project.project.filed.tag.category', 'Tag Category'),
     }
+
+    _sql_constraints = [
+        ('project_tag_name_unq', 'unique (name)', 'The name of the tag must be unique !')
+    ]
 
 
 class ProjectFiledFilingType(osv.Model):
