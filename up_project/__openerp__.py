@@ -13,7 +13,7 @@ UPDIS Project Module.""",
 
     ],
     'update_xml': [
-
+        'report/header.xml',
         'security/updis_security.xml',
         'security/ir.model.access.csv',
         'data/updis_data.xml',
@@ -42,7 +42,7 @@ UPDIS Project Module.""",
         'project_workflow.xml',
 
         'report/active/renwuxiada.xml',
-
+        'report/filed/report.xml',
 
         'hr_view.xml',
         'res_partner.xml',

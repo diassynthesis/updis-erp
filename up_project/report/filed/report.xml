@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <report id="report_project_filed_filing_report_pdf"
+                string="QRT4.2.3-3项目归档表"
+                model="project.project.filed.filing"
+                name="project.filed.filing.report.pdf"
+                report_type="webkit"
+                webkit_header="updis_project_head"
+                file="up_project/report/filed/project_project_filed_filing_report_pdf.mako"
+                auto="False"/>
+    </data>
+</openerp>
