@@ -12,16 +12,6 @@
                 </tree>
             </field>
         </record>
-        <record id="view_project_filed_filling_tag_form" model="ir.ui.view">
-            <field name="name">project.project.filed.tag.form</field>
-            <field name="model">project.project.filed.tag</field>
-            <field name="arch" type="xml">
-                <form string="Project Tags" version="7.0">
-                    <field name="name"/>
-                    <field name="tag_category_id"/>
-                </form>
-            </field>
-        </record>
         <!--project.project.filed.filing-->
         <record id="view_project_filed_filing_form" model="ir.ui.view">
             <field name="name">project.project.filed.filing.form</field>
@@ -56,9 +46,10 @@
                                 <label for="project_begin_date" string="Project Period"/>
                                 <div>
                                     <field name="project_begin_date" nolabel="1" style="width: 20%%"/>
-                                    --
+                                    至
                                     <field name="project_end_date" nolabel="1" style="width: 20%%"/>
                                 </div>
+                                <newline/>
                                 <field name="tag_ids" widget="many2many_tags"/>
                             </group>
                             <group colspan="2">

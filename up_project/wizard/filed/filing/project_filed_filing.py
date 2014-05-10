@@ -63,6 +63,14 @@ class ProjectFiledFilingTag(osv.Model):
         ('project_tag_name_unq', 'unique (name)', 'The name of the tag must be unique !')
     ]
 
+    def name_get(self, cr, uid, ids, context=None):
+        res = []
+        if not self.search(cr, uid, [('id', 'in', ids)]):
+            ids = []
+        for d in self.browse(cr, uid, ids, context=context):
+            res.append((d.id, (d.tag_category_id.name if d.tag_category_id else '') + '/' + d.name))
+        return res
+
 
 class ProjectFiledFilingType(osv.Model):
     _name = 'project.project.filed.type'
