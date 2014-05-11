@@ -26,6 +26,16 @@
             margin-left: 200px;
         }
 
+        div.pdf-table table {
+            border: solid #000000 2px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        div.pdf-table table td {
+            border: solid #000000 1px;
+        }
+
     </style>
 </head>
 <body>
@@ -47,7 +57,21 @@
         </div>
     </div>
     <div class="pdf-table">
-
+        <table>
+            <tbody>
+            <tr>
+                <td colspan="2">归档表2/2 ---项目简介</td>
+            </tr>
+            <tr>
+                <td>项目名称</td>
+                <td>${object.project_id.name}</td>
+            </tr>
+            <tr>
+                <td>所在地区</td>
+                <td>${object.project_id.country_id.name}  ${object.project_id.state_id.name |trim} ${object.project_id.city}</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
 </div>
