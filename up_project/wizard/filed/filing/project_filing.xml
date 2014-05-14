@@ -32,8 +32,11 @@
                         <group>
                             <group string="Project Info" colspan="2" col="4">
                                 <field name="project_id" readonly="1"/>
+                                <field name="project_serial_number"/>
+                                <field name="project_user" widget="many2many_tags"/>
                                 <field name="project_scale"/>
                                 <field name="project_category_id"/>
+                                <field name="project_second"/>
                                 <label string="Project Location" for="country_id"/>
                                 <div class="address_format">
                                     <field name="project_country_id" class="oe_no_button" nolabel="1" style="width: 20%%"/>
@@ -41,6 +44,7 @@
                                            placeholder="State" nolabel="1" style="width: 20%%"/>
                                     <field name="project_city" nolabel="1" style="width: 20%%"/>
                                 </div>
+                                <field name="end_stage"/>
                             </group>
                             <group string="Filing Info" colspan="2" col="4">
                                 <label for="project_begin_date" string="Project Period"/>
@@ -55,6 +59,8 @@
                             <group colspan="2">
                                 <field name="description"/>
                                 <field name="note"/>
+                                <field name="show_images" widget="many2many_binary"
+                                       res_model="project.project" res_id="project_id" context="{'parent_id':%(dir_up_project_going_brief_picture)d}"/>
                             </group>
                             <group colspan="2" col="1">
                                 <label for="record_ids"/>

@@ -10,9 +10,12 @@ class ProjectFiledFiling(osv.Model):
         'state': fields.selection(
             selection=[('apply_filing', 'Apply Filing'), ('approve_filing', 'Approve Filing'), ('end_filing', 'Filing Complete')], string='State'),
         'project_id': fields.many2one('project.project', 'Project', required=True),
+        'project_serial_number': fields.related('project_id', 'xiangmubianhao', type='char', readonly=True, string='Project Serial Number'),
         'project_scale': fields.related('project_id', 'guimo', type='char', string='Project Scale', readonly=True),
+        'project_user': fields.related('project_id', 'user_id', type="many2many", relation='res.users', string='Project Manager', readonly=True),
         'project_category_id': fields.related('project_id', 'categories_id', type='many2one', relation='project.upcategory',
                                               string='Project Category', readonly=True),
+        'project_second': fields.char('Project Second Category', size=128),
         'project_country_id': fields.related('project_id', 'country_id', type='many2one', relation='res.country', string='Project Country',
                                              readonly=True),
         'project_state_id': fields.related('project_id', 'state_id', type='many2one', relation='res.country.state', string='Project State',
@@ -24,6 +27,8 @@ class ProjectFiledFiling(osv.Model):
         'description': fields.text('Description'),
         'note': fields.text('Note'),
         'record_ids': fields.one2many('project.project.filed.record', 'filing_id', 'Document Records'),
+        'show_images': fields.many2many('ir.attachment', 'project_filing_show_attachments', 'filing_id', 'attachment_id', string='Show Images'),
+        'end_stage': fields.selection([('cehua', u'策划'), ('qurenfangan', u'确认方案'), ('pingshenqian', u'评审前方案')], 'End Stage'),
     }
 
     _defaults = {
