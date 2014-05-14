@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <tree string="Project Tags" version="7.0" editable="top">
                     <field name="name"/>
-                    <field name="tag_category_id"/>
+                    <field name="parent_id"/>
                 </tree>
             </field>
         </record>
@@ -37,7 +37,7 @@
                                 <group>
                                     <field name="project_user" widget="many2many_tags"/>
                                     <field name="project_category_id"/>
-                                    <field name="project_second"/>
+                                    <field name="project_second_category"/>
                                 </group>
                                 <group>
                                     <field name="project_serial_number"/>
@@ -60,11 +60,11 @@
                                     <field name="project_end_date" nolabel="1" style="width: 20%%"/>
                                 </div>
                                 <newline/>
-                                <field name="tag_ids" widget="many2many_tags"/>
+                                <field name="tag_ids" widget="many2many_tags" domain="[('parent_id','!=',None)]"/>
                             </group>
                             <group colspan="2">
-                                <field name="description"/>
-                                <field name="note"/>
+                                <field name="description" widget="html"/>
+                                <field name="note" widget="html"/>
                                 <field name="show_images" widget="many2many_binary"
                                        res_model="project.project" res_id="project_id"
                                        context="{'parent_id':%(dir_up_project_going_brief_picture)d}"/>

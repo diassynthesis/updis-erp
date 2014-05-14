@@ -15,7 +15,7 @@ class ProjectFiledFiling(osv.Model):
         'project_user': fields.related('project_id', 'user_id', type="many2many", relation='res.users', string='Project Manager', readonly=True),
         'project_category_id': fields.related('project_id', 'categories_id', type='many2one', relation='project.upcategory',
                                               string='Project Category', readonly=True),
-        'project_second': fields.char('Project Second Category', size=128),
+        'project_second_category': fields.char('Project Second Category', size=128),
         'project_country_id': fields.related('project_id', 'country_id', type='many2one', relation='res.country', string='Project Country',
                                              readonly=True),
         'project_state_id': fields.related('project_id', 'state_id', type='many2one', relation='res.country.state', string='Project State',
@@ -24,7 +24,9 @@ class ProjectFiledFiling(osv.Model):
         'project_begin_date': fields.related('project_id', 'begin_date', type='date', string='Project Begin Date', readonly=True),
         'project_end_date': fields.date('Project End Date', required=True),
         'tag_ids': fields.many2many('project.project.filed.tag', 'rel_project_filing_tag', 'filing_id', 'tag_id', string='Tags'),
+        # 概况
         'description': fields.text('Description'),
+        # 借鉴主要案例
         'note': fields.text('Note'),
         'record_ids': fields.one2many('project.project.filed.record', 'filing_id', 'Document Records'),
         'show_images': fields.many2many('ir.attachment', 'project_filing_show_attachments', 'filing_id', 'attachment_id', string='Show Images'),
@@ -46,22 +48,12 @@ class ProjectFiledFiling(osv.Model):
         return self.write(cr, uid, ids, {'state': 'apply_filing'}, context)
 
 
-class ProjectFiledTagCategory(osv.Model):
-    _name = 'project.project.filed.tag.category'
-    _columns = {
-        'name': fields.char('Name', size=256, required=True),
-    }
-    _sql_constraints = [
-        ('project_tag_category_name_unq', 'unique (name)', 'The name of the category must be unique !')
-    ]
-
-
 class ProjectFiledFilingTag(osv.Model):
     _name = 'project.project.filed.tag'
 
     _columns = {
         'name': fields.char('Name', size=64, required=True),
-        'tag_category_id': fields.many2one('project.project.filed.tag.category', 'Tag Category'),
+        'parent_id': fields.many2one('project.project.filed.tag', 'Parent Tag'),
     }
 
     _sql_constraints = [
@@ -73,7 +65,7 @@ class ProjectFiledFilingTag(osv.Model):
         if not self.search(cr, uid, [('id', 'in', ids)]):
             ids = []
         for d in self.browse(cr, uid, ids, context=context):
-            res.append((d.id, (d.tag_category_id.name if d.tag_category_id else '') + '/' + d.name))
+            res.append((d.id, (d.parent_id.name if d.parent_id else '') + '/' + d.name))
         return res
 
 

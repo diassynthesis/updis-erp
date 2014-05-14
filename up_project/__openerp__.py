@@ -19,7 +19,6 @@ UPDIS Project Module.""",
         'data/updis_data.xml',
         'data/document.directory.csv',
         'data/project.project.filed.type.csv',
-        'data/project.project.filed.tag.category.csv',
         'data/project.project.filed.tag.csv',
         'project_view.xml',
 
