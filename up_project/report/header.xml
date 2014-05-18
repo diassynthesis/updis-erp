@@ -8,23 +8,46 @@
             <field name="margin_top" eval="10"/>
             <field name="margin_bottom" eval="30"/>
             <field name="css"><![CDATA[
-                    body {
-                        font-family:Arial;
-                        font-size:12;
-                    }
+        body {
+            font-family: "Microsoft YaHei", "SimSun", "Lucida Grande", Helvetica, Verdana, Arial, sans-serif;
+            font-size: 14px;
+            padding-top: 15px;
+        }
 
-                    .cell{
-                        border-spacing: 0;
-                        border-collapse: collapse;
-                        border-style:solid;
-                        border: 1px solid grey;
-                        font-size:10px;
-                        text-align:center;
-                    }
+        .pdf-title {
+            text-align: center;
+        }
 
-                    .pdf-title {
-                        text-align: center;
-                    }
+        div.pdf-small-title {
+            display: inline;
+        }
+
+        div.pdf-small-title > div {
+            display: inline-block;
+        }
+
+        div.pdf-small-title > .pdf-small-title-right {
+            float: right;
+        }
+
+        div.pdf-small-title > .pdf-small-title-center {
+            margin-left: 200px;
+        }
+
+        div.pdf-table > table {
+            border: solid #000000 2px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        div.pdf-table > table > tbody > tr > td {
+            border: solid #000000 1px;
+            padding: 5px;
+        }
+
+        div.pdf-table > table > tbody > tr > td.table-content {
+            font-size: 13px;
+        }
                 ]]>
             </field>
             <field name="html">

@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
-        <report id="report_project_filed_filing_report_pdf"
-                string="QRT4.2.3-3项目归档表"
+        <report id="report_project_filed_filing_report_pdf_info"
+                string="QRT4.2.3-3项目归档表-基本信息"
                 model="project.project.filed.filing"
-                name="project.filed.filing.report.pdf"
+                name="project.filed.filing.report.pdf.info"
                 report_type="webkit"
                 webkit_header="updis_project_head"
-                file="up_project/report/filed/project_project_filed_filing_report_pdf.mako"
+                file="up_project/report/filed/project_project_filed_filing_report_pdf_info.mako"
+                auto="False"/>
+        <report id="report_project_filed_filing_report_pdf_paper"
+                string="QRT4.2.3-3项目归档表-纸质文件"
+                model="project.project.filed.filing"
+                name="project.filed.filing.report.pdf.paper"
+                report_type="webkit"
+                webkit_header="updis_project_head"
+                file="up_project/report/filed/project_project_filed_filing_report_pdf_paper.mako"
                 auto="False"/>
     </data>
 </openerp>

@@ -1,46 +1,7 @@
 <html>
 <head>
     <style type="text/css">
-        body {
-            font-family: "Microsoft YaHei", "SimSun", "Lucida Grande", Helvetica, Verdana, Arial, sans-serif;
-            font-size: 14px;
-            padding-top: 15px;
-        }
-
-        .pdf-title {
-            text-align: center;
-        }
-
-        div.pdf-small-title {
-            display: inline;
-        }
-
-        div.pdf-small-title > div {
-            display: inline-block;
-        }
-
-        div.pdf-small-title > .pdf-small-title-right {
-            float: right;
-        }
-
-        div.pdf-small-title > .pdf-small-title-center {
-            margin-left: 200px;
-        }
-
-        div.pdf-table > table {
-            border: solid #000000 2px;
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        div.pdf-table > table > tbody > tr > td {
-            border: solid #000000 1px;
-            padding: 5px;
-        }
-
-        div.pdf-table > table > tbody > tr > td.table-content {
-            font-size: 13px;
-        }
+        ${css}
     </style>
 </head>
 <body>

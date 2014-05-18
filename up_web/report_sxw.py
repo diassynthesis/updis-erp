@@ -9,12 +9,12 @@ def monkey_set_html_image(self, id, model=None, field=None, context=None):
     if not model:
         model = 'ir.attachment'
     try:
-        id = int(id)
-        res = self.pool.get(model).read(self.cr, self.uid, id)
+        ids = [int(id)]
+        res = self.pool[model].read(self.cr, self.uid, ids)[0]
         if field:
             return res[field]
         elif model == 'ir.attachment':
-            return res[0]['datas']
+            return res['datas']
         else:
             return ''
     except Exception:
