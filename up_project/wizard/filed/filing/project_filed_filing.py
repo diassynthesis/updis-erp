@@ -6,7 +6,12 @@ from openerp.osv import osv
 class ProjectFiledFiling(osv.Model):
     _name = 'project.project.filed.filing'
 
+    def _get_name(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, u'项目文件归档表')
+        return result
+
     _columns = {
+        'name': fields.function(_get_name, type='char', string='Name'),
         'state': fields.selection(
             selection=[('apply_filing', 'Apply Filing'), ('approve_filing', 'Approve Filing'), ('end_filing', 'Filing Complete')], string='State'),
         'project_id': fields.many2one('project.project', 'Project', required=True),
@@ -31,6 +36,10 @@ class ProjectFiledFiling(osv.Model):
         'record_ids': fields.one2many('project.project.filed.record', 'filing_id', 'Document Records'),
         'show_images': fields.many2many('ir.attachment', 'project_filing_show_attachments', 'filing_id', 'attachment_id', string='Show Images'),
         'end_stage': fields.selection([('cehua', u'策划'), ('qurenfangan', u'确认方案'), ('pingshenqian', u'评审前方案')], 'End Stage'),
+        'create_date': fields.datetime('Created Date', readonly=True),
+        'create_uid': fields.many2one('res.users', 'Owner', readonly=True),
+        'write_date': fields.datetime('Mod请表			ification date', select=True),
+        'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
     }
 
     _defaults = {
@@ -92,6 +101,10 @@ class ProjectFiledFilingRecord(osv.Model):
 class ProjectProjectInherit(osv.Model):
     _inherit = 'project.project'
 
+    _columns = {
+        'filed_filing_ids': fields.one2many('project.project.filed.filing', 'project_id', 'Related Filing Form'),
+    }
+
     def button_filed_filing_form(self, cr, uid, ids, context):
         #TODO: the relationship between project and filing need discuss
         filing_obj = self.pool.get('project.project.filed.filing')
@@ -108,4 +121,15 @@ class ProjectProjectInherit(osv.Model):
             'target': 'current',
             'context': context,
             'res_id': filing_id,
+        }
+
+    def button_filed_filing_form_history(self, cr, uid, ids, context):
+        return {
+            'name': u'所有项目',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree,form',
+            'res_model': 'project.project.filed.filing',
+            'target': 'current',
+            'context': context,
+            'domain': [('project_id', 'in', ids)],
         }
