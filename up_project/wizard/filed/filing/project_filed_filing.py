@@ -114,7 +114,16 @@ class ProjectProjectInherit(osv.Model):
         if filing_ids:
             filing_id = filing_ids[0]
         else:
-            filing_id = filing_obj.create(cr, uid, {'project_id': ids[0], }, context=context)
+            template_ids = self.pool['project.project.filing.record.template'].get_record_ids(cr, uid, context=context)
+            new_datas = []
+            for template_id in template_ids:
+                data = self.pool['project.project.filed.record'].copy_data(cr, uid, template_id, context=context)
+                new_datas += [(0, 0, data), ]
+
+            filing_id = filing_obj.create(cr, uid, {
+                'project_id': ids[0],
+                'record_ids': new_datas,
+            }, context=context)
         return {
             'name': u'所有项目',
             'type': 'ir.actions.act_window',

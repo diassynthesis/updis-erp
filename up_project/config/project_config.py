@@ -11,8 +11,8 @@ class project_engineer_room_config_wizard(osv.osv_memory):
                                   "Users"),
     }
 
-    def default_get(self, cr, uid, fields, context=None):
-        res = super(project_engineer_room_config_wizard, self).default_get(cr, uid, fields, context=context)
+    def default_get(self, cr, uid, fields_v, context=None):
+        res = super(project_engineer_room_config_wizard, self).default_get(cr, uid, fields_v, context=context)
         group_data_id = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'res.groups'),
                                                                       ('name', '=',
                                                                        'group_up_project_zongshishi')],
@@ -23,7 +23,7 @@ class project_engineer_room_config_wizard(osv.osv_memory):
         group_id = groups_obj.search(cr, 1, [('id', '=', group_id['res_id'])], context=context)
         groups = groups_obj.browse(cr, 1, group_id, context=context)[0]
 
-        if 'users' in fields:
+        if 'users' in fields_v:
             res['users'] = [u.id for u in groups.users]
 
         return res
