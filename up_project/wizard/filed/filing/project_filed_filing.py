@@ -92,9 +92,11 @@ class ProjectFiledFilingRecord(osv.Model):
     _columns = {
         'name': fields.char('Name', size=256, required=True),
         'type_id': fields.many2one('project.project.filed.type', 'Type', required=True),
+        # 页数
         'page_count': fields.integer('Page Count'),
+        # 份数
         'copy_count': fields.integer('Copy Count'),
-        'filing_id': fields.integer('Filing'),
+        'filing_id': fields.many2one('project.project.filed.filing', 'Related Filing Form', ondelete='cascade'),
     }
 
 

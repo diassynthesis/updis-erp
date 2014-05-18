@@ -45,12 +45,35 @@ class project_engineer_room_config_wizard(osv.osv_memory):
         return True
 
 
+class FilingRecordTemplate(osv.Model):
+    _name = 'project.project.filing.record.template'
+    _columns = {
+        'filing_record_id': fields.integer('Record Id'),
+    }
+
+    def get_record_ids(self, cr, uid, context):
+        ids = self.search(cr, uid, [], context=context)
+        return [t.filing_record_id for t in self.browse(cr, uid, ids, context)]
+
+
 class ProjectFiledSettings(osv.TransientModel):
     _name = 'project.project.config.filed.settings'
     _inherit = 'res.config.settings'
     _columns = {
-
+        'filing_record_template': fields.many2many('project.project.filed.record', 'rel_project_filed_setting_filing_record_wizard', 'company_id',
+                                                   'record_id', string='Filing Record Template'),
     }
+
+    def get_default_filing_record_template(self, cr, uid, fields, context=None):
+        template_obj = self.pool['project.project.filing.record.template']
+        return {'filing_record_template': template_obj.get_record_ids(cr, uid, context=context)}
+
+    def set_filing_record_template(self, cr, uid, ids, context):
+        ids = self.browse(cr, uid, ids[0], context).filing_record_template
+        template_obj = self.pool['project.project.filing.record.template']
+        cr.execute('delete from project_project_filing_record_template')
+        for rid in ids:
+            template_obj.create(cr, uid, {'filing_record_id': rid.id}, context=context)
 
 
 class ProjectProjectConfig(osv.osv_memory):

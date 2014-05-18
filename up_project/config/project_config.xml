@@ -50,6 +50,11 @@
             <field name="model">project.project.config.filed.settings</field>
             <field name="arch" type="xml">
                 <form version="7.0" string="Project Filed Form Config">
+                    <header>
+                        <button string="Apply" type="object" name="execute" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" type="object" name="cancel" class="oe_link"/>
+                    </header>
                     <sheet>
                         <div>
                             <button name="%(act_project_project_filed_filing_tags_settings)d"
@@ -65,6 +70,18 @@
                                     type="action"
                                     groups="up_project.group_up_project_admin"/>
                         </div>
+                        <group>
+                            <label for="filing_record_template" string="Filing Records Template"/>
+                            <newline/>
+                            <field name="filing_record_template" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="type_id"/>
+                                    <field name="name"/>
+                                    <field name="page_count"/>
+                                    <field name="copy_count"/>
+                                </tree>
+                            </field>
+                        </group>
                     </sheet>
                 </form>
             </field>
