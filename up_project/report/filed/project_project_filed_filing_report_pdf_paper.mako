@@ -31,6 +31,7 @@
                 归档表1/3 ---项目纸质文件
             </td>
         </tr>
+
         <!------------>
         <tr>
             <td colspan="4" class="center-head">文本类成果归档目录</td>
@@ -54,6 +55,7 @@
                     <td class="table-content" colspan="4">没有记录</td>
                 </tr>
             % endif
+
         <!------------>
         <tr>
             <td colspan="4" class="center-head">图件成果（有图签、会签栏）归档目录</td>
@@ -77,6 +79,7 @@
                     <td class="table-content" colspan="4">没有记录</td>
                 </tr>
             % endif
+
         <!------------>
         <tr>
             <td colspan="4" class="center-head">计算书归档目录</td>
@@ -102,6 +105,7 @@
                     <td  class="table-content" colspan="4">没有记录</td>
                 </tr>
             % endif
+
         <!------------>
         <tr>
             <td colspan="4" class="center-head">项目过程管理记录单目录</td>
@@ -125,6 +129,7 @@
                     <td class="table-content" colspan="4">没有记录</td>
                 </tr>
             % endif
+
         <!------------>
         <tr>
             <td colspan="4" class="center-head">重要依据性文件归档目录</td>
@@ -150,6 +155,7 @@
                     <td class="table-content" colspan="4">没有记录</td>
                 </tr>
             % endif
+
         <!------------>
         <tr>
             <td colspan="4" class="center-head">项目依据性资料目录</td>
@@ -160,6 +166,7 @@
             <td>份数</td>
             <td>页数</td>
         </tr>
+
             <% i = 1%>
             % for file_record in file_records['6'] :
                 <tr>
@@ -175,6 +182,15 @@
                     <td class="table-content" colspan="4">没有记录</td>
                 </tr>
             % endif
+
+            <% i = 1%>
+            % for file_record in file_records['7'] :
+                <tr>
+                    <td class="table-content">电子文件</td>
+                    <td class="table-content" colspan="3">${file_record.name}</td>
+                </tr>
+                <% i+=1%>
+            % endfor
         </tbody>
     </table>
 </div>

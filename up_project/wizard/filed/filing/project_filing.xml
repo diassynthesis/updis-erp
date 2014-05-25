@@ -90,8 +90,10 @@
                                     <tree editable="bottom">
                                         <field name="type_id"/>
                                         <field name="name"/>
+                                        <field name="copy_count" attrs="{'readonly':[('type_id','in',[%(project_filed_type_0001)d,%(project_filed_type_0004)d],False)]}"/>
                                         <field name="page_count"/>
-                                        <field name="copy_count"/>
+                                        <field name="document_number"/>
+                                        <field name="comment"/>
                                     </tree>
                                 </field>
                             </group>

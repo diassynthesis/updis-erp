@@ -104,8 +104,10 @@ class ProjectFiledFilingRecord(osv.Model):
         # 页数
         'page_count': fields.integer('Page Count'),
         # 份数
-        'copy_count': fields.integer('Copy Count'),
+        'copy_count': fields.integer('Copy Count / A1'),
         'filing_id': fields.many2one('project.project.filed.filing', 'Related Filing Form', ondelete='cascade'),
+        'comment': fields.char('Comment', size=256),
+        'document_number': fields.char('Document Number', size=64),
     }
 
 

@@ -13,7 +13,7 @@ class ProjectFiledFilingPDF(report_sxw.rml_parse):
             elif tag.parent_id and tag.parent_id.name in tags:
                 tags[tag.parent_id.name].append(tag.name)
 
-        keys = ['1', '2', '3', '4', '5', '6']
+        keys = ['1', '2', '3', '4', '5', '6', '7']
         records = {key: list([]) for key in keys}
         for record_id in filing.record_ids:
             if record_id.type_id.name == u'文本类成果':
@@ -28,6 +28,8 @@ class ProjectFiledFilingPDF(report_sxw.rml_parse):
                 records['5'].append(record_id)
             if record_id.type_id.name == u'项目依据性资料':
                 records['6'].append(record_id)
+            else:
+                records['7'].append(record_id)
 
         self.localcontext.update({
             'cr': cr,
