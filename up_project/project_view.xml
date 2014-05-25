@@ -316,6 +316,7 @@
                                                                     type="object"/>
                                                         </td>
                                                         <td>
+                                                            <field name="filed_filing_state"/>
                                                         </td>
                                                         <td>
                                                         </td>

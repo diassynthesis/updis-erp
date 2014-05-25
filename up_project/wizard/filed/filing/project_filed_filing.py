@@ -4,6 +4,8 @@ from openerp.osv import fields
 from openerp.osv import osv
 from openerp.tools.translate import _
 
+FILING_STATE = [('apply_filing', 'Apply Filing'), ('approve_filing', 'Approve Filing'), ('end_filing', 'Filing Complete')]
+
 
 class ProjectFiledFiling(osv.Model):
     _name = 'project.project.filed.filing'
@@ -16,7 +18,7 @@ class ProjectFiledFiling(osv.Model):
     _columns = {
         'name': fields.function(_get_name, type='char', string='Name'),
         'state': fields.selection(
-            selection=[('apply_filing', 'Apply Filing'), ('approve_filing', 'Approve Filing'), ('end_filing', 'Filing Complete')], string='State'),
+            selection=FILING_STATE, string='State'),
         'project_id': fields.many2one('project.project', 'Project', required=True),
         'project_serial_number': fields.related('project_id', 'xiangmubianhao', type='char', readonly=True, string='Project Serial Number'),
         'project_scale': fields.related('project_id', 'guimo', type='char', string='Project Scale', readonly=True),
@@ -114,8 +116,17 @@ class ProjectFiledFilingRecord(osv.Model):
 class ProjectProjectInherit(osv.Model):
     _inherit = 'project.project'
 
+    def _get_filing_state(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, '')
+        filing_obj = self.pool.get('project.project.filed.filing')
+        filing_ids = filing_obj.search(cr, uid, [('project_id', '=', ids[0])], order='create_date desc', context=context)
+        if filing_ids:
+            result[ids[0]] = filing_obj.browse(cr, uid, filing_ids[0], context).state
+        return result
+
     _columns = {
         'filed_filing_ids': fields.one2many('project.project.filed.filing', 'project_id', 'Related Filing Form'),
+        'filed_filing_state': fields.function(_get_filing_state, type='selection', selection=FILING_STATE, string='Filing State'),
     }
 
     def button_filed_filing_form(self, cr, uid, ids, context):
