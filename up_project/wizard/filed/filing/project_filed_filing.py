@@ -54,6 +54,8 @@ class ProjectFiledFiling(osv.Model):
         return self.write(cr, uid, ids, {'state': 'approve_filing'}, context)
 
     def button_approve_filing(self, cr, uid, ids, context):
+        project = self.browse(cr, uid, ids[0], context).project_id
+        self.pool['project.project']._workflow_signal(cr, uid, [project.id], 's_filed_filing_finish', context=context)
         return self.write(cr, uid, ids, {'state': 'end_filing'}, context)
 
     def button_disapprove_filing(self, cr, uid, ids, context):

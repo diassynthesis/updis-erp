@@ -260,7 +260,7 @@
                         <notebook>
                             <page name="project_related_info" string="Project Process">
                                 <div>
-                                    <div name="project_active_area">
+                                    <div class="oe-project-active-area">
                                         <div class="area-header">
                                             <h3>项目启动流程</h3>
                                             <table class="oe_list_content">
@@ -297,7 +297,9 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="area-header" attrs="{'invisible':[('state','not in',['project_filed','project_finish'])]}">
+                                    </div>
+                                    <div name="oe-project-filing-area" attrs="{'invisible':[('state','not in',['project_filed','project_finish'])]}">
+                                        <div class="area-header">
                                             <h3>项目归档流程</h3>
                                             <table class="oe_list_content">
                                                 <thead>

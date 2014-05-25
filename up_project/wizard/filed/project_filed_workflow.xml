@@ -40,7 +40,7 @@
         <record id="t_project_filed_0" model="workflow.transition">
             <field name="act_from" ref="activity_project_filed_filing"/>
             <field name="act_to" ref="acitivity_project_filed_stop"/>
-            <field name="signal">temp_filed_filing_finish</field>
+            <field name="signal">s_filed_filing_finish</field>
         </record>
 
 
