@@ -29,18 +29,15 @@
             </td>
         </tr>
         <tr>
-            <td>项目名称</td>
+            <td style="width: 20%">项目名称</td>
             <td colspan="3" class="table-content">${object.project_id.name or ''|entity}</td>
         </tr>
         <tr>
             <td>项目类别</td>
             <td class="table-content">一级分类：${object.project_category_id.name or ''|entity}<br/>二级分类：${object.project_second_category or ''|entity}
             </td>
-            <td>中止项目填写归档阶段</td>
-        <td class="table-content">
-            %if object.end_stage:
-                ${dict(object._columns['end_stage'].selection)[object.end_stage]}</td>
-            %endif
+            <td>项目负责人</td>
+            <td class="table-content">${','.join([u.name for u in object.project_user]) or ''|entity}</td>
         </tr>
         <tr>
             <td>所在地区</td>
@@ -50,10 +47,18 @@
                 %else:
                     ${object.project_country_id.name or '' | entity}
                 %endif
-                ${object.project_state_id.name or ''|entity} ${object.project_id.city or ''|entity}</td>
-
-            <td>项目负责人</td>
-            <td class="table-content">${','.join([u.name for u in object.project_user]) or ''|entity}</td>
+                ${object.project_state_id.name or ''|entity} ${object.project_id.city or ''|entity}
+            </td>
+            <td>中止项目填写归档阶段</td>
+            <td class="table-content">
+                %if object.end_stage:
+                    ${dict(object._columns['end_stage'].selection)[object.end_stage]}
+                %endif
+            </td>
+        </tr>
+        <tr>
+            <td>项目规模</td>
+            <td colspan="3" class="table-content">${object.project_scale or ''|entity}</td>
         </tr>
         <tr>
             <td>项目起止日期</td>
@@ -67,11 +72,7 @@
                         <div>${tag[0]}: ${','.join(tag[1])}</div>
                     % endfor
                 %endif
-
-        </tr>
-        <tr>
-            <td>项目规模</td>
-            <td colspan="3" class="table-content">${object.project_scale or ''|entity}</td>
+            </td>
         </tr>
         <tr>
             <td>项目概况</td>
@@ -81,14 +82,14 @@
             <td>借鉴的主要案例</td>
             <td colspan="3" class="table-content">${object.note or ''|n}</td>
         </tr>
-            %for show_image in object.show_images:
-                <tr>
-                    <td>推荐主要表达图纸名称</td>
-                    <td colspan="3">
-                        ${helper.embed_image('jpg',setHtmlImage(show_image.id),450)}
-                    </td>
-                </tr>
-            %endfor
+        <tr>
+            <td>推荐主要表达图纸名称</td>
+            <td colspan="3">
+                %for show_image in object.show_images:
+                        ${helper.embed_image('jpg',setHtmlImage(show_image.id),150)}
+                %endfor
+            </td>
+        </tr>
         </tbody>
     </table>
 </div>

@@ -31,12 +31,12 @@ class ProjectFiledFiling(osv.Model):
         'project_begin_date': fields.related('project_id', 'begin_date', type='date', string='Project Begin Date', readonly=True),
         'project_second_category': fields.char('Project Second Category', size=128, states={'end_filing': [('readonly', True)]}),
         'project_end_date': fields.date('Project End Date', required=True, states={'end_filing': [('readonly', True)]}),
-        'tag_ids': fields.many2many('project.project.filed.tag', 'rel_project_filing_tag', 'filing_id', 'tag_id', string='Tags',
+        'tag_ids': fields.many2many('project.project.filed.tag', 'rel_project_filing_tag', 'filing_id', 'tag_id', string='Tags', required=True,
                                     states={'end_filing': [('readonly', True)]}),
         # 概况
-        'description': fields.text('Description', states={'end_filing': [('readonly', True)]}),
+        'description': fields.text('Description', states={'end_filing': [('readonly', True)]}, required=True),
         # 借鉴主要案例
-        'note': fields.text('Note', states={'end_filing': [('readonly', True)]}),
+        'note': fields.text('Note', states={'end_filing': [('readonly', True)]}, required=True),
         'record_ids': fields.one2many('project.project.filed.record', 'filing_id', 'Document Records', states={'end_filing': [('readonly', True)]}),
         'show_images': fields.many2many('ir.attachment', 'project_filing_show_attachments', 'filing_id', 'attachment_id', string='Show Images',
                                         states={'end_filing': [('readonly', True)]}),
@@ -49,6 +49,7 @@ class ProjectFiledFiling(osv.Model):
     }
 
     _defaults = {
+        'note': u'(自填案例名称，借鉴的主要内容)',
         'state': 'apply_filing',
         'project_end_date': lambda *args: fields.date.today(),
     }
