@@ -1,11 +1,14 @@
 # -*- encoding:utf-8 -*-
+from openerp import exceptions
 from openerp.osv import fields
 from openerp.osv import osv
+from openerp.tools.translate import _
 
 
 class ProjectFiledFiling(osv.Model):
     _name = 'project.project.filed.filing'
 
+    # noinspection PyUnusedLocal
     def _get_name(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, u'项目文件归档表')
         return result
@@ -108,32 +111,44 @@ class ProjectProjectInherit(osv.Model):
     }
 
     def button_filed_filing_form(self, cr, uid, ids, context):
-        #TODO: the relationship between project and filing need discuss
         filing_obj = self.pool.get('project.project.filed.filing')
-        filing_ids = filing_obj.search(cr, uid, [('project_id', '=', ids[0])], context=context)
+        project = self.browse(cr, uid, ids[0], context=context)
+        filing_id = None
+        filing_ids = filing_obj.search(cr, uid, [('project_id', '=', ids[0])], order='create_date desc', context=context)
+        # if have filing record then show the last filing form
         if filing_ids:
             filing_id = filing_ids[0]
         else:
-            template_ids = self.pool['project.project.filing.record.template'].get_record_ids(cr, uid, context=context)
-            new_datas = []
-            for template_id in template_ids:
-                data = self.pool['project.project.filed.record'].copy_data(cr, uid, template_id, context=context)
-                new_datas += [(0, 0, data), ]
+            # if project is in project filing state then created
+            if project.state == 'project_filed':
+                template_ids = self.pool['project.project.filing.record.template'].get_record_ids(cr, uid, context=context)
+                new_datas = []
+                for template_id in template_ids:
+                    data = self.pool['project.project.filed.record'].copy_data(cr, uid, template_id, context=context)
+                    new_datas += [(0, 0, data), ]
 
-            filing_id = filing_obj.create(cr, uid, {
-                'project_id': ids[0],
-                'record_ids': new_datas,
-            }, context=context)
-        return {
-            'name': u'所有项目',
-            'type': 'ir.actions.act_window',
-            'view_mode': 'form',
-            'res_model': 'project.project.filed.filing',
-            'target': 'current',
-            'context': context,
-            'res_id': filing_id,
-        }
+                filing_id = filing_obj.create(cr, uid, {
+                    'project_id': ids[0],
+                    'record_ids': new_datas,
+                }, context=context)
+            # else if project is in project filed state
+            elif project.state == 'project_finish':
+                raise exceptions.Warning(
+                    _("This project is import from old system, don't have filing record!"))
+        if filing_id:
+            return {
+                'name': u'所有项目',
+                'type': 'ir.actions.act_window',
+                'view_mode': 'form',
+                'res_model': 'project.project.filed.filing',
+                'target': 'current',
+                'context': context,
+                'res_id': filing_id,
+            }
+        else:
+            return False
 
+    # noinspection PyUnusedLocal
     def button_filed_filing_form_history(self, cr, uid, ids, context):
         return {
             'name': u'所有项目',
