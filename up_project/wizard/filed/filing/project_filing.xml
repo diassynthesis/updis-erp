@@ -17,13 +17,15 @@
             <field name="name">project.project.filed.filing.tree</field>
             <field name="model">project.project.filed.filing</field>
             <field name="arch" type="xml">
-                <tree string="Project Filing Histories" version="7.0" create="false" delete="false" edit="false" colors="red:state=='approve_filing';grey:state=='end_filing'">
+                <tree string="Project Filing Histories" version="7.0" create="false" delete="false" edit="false"
+                      colors="red:state=='approve_filing';grey:state=='end_filing'">
                     <field name="name"/>
                     <field name="state"/>
                     <field name="create_date"/>
                     <field name="create_uid"/>
                     <field name="write_date"/>
                     <field name="write_uid"/>
+                    <field name="version"/>
                 </tree>
             </field>
         </record>
@@ -90,12 +92,21 @@
                                     <tree editable="bottom">
                                         <field name="type_id"/>
                                         <field name="name"/>
-                                        <field name="copy_count" attrs="{'readonly':[('type_id','in',[%(project_filed_type_0001)d,%(project_filed_type_0004)d],False)]}"/>
+                                        <field name="copy_count"
+                                               attrs="{'readonly':[('type_id','in',[%(project_filed_type_0001)d,%(project_filed_type_0004)d],False)]}"/>
                                         <field name="page_count"/>
                                         <field name="document_number"/>
                                         <field name="comment"/>
                                     </tree>
                                 </field>
+                            </group>
+                            <group string="Elec Document Filing Info" colspan="2" col="1">
+                                <button name="button_show_filing_update_list" class="oe_right oe_highlight"
+                                        string="点此添加电子文件到目录"
+                                        type="object"/>
+                                <label for="attachment_ids"/>
+                                <field name="attachment_ids" nolabel="1"
+                                       domain="[('res_model', '=', 'project.project'),('res_id', '=', project_id),('parent_id','child_of',%(up_project.dir_up_project_going)d)]"/>
                             </group>
                         </group>
                     </sheet>

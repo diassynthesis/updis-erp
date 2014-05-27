@@ -5,6 +5,33 @@ from openerp.osv import osv
 from openerp.tools.translate import _
 
 FILING_STATE = [('apply_filing', 'Apply Filing'), ('approve_filing', 'Approve Filing'), ('end_filing', 'Filing Complete')]
+FILING_DIR_MAP = {
+    'dir_up_project_going': 'dir_up_project_filed',
+    'dir_up_project_going_processing': 'dir_up_project_filed_processing',
+    'dir_up_project_going_processing_dwg': 'dir_up_project_filed_processing_dwg',
+    'dir_up_project_going_processing_psd': 'dir_up_project_filed_processing_psd',
+    'dir_up_project_going_processing_report': 'dir_up_project_filed_processing_report',
+    'dir_up_project_going_iso': 'dir_up_project_filed_iso',
+    'dir_up_project_going_iso_workflow': 'dir_up_project_filed_iso_workflow',
+    'dir_up_project_activing': 'dir_up_project_active',
+    'dir_up_project_going_iso_contract': 'dir_up_project_filed_iso_contract',
+    'dir_up_project_going_iso_memo': 'dir_up_project_filed_iso_memo',
+    'dir_up_project_going_result': 'dir_up_project_filed_result',
+    'dir_up_project_going_result_media': 'dir_up_project_filed_result_media',
+    'dir_up_project_going_result_guide': 'dir_up_project_filed_result_guide',
+    'dir_up_project_going_result_picture': 'dir_up_project_filed_result_picture',
+    'dir_up_project_going_result_doc': 'dir_up_project_filed_result_doc',
+    'dir_up_project_going_result_else': 'dir_up_project_filed_result_else',
+    'dir_up_project_going_brief': 'dir_up_project_filed_brief',
+    'dir_up_project_going_brief_display': 'dir_up_project_filed_brief_display',
+    'dir_up_project_going_brief_brief': 'dir_up_project_filed_brief_brief',
+    'dir_up_project_going_brief_picture': 'dir_up_project_filed_brief_picture',
+    'dir_up_project_going_data': 'dir_up_project_filed_data',
+    'dir_up_project_going_data_cadastral': 'dir_up_project_filed_data_cadastral',
+    'dir_up_project_going_data_terrain': 'dir_up_project_filed_data_terrain',
+    'dir_up_project_going_data_tellite': 'dir_up_project_filed_data_tellite',
+    'dir_up_project_going_data_outsource': 'dir_up_project_filed_data_outsource',
+}
 
 
 class ProjectFiledFiling(osv.Model):
@@ -48,12 +75,16 @@ class ProjectFiledFiling(osv.Model):
         'create_uid': fields.many2one('res.users', 'Owner', readonly=True),
         'write_date': fields.datetime('Modification date', select=True),
         'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
+        'version': fields.integer('Filing Version'),
+        'attachment_ids': fields.many2many('ir.attachment', 'filing_form_ir_attach_rel', 'filing_id', 'attachment_id', 'Filing Attachments',
+                                           states={'end_filing': [('readonly', True)]}),
     }
 
     _defaults = {
         'note': u'(自填案例名称，借鉴的主要内容)',
         'state': 'apply_filing',
         'project_end_date': lambda *args: fields.date.today(),
+        'version': 1,
     }
 
     def button_apply_filing(self, cr, uid, ids, context):
@@ -66,6 +97,27 @@ class ProjectFiledFiling(osv.Model):
 
     def button_disapprove_filing(self, cr, uid, ids, context):
         return self.write(cr, uid, ids, {'state': 'apply_filing'}, context)
+
+    def button_show_filing_update_list(self, cr, uid, ids, context):
+        filing = self.browse(cr, uid, ids[0], context)
+        project_dir_id = self.pool['ir.model.data'].get_object(cr, uid, 'up_project', 'dir_up_project', context=context)
+        temp_context = {
+            'search_index_model': ('res_model', '=', 'project.project'),
+            'search_index_id': ('res_id', '=', filing.project_id.id),
+            'default_res_model': 'project.project',
+            'default_res_id': filing.project_id.id,
+            'eval_context': True
+        }
+        return {
+            'name': u'项目待归档文件',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree',
+            'view_type': 'tree',
+            'res_model': 'document.directory',
+            'target': 'current',
+            'context': temp_context,
+            'domain': [('parent_id', '=', False), ('id', 'child_of', project_dir_id.id)],
+        }
 
 
 class ProjectFiledFilingTag(osv.Model):
@@ -116,6 +168,7 @@ class ProjectFiledFilingRecord(osv.Model):
 class ProjectProjectInherit(osv.Model):
     _inherit = 'project.project'
 
+    # noinspection PyUnusedLocal
     def _get_filing_state(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, '')
         filing_obj = self.pool.get('project.project.filed.filing')
