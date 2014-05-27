@@ -60,7 +60,6 @@ class IrAttachmentInherit(osv.osv):
 
     def unlink(self, cr, uid, ids, context=None):
         self._check_group_unlink_privilege(cr, uid, ids, context)
-        #TODO: what do we do about unlink file
         return super(IrAttachmentInherit, self).unlink(cr, uid, ids, context)
 
     def write(self, cr, uid, ids, vals, context=None):
