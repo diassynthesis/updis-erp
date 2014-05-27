@@ -5,33 +5,6 @@ from openerp.osv import osv
 from openerp.tools.translate import _
 
 FILING_STATE = [('apply_filing', 'Apply Filing'), ('approve_filing', 'Approve Filing'), ('end_filing', 'Filing Complete')]
-FILING_DIR_MAP = {
-    'dir_up_project_going': 'dir_up_project_filed',
-    'dir_up_project_going_processing': 'dir_up_project_filed_processing',
-    'dir_up_project_going_processing_dwg': 'dir_up_project_filed_processing_dwg',
-    'dir_up_project_going_processing_psd': 'dir_up_project_filed_processing_psd',
-    'dir_up_project_going_processing_report': 'dir_up_project_filed_processing_report',
-    'dir_up_project_going_iso': 'dir_up_project_filed_iso',
-    'dir_up_project_going_iso_workflow': 'dir_up_project_filed_iso_workflow',
-    'dir_up_project_activing': 'dir_up_project_active',
-    'dir_up_project_going_iso_contract': 'dir_up_project_filed_iso_contract',
-    'dir_up_project_going_iso_memo': 'dir_up_project_filed_iso_memo',
-    'dir_up_project_going_result': 'dir_up_project_filed_result',
-    'dir_up_project_going_result_media': 'dir_up_project_filed_result_media',
-    'dir_up_project_going_result_guide': 'dir_up_project_filed_result_guide',
-    'dir_up_project_going_result_picture': 'dir_up_project_filed_result_picture',
-    'dir_up_project_going_result_doc': 'dir_up_project_filed_result_doc',
-    'dir_up_project_going_result_else': 'dir_up_project_filed_result_else',
-    'dir_up_project_going_brief': 'dir_up_project_filed_brief',
-    'dir_up_project_going_brief_display': 'dir_up_project_filed_brief_display',
-    'dir_up_project_going_brief_brief': 'dir_up_project_filed_brief_brief',
-    'dir_up_project_going_brief_picture': 'dir_up_project_filed_brief_picture',
-    'dir_up_project_going_data': 'dir_up_project_filed_data',
-    'dir_up_project_going_data_cadastral': 'dir_up_project_filed_data_cadastral',
-    'dir_up_project_going_data_terrain': 'dir_up_project_filed_data_terrain',
-    'dir_up_project_going_data_tellite': 'dir_up_project_filed_data_tellite',
-    'dir_up_project_going_data_outsource': 'dir_up_project_filed_data_outsource',
-}
 
 
 class ProjectFiledFiling(osv.Model):
@@ -58,26 +31,29 @@ class ProjectFiledFiling(osv.Model):
                                            readonly=True),
         'project_city': fields.related('project_id', 'city', type='char', string='Project City', readonly=True),
         'project_begin_date': fields.related('project_id', 'begin_date', type='date', string='Project Begin Date', readonly=True),
-        'project_second_category': fields.char('Project Second Category', size=128, states={'end_filing': [('readonly', True)]}),
-        'project_end_date': fields.date('Project End Date', required=True, states={'end_filing': [('readonly', True)]}),
+        'project_second_category': fields.char('Project Second Category', size=128,
+                                               states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
+        'project_end_date': fields.date('Project End Date', required=True,
+                                        states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
         'tag_ids': fields.many2many('project.project.filed.tag', 'rel_project_filing_tag', 'filing_id', 'tag_id', string='Tags', required=True,
-                                    states={'end_filing': [('readonly', True)]}),
+                                    states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
         # 概况
-        'description': fields.text('Description', states={'end_filing': [('readonly', True)]}, required=True),
+        'description': fields.text('Description', states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}, required=True),
         # 借鉴主要案例
-        'note': fields.text('Note', states={'end_filing': [('readonly', True)]}, required=True),
-        'record_ids': fields.one2many('project.project.filed.record', 'filing_id', 'Document Records', states={'end_filing': [('readonly', True)]}),
+        'note': fields.text('Note', states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}, required=True),
+        'record_ids': fields.one2many('project.project.filed.record', 'filing_id', 'Document Records',
+                                      states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
         'show_images': fields.many2many('ir.attachment', 'project_filing_show_attachments', 'filing_id', 'attachment_id', string='Show Images',
-                                        states={'end_filing': [('readonly', True)]}),
+                                        states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
         'end_stage': fields.selection([('cehua', u'策划'), ('qurenfangan', u'确认方案'), ('pingshenqian', u'评审前方案')], 'End Stage',
-                                      states={'end_filing': [('readonly', True)]}),
+                                      states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
         'create_date': fields.datetime('Created Date', readonly=True),
         'create_uid': fields.many2one('res.users', 'Owner', readonly=True),
         'write_date': fields.datetime('Modification date', select=True),
         'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
         'version': fields.integer('Filing Version'),
         'attachment_ids': fields.many2many('ir.attachment', 'filing_form_ir_attach_rel', 'filing_id', 'attachment_id', 'Filing Attachments',
-                                           states={'end_filing': [('readonly', True)]}),
+                                           states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
     }
 
     _defaults = {
@@ -91,8 +67,11 @@ class ProjectFiledFiling(osv.Model):
         return self.write(cr, uid, ids, {'state': 'approve_filing'}, context)
 
     def button_approve_filing(self, cr, uid, ids, context):
-        project = self.browse(cr, uid, ids[0], context).project_id
-        self.pool['project.project']._workflow_signal(cr, uid, [project.id], 's_filed_filing_finish', context=context)
+        filing = self.browse(cr, uid, ids[0], context)
+        attachment_obj = self.pool['ir.attachment']
+        project_id = filing.project_id.id
+        self.pool['project.project']._workflow_signal(cr, uid, [project_id], 's_filed_filing_finish', context=context)
+        attachment_obj.filing_project_attachments(cr, 1, [a.id for a in filing.attachment_ids], context)
         return self.write(cr, uid, ids, {'state': 'end_filing'}, context)
 
     def button_disapprove_filing(self, cr, uid, ids, context):
