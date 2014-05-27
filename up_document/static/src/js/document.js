@@ -142,6 +142,5 @@ openerp.up_document = function (instance, m) {
             });
         }
     });
-
 };
 

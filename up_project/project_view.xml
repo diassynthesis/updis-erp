@@ -241,7 +241,7 @@
                                 <field name="customer_contact" readonly="1"/>
                                 <group col="3" colspan="2">
                                     <field name="shifoutoubiao" readonly="1"/>
-                                    <field nolabel="1" name="toubiaoleibie" readonly="1"/>
+                                    <field nolabel="1" name="toubiaoleibie" readonly="1" attrs="{'invisible':[('shifoutoubiao','=',False)]}"/>
                                 </group>
                                 <field name="waibao" readonly="1"/>
                                 <field name="shizhenpeitao" readonly="1"/>

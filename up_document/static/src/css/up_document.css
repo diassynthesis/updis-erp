@@ -47,4 +47,7 @@
 
 }
 
+.openerp .oe_list_content > tbody > tr > td.oe_list_field_binary {
+    white-space: normal !important;
+}
 
