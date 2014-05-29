@@ -1,5 +1,6 @@
 # -*- encoding:utf-8 -*-
 from openerp import exceptions
+import openerp
 from openerp.osv import fields
 from openerp.osv import osv
 from openerp.tools.translate import _
@@ -93,11 +94,21 @@ class ProjectFiledFiling(osv.Model):
             'name': u'项目待归档文件',
             'type': 'ir.actions.act_window',
             'view_mode': 'tree',
-            'view_type': 'tree',
             'res_model': 'document.directory',
             'target': 'current',
             'context': temp_context,
             'domain': [('parent_id', '=', False), ('id', 'child_of', project_dir_id.id)],
+        }
+
+    def button_show_filing_attachment_analysis(self, cr, uid, ids, context):
+        filing = self.browse(cr, uid, ids[0], context)
+        return {
+            'name': u'项目已归档电子文件记录',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree',
+            'res_model': 'project.project.filed.filing.attachment.analysis',
+            'target': 'new',
+            'domain': [('project_id', '=', filing.project_id.id)],
         }
 
 
@@ -242,3 +253,45 @@ class ProjectProjectInherit(osv.Model):
             'context': context,
             'domain': [('project_id', 'in', ids)],
         }
+
+
+class FilingElecAttachmentsAnalysis(osv.Model):
+    _name = "project.project.filed.filing.attachment.analysis"
+    _description = "Project Filing Attachments Analysis"
+    _rec_name = "attachment_id"
+    _order = "id desc"
+    _auto = False
+
+    _columns = {
+        'attachment_id': fields.many2one('ir.attachment', 'Attachment'),
+        'parent_id': fields.many2one('document.directory', 'Directory'),
+        'filing_id': fields.many2one('project.project.filed.filing', 'Filing'),
+        'project_id': fields.many2one('project.project', 'Project'),
+        'version': fields.related('filing_id', 'version', type='integer', string='Version'),
+        'create_date': fields.datetime('Created Date', readonly=True),
+        'create_uid': fields.many2one('res.users', 'Owner', readonly=True),
+        'write_date': fields.datetime('Modification date', select=True),
+        'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
+    }
+
+    def init(self, cr):
+        openerp.tools.sql.drop_view_if_exists(cr, 'project_project_filed_filing_attachment_analysis')
+        cr.execute(
+            " CREATE VIEW project_project_filed_filing_attachment_analysis AS ( "
+            " SELECT "
+            " r.attachment_id as id,"
+            " a.parent_id as parent_id,"
+            " r.filing_id as filing_id,"
+            " r.attachment_id as attachment_id,"
+            " f.project_id as project_id,"
+            " a.create_date as create_date,"
+            " a.create_uid as create_uid,"
+            " a.write_date as write_date,"
+            " a.write_uid as write_uid"
+            " FROM "
+            " filing_form_ir_attach_rel as r LEFT JOIN project_project_filed_filing as f"
+            " on r.filing_id = f.id"
+            " LEFT JOIN ir_attachment as a"
+            " on a.id = r.attachment_id"
+            " )"
+        )
