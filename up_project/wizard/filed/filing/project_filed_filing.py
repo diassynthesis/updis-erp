@@ -10,6 +10,8 @@ FILING_STATE = [('apply_filing', 'Apply Filing'), ('approve_filing', 'Approve Fi
 class ProjectFiledFiling(osv.Model):
     _name = 'project.project.filed.filing'
 
+    _order = 'create_date desc'
+
     # noinspection PyUnusedLocal
     def _get_name(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, u'项目文件归档表')
@@ -156,9 +158,23 @@ class ProjectProjectInherit(osv.Model):
             result[ids[0]] = filing_obj.browse(cr, uid, filing_ids[0], context).state
         return result
 
+    # noinspection PyUnusedLocal
+    def _is_multi_filing_allowed(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        filing_obj = self.pool.get('project.project.filed.filing')
+        for id in ids:
+            project = self.browse(cr, uid, id, context=context)
+            filing_ids = filing_obj.search(cr, uid, [('project_id', '=', id), ('state', 'not in', ['end_filing'])], order='create_date desc',
+                                           context=context)
+            # if is allow multi filing
+            if project.state == 'project_finish' and not filing_ids and filing_obj.search(cr, uid, [('project_id', '=', id)], context=context):
+                result[id] = True
+        return result
+
     _columns = {
         'filed_filing_ids': fields.one2many('project.project.filed.filing', 'project_id', 'Related Filing Form'),
         'filed_filing_state': fields.function(_get_filing_state, type='selection', selection=FILING_STATE, string='Filing State'),
+        'is_multi_filing_allowed': fields.function(_is_multi_filing_allowed, type='boolean', string='Is Multi Filing Allowed'),
     }
 
     def button_filed_filing_form(self, cr, uid, ids, context):
@@ -198,6 +214,22 @@ class ProjectProjectInherit(osv.Model):
             }
         else:
             return False
+
+    def button_multi_filing_form(self, cr, uid, ids, context):
+        filing_obj = self.pool.get('project.project.filed.filing')
+        project = self.browse(cr, uid, ids[0], context=context)
+        filing_ids = filing_obj.search(cr, uid, [('project_id', '=', ids[0]), ('state', 'not in', ['end_filing'])], order='create_date desc',
+                                       context=context)
+        # if is allow multi filing
+        if project.state == 'project_finish' and not filing_ids and filing_obj.search(cr, uid, [('project_id', '=', ids[0])], context=context):
+            old_filing_id = filing_obj.search(cr, uid, [('project_id', '=', ids[0])], order='create_date desc', context=context)[0]
+            old_filing = filing_obj.browse(cr, uid, old_filing_id, context)
+            new_filing_id = filing_obj.copy(cr, uid, old_filing_id, context)
+            filing_obj.write(cr, uid, new_filing_id, {
+                'version': old_filing.version + 1,
+                'attachment_ids': [(5,)],
+            }, context=context)
+            return True
 
     # noinspection PyUnusedLocal
     def button_filed_filing_form_history(self, cr, uid, ids, context):

@@ -21,7 +21,7 @@ UPDIS Project Module.""",
         'data/project.project.filed.type.csv',
         'data/project.project.filed.tag.csv',
         'project_view.xml',
-
+        'project_form_view.xml',
 
         'wizard/active/project_active_view.xml',
         'wizard/active/tasking/project_active_tasking_action.xml',

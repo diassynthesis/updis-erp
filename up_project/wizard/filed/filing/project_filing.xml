@@ -55,6 +55,7 @@
                                     <field name="project_user" widget="many2many_tags"/>
                                     <field name="project_category_id"/>
                                     <field name="project_second_category"/>
+                                    <field name="end_stage"/>
                                 </group>
                                 <group>
                                     <field name="project_serial_number"/>
@@ -66,10 +67,9 @@
                                                placeholder="State" nolabel="1" style="width: 20%%"/>
                                         <field name="project_city" nolabel="1" style="width: 20%%"/>
                                     </div>
-                                    <field name="end_stage"/>
                                 </group>
                             </group>
-                            <group string="Filing Info" colspan="2" col="4">
+                            <group string="Paper Filing Info" colspan="2" col="4">
                                 <label for="project_begin_date" string="Project Period"/>
                                 <div>
                                     <field name="project_begin_date" nolabel="1" style="width: 20%%"/>
@@ -104,9 +104,16 @@
                                 <button name="button_show_filing_update_list" class="oe_right oe_highlight"
                                         string="点此添加电子文件到目录"
                                         type="object" states="apply_filing"/>
-                                <label for="attachment_ids"/>
-                                <field name="attachment_ids" nolabel="1"
-                                       domain="[('res_model', '=', 'project.project'),('res_id', '=', project_id),('parent_id','child_of',%(up_project.dir_up_project_going)d)]"/>
+
+                                <notebook>
+                                    <page string="Apply Elec Attachments">
+                                        <field name="attachment_ids" nolabel="1"
+                                               domain="[('res_model', '=', 'project.project'),('res_id', '=', project_id),('parent_id','child_of',%(up_project.dir_up_project_going)d)]"/>
+                                    </page>
+                                    <page string="History Of Filed Elec Attachments">
+
+                                    </page>
+                                </notebook>
                             </group>
                         </group>
                     </sheet>
