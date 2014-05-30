@@ -31,11 +31,17 @@ class ProjectFiledFilingPDF(report_sxw.rml_parse):
             else:
                 records['7'].append(record_id)
 
+        attach_analysis_obj = self.pool['project.project.filed.filing.attachment.analysis']
+        elec_attachments_ids = attach_analysis_obj.search(cr, uid, [('project_id', '=', filing.project_id.id)], order='version desc, project_id',
+                                                          context=context)
+        elec_attachments = attach_analysis_obj.browse(cr, uid, elec_attachments_ids, context)
+
         self.localcontext.update({
             'cr': cr,
             'object': filing,
             'tags': tags,
             'file_records': records,
+            'elec_attachments': elec_attachments,
         })
 
 
@@ -44,3 +50,6 @@ report_sxw.report_sxw('report.project.filed.filing.report.pdf.info', 'project.pr
 
 report_sxw.report_sxw('report.project.filed.filing.report.pdf.paper', 'project.project.filed.filing',
                       'up_project/report/active/project_project_filed_filing_report_pdf_paper.mako', parser=ProjectFiledFilingPDF)
+
+report_sxw.report_sxw('report.project.filed.filing.report.pdf.elec', 'project.project.filed.filing',
+                      'up_project/report/active/project_project_filed_filing_report_pdf_elec.mako', parser=ProjectFiledFilingPDF)

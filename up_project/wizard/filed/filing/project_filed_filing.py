@@ -94,6 +94,7 @@ class ProjectFiledFiling(osv.Model):
             'name': u'项目待归档文件',
             'type': 'ir.actions.act_window',
             'view_mode': 'tree',
+            'view_type': 'tree',
             'res_model': 'document.directory',
             'target': 'current',
             'context': temp_context,
@@ -259,7 +260,7 @@ class FilingElecAttachmentsAnalysis(osv.Model):
     _name = "project.project.filed.filing.attachment.analysis"
     _description = "Project Filing Attachments Analysis"
     _rec_name = "attachment_id"
-    _order = "id desc"
+    _order = "version desc,parent_id"
     _auto = False
 
     _columns = {
@@ -267,7 +268,7 @@ class FilingElecAttachmentsAnalysis(osv.Model):
         'parent_id': fields.many2one('document.directory', 'Directory'),
         'filing_id': fields.many2one('project.project.filed.filing', 'Filing'),
         'project_id': fields.many2one('project.project', 'Project'),
-        'version': fields.related('filing_id', 'version', type='integer', string='Version'),
+        'version': fields.integer('Version'),
         'create_date': fields.datetime('Created Date', readonly=True),
         'create_uid': fields.many2one('res.users', 'Owner', readonly=True),
         'write_date': fields.datetime('Modification date', select=True),
@@ -284,6 +285,7 @@ class FilingElecAttachmentsAnalysis(osv.Model):
             " r.filing_id as filing_id,"
             " r.attachment_id as attachment_id,"
             " f.project_id as project_id,"
+            " f.version as version,"
             " a.create_date as create_date,"
             " a.create_uid as create_uid,"
             " a.write_date as write_date,"
