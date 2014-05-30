@@ -118,12 +118,12 @@
                                 <button name="button_show_filing_update_list" class="oe_right oe_highlight"
                                         string="点此添加电子文件到目录"
                                         type="object" states="apply_filing"/>
-                                <button name="button_show_filing_attachment_analysis" class="oe_right"
-                                        string="查看历史记录"
-                                        type="object"/>
                                 <label for="attachment_ids" string="Need Filing Elec Attachments"/>
                                 <field name="attachment_ids" nolabel="1"
                                        domain="[('res_model', '=', 'project.project'),('res_id', '=', project_id),('parent_id','child_of',%(up_project.dir_up_project_going)d)]"/>
+                                <button name="button_show_filing_attachment_analysis" class="oe_left"
+                                        string="查看历史记录"
+                                        type="object"/>
                             </group>
                         </group>
                     </sheet>
