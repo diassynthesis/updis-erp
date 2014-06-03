@@ -115,7 +115,7 @@
                                 </field>
                             </group>
                             <group string="Elec Document Filing Info" colspan="2" col="1">
-                                <button name="button_show_filing_update_list" class="oe_right oe_highlight"
+                                <button name="button_show_filing_update_list" class="oe_left oe_highlight"
                                         string="点此添加电子文件到目录"
                                         type="object" states="apply_filing"/>
                                 <label for="attachment_ids" string="Need Filing Elec Attachments"/>
