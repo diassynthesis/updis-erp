@@ -31,14 +31,20 @@
                 归档表3/3 ---项目纸质文件
             </td>
         </tr>
-            <td>文件名</td>
             <td>路径</td>
+            <td>文件名</td>
             <td>归档批次</td>
             <td>创建时间</td>
+        <% directory_name ='' %>
         % for elec_attachment in elec_attachments:
             <tr>
+                % if directory_name == elec_attachment.parent_id.name_get()[0][1]:
+                    <td></td>
+                % else:
+                    <td class="table-content">/${elec_attachment.parent_id.name_get()[0][1]}</td>
+                    <% directory_name = elec_attachment.parent_id.name_get()[0][1] %>
+                % endif
                 <td class="table-content">${elec_attachment.attachment_id.name}</td>
-                <td class="table-content">/${elec_attachment.parent_id.name_get()[0][1]}</td>
                 <td class="table-content">${elec_attachment.version}</td>
                 <td class="table-content">${elec_attachment.create_date}</td>
             </tr>
