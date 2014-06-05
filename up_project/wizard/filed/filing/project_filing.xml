@@ -60,72 +60,78 @@
                         <div class="sheet-title">
                             <h1>项目文件归档表</h1>
                         </div>
-                        <group>
-                            <group string="Project Info">
-                                <group colspan="2">
-                                    <field name="project_id" readonly="1"/>
+                        <notebook>
+                            <page string="第一步:项目基本信息填写">
+                                <group string="Project Info">
+                                    <group colspan="2">
+                                        <field name="project_id" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="project_user" widget="many2many_tags"/>
+                                        <field name="project_category_id"/>
+                                        <field name="project_second_category"/>
+                                        <field name="end_stage"/>
+                                    </group>
+                                    <group>
+                                        <field name="project_serial_number"/>
+                                        <field name="project_scale"/>
+                                        <label string="Project Location" for="country_id"/>
+                                        <div class="address_format">
+                                            <field name="project_country_id" class="oe_no_button" nolabel="1" style="width: 20%%"/>
+                                            <field name="project_state_id" widget="selection" options="{'no_open':True}"
+                                                   placeholder="State" nolabel="1" style="width: 20%%"/>
+                                            <field name="project_city" nolabel="1" style="width: 20%%"/>
+                                        </div>
+                                    </group>
                                 </group>
-                                <group>
-                                    <field name="project_user" widget="many2many_tags"/>
-                                    <field name="project_category_id"/>
-                                    <field name="project_second_category"/>
-                                    <field name="end_stage"/>
-                                </group>
-                                <group>
-                                    <field name="project_serial_number"/>
-                                    <field name="project_scale"/>
-                                    <label string="Project Location" for="country_id"/>
-                                    <div class="address_format">
-                                        <field name="project_country_id" class="oe_no_button" nolabel="1" style="width: 20%%"/>
-                                        <field name="project_state_id" widget="selection" options="{'no_open':True}"
-                                               placeholder="State" nolabel="1" style="width: 20%%"/>
-                                        <field name="project_city" nolabel="1" style="width: 20%%"/>
+                                <group string="Paper Filing Info" colspan="2" col="4">
+                                    <label for="project_begin_date" string="Project Period"/>
+                                    <div>
+                                        <field name="project_begin_date" nolabel="1" style="width: 20%%"/>
+                                        至
+                                        <field name="project_end_date" nolabel="1" style="width: 20%%"/>
                                     </div>
+                                    <newline/>
+                                    <field name="tag_ids" widget="many2many_tags" domain="[('parent_id','!=',None)]"/>
                                 </group>
-                            </group>
-                            <group string="Paper Filing Info" colspan="2" col="4">
-                                <label for="project_begin_date" string="Project Period"/>
-                                <div>
-                                    <field name="project_begin_date" nolabel="1" style="width: 20%%"/>
-                                    至
-                                    <field name="project_end_date" nolabel="1" style="width: 20%%"/>
-                                </div>
-                                <newline/>
-                                <field name="tag_ids" widget="many2many_tags" domain="[('parent_id','!=',None)]"/>
-                            </group>
-                            <group colspan="2">
-                                <field name="description" widget="html"/>
-                                <field name="note" widget="html"/>
-                                <field name="show_images" widget="many2many_binary"
-                                       res_model="project.project" res_id="project_id"
-                                       context="{'parent_id':%(dir_up_project_going_brief_picture)d}"/>
-                            </group>
-                            <group colspan="2" col="1">
-                                <label for="record_ids"/>
-                                <field name="record_ids" nolabel="1">
-                                    <tree editable="bottom">
-                                        <field name="type_id"/>
-                                        <field name="name"/>
-                                        <field name="copy_count"
-                                               attrs="{'readonly':[('type_id','in',[%(project_filed_type_0001)d,%(project_filed_type_0004)d],False)]}"/>
-                                        <field name="page_count"/>
-                                        <field name="document_number"/>
-                                        <field name="comment"/>
-                                    </tree>
-                                </field>
-                            </group>
-                            <group string="Elec Document Filing Info" colspan="2" col="1">
-                                <button name="button_show_filing_update_list" class="oe_left oe_highlight"
-                                        string="点此添加电子文件到目录"
-                                        type="object" states="apply_filing"/>
-                                <label for="attachment_ids" string="Need Filing Elec Attachments"/>
-                                <field name="attachment_ids" nolabel="1"
-                                       domain="[('res_model', '=', 'project.project'),('res_id', '=', project_id),('parent_id','child_of',%(up_project.dir_up_project_going)d)]"/>
-                                <button name="button_show_filing_attachment_analysis" class="oe_left"
-                                        string="查看历史记录"
-                                        type="object"/>
-                            </group>
-                        </group>
+                                <group colspan="2">
+                                    <field name="description" widget="html"/>
+                                    <field name="note" widget="html"/>
+                                    <field name="show_images" widget="many2many_binary"
+                                           res_model="project.project" res_id="project_id"
+                                           context="{'parent_id':%(dir_up_project_going_brief_picture)d}"/>
+                                </group>
+                            </page>
+                            <page string="第二步:纸质文件归档填写">
+                                <group colspan="2" col="1">
+                                    <label for="record_ids"/>
+                                    <field name="record_ids" nolabel="1">
+                                        <tree editable="bottom">
+                                            <field name="type_id"/>
+                                            <field name="name"/>
+                                            <field name="copy_count"
+                                                   attrs="{'readonly':[('type_id','in',[%(project_filed_type_0001)d,%(project_filed_type_0004)d],False)]}"/>
+                                            <field name="page_count"/>
+                                            <field name="document_number"/>
+                                            <field name="comment"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="第三步:电子文件归档信息填写">
+                                <group string="Elec Document Filing Info" colspan="2" col="1">
+                                    <button name="button_show_filing_update_list" class="oe_left oe_highlight"
+                                            string="点此添加电子文件到目录"
+                                            type="object" states="apply_filing"/>
+                                    <label for="attachment_ids" string="Need Filing Elec Attachments"/>
+                                    <field name="attachment_ids" nolabel="1"
+                                           domain="[('res_model', '=', 'project.project'),('res_id', '=', project_id),('parent_id','child_of',%(up_project.dir_up_project_going)d)]"/>
+                                    <button name="button_show_filing_attachment_analysis" class="oe_left"
+                                            string="查看历史记录"
+                                            type="object"/>
+                                </group>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
