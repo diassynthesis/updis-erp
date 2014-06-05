@@ -33,3 +33,7 @@ class project_project_inherit(osv.osv):
     def action_process_pause_back(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'state': 'project_processing', 'status_code': 20101}, context=context)
         return True
+
+    def button_process_finish(self, cr, uid, ids, context=None):
+        self._workflow_signal(cr, uid, ids, 'process_finish', context=context)
+        return self.button_filed_filing_form(cr, uid, ids, context)
