@@ -15,18 +15,19 @@ class ProjectFiledFilingPDF(report_sxw.rml_parse):
 
         keys = ['1', '2', '3', '4', '5', '6', '7']
         records = {key: list([]) for key in keys}
+        data_obj = self.pool['ir.model.data']
         for record_id in filing.record_ids:
-            if record_id.type_id.name == u'文本类成果':
+            if record_id.type_id.id == data_obj.get_object_reference(cr, 1, 'up_project', 'project_filed_type_0001')[1]:
                 records['1'].append(record_id)
-            if record_id.type_id.name == u'图件成果':
+            elif record_id.type_id.id == data_obj.get_object_reference(cr, 1, 'up_project', 'project_filed_type_0002')[1]:
                 records['2'].append(record_id)
-            if record_id.type_id.name == u'计算书':
+            elif record_id.type_id.id == data_obj.get_object_reference(cr, 1, 'up_project', 'project_filed_type_0003')[1]:
                 records['3'].append(record_id)
-            if record_id.type_id.name == u'项目过程质量记录单':
+            elif record_id.type_id.id == data_obj.get_object_reference(cr, 1, 'up_project', 'project_filed_type_0004')[1]:
                 records['4'].append(record_id)
-            if record_id.type_id.name == u'重要依据性文件':
+            elif record_id.type_id.id == data_obj.get_object_reference(cr, 1, 'up_project', 'project_filed_type_0005')[1]:
                 records['5'].append(record_id)
-            if record_id.type_id.name == u'项目依据性资料':
+            elif record_id.type_id.id == data_obj.get_object_reference(cr, 1, 'up_project', 'project_filed_type_0006')[1]:
                 records['6'].append(record_id)
             else:
                 records['7'].append(record_id)
