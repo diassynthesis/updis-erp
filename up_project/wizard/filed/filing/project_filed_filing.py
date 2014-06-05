@@ -82,7 +82,7 @@ class ProjectFiledFiling(osv.Model):
 
     def button_show_filing_update_list(self, cr, uid, ids, context):
         filing = self.browse(cr, uid, ids[0], context)
-        project_dir_id = self.pool['ir.model.data'].get_object(cr, uid, 'up_project', 'dir_up_project', context=context)
+        project_dir_id = self.pool['ir.model.data'].get_object(cr, uid, 'up_project', 'dir_up_project_going', context=context)
         temp_context = {
             'search_index_model': ('res_model', '=', 'project.project'),
             'search_index_id': ('res_id', '=', filing.project_id.id),
@@ -98,7 +98,7 @@ class ProjectFiledFiling(osv.Model):
             'res_model': 'document.directory',
             'target': 'current',
             'context': temp_context,
-            'domain': [('parent_id', '=', False), ('id', 'child_of', project_dir_id.id)],
+            'domain': [('id', '=', project_dir_id.id)],
         }
 
     def button_show_filing_attachment_analysis(self, cr, uid, ids, context):
