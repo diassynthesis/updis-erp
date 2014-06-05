@@ -103,6 +103,8 @@ class project_project_wizard(osv.osv_memory):
         record_id = context and context.get('active_id', False) or False
         project = self.pool.get("project.project").browse(cr, uid, record_id, context)
         self_record = self.browse(cr, uid, ids[0], context)
+        tasking_obj = self.pool['project.project.active.tasking']
+        tasking_id = tasking_obj.search(cr, uid, [('project_id', '=', record_id)], context=context)
         project.write({
             'user_id': [(6, 0, [r.id for r in self_record.user_id])],
             'name': self_record.name,
@@ -125,6 +127,8 @@ class project_project_wizard(osv.osv_memory):
             'waibao': self_record.waibao,
             'shizhenpeitao': self_record.shizhenpeitao,
         })
+        tasking_obj.write(cr, uid, tasking_id, {'tender_category': self_record.toubiaoleibie, }, context=context)
+
         return True
 
     def onchange_country_id(self, cr, uid, ids, type_id, context=None):
@@ -305,7 +309,7 @@ class updis_project(osv.osv):
 
     _columns = {
         # 基础信息
-        #  'analytic_account_id': fields.boolean("Over Ride"),
+        # 'analytic_account_id': fields.boolean("Over Ride"),
 
         'user_id': fields.many2many('res.users', 'project_user_id_res_user', 'project_user_id', 'res_user_id',
                                     string='Project Manager',
@@ -434,7 +438,7 @@ class updis_project(osv.osv):
             return project_id[0][project_form_field].id
         else:
             suozhangshenpi = self.pool.get(form_name)
-            #by pass
+            # by pass
             suozhangshenpi_id = suozhangshenpi.create(cr, 1, {'project_id': ids[0]}, context=context)
             self.write(cr, 1, ids, {project_form_field: suozhangshenpi_id})
             return suozhangshenpi_id
@@ -477,7 +481,7 @@ class updis_project(osv.osv):
         domain = ['&', ('create_uid', '=', uid), ('status_code', '=', 10101)]
         status_code = []
 
-        #director
+        # director
         hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
         if hr_id:
             hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
@@ -544,7 +548,7 @@ class updis_project(osv.osv):
 
     def all_projects_action(self, cr, uid, context=None):
         domain = ['|', ('state', 'not in', ['project_active', 'project_cancelled']), ('create_uid', '=', uid)]
-        #if self.user_has_groups(cr, uid, 'up_project.group_up_project_suozhang', context=context):
+        # if self.user_has_groups(cr, uid, 'up_project.group_up_project_suozhang', context=context):
         domain = ['|', '&', ('state', 'in', ['project_active', 'project_cancelled']),
                   ('director_reviewer_id', '=', uid)] + domain
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context):
