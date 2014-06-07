@@ -122,9 +122,12 @@
                             </page>
                             <page string="第三步:电子文件归档信息填写">
                                 <group string="Elec Document Filing Info" colspan="2" col="1">
-                                    <button name="button_show_filing_update_list" class="oe_left oe_highlight"
+                                    <div class="oe_edit_only">
+                                        <p>点击“点此添加电子文件到目录”按钮可以快速上传文件到项目文件夹，上传文件成功后点击"添加"按钮添加本次需要归档的文件</p>
+                                        <button name="button_show_filing_update_list" class="oe_left oe_highlight oe_edit_only"
                                             string="点此添加电子文件到目录"
                                             type="object" states="apply_filing"/>
+                                    </div>
                                     <label for="attachment_ids" string="Need Filing Elec Attachments"/>
                                     <field name="attachment_ids" nolabel="1"
                                            domain="[('res_model', '=', 'project.project'),('res_id', '=', project_id),('parent_id','child_of',%(up_project.dir_up_project_going)d)]"/>
