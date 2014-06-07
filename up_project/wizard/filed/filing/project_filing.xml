@@ -69,7 +69,8 @@
                                     <group>
                                         <field name="project_user" widget="many2many_tags"/>
                                         <field name="project_category_id"/>
-                                        <field name="project_second_category" widget="many2many_tags" help="项目二级分类的填写请参考文档 QW4.2.3-2技术文件和资料归档规定--二级分类.doc"/>
+                                        <field name="project_second_category" widget="many2many_tags"
+                                               help="项目二级分类的填写请参考文档 QW4.2.3-2技术文件和资料归档规定--二级分类.doc"/>
                                         <field name="end_stage"/>
                                     </group>
                                     <group>
@@ -110,9 +111,10 @@
                                             <field name="type_id"/>
                                             <field name="name"/>
                                             <field name="copy_count"
-                                                   attrs="{'readonly':[('type_id','in',[%(project_filed_type_0001)d,%(project_filed_type_0004)d],False)]}"/>
-                                            <field name="page_count"/>
-                                            <field name="document_number"/>
+                                                   attrs="{'invisible':[('type_id','in',[%(project_filed_type_0001)d,%(project_filed_type_0004)d,%(project_filed_type_0007)d])]}"/>
+                                            <field name="page_count"
+                                                   attrs="{'invisible':[('type_id','in',[%(project_filed_type_0007)d])]}"/>
+                                            <field name="document_number" attrs="{'invisible':['!',('type_id','in',[%(project_filed_type_0006)d])]}"/>
                                             <field name="comment"/>
                                         </tree>
                                     </field>
