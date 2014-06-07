@@ -34,8 +34,9 @@ class ProjectFiledFiling(osv.Model):
                                            readonly=True),
         'project_city': fields.related('project_id', 'city', type='char', string='Project City', readonly=True),
         'project_begin_date': fields.related('project_id', 'begin_date', type='date', string='Project Begin Date', readonly=True),
-        'project_second_category': fields.char('Project Second Category', size=128,
-                                               states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
+        'project_second_category': fields.many2many('project.project.filed.filling.secondcategory', 'rel_filing_second_category', 'filing_id',
+                                                    'second_category_id', string='Secondary Categories',
+                                                    states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
         'project_end_date': fields.date('Project End Date', required=True,
                                         states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
         'tag_ids': fields.many2many('project.project.filed.tag', 'rel_project_filing_tag', 'filing_id', 'tag_id', string='Tags', required=True,
@@ -297,3 +298,10 @@ class FilingElecAttachmentsAnalysis(osv.Model):
             " on a.id = r.attachment_id"
             " )"
         )
+
+
+class SecondaryCategory(osv.Model):
+    _name = 'project.project.filed.filling.secondcategory'
+    _columns = {
+        'name': fields.char('Name', size=128),
+    }

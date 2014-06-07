@@ -69,7 +69,7 @@
                                     <group>
                                         <field name="project_user" widget="many2many_tags"/>
                                         <field name="project_category_id"/>
-                                        <field name="project_second_category"/>
+                                        <field name="project_second_category" widget="many2many_tags" help="项目二级分类的填写请参考文档 QW4.2.3-2技术文件和资料归档规定--二级分类.doc"/>
                                         <field name="end_stage"/>
                                     </group>
                                     <group>

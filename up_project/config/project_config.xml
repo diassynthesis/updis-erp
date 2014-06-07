@@ -38,6 +38,21 @@
             <field name="res_model">project.project.filed.type</field>
             <field name="view_mode">tree</field>
         </record>
+        <!--project.project.filed.filling.secondcategory-->
+        <record id="view_project_project_filed_filing_second_cate_tree" model="ir.ui.view">
+            <field name="name">project.project.filed.filling.secondcategory.tree</field>
+            <field name="model">project.project.filed.filling.secondcategory</field>
+            <field name="arch" type="xml">
+                <tree string="Project Filed Document Secondary Category" version="7.0" editable="top">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="act_project_project_filed_filing_second_cate_settings" model="ir.actions.act_window">
+            <field name="name">Project Secondary Category</field>
+            <field name="res_model">project.project.filed.filling.secondcategory</field>
+            <field name="view_mode">tree</field>
+        </record>
         <!--project.project.filed.tag-->
         <record id="act_project_project_filed_filing_tags_settings" model="ir.actions.act_window">
             <field name="name">Project Filed Tags</field>
@@ -67,6 +82,13 @@
                             <button name="%(act_project_project_filed_filing_type_settings)d"
                                     class="oe_form_field_with_button oe_inline oe_link"
                                     string="归档文件类型配置"
+                                    type="action"
+                                    groups="up_project.group_up_project_admin"/>
+                        </div>
+                        <div>
+                            <button name="%(act_project_project_filed_filing_second_cate_settings)d"
+                                    class="oe_form_field_with_button oe_inline oe_link"
+                                    string="归档文件二级分类配置"
                                     type="action"
                                     groups="up_project.group_up_project_admin"/>
                         </div>

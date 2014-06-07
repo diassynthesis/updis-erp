@@ -20,6 +20,7 @@ UPDIS Project Module.""",
         'data/document.directory.csv',
         'data/project.project.filed.type.csv',
         'data/project.project.filed.tag.csv',
+        'data/project.project.filed.filling.secondcategory.csv',
         'project_view.xml',
         'project_form_view.xml',
 
