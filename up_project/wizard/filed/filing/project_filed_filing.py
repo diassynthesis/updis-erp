@@ -217,6 +217,9 @@ class ProjectProjectInherit(osv.Model):
             elif project.state == 'project_finish':
                 raise exceptions.Warning(
                     _("This project is import from old system, don't have filing record!"))
+        # if user is project member
+        if not self.is_project_member(cr, uid, project.id, context):
+            context['editable'] = False
         if filing_id:
             return {
                 'name': u'所有项目',

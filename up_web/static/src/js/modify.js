@@ -672,5 +672,16 @@ openerp.up_web = function (instance) {
                 return self[method](e);
             });
         }
-    })
+    });
+
+    instance.web.View.include({
+
+        is_action_enabled: function (action) {
+            var attrs = this.fields_view.arch.attrs;
+            var context = this.dataset.context;
+            return (action in attrs) && eval(attrs[action]) != undefined ? JSON.parse(eval(attrs[action])) : true;
+        }
+    });
+
+
 };

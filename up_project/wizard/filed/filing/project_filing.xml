@@ -48,7 +48,7 @@
             <field name="name">project.project.filed.filing.form</field>
             <field name="model">project.project.filed.filing</field>
             <field name="arch" type="xml">
-                <form string="Project Filing" version="7.0" create="false" delete="false">
+                <form string="Project Filing" version="7.0" create="false" delete="false" edit="context['editable']">
                     <header>
                         <button name="button_apply_filing" type="object" string="Apply Filing" class="oe_highlight"
                                 attrs="{'invisible':['|',('state','not in',['apply_filing']),('is_project_member','=',False)]}"
