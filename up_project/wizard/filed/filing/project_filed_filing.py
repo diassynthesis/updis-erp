@@ -34,6 +34,7 @@ class ProjectFiledFiling(osv.Model):
                                            readonly=True),
         'project_city': fields.related('project_id', 'city', type='char', string='Project City', readonly=True),
         'project_begin_date': fields.related('project_id', 'begin_date', type='date', string='Project Begin Date', readonly=True),
+        'is_project_member': fields.related('project_id', 'is_project_member', type='boolean', string='Is Member of Project', readonly=True),
         'project_second_category': fields.many2many('project.project.filed.filling.secondcategory', 'rel_filing_second_category', 'filing_id',
                                                     'second_category_id', string='Secondary Categories',
                                                     states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
