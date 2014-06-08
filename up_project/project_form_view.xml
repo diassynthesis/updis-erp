@@ -25,6 +25,7 @@
                             <field name="is_project_member"/>
                             <field name="id"/>
                             <field name="is_multi_filing_allowed"/>
+                            <field name="status_code"/>
                         </group>
                         <div class="oe_title oe_long_title">
                             <h1>

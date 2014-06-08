@@ -69,6 +69,7 @@ class ProjectFiledFiling(osv.Model):
     }
 
     def button_apply_filing(self, cr, uid, ids, context):
+        self.browse(cr, uid, ids[0], context).project_id.write({'status_code': 30103})
         return self.write(cr, uid, ids, {'state': 'approve_filing'}, context)
 
     def button_approve_filing(self, cr, uid, ids, context):
@@ -77,9 +78,11 @@ class ProjectFiledFiling(osv.Model):
         project_id = filing.project_id.id
         self.pool['project.project']._workflow_signal(cr, uid, [project_id], 's_filed_filing_finish', context=context)
         attachment_obj.filing_project_attachments(cr, 1, [a.id for a in filing.attachment_ids], context)
+        filing.project_id.write({'status_code': 30102})
         return self.write(cr, uid, ids, {'state': 'end_filing'}, context)
 
     def button_disapprove_filing(self, cr, uid, ids, context):
+        self.browse(cr, uid, ids[0], context).project_id.write({'status_code': 30101})
         return self.write(cr, uid, ids, {'state': 'apply_filing'}, context)
 
     def button_show_filing_update_list(self, cr, uid, ids, context):
@@ -207,11 +210,9 @@ class ProjectProjectInherit(osv.Model):
                 for template_id in template_ids:
                     data = self.pool['project.project.filed.record'].copy_data(cr, uid, template_id, context=context)
                     new_datas += [(0, 0, data), ]
-
-                filing_id = filing_obj.create(cr, uid, {
-                    'project_id': ids[0],
-                    'record_ids': new_datas,
-                }, context=context)
+                filing_id = filing_obj.create(cr, uid, {'project_id': ids[0], 'record_ids': new_datas, }, context=context)
+                # Write Status Code
+                project.write({'status_code': 30101})
             # else if project is in project filed state
             elif project.state == 'project_finish':
                 raise exceptions.Warning(
@@ -243,6 +244,7 @@ class ProjectProjectInherit(osv.Model):
                 'version': old_filing.version + 1,
                 'attachment_ids': [(5,)],
             }, context=context)
+            project.write({'status_code': 30101})
             return True
 
     # noinspection PyUnusedLocal

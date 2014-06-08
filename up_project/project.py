@@ -306,7 +306,7 @@ class updis_project(osv.osv):
     def _is_project_member(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            if self.is_project_member(cr, uid, obj.id, context=context):
+            if self.is_project_member(cr, context.get('uid', 1), obj.id, context=context):
                 result[obj.id] = True
             else:
                 result[obj.id] = False
@@ -519,16 +519,16 @@ class updis_project(osv.osv):
         # Operator Room
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context):
             status_code += [10103]
-            #Engineer Room
+        # Engineer Room
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context):
             status_code += [10104]
 
         #Manager
-        manager_domain = ['|', '&', ('status_code', 'in', [20101, 50101, 60101]), ('user_id', '=', uid)]
+        manager_domain = ['|', '&', ('status_code', 'in', [20101, 50101, 60101, 30101]), ('user_id', '=', uid)]
 
         #Filed Manager
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_filed_manager', context=context):
-            status_code += [30101]
+            status_code += [30103]
 
         domain = ['|', ('status_code', 'in', status_code)] + domain
         return manager_domain + domain
