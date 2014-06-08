@@ -12,7 +12,7 @@
                                 class="oe_highlight"
                                 string="强制转换到：归档完成"
                                 confirm="确定项目已经归档完成?进入归档完成状态的项目不可回退！请谨慎处理"
-                                groups="up_project.group_up_project_filed_manager"
+                                groups="up_project.group_up_project_admin"
                                 attrs="{'invisible':[('state_filed','!=','start_file')]}"/>
                         <field name="state_filed" widget="statusbar" readonly="1"/>
                     </header>

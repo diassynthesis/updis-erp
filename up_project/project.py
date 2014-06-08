@@ -303,9 +303,18 @@ class updis_project(osv.osv):
         # Not a Member
         return False
 
+    def _is_project_member(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            if self.is_project_member(cr, uid, obj.id, context=context):
+                result[obj.id] = True
+            else:
+                result[obj.id] = False
+        return result
+
     _columns = {
         # 基础信息
-        #  'analytic_account_id': fields.boolean("Over Ride"),
+        # 'analytic_account_id': fields.boolean("Over Ride"),
 
         'user_id': fields.many2many('res.users', 'project_user_id_res_user', 'project_user_id', 'res_user_id',
                                     string='Project Manager',
@@ -358,6 +367,8 @@ class updis_project(osv.osv):
                                     string="Is User is in Admin"),
         'is_user_is_project_manager': fields.function(_is_user_is_project_manager, type="boolean",
                                                       string="Is User is The Project Manager"),
+        'is_project_member': fields.function(_is_project_member, type="boolean",
+                                             string="Is User is The Project Member"),
 
         'partner_type': fields.selection([("WT200508180001", u"深圳规划局"),
                                           ("WT200508180002", u"深圳市其他"),
@@ -435,7 +446,7 @@ class updis_project(osv.osv):
             return project_id[0][project_form_field].id
         else:
             suozhangshenpi = self.pool.get(form_name)
-            #by pass
+            # by pass
             suozhangshenpi_id = suozhangshenpi.create(cr, 1, {'project_id': ids[0]}, context=context)
             self.write(cr, 1, ids, {project_form_field: suozhangshenpi_id})
             return suozhangshenpi_id
@@ -478,7 +489,7 @@ class updis_project(osv.osv):
         domain = ['&', ('create_uid', '=', uid), ('status_code', '=', 10101)]
         status_code = []
 
-        #director
+        # director
         hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
         if hr_id:
             hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
@@ -505,7 +516,7 @@ class updis_project(osv.osv):
                 domain = ['|', '&', ('status_code', '=', 10105),
                           ('chenjiebumen_id', '=', user_department_id)] + domain
 
-        #Operator Room
+        # Operator Room
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context):
             status_code += [10103]
             #Engineer Room
@@ -545,7 +556,7 @@ class updis_project(osv.osv):
 
     def all_projects_action(self, cr, uid, context=None):
         domain = ['|', ('state', 'not in', ['project_active', 'project_cancelled']), ('create_uid', '=', uid)]
-        #if self.user_has_groups(cr, uid, 'up_project.group_up_project_suozhang', context=context):
+        # if self.user_has_groups(cr, uid, 'up_project.group_up_project_suozhang', context=context):
         domain = ['|', '&', ('state', 'in', ['project_active', 'project_cancelled']),
                   ('director_reviewer_id', '=', uid)] + domain
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context):
