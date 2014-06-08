@@ -152,6 +152,7 @@
                                                         <td>
                                                             <button name="button_multi_filing_form" string="多次项目归档申请"
                                                                     class="oe_form_field_with_button oe_inline oe_link"
+                                                                    confirm="确认再次归档？再次归档会发起一次新的归档流程，请谨慎选择。"
                                                                     type="object" attrs="{'invisible':['|',('is_multi_filing_allowed','=',False),('is_project_member','=',False)]}"/>
                                                         </td>
                                                         <td>
