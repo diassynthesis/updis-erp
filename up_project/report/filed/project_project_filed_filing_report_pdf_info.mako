@@ -2,6 +2,9 @@
 <head>
     <style type="text/css">
         ${css}
+        .table-text {
+            white-space: pre;
+        }
     </style>
 </head>
 <body>
@@ -76,11 +79,11 @@
         </tr>
         <tr>
             <td>项目概况</td>
-            <td colspan="3" class="table-content">${object.description or ''|n}</td>
+            <td colspan="3" class="table-content table-text">${object.description or ''|n}</td>
         </tr>
         <tr>
             <td>借鉴的主要案例</td>
-            <td colspan="3" class="table-content">${object.note or ''|n}</td>
+            <td colspan="3" class="table-content table-text">${object.note or ''|n}</td>
         </tr>
         <tr>
             <td>推荐主要表达图纸名称</td>
