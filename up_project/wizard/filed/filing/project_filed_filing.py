@@ -62,7 +62,6 @@ class ProjectFiledFiling(osv.Model):
     }
 
     _defaults = {
-        'note': u'(自填案例名称，借鉴的主要内容)',
         'state': 'apply_filing',
         'project_end_date': lambda *args: fields.date.today(),
         'version': 1,
