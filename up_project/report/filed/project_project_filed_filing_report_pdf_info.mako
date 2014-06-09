@@ -3,7 +3,7 @@
     <style type="text/css">
         ${css}
         .table-text {
-            white-space: pre;
+            white-space: pre-wrap;
         }
     </style>
 </head>
