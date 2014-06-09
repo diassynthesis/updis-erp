@@ -1,7 +1,7 @@
 <html>
 <head>
     <style type="text/css">
-        ${css}
+            ${css}
         .table-text {
             white-space: pre-wrap;
         }
@@ -37,7 +37,8 @@
         </tr>
         <tr>
             <td>项目类别</td>
-            <td class="table-content">一级分类：${object.project_category_id.name or ''|entity}<br/>二级分类：${object.project_second_category or ''|entity}
+            <td class="table-content">一级分类：${object.project_category_id.name or ''|entity}
+            <br/>二级分类：${','.join([u.name for u in object.project_second_category]) or ''|entity}
             </td>
             <td>项目负责人</td>
             <td class="table-content">${','.join([u.name for u in object.project_user]) or ''|entity}</td>
