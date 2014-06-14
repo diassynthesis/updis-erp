@@ -247,6 +247,7 @@ class ProjectProjectInherit(osv.Model):
             filing_obj.write(cr, uid, new_filing_id, {
                 'version': old_filing.version + 1,
                 'attachment_ids': [(5,)],
+                'project_end_date': fields.date.today(),
             }, context=context)
             project.write({'status_code': 30101})
             return True
