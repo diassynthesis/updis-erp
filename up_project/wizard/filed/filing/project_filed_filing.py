@@ -244,10 +244,12 @@ class ProjectProjectInherit(osv.Model):
             old_filing_id = filing_obj.search(cr, uid, [('project_id', '=', ids[0])], order='create_date desc', context=context)[0]
             old_filing = filing_obj.browse(cr, uid, old_filing_id, context)
             new_filing_id = filing_obj.copy(cr, uid, old_filing_id, context)
+            (dummy, type_id) = self.pool['ir.model.data'].get_object_reference(cr, uid, 'up_project', 'project_filed_type_0004')
             filing_obj.write(cr, uid, new_filing_id, {
                 'version': old_filing.version + 1,
                 'attachment_ids': [(5,)],
                 'project_end_date': fields.date.today(),
+                'record_ids': [(0, 0, {'name': u'____项目更改记录表', 'type_id': type_id})],
             }, context=context)
             project.write({'status_code': 30101})
             return True
