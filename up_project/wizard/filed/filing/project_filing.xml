@@ -112,10 +112,14 @@
                             <page string="第二步:纸质文件归档填写">
                                 <group colspan="2" col="1">
                                     <label for="record_ids"/>
+                                    <div class="oe_edit_only">
+                                        <p>点击“添加一个项目”按钮可以添加一条纸质文件记录，</p>
+                                        <p>请填写正确的纸质文件类型</p>
+                                    </div>
                                     <field name="record_ids" nolabel="1">
                                         <tree editable="bottom">
-                                            <field name="type_id"/>
                                             <field name="name"/>
+                                            <field name="type_id"/>
                                             <field name="copy_count"
                                                    attrs="{'invisible':[('type_id','in',[%(project_filed_type_0004)d,%(project_filed_type_0007)d])]}"/>
                                             <field name="page_count"
