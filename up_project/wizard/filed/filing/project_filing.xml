@@ -117,7 +117,7 @@
                                             <field name="type_id"/>
                                             <field name="name"/>
                                             <field name="copy_count"
-                                                   attrs="{'invisible':[('type_id','in',[%(project_filed_type_0001)d,%(project_filed_type_0004)d,%(project_filed_type_0007)d])]}"/>
+                                                   attrs="{'invisible':[('type_id','in',[%(project_filed_type_0004)d,%(project_filed_type_0007)d])]}"/>
                                             <field name="page_count"
                                                    attrs="{'invisible':[('type_id','in',[%(project_filed_type_0007)d])]}"/>
                                             <field name="document_number" attrs="{'invisible':['!',('type_id','in',[%(project_filed_type_0006)d])]}"/>
