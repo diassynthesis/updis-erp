@@ -149,6 +149,7 @@ class ProjectFiledFilingType(osv.Model):
 
 class ProjectFiledFilingRecord(osv.Model):
     _name = 'project.project.filed.record'
+    _order = 'type_id'
 
     _columns = {
         'name': fields.char('Name', size=256, required=True),
