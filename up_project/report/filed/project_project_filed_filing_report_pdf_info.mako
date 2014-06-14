@@ -1,7 +1,10 @@
 <html>
 <head>
     <style type="text/css">
-        ${css}
+            ${css}
+        .table-text {
+            white-space: pre-wrap;
+        }
     </style>
 </head>
 <body>
@@ -34,7 +37,8 @@
         </tr>
         <tr>
             <td>项目类别</td>
-            <td class="table-content">一级分类：${object.project_category_id.name or ''|entity}<br/>二级分类：${object.project_second_category or ''|entity}
+            <td class="table-content">一级分类：${object.project_category_id.name or ''|entity}
+            <br/>二级分类：${','.join([u.name for u in object.project_second_category]) or ''|entity}
             </td>
             <td>项目负责人</td>
             <td class="table-content">${','.join([u.name for u in object.project_user]) or ''|entity}</td>
@@ -76,11 +80,11 @@
         </tr>
         <tr>
             <td>项目概况</td>
-            <td colspan="3" class="table-content">${object.description or ''|n}</td>
+            <td colspan="3" class="table-content table-text">${object.description or ''|n}</td>
         </tr>
         <tr>
             <td>借鉴的主要案例</td>
-            <td colspan="3" class="table-content">${object.note or ''|n}</td>
+            <td colspan="3" class="table-content table-text">${object.note or ''|n}</td>
         </tr>
         <tr>
             <td>推荐主要表达图纸名称</td>

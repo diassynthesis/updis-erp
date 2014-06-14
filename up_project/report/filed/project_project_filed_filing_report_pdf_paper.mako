@@ -5,6 +5,9 @@
         td.center-head {
             text-align: center;
         }
+        div.pdf-table > table > tbody > tr > td.table-content {
+            padding: 20px 0 10px 5px !important;
+        }
     </style>
 </head>
 <body>

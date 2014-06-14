@@ -120,7 +120,7 @@ class IrAttachmentInherit(osv.osv):
         if context is None:
             context = {}
         attachment = self.browse(cr, uid, attachment_id[0], context)
-        context['cxt'] = {
+        context['ctx'] = {
             'res_id': attachment.res_id,
             'res_model': attachment.res_model,
         }
