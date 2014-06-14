@@ -85,8 +85,8 @@
         <tr>
             <td>推荐主要表达图纸名称</td>
             <td colspan="3">
-                %for show_image in object.show_images:
-                        ${helper.embed_image('jpg',setHtmlImage(show_image.id),150)}
+                %for index in range(min(3,len(object.show_images))):
+                        ${helper.embed_image('jpg',setHtmlImage(object.show_images[index].id),150)}
                 %endfor
             </td>
         </tr>
