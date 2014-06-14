@@ -1,4 +1,5 @@
 # coding=utf-8
+from collections import OrderedDict
 from report import report_sxw
 
 
@@ -35,8 +36,17 @@ class ProjectFiledFilingPDF(report_sxw.rml_parse):
         attach_analysis_obj = self.pool['project.project.filed.filing.attachment.analysis']
         elec_attachments_ids = attach_analysis_obj.search(cr, uid, [('project_id', '=', filing.project_id.id)], order='version desc, project_id',
                                                           context=context)
-        elec_attachments = attach_analysis_obj.browse(cr, uid, elec_attachments_ids, context)
+        elec_attachments = [(a.parent_id.name_get()[0][1], a) for a in attach_analysis_obj.browse(cr, uid, elec_attachments_ids, context)]
 
+        def merge_list(result, value):
+            if result.has_key(value[0]):
+                result[value[0]] += [value[1]]
+            else:
+                result[value[0]] = [value[1]]
+            return result
+
+        elec_attachments = reduce(merge_list, elec_attachments, OrderedDict({}))
+        elec_attachments.items()
         self.localcontext.update({
             'cr': cr,
             'object': filing,

@@ -40,19 +40,20 @@
             <td>归档批次</td>
             <td>创建时间</td>
         <% directory_name ='' %>
-        % for elec_attachment in elec_attachments:
-            <tr>
-                % if directory_name == elec_attachment.parent_id.name_get()[0][1]:
-                    <td></td>
-                % else:
-                    <td class="table-content">/${elec_attachment.parent_id.name_get()[0][1]}</td>
-                    <% directory_name = elec_attachment.parent_id.name_get()[0][1] %>
-                % endif
-                <td class="table-content">${elec_attachment.attachment_id.name}</td>
-                <td class="table-content">${elec_attachment.version}</td>
-                <td class="table-content">${elec_attachment.create_date}</td>
-            </tr>
-        % endfor
+        %for (dir_name, attachments) in elec_attachments.items():
+            <% head =  dir_name%>
+            %for attachment in attachments:
+                <tr>
+                    %if head:
+                        <td class="table-content" rowspan="${len(attachments)}">/${head}</td>
+                        <% head = ''%>
+                    %endif
+                    <td class="table-content">${attachment.attachment_id.name}</td>
+                    <td class="table-content">${attachment.version}</td>
+                    <td class="table-content">${attachment.create_date}</td>
+                </tr>
+            %endfor
+        %endfor
         </tbody>
     </table>
 </div>
