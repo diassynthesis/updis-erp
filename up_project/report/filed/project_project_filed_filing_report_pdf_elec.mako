@@ -31,14 +31,15 @@
     <table>
         <tbody>
         <tr>
-            <td colspan="4">
-                归档表3/3 ---项目纸质文件
+            <td colspan="5">
+                归档表3/3 ---项目电子文件
             </td>
         </tr>
             <td>路径</td>
             <td>文件名</td>
             <td>归档批次</td>
             <td>创建时间</td>
+            <td>文件大小(字节)</td>
         <% directory_name ='' %>
         %for (dir_name, attachments) in elec_attachments.items():
             <% head =  dir_name%>
@@ -51,6 +52,7 @@
                     <td class="table-content">${attachment.attachment_id.name}</td>
                     <td class="table-content">${attachment.version}</td>
                     <td class="table-content">${attachment.create_date}</td>
+                    <td class="table-content">${attachment.attachment_id.file_size}</td>
                 </tr>
             %endfor
         %endfor
