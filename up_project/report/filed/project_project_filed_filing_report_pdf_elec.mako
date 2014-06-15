@@ -35,18 +35,19 @@
                 归档表3/3 ---项目电子文件
             </td>
         </tr>
+        <tr>
             <td>路径</td>
             <td>文件名</td>
             <td>归档批次</td>
             <td>创建时间</td>
             <td>文件大小(字节)</td>
-        <% directory_name ='' %>
+        </tr>
         %for (dir_name, attachments) in elec_attachments.items():
             <% head =  dir_name%>
             %for attachment in attachments:
                 <tr>
                     %if head:
-                        <td class="table-content" rowspan="${len(attachments)}">/${head}</td>
+                        <td rowspan="${len(attachments)}">/${head}</td>
                         <% head = ''%>
                     %endif
                     <td class="table-content">${attachment.attachment_id.name}</td>

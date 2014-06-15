@@ -46,7 +46,7 @@
         }
 
         div.pdf-table > table > tbody > tr > td.table-content {
-            font-size: 13px;
+            font-size: 14px;
         }
                 ]]>
             </field>
@@ -60,7 +60,7 @@
             <field name="footer_html"><![CDATA[
             <html>
                 <body>
-                    <div>${helper.embed_logo_by_name('updis_logo',width=200)|n}</div>
+                    <div style="padding-top:10px">${helper.embed_logo_by_name('updis_logo',width=200)|n}</div>
                 </body>
             </html>]]>
             </field>

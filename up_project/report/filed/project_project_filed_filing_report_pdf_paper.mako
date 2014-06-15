@@ -6,7 +6,7 @@
             text-align: center;
         }
         div.pdf-table > table > tbody > tr > td.table-content {
-            padding: 20px 0 10px 5px !important;
+            padding: 10px 0 10px 5px !important;
         }
     </style>
 </head>
@@ -30,170 +30,33 @@
     <table>
         <tbody>
         <tr>
-            <td colspan="4">
+            <td colspan="5">
                 归档表2/3 ---项目纸质文件
             </td>
         </tr>
-
-        <!------------>
         <tr>
-            <td colspan="4" class="center-head">文本类成果归档目录</td>
-        </tr>
-        <tr>
-            <td>序号</td>
-            <td colspan="2">纸质文件名称</td>
-            <td>份数</td>
-        </tr>
-            <% i = 1%>
-            % for file_record in file_records['1'] :
-                <tr>
-                    <td  class="table-content">${i}</td>
-                    <td  class="table-content" colspan="2">${file_record.name}</td>
-                    <td  class="table-content">${file_record.copy_count or 0 | entity}</td>
-                </tr>
-                <% i+=1%>
-            % endfor
-            % if not len(file_records['1']):
-                <tr>
-                    <td class="table-content" colspan="4">没有记录</td>
-                </tr>
-            % endif
-
-        <!------------>
-        <tr>
-            <td colspan="4" class="center-head">图件成果（有图签、会签栏）归档目录</td>
-        </tr>
-        <tr>
-            <td>序号</td>
-            <td colspan="2">图件名称</td>
-            <td>张数</td>
-        </tr>
-            <% i = 1%>
-            % for file_record in file_records['2'] :
-                <tr>
-                    <td class="table-content">${i}</td>
-                    <td class="table-content" colspan="2">${file_record.name}</td>
-                    <td class="table-content">${file_record.page_count or 0 | entity}</td>
-                </tr>
-                <% i+=1%>
-            % endfor
-            % if not len(file_records['2']):
-                <tr>
-                    <td class="table-content" colspan="4">没有记录</td>
-                </tr>
-            % endif
-
-        <!------------>
-        <tr>
-            <td colspan="4" class="center-head">计算书归档目录</td>
-        </tr>
-        <tr>
-            <td>序号</td>
-            <td>计算书内容</td>
-            <td>本数</td>
-            <td>页数</td>
-        </tr>
-            <% i = 1%>
-            % for file_record in file_records['3'] :
-                <tr>
-                    <td class="table-content">${i}</td>
-                    <td class="table-content">${file_record.name}</td>
-                    <td class="table-content">${file_record.copy_count or 0 | entity}</td>
-                    <td class="table-content">${file_record.page_count or 0 | entity}</td>
-                </tr>
-                <% i+=1%>
-            % endfor
-            % if not len(file_records['3']):
-                <tr>
-                    <td  class="table-content" colspan="4">没有记录</td>
-                </tr>
-            % endif
-
-        <!------------>
-        <tr>
-            <td colspan="4" class="center-head">项目过程管理记录单目录</td>
-        </tr>
-        <tr>
-            <td>序号</td>
-            <td colspan="2">表单名称</td>
-            <td>页数</td>
-        </tr>
-            <% i = 1%>
-            % for file_record in file_records['4'] :
-                <tr>
-                    <td class="table-content">${i}</td>
-                    <td class="table-content" colspan="2">${file_record.name}</td>
-                    <td class="table-content">${file_record.page_count or 0 | entity}</td>
-                </tr>
-                <% i+=1%>
-            % endfor
-            % if not len(file_records['4']):
-                <tr>
-                    <td class="table-content" colspan="4">没有记录</td>
-                </tr>
-            % endif
-
-        <!------------>
-        <tr>
-            <td colspan="4" class="center-head">重要依据性文件归档目录</td>
-        </tr>
-        <tr>
-            <td>序号</td>
-            <td>文件名称</td>
+            <td>类型</td>
+            <td>名称</td>
             <td>份数</td>
             <td>页数</td>
+            <td>文件号</td>
         </tr>
-            <% i = 1%>
-            % for file_record in file_records['5'] :
+        %for (type_name, attachments) in paper_attachemnts.items():
+            <% head =  type_name%>
+            %for attachment in attachments:
                 <tr>
-                    <td class="table-content">${i}</td>
-                    <td class="table-content">${file_record.name}</td>
-                    <td class="table-content">${file_record.copy_count or 0 | entity}</td>
-                    <td class="table-content">${file_record.page_count or 0 | entity}</td>
+                    %if head:
+                        <td rowspan="${len(attachments)}">${head}</td>
+                        <% head = ''%>
+                    %endif
+                    <td class="table-content">${attachment.name}</td>
+                    <td class="table-content">${attachment.copy_count or ''|entity}</td>
+                    <td class="table-content">${attachment.page_count or ''|entity}</td>
+                    <td class="table-content">${attachment.document_number or ''|entity}</td>
                 </tr>
-                <% i+=1%>
-            % endfor
-            % if not len(file_records['5']):
-                <tr>
-                    <td class="table-content" colspan="4">没有记录</td>
-                </tr>
-            % endif
+            %endfor
+        %endfor
 
-        <!------------>
-        <tr>
-            <td colspan="4" class="center-head">项目依据性资料目录</td>
-        </tr>
-        <tr>
-            <td>序号</td>
-            <td>资料名称</td>
-            <td>份数</td>
-            <td>页数</td>
-        </tr>
-
-            <% i = 1%>
-            % for file_record in file_records['6'] :
-                <tr>
-                    <td class="table-content">${i}</td>
-                    <td class="table-content">${file_record.name}</td>
-                    <td class="table-content">${file_record.copy_count or 0 | entity}</td>
-                    <td class="table-content">${file_record.page_count or 0 | entity}</td>
-                </tr>
-                <% i+=1%>
-            % endfor
-            % if not len(file_records['6']):
-                <tr>
-                    <td class="table-content" colspan="4">没有记录</td>
-                </tr>
-            % endif
-
-            <% i = 1%>
-            % for file_record in file_records['7'] :
-                <tr>
-                    <td class="table-content">电子文件</td>
-                    <td class="table-content" colspan="3">${file_record.name}</td>
-                </tr>
-                <% i+=1%>
-            % endfor
         </tbody>
     </table>
 </div>
