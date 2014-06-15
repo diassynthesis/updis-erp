@@ -42,21 +42,33 @@
             <td>创建时间</td>
             <td>文件大小(字节)</td>
         </tr>
-        %for (dir_name, attachments) in elec_attachments.items():
-            <% head =  dir_name%>
-            %for attachment in attachments:
-                <tr>
-                    %if head:
-                        <td rowspan="${len(attachments)}">/${head}</td>
+            %for (dir_name, attachments) in elec_attachments.items():
+                <% head =  dir_name%>
+                %for attachment in attachments:
+                    <tr>
+                        %if head:
+                            <td rowspan="${len(attachments)}">/${head}</td>
                         <% head = ''%>
-                    %endif
-                    <td class="table-content">${attachment.attachment_id.name}</td>
-                    <td class="table-content">${attachment.version}</td>
-                    <td class="table-content">${attachment.create_date}</td>
-                    <td class="table-content">${attachment.attachment_id.file_size}</td>
-                </tr>
+                        %endif
+                        <td class="table-content">${attachment.attachment_id.name}</td>
+                        <td class="table-content">${attachment.version}</td>
+                        <td class="table-content">${attachment.create_date}</td>
+                        <td class="table-content">${attachment.attachment_id.file_size}</td>
+                    </tr>
+                %endfor
             %endfor
-        %endfor
+        <tr>
+            <td>签署人：</td>
+            <td>
+                %if object.elec_file_approver_id and object.elec_file_approver_id.sign_image:
+                    ${helper.embed_image('jpg',object.elec_file_approver_id.sign_image,150)}
+                %elif object.elec_file_approver_id and not object.elec_file_approver_id.sign_image:
+                    ${object.elec_file_approver_id.name}
+                %endif
+            </td>
+            <td>签署日期：</td>
+            <td colspan="2">${object.elec_file_approver_date or ''|entity}</td>
+        </tr>
         </tbody>
     </table>
 </div>
