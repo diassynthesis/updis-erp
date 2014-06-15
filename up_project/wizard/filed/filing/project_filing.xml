@@ -57,6 +57,9 @@
                                 groups="up_project.group_up_project_filed_manager"/>
                         <button name="button_disapprove_filing" type="object" string="Dispprove Filing" states="approve_filing"
                                 groups="up_project.group_up_project_filed_manager"/>
+                        <button name="button_elec_approve" type="object" string="Elec Files Approve"
+                                attrs="{'invisible':['|',('state','not in',['approve_filing']),('elec_file_approver_id','!=',False)]}"
+                                groups="up_project.group_up_project_filed_elec_manager" class="oe_highlight"/>
                         <field name="state" widget="statusbar" readonly="1"/>
                     </header>
                     <sheet>
@@ -144,6 +147,10 @@
                                     <button name="button_show_filing_attachment_analysis" class="oe_left oe_link"
                                             string="查看电子归档文件历史记录"
                                             type="object"/>
+                                </group>
+                                <group  colspan="2" col="4">
+                                    <field name="elec_file_approver_id"/>
+                                    <field name="elec_file_approver_date"/>
                                 </group>
                             </page>
                         </notebook>

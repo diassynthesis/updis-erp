@@ -3,6 +3,7 @@ from openerp import exceptions
 import openerp
 from openerp.osv import fields
 from openerp.osv import osv
+from openerp.osv.osv import except_osv
 from openerp.tools.translate import _
 
 FILING_STATE = [('apply_filing', 'Apply Filing'), ('approve_filing', 'Approve Filing'), ('end_filing', 'Filing Complete')]
@@ -59,6 +60,9 @@ class ProjectFiledFiling(osv.Model):
         'version': fields.integer('Filing Version'),
         'attachment_ids': fields.many2many('ir.attachment', 'filing_form_ir_attach_rel', 'filing_id', 'attachment_id', 'Filing Attachments',
                                            states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
+
+        'elec_file_approver_id': fields.many2one('res.users', 'Elec File Approver'),
+        'elec_file_approver_date': fields.datetime('Elec File Approve Datetime'),
     }
 
     _defaults = {
@@ -73,6 +77,8 @@ class ProjectFiledFiling(osv.Model):
 
     def button_approve_filing(self, cr, uid, ids, context):
         filing = self.browse(cr, uid, ids[0], context)
+        if not filing.elec_file_approver_id:
+            raise except_osv('Warnning', u'电子文件审批没有通过，请等待电子文件审批完成后再进行此操作')
         attachment_obj = self.pool['ir.attachment']
         project_id = filing.project_id.id
         self.pool['project.project']._workflow_signal(cr, uid, [project_id], 's_filed_filing_finish', context=context)
@@ -83,6 +89,10 @@ class ProjectFiledFiling(osv.Model):
     def button_disapprove_filing(self, cr, uid, ids, context):
         self.browse(cr, uid, ids[0], context).project_id.write({'status_code': 30101})
         return self.write(cr, uid, ids, {'state': 'apply_filing'}, context)
+
+    def button_elec_approve(self, cr, uid, ids, context):
+        self.write(cr, uid, ids, {'elec_file_approver_id': uid, 'elec_file_approver_date': fields.datetime.now()}, context=context)
+        return True
 
     def button_show_filing_update_list(self, cr, uid, ids, context):
         filing = self.browse(cr, uid, ids[0], context)
@@ -249,6 +259,8 @@ class ProjectProjectInherit(osv.Model):
                 'attachment_ids': [(5,)],
                 'project_end_date': fields.date.today(),
                 'record_ids': [(0, 0, {'name': u'____项目更改记录表', 'type_id': type_id})],
+                'elec_file_approver_id': None,
+                'elec_file_approver_date': None,
             }, context=context)
             project.write({'status_code': 30101})
             return True
