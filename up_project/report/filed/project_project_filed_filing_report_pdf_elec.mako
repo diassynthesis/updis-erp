@@ -52,7 +52,7 @@
                         %endif
                         <td class="table-content">${attachment.attachment_id.name}</td>
                         <td class="table-content">${attachment.version}</td>
-                        <td class="table-content">${attachment.create_date}</td>
+                        <td class="table-content">${formatLang(attachment.create_date,date_time=True)}</td>
                         <td class="table-content">${attachment.attachment_id.file_size}</td>
                     </tr>
                 %endfor
@@ -67,7 +67,7 @@
                 %endif
             </td>
             <td>签署日期：</td>
-            <td colspan="2">${object.elec_file_approver_date or ''|entity}</td>
+            <td colspan="2">${formatLang(object.elec_file_approver_date,date_time=True) or ''|entity}</td>
         </tr>
         </tbody>
     </table>

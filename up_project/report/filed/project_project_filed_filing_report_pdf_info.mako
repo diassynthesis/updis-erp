@@ -66,7 +66,7 @@
         </tr>
         <tr>
             <td>项目起止日期</td>
-            <td colspan="3" class="table-content">${object.project_begin_date} ~ ${object.project_end_date}</td>
+            <td colspan="3" class="table-content">${formatLang(object.project_begin_date,date=True)} ~ ${formatLang(object.project_end_date,date=True)}</td>
         </tr>
         <tr>
             <td>项目关键字</td>

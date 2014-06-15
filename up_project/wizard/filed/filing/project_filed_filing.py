@@ -63,6 +63,9 @@ class ProjectFiledFiling(osv.Model):
 
         'elec_file_approver_id': fields.many2one('res.users', 'Elec File Approver'),
         'elec_file_approver_date': fields.datetime('Elec File Approve Datetime'),
+        'paper_file_approver_id': fields.many2one('res.users', 'Paper File Approver'),
+        'paper_file_approver_date': fields.datetime('Paper File Approve Datetime'),
+
     }
 
     _defaults = {
@@ -84,7 +87,8 @@ class ProjectFiledFiling(osv.Model):
         self.pool['project.project']._workflow_signal(cr, uid, [project_id], 's_filed_filing_finish', context=context)
         attachment_obj.filing_project_attachments(cr, 1, [a.id for a in filing.attachment_ids], context)
         filing.project_id.write({'status_code': 30102})
-        return self.write(cr, uid, ids, {'state': 'end_filing'}, context)
+        return self.write(cr, uid, ids, {'state': 'end_filing', 'paper_file_approver_id': uid, 'paper_file_approver_date': fields.datetime.now()},
+                          context)
 
     def button_disapprove_filing(self, cr, uid, ids, context):
         self.browse(cr, uid, ids[0], context).project_id.write({'status_code': 30101})
@@ -261,6 +265,8 @@ class ProjectProjectInherit(osv.Model):
                 'record_ids': [(0, 0, {'name': u'____项目更改记录表', 'type_id': type_id})],
                 'elec_file_approver_id': None,
                 'elec_file_approver_date': None,
+                'paper_file_approver_id': None,
+                'paper_file_approver_date': None,
             }, context=context)
             project.write({'status_code': 30101})
             return True

@@ -5,6 +5,7 @@
         td.center-head {
             text-align: center;
         }
+
         div.pdf-table > table > tbody > tr > td.table-content {
             padding: 10px 0 10px 5px !important;
         }
@@ -41,22 +42,33 @@
             <td>页数</td>
             <td>文件号</td>
         </tr>
-        %for (type_name, attachments) in paper_attachemnts.items():
-            <% head =  type_name%>
-            %for attachment in attachments:
-                <tr>
-                    %if head:
-                        <td rowspan="${len(attachments)}">${head}</td>
+            %for (type_name, attachments) in paper_attachemnts.items():
+                <% head =  type_name%>
+                %for attachment in attachments:
+                    <tr>
+                        %if head:
+                            <td rowspan="${len(attachments)}">${head}</td>
                         <% head = ''%>
-                    %endif
-                    <td class="table-content">${attachment.name}</td>
-                    <td class="table-content">${attachment.copy_count or ''|entity}</td>
-                    <td class="table-content">${attachment.page_count or ''|entity}</td>
-                    <td class="table-content">${attachment.document_number or ''|entity}</td>
-                </tr>
+                        %endif
+                        <td class="table-content">${attachment.name}</td>
+                        <td class="table-content">${attachment.copy_count or ''|entity}</td>
+                        <td class="table-content">${attachment.page_count or ''|entity}</td>
+                        <td class="table-content">${attachment.document_number or ''|entity}</td>
+                    </tr>
+                %endfor
             %endfor
-        %endfor
-
+        <tr>
+            <td>签署人：</td>
+            <td>
+                %if object.paper_file_approver_id and object.paper_file_approver_id.sign_image:
+                    ${helper.embed_image('jpg',object.paper_file_approver_id.sign_image,150)}
+                %elif object.paper_file_approver_id and not object.paper_file_approver_id.sign_image:
+                    ${object.paper_file_approver_id.name}
+                %endif
+            </td>
+            <td>签署日期：</td>
+            <td colspan="2">${formatLang(object.paper_file_approver_date,date_time=True) or ''|entity}</td>
+        </tr>
         </tbody>
     </table>
 </div>
