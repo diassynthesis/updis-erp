@@ -67,7 +67,7 @@
                 %endif
             </td>
             <td>签署日期：</td>
-            <td colspan="2">${formatLang(object.paper_file_approver_date,date_time=True) or ''|entity}</td>
+            <td colspan="2">${object.paper_file_approver_date and formatLang(object.paper_file_approver_date,date_time=True) or ''|entity}</td>
         </tr>
         </tbody>
     </table>
