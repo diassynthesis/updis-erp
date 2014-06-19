@@ -12,6 +12,7 @@
                 <field name="parent_id" position="replace"/>
                 <field name="name" position="after">
                     <field name="department_id"/>
+                    <field name="duty"/>
                     <field name="business"/>
                     <field name="mobile_phone"/>
                     <field name="work_phone"/>
