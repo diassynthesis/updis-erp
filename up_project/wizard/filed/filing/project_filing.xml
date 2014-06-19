@@ -2,7 +2,7 @@
 <openerp>
     <data>
         <!--project.project.filed.filing.attachment.analysis-->
-        <record id="view_project_filing_attach_analysis_tree" model="ir.ui.view">
+        <!--record id="view_project_filing_attach_analysis_tree" model="ir.ui.view">
             <field name="name">project.project.filed.filing.attachment.analysis.tree</field>
             <field name="model">project.project.filed.filing.attachment.analysis</field>
             <field name="arch" type="xml">
@@ -14,7 +14,7 @@
                     <field name="version"/>
                 </tree>
             </field>
-        </record>
+        </record-->
         <!--project.project.filed.tag-->
         <record id="view_project_filed_filling_tag_tree" model="ir.ui.view">
             <field name="name">project.project.filed.tag.tree</field>
@@ -58,9 +58,9 @@
                                 groups="up_project.group_up_project_filed_manager"/>
                         <button name="button_disapprove_filing" type="object" string="Dispprove Filing" states="approve_filing"
                                 groups="up_project.group_up_project_filed_manager"/>
-                        <button name="button_elec_approve" type="object" string="Elec Files Approve"
+                        <!--button name="button_elec_approve" type="object" string="Elec Files Approve"
                                 attrs="{'invisible':['|',('state','not in',['approve_filing']),('elec_file_approver_id','!=',False)]}"
-                                groups="up_project.group_up_project_filed_elec_manager" class="oe_highlight"/>
+                                groups="up_project.group_up_project_filed_elec_manager" class="oe_highlight"/-->
                         <field name="state" widget="statusbar" readonly="1"/>
                     </header>
                     <sheet>
@@ -143,7 +143,7 @@
                                     </group>
                                 </group>
                             </page>
-                            <page string="第三步:电子文件归档信息填写">
+                            <!--page string="第三步:电子文件归档信息填写">
                                 <group string="Elec Document Filing Info" colspan="2" col="1">
                                     <div class="oe_edit_only">
                                         <p>点击“点此添加电子文件到目录”按钮可以快速上传文件到项目文件夹，上传文件成功后点击"添加"按钮添加本次需要归档的文件</p>
@@ -162,7 +162,7 @@
                                     <field name="elec_file_approver_id" readonly="1"/>
                                     <field name="elec_file_approver_date" readonly="1"/>
                                 </group>
-                            </page>
+                            </page-->
                         </notebook>
                     </sheet>
                 </form>

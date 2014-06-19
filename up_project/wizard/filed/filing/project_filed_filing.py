@@ -58,11 +58,11 @@ class ProjectFiledFiling(osv.Model):
         'write_date': fields.datetime('Modification date', select=True),
         'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
         'version': fields.integer('Filing Version'),
-        'attachment_ids': fields.many2many('ir.attachment', 'filing_form_ir_attach_rel', 'filing_id', 'attachment_id', 'Filing Attachments',
-                                           states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
+        # 'attachment_ids': fields.many2many('ir.attachment', 'filing_form_ir_attach_rel', 'filing_id', 'attachment_id', 'Filing Attachments',
+        #                                    states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
 
-        'elec_file_approver_id': fields.many2one('res.users', 'Elec File Approver'),
-        'elec_file_approver_date': fields.datetime('Elec File Approve Datetime'),
+        # 'elec_file_approver_id': fields.many2one('res.users', 'Elec File Approver'),
+        # 'elec_file_approver_date': fields.datetime('Elec File Approve Datetime'),
         'paper_file_approver_id': fields.many2one('res.users', 'Paper File Approver'),
         'paper_file_approver_date': fields.datetime('Paper File Approve Datetime'),
 
@@ -92,12 +92,12 @@ class ProjectFiledFiling(osv.Model):
 
     def button_approve_filing(self, cr, uid, ids, context):
         filing = self.browse(cr, uid, ids[0], context)
-        if not filing.elec_file_approver_id:
-            raise except_osv('Warnning', u'电子文件审批没有通过，请等待电子文件审批完成后再进行此操作')
-        attachment_obj = self.pool['ir.attachment']
+        # if not filing.elec_file_approver_id:
+        #     raise except_osv('Warnning', u'电子文件审批没有通过，请等待电子文件审批完成后再进行此操作')
         project_id = filing.project_id.id
         self.pool['project.project']._workflow_signal(cr, uid, [project_id], 's_filed_filing_finish', context=context)
-        attachment_obj.filing_project_attachments(cr, 1, [a.id for a in filing.attachment_ids], context)
+        # attachment_obj = self.pool['ir.attachment']
+        # attachment_obj.filing_project_attachments(cr, 1, [a.id for a in filing.attachment_ids], context)
         filing.project_id.write({'status_code': 30102})
         return self.write(cr, uid, ids, {'state': 'end_filing', 'paper_file_approver_id': uid, 'paper_file_approver_date': fields.datetime.now()},
                           context)
@@ -106,9 +106,9 @@ class ProjectFiledFiling(osv.Model):
         self.browse(cr, uid, ids[0], context).project_id.write({'status_code': 30101})
         return self.write(cr, uid, ids, {'state': 'apply_filing'}, context)
 
-    def button_elec_approve(self, cr, uid, ids, context):
-        self.write(cr, uid, ids, {'elec_file_approver_id': uid, 'elec_file_approver_date': fields.datetime.now()}, context=context)
-        return True
+    # def button_elec_approve(self, cr, uid, ids, context):
+    #     self.write(cr, uid, ids, {'elec_file_approver_id': uid, 'elec_file_approver_date': fields.datetime.now()}, context=context)
+    #     return True
 
     def button_show_filing_update_list(self, cr, uid, ids, context):
         filing = self.browse(cr, uid, ids[0], context)
@@ -131,16 +131,16 @@ class ProjectFiledFiling(osv.Model):
             'domain': [('id', '=', project_dir_id.id)],
         }
 
-    def button_show_filing_attachment_analysis(self, cr, uid, ids, context):
-        filing = self.browse(cr, uid, ids[0], context)
-        return {
-            'name': u'项目已归档电子文件记录',
-            'type': 'ir.actions.act_window',
-            'view_mode': 'tree',
-            'res_model': 'project.project.filed.filing.attachment.analysis',
-            'target': 'new',
-            'domain': [('project_id', '=', filing.project_id.id)],
-        }
+    # def button_show_filing_attachment_analysis(self, cr, uid, ids, context):
+    #     filing = self.browse(cr, uid, ids[0], context)
+    #     return {
+    #         'name': u'项目已归档电子文件记录',
+    #         'type': 'ir.actions.act_window',
+    #         'view_mode': 'tree',
+    #         'res_model': 'project.project.filed.filing.attachment.analysis',
+    #         'target': 'new',
+    #         'domain': [('project_id', '=', filing.project_id.id)],
+    #     }
 
 
 class ProjectFiledFilingTag(osv.Model):
@@ -280,11 +280,11 @@ class ProjectProjectInherit(osv.Model):
             (dummy, type_id) = self.pool['ir.model.data'].get_object_reference(cr, uid, 'up_project', 'project_filed_type_0004')
             filing_obj.write(cr, uid, new_filing_id, {
                 'version': old_filing.version + 1,
-                'attachment_ids': [(5,)],
+                # 'attachment_ids': [(5,)],
                 'project_end_date': fields.date.today(),
                 'record_ids': [(0, 0, {'name': u'____项目更改记录表', 'type_id': type_id})],
-                'elec_file_approver_id': None,
-                'elec_file_approver_date': None,
+                # 'elec_file_approver_id': None,
+                # 'elec_file_approver_date': None,
                 'paper_file_approver_id': None,
                 'paper_file_approver_date': None,
             }, context=context)
@@ -304,47 +304,47 @@ class ProjectProjectInherit(osv.Model):
         }
 
 
-class FilingElecAttachmentsAnalysis(osv.Model):
-    _name = "project.project.filed.filing.attachment.analysis"
-    _description = "Project Filing Attachments Analysis"
-    _rec_name = "attachment_id"
-    _order = "version desc,parent_id"
-    _auto = False
-
-    _columns = {
-        'attachment_id': fields.many2one('ir.attachment', 'Attachment'),
-        'parent_id': fields.many2one('document.directory', 'Directory'),
-        'filing_id': fields.many2one('project.project.filed.filing', 'Filing'),
-        'project_id': fields.many2one('project.project', 'Project'),
-        'version': fields.integer('Version'),
-        'create_date': fields.datetime('Created Date', readonly=True),
-        'create_uid': fields.many2one('res.users', 'Owner', readonly=True),
-        'write_date': fields.datetime('Modification date', select=True),
-        'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
-    }
-
-    def init(self, cr):
-        openerp.tools.sql.drop_view_if_exists(cr, 'project_project_filed_filing_attachment_analysis')
-        cr.execute(
-            " CREATE VIEW project_project_filed_filing_attachment_analysis AS ( "
-            " SELECT "
-            " r.attachment_id as id,"
-            " a.parent_id as parent_id,"
-            " r.filing_id as filing_id,"
-            " r.attachment_id as attachment_id,"
-            " f.project_id as project_id,"
-            " f.version as version,"
-            " a.create_date as create_date,"
-            " a.create_uid as create_uid,"
-            " a.write_date as write_date,"
-            " a.write_uid as write_uid"
-            " FROM "
-            " filing_form_ir_attach_rel as r LEFT JOIN project_project_filed_filing as f"
-            " on r.filing_id = f.id"
-            " LEFT JOIN ir_attachment as a"
-            " on a.id = r.attachment_id"
-            " )"
-        )
+# class FilingElecAttachmentsAnalysis(osv.Model):
+#     _name = "project.project.filed.filing.attachment.analysis"
+#     _description = "Project Filing Attachments Analysis"
+#     _rec_name = "attachment_id"
+#     _order = "version desc,parent_id"
+#     _auto = False
+#
+#     _columns = {
+#         'attachment_id': fields.many2one('ir.attachment', 'Attachment'),
+#         'parent_id': fields.many2one('document.directory', 'Directory'),
+#         'filing_id': fields.many2one('project.project.filed.filing', 'Filing'),
+#         'project_id': fields.many2one('project.project', 'Project'),
+#         'version': fields.integer('Version'),
+#         'create_date': fields.datetime('Created Date', readonly=True),
+#         'create_uid': fields.many2one('res.users', 'Owner', readonly=True),
+#         'write_date': fields.datetime('Modification date', select=True),
+#         'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
+#     }
+#
+#     def init(self, cr):
+#         openerp.tools.sql.drop_view_if_exists(cr, 'project_project_filed_filing_attachment_analysis')
+#         cr.execute(
+#             " CREATE VIEW project_project_filed_filing_attachment_analysis AS ( "
+#             " SELECT "
+#             " r.attachment_id as id,"
+#             " a.parent_id as parent_id,"
+#             " r.filing_id as filing_id,"
+#             " r.attachment_id as attachment_id,"
+#             " f.project_id as project_id,"
+#             " f.version as version,"
+#             " a.create_date as create_date,"
+#             " a.create_uid as create_uid,"
+#             " a.write_date as write_date,"
+#             " a.write_uid as write_uid"
+#             " FROM "
+#             " filing_form_ir_attach_rel as r LEFT JOIN project_project_filed_filing as f"
+#             " on r.filing_id = f.id"
+#             " LEFT JOIN ir_attachment as a"
+#             " on a.id = r.attachment_id"
+#             " )"
+#         )
 
 
 class SecondaryCategory(osv.Model):
