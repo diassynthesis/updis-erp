@@ -134,9 +134,16 @@ class ProjectFiledFiling(osv.Model):
 class ProjectFiledFilingTag(osv.Model):
     _name = 'project.project.filed.tag'
 
+    def _get_parent_id_id(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, 0)
+        for obj in self.browse(cr, uid, ids, context=context):
+            result[obj.id] = obj.parent_id.id
+        return result
+
     _columns = {
         'name': fields.char('Name', size=64, required=True),
         'parent_id': fields.many2one('project.project.filed.tag', 'Parent Tag'),
+        'parent_id_id': fields.function(_get_parent_id_id, type='integer', string='Parent Id For colors'),
     }
 
     _sql_constraints = [

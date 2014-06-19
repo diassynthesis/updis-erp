@@ -20,9 +20,10 @@
             <field name="name">project.project.filed.tag.tree</field>
             <field name="model">project.project.filed.tag</field>
             <field name="arch" type="xml">
-                <tree string="Project Tags" version="7.0" editable="top">
+                <tree string="Project Tags" version="7.0" editable="top" colors="red:parent_id_id==%(project_filed_tag_1001)d;orange:parent_id_id==%(project_filed_tag_1002)d;blue:parent_id_id==%(project_filed_tag_1003)d;green:parent_id_id==%(project_filed_tag_1004)d">
                     <field name="name"/>
                     <field name="parent_id"/>
+                    <field name="parent_id_id" invisible="1"/>
                 </tree>
             </field>
         </record>
@@ -102,7 +103,12 @@
                                         <field name="project_end_date" nolabel="1" style="width: 20%%"/>
                                     </div>
                                     <newline/>
-                                    <field name="tag_ids" widget="many2many_tags" domain="[('parent_id','!=',None)]"/>
+                                    <field name="tag_ids" domain="[('parent_id','!=',None)]">
+                                        <tree>
+                                            <field name="name"/>
+                                            <field name="parent_id"/>
+                                        </tree>
+                                    </field>
                                 </group>
                                 <group colspan="2">
                                     <field name="description"/>
