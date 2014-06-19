@@ -38,7 +38,7 @@
         <tr>
             <td>项目类别</td>
             <td class="table-content">一级分类：${object.project_category_id.name or ''|entity}
-            <br/>二级分类：${','.join([u.name for u in object.project_second_category]) or ''|entity}
+                <br/>二级分类：${','.join([u.name for u in object.project_second_category]) or ''|entity}
             </td>
             <td>项目负责人</td>
             <td class="table-content">${','.join([u.name for u in object.project_user]) or ''|entity}</td>
@@ -66,7 +66,8 @@
         </tr>
         <tr>
             <td>项目起止日期</td>
-            <td colspan="3" class="table-content">${object.project_begin_date and formatLang(object.project_begin_date,date=True) or ''} ~ ${object.project_end_date and formatLang(object.project_end_date,date=True) or ''}</td>
+            <td colspan="3" class="table-content">${object.project_begin_date and formatLang(object.project_begin_date,date=True) or ''}
+                ~ ${object.project_end_date and formatLang(object.project_end_date,date=True) or ''}</td>
         </tr>
         <tr>
             <td>项目关键字</td>
@@ -93,6 +94,18 @@
                         ${helper.embed_image('jpg',setHtmlImage(object.show_images[index].id),150)}
                 %endfor
             </td>
+        </tr>
+        <tr>
+            <td>项目负责人签字</td>
+            <td>
+                %if object.manager_approver_id and object.manager_approver_id.sign_image:
+                    ${helper.embed_image('jpg',object.manager_approver_id.sign_image,150)}
+                %elif object.manager_approver_id and not object.manager_approver_id.sign_image:
+                    ${object.manager_approver_id.name}
+                %endif
+            </td>
+            <td>签字时间</td>
+            <td>${object.manager_approver_date and formatLang(object.manager_approver_date,date_time=True) or ''|entity}</td>
         </tr>
         </tbody>
     </table>

@@ -6,7 +6,8 @@ from openerp.osv import osv
 from openerp.osv.osv import except_osv
 from openerp.tools.translate import _
 
-FILING_STATE = [('apply_filing', 'Apply Filing'), ('approve_filing', 'Approve Filing'), ('end_filing', 'Filing Complete')]
+FILING_STATE = [('apply_filing', 'Apply Filing'), ('manager_approve', 'Manager Approving'), ('approve_filing', 'Approve Filing'),
+                ('end_filing', 'Filing Complete')]
 
 
 class ProjectFiledFiling(osv.Model):
@@ -36,6 +37,8 @@ class ProjectFiledFiling(osv.Model):
         'project_city': fields.related('project_id', 'city', type='char', string='Project City', readonly=True),
         'project_begin_date': fields.related('project_id', 'begin_date', type='date', string='Project Begin Date', readonly=True),
         'is_project_member': fields.related('project_id', 'is_project_member', type='boolean', string='Is Member of Project', readonly=True),
+        'is_user_is_project_manager': fields.related('project_id', 'is_user_is_project_manager', type='boolean', string='Is user Project Manager',
+                                                     readonly=True),
         'project_second_category': fields.many2many('project.project.filed.filling.secondcategory', 'rel_filing_second_category', 'filing_id',
                                                     'second_category_id', string='Secondary Categories',
                                                     states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
@@ -59,10 +62,12 @@ class ProjectFiledFiling(osv.Model):
         'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
         'version': fields.integer('Filing Version'),
         # 'attachment_ids': fields.many2many('ir.attachment', 'filing_form_ir_attach_rel', 'filing_id', 'attachment_id', 'Filing Attachments',
-        #                                    states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
+        # states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
 
         # 'elec_file_approver_id': fields.many2one('res.users', 'Elec File Approver'),
         # 'elec_file_approver_date': fields.datetime('Elec File Approve Datetime'),
+        'manager_approver_id': fields.many2one('res.users', 'Manager Approver'),
+        'manager_approver_date': fields.datetime('Manager Approve Datetime'),
         'paper_file_approver_id': fields.many2one('res.users', 'Paper File Approver'),
         'paper_file_approver_date': fields.datetime('Paper File Approve Datetime'),
 
@@ -76,24 +81,44 @@ class ProjectFiledFiling(osv.Model):
 
     def button_apply_filing(self, cr, uid, ids, context):
         filing = self.browse(cr, uid, ids[0], context)
-        filing.project_id.write({'status_code': 30103})
         sms_obj = self.pool['sms.sms']
         http_address = self.pool['ir.config_parameter'].get_param(cr, uid, 'web.base.static.url', default='', context=context)
         http_address += "/#id=%s&amp;view_type=form&amp;model=project.project" % filing.project_id.id
-        content_sms = u'项目[%s]需要您处理【项目归档】请求,请及时处理项目和跟进项目进度。' % filing.project_id.name
-        content_ant = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您处理【项目归档】请求,请及时处理项目和跟进项目进度 """ % (
+        content_sms = u'项目[%s]需要您处理【项目归档-负责人审批】请求,请及时处理项目和跟进项目进度。' % filing.project_id.name
+        content_ant = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您处理【项目归档-负责人审批】请求,请及时处理项目和跟进项目进度 """ % (
+            http_address, filing.project_id.name)
+        sms_obj.send_sms_to_users(cr, uid, users=filing.project_user, from_rec=filing.name, content=content_sms, model=self._name, res_id=filing.id,
+                                  context=context)
+        sms_obj.send_big_ant_to_users(cr, uid, users=filing.project_user, from_rec=filing.name, subject=u'项目归档申请等待处理', content=content_ant,
+                                      model=self._name, res_id=filing.id, context=context)
+        filing.project_id.write({'status_code': 30104})
+        return self.write(cr, uid, ids, {'state': 'manager_approve'}, context)
+
+    def button_manager_approve(self, cr, uid, ids, context):
+        filing = self.browse(cr, uid, ids[0], context)
+        sms_obj = self.pool['sms.sms']
+        http_address = self.pool['ir.config_parameter'].get_param(cr, uid, 'web.base.static.url', default='', context=context)
+        http_address += "/#id=%s&amp;view_type=form&amp;model=project.project" % filing.project_id.id
+        content_sms = u'项目[%s]需要您处理【项目归档-图档室审批】请求,请及时处理项目和跟进项目进度。' % filing.project_id.name
+        content_ant = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您处理【项目归档-图档室审批】请求,请及时处理项目和跟进项目进度 """ % (
             http_address, filing.project_id.name)
         sms_obj.send_sms_to_group(cr, uid, from_rec=filing.name, content=content_sms, model=self._name, res_id=filing.id,
                                   group_xml_id='up_project.group_up_project_filed_manager', context=context)
         sms_obj.send_big_ant_to_group(cr, uid, from_rec=filing.name, subject=u'项目归档申请等待处理', content=content_ant, model=self._name, res_id=filing.id,
                                       group_xml_id='up_project.group_up_project_filed_manager', context=context)
+        filing.project_id.write({'status_code': 30103})
+        return self.write(cr, uid, ids, {'state': 'approve_filing', 'manager_approver_id': uid, 'manager_approver_date': fields.datetime.now()},
+                          context)
 
-        return self.write(cr, uid, ids, {'state': 'approve_filing'}, context)
+    def button_manager_disapprove(self, cr, uid, ids, context):
+        self.browse(cr, uid, ids[0], context).project_id.write({'status_code': 30101})
+        return self.write(cr, uid, ids, {'state': 'apply_filing', 'manager_approver_id': False, 'manager_approver_date': False},
+                          context)
 
     def button_approve_filing(self, cr, uid, ids, context):
         filing = self.browse(cr, uid, ids[0], context)
         # if not filing.elec_file_approver_id:
-        #     raise except_osv('Warnning', u'电子文件审批没有通过，请等待电子文件审批完成后再进行此操作')
+        # raise except_osv('Warnning', u'电子文件审批没有通过，请等待电子文件审批完成后再进行此操作')
         project_id = filing.project_id.id
         self.pool['project.project']._workflow_signal(cr, uid, [project_id], 's_filed_filing_finish', context=context)
         # attachment_obj = self.pool['ir.attachment']
@@ -103,12 +128,14 @@ class ProjectFiledFiling(osv.Model):
                           context)
 
     def button_disapprove_filing(self, cr, uid, ids, context):
-        self.browse(cr, uid, ids[0], context).project_id.write({'status_code': 30101})
-        return self.write(cr, uid, ids, {'state': 'apply_filing'}, context)
+        self.browse(cr, uid, ids[0], context).project_id.write({'status_code': 30104})
+        return self.write(cr, uid, ids,
+                          {'state': 'manager_approve', 'paper_file_approver_id': None, 'paper_file_approver_date': None, 'manager_approver_id': False,
+                           'manager_approver_date': False}, context)
 
     # def button_elec_approve(self, cr, uid, ids, context):
-    #     self.write(cr, uid, ids, {'elec_file_approver_id': uid, 'elec_file_approver_date': fields.datetime.now()}, context=context)
-    #     return True
+    # self.write(cr, uid, ids, {'elec_file_approver_id': uid, 'elec_file_approver_date': fields.datetime.now()}, context=context)
+    # return True
 
     def button_show_filing_update_list(self, cr, uid, ids, context):
         filing = self.browse(cr, uid, ids[0], context)
@@ -131,16 +158,16 @@ class ProjectFiledFiling(osv.Model):
             'domain': [('id', '=', project_dir_id.id)],
         }
 
-    # def button_show_filing_attachment_analysis(self, cr, uid, ids, context):
-    #     filing = self.browse(cr, uid, ids[0], context)
-    #     return {
-    #         'name': u'项目已归档电子文件记录',
-    #         'type': 'ir.actions.act_window',
-    #         'view_mode': 'tree',
-    #         'res_model': 'project.project.filed.filing.attachment.analysis',
-    #         'target': 'new',
-    #         'domain': [('project_id', '=', filing.project_id.id)],
-    #     }
+        # def button_show_filing_attachment_analysis(self, cr, uid, ids, context):
+        # filing = self.browse(cr, uid, ids[0], context)
+        # return {
+        # 'name': u'项目已归档电子文件记录',
+        # 'type': 'ir.actions.act_window',
+        # 'view_mode': 'tree',
+        # 'res_model': 'project.project.filed.filing.attachment.analysis',
+        # 'target': 'new',
+        #         'domain': [('project_id', '=', filing.project_id.id)],
+        #     }
 
 
 class ProjectFiledFilingTag(osv.Model):
@@ -287,6 +314,8 @@ class ProjectProjectInherit(osv.Model):
                 # 'elec_file_approver_date': None,
                 'paper_file_approver_id': None,
                 'paper_file_approver_date': None,
+                'manager_approver_id': False,
+                'manager_approver_date': False,
             }, context=context)
             project.write({'status_code': 30101})
             return True
@@ -305,16 +334,16 @@ class ProjectProjectInherit(osv.Model):
 
 
 # class FilingElecAttachmentsAnalysis(osv.Model):
-#     _name = "project.project.filed.filing.attachment.analysis"
-#     _description = "Project Filing Attachments Analysis"
-#     _rec_name = "attachment_id"
-#     _order = "version desc,parent_id"
-#     _auto = False
+# _name = "project.project.filed.filing.attachment.analysis"
+# _description = "Project Filing Attachments Analysis"
+# _rec_name = "attachment_id"
+# _order = "version desc,parent_id"
+# _auto = False
 #
-#     _columns = {
-#         'attachment_id': fields.many2one('ir.attachment', 'Attachment'),
-#         'parent_id': fields.many2one('document.directory', 'Directory'),
-#         'filing_id': fields.many2one('project.project.filed.filing', 'Filing'),
+# _columns = {
+# 'attachment_id': fields.many2one('ir.attachment', 'Attachment'),
+# 'parent_id': fields.many2one('document.directory', 'Directory'),
+# 'filing_id': fields.many2one('project.project.filed.filing', 'Filing'),
 #         'project_id': fields.many2one('project.project', 'Project'),
 #         'version': fields.integer('Version'),
 #         'create_date': fields.datetime('Created Date', readonly=True),

@@ -20,7 +20,8 @@
             <field name="name">project.project.filed.tag.tree</field>
             <field name="model">project.project.filed.tag</field>
             <field name="arch" type="xml">
-                <tree string="Project Tags" version="7.0" editable="top" colors="red:parent_id_id==%(project_filed_tag_1001)d;orange:parent_id_id==%(project_filed_tag_1002)d;blue:parent_id_id==%(project_filed_tag_1003)d;green:parent_id_id==%(project_filed_tag_1004)d">
+                <tree string="Project Tags" version="7.0" editable="top"
+                      colors="red:parent_id_id==%(project_filed_tag_1001)d;orange:parent_id_id==%(project_filed_tag_1002)d;blue:parent_id_id==%(project_filed_tag_1003)d;green:parent_id_id==%(project_filed_tag_1004)d">
                     <field name="name"/>
                     <field name="parent_id"/>
                     <field name="parent_id_id" invisible="1"/>
@@ -52,8 +53,11 @@
                 <form string="Project Filing" version="7.0" create="false" delete="false" edit="context['editable']">
                     <header>
                         <button name="button_apply_filing" type="object" string="Apply Filing" class="oe_highlight"
-                                attrs="{'invisible':['|',('state','not in',['apply_filing']),('is_project_member','=',False)]}"
-                                />
+                                attrs="{'invisible':['|',('state','not in',['apply_filing']),('is_project_member','=',False)]}"/>
+                        <button name="button_manager_approve" type="object" string="Manager Approve" class="oe_highlight"
+                                attrs="{'invisible':['|',('state','not in',['manager_approve']),('is_user_is_project_manager','=',False)]}"/>
+                        <button name="button_manager_disapprove" type="object" string="Manager Disapprove"
+                                attrs="{'invisible':['|',('state','not in',['manager_approve']),('is_user_is_project_manager','=',False)]}"/>
                         <button name="button_approve_filing" type="object" string="Approve Filing" class="oe_highlight" states="approve_filing"
                                 groups="up_project.group_up_project_filed_manager"/>
                         <button name="button_disapprove_filing" type="object" string="Dispprove Filing" states="approve_filing"
@@ -66,6 +70,7 @@
                     <sheet>
                         <group invisible="1">
                             <field name="is_project_member"/>
+                            <field name="is_user_is_project_manager"/>
                         </group>
                         <div class="sheet-title">
                             <h1>项目文件归档表</h1>
@@ -116,6 +121,10 @@
                                     <field name="show_images" widget="many2many_binary"
                                            res_model="project.project" res_id="project_id"
                                            context="{'parent_id':%(dir_up_project_going_brief_picture)d}"/>
+                                </group>
+                                <group colspan="2" col="4">
+                                    <field name="manager_approver_id" readonly="1"/>
+                                    <field name="manager_approver_date" readonly="1"/>
                                 </group>
                             </page>
                             <page string="第二步:纸质文件归档填写">

@@ -524,9 +524,9 @@ class updis_project(osv.osv):
             status_code += [10104]
 
         # Manager
-        manager_domain = ['|', '&', ('status_code', 'in', [20101, 50101, 60101, 30101]), ('user_id', '=', uid)]
+        manager_domain = ['|', '&', ('status_code', 'in', [20101, 50101, 60101, 30101, 30104]), ('user_id', '=', uid)]
 
-        #Filed Manager
+        # Filed Manager
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_filed_manager,up_project.group_up_project_filed_elec_manager', context=context):
             status_code += [30103]
 
