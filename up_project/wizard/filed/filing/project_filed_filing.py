@@ -75,7 +75,19 @@ class ProjectFiledFiling(osv.Model):
     }
 
     def button_apply_filing(self, cr, uid, ids, context):
-        self.browse(cr, uid, ids[0], context).project_id.write({'status_code': 30103})
+        filing = self.browse(cr, uid, ids[0], context)
+        filing.project_id.write({'status_code': 30103})
+        sms_obj = self.pool['sms.sms']
+        http_address = self.pool['ir.config_parameter'].get_param(cr, uid, 'web.base.static.url', default='', context=context)
+        http_address += "/#id=%s&amp;view_type=form&amp;model=project.project" % filing.project_id.id
+        content_sms = u'项目[%s]需要您处理【项目归档】请求,请及时处理项目和跟进项目进度。' % filing.project_id.name
+        content_ant = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您处理【项目归档】请求,请及时处理项目和跟进项目进度 """ % (
+            http_address, filing.project_id.name)
+        sms_obj.send_sms_to_group(cr, uid, from_rec=filing.name, content=content_sms, model=self._name, res_id=filing.id,
+                                  group_xml_id='up_project.group_up_project_filed_manager', context=context)
+        sms_obj.send_big_ant_to_group(cr, uid, from_rec=filing.name, subject=u'项目归档申请等待处理', content=content_ant, model=self._name, res_id=filing.id,
+                                      group_xml_id='up_project.group_up_project_filed_manager', context=context)
+
         return self.write(cr, uid, ids, {'state': 'approve_filing'}, context)
 
     def button_approve_filing(self, cr, uid, ids, context):
@@ -134,6 +146,7 @@ class ProjectFiledFiling(osv.Model):
 class ProjectFiledFilingTag(osv.Model):
     _name = 'project.project.filed.tag'
 
+    # noinspection PyUnusedLocal
     def _get_parent_id_id(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, 0)
         for obj in self.browse(cr, uid, ids, context=context):
