@@ -236,7 +236,7 @@ class ProjectProjectInherit(osv.Model):
             context['editable'] = False
         if filing_id:
             return {
-                'name': u'所有项目',
+                'name': u'项目文件归档表',
                 'type': 'ir.actions.act_window',
                 'view_mode': 'form',
                 'res_model': 'project.project.filed.filing',
@@ -274,7 +274,7 @@ class ProjectProjectInherit(osv.Model):
     # noinspection PyUnusedLocal
     def button_filed_filing_form_history(self, cr, uid, ids, context):
         return {
-            'name': u'所有项目',
+            'name': u'项目文件归档表',
             'type': 'ir.actions.act_window',
             'view_mode': 'tree,form',
             'res_model': 'project.project.filed.filing',
