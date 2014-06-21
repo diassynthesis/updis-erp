@@ -623,34 +623,43 @@ openerp.up_web = function (instance) {
     });
 
     instance.web.ListView.include({
+
+        resize_fields: function () {
+            if (!this.editor.is_editing()) {
+                return;
+            }
+            for (var i = 0, len = this.fields_for_resize.length; i < len; ++i) {
+                var item = this.fields_for_resize[i];
+                if (!item.field.get('effective_invisible')) {
+                    this.resize_field(item.field, item.cell);
+                }
+            }
+        },
+
         setup_events: function () {
             var self = this;
             _.each(this.editor.form.fields, function (field, field_name) {
-                var setting = false;
                 var set_invisible = function () {
-                    if (!setting && field.get("effective_readonly")) {
-                        setting = true;
-                        field.set({invisible: true});
-                        setting = false;
-                    }
+                    field.set({'force_invisible': field.get('effective_readonly')});
                 };
                 field.on("change:effective_readonly", self, set_invisible);
-                field.on("change:invisible", self, set_invisible);
                 set_invisible();
-                field.on('change:invisible', self, function () {
-                    if (field.get('invisible')) {
+                field.on('change:effective_invisible', self, function () {
+                    if (field.get('effective_invisible')) {
                         return;
                     }
                     var item = _(self.fields_for_resize).find(function (item) {
                         return item.field === field;
                     });
                     if (item) {
-                        self.resize_field(item.field, item.cell);
+                        setTimeout(function () {
+                            self.resize_field(item.field, item.cell);
+                        }, 0);
                     }
+
                 });
             });
-
-            this.editor.$el.on('keyup keydown', function (e) {
+            this.editor.$el.on('keyup keypress keydown', function (e) {
                 if (!self.editor.is_editing()) {
                     return true;
                 }
