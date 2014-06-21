@@ -135,8 +135,8 @@
                                                     <th>流程</th>
                                                     <th>状态</th>
                                                     <th>提示</th>
-                                                    <th/>
                                                     <th>历史记录</th>
+                                                    <th/>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
@@ -145,22 +145,26 @@
                                                                     class="oe_form_field_with_button oe_inline oe_link"
                                                                     type="object"/>
                                                         </td>
-                                                        <td>
-                                                            <field name="filed_filing_state"/>
+                                                        <td class="oe_inline">
+                                                            <field name="filed_filing_state" class="oe_inline"/>
+                                                            <div class="oe_inline oe_tips">
+                                                                (已归档<field name="filed_times" readonly="1" class="oe_inline"/>次)
+                                                            </div>
+
                                                         </td>
                                                         <td>
-                                                        </td>
-                                                        <td>
-                                                            <button name="button_multi_filing_form" string="多次项目归档申请"
-                                                                    class="oe_form_field_with_button oe_inline oe_link"
-                                                                    confirm="确认再次归档？再次归档会发起一次新的归档流程，请谨慎选择。"
-                                                                    type="object" attrs="{'invisible':['|',('is_multi_filing_allowed','=',False),('is_project_member','=',False)]}"/>
                                                         </td>
                                                         <td>
                                                             <button name="button_filed_filing_form_history" icon="gtk-justify-fill"
                                                                     type="object"/>
                                                         </td>
-
+                                                        <td>
+                                                            <button name="button_multi_filing_form" string="多次项目归档申请"
+                                                                    class="oe_form_field_with_button oe_inline oe_link"
+                                                                    confirm="确认再次归档？再次归档会发起一次新的归档流程，请谨慎选择。"
+                                                                    type="object"
+                                                                    attrs="{'invisible':['|',('is_multi_filing_allowed','=',False),('is_project_member','=',False)]}"/>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>

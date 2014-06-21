@@ -1,9 +1,7 @@
 # -*- encoding:utf-8 -*-
 from openerp import exceptions
-import openerp
 from openerp.osv import fields
 from openerp.osv import osv
-from openerp.osv.osv import except_osv
 from openerp.tools.translate import _
 
 FILING_STATE = [('apply_filing', 'Apply Filing'), ('manager_approve', 'Manager Approving'), ('approve_filing', 'Approve Filing'),
@@ -166,8 +164,8 @@ class ProjectFiledFiling(osv.Model):
         # 'view_mode': 'tree',
         # 'res_model': 'project.project.filed.filing.attachment.analysis',
         # 'target': 'new',
-        #         'domain': [('project_id', '=', filing.project_id.id)],
-        #     }
+        # 'domain': [('project_id', '=', filing.project_id.id)],
+        # }
 
 
 class ProjectFiledFilingTag(osv.Model):
@@ -237,22 +235,26 @@ class ProjectProjectInherit(osv.Model):
         return result
 
     # noinspection PyUnusedLocal
-    def _is_multi_filing_allowed(self, cr, uid, ids, field_name, args, context=None):
-        result = dict.fromkeys(ids, False)
+    def _filed_field_calc(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, {'is_multi_filing_allowed': False, 'filed_times': False})
         filing_obj = self.pool.get('project.project.filed.filing')
         for id in ids:
             project = self.browse(cr, uid, id, context=context)
             filing_ids = filing_obj.search(cr, uid, [('project_id', '=', id), ('state', 'not in', ['end_filing'])], order='create_date desc',
                                            context=context)
+            filed_times = len(filing_obj.search(cr, uid, [('project_id', '=', id), ('state', 'in', ['end_filing'])], order='create_date desc',
+                                                context=context))
             # if is allow multi filing
             if project.state == 'project_finish' and not filing_ids and filing_obj.search(cr, uid, [('project_id', '=', id)], context=context):
-                result[id] = True
+                result[id]['is_multi_filing_allowed'] = True
+            result[id]['filed_times'] = filed_times
         return result
 
     _columns = {
         'filed_filing_ids': fields.one2many('project.project.filed.filing', 'project_id', 'Related Filing Form'),
         'filed_filing_state': fields.function(_get_filing_state, type='selection', selection=FILING_STATE, string='Filing State'),
-        'is_multi_filing_allowed': fields.function(_is_multi_filing_allowed, type='boolean', string='Is Multi Filing Allowed'),
+        'is_multi_filing_allowed': fields.function(_filed_field_calc, type='boolean', string='Is Multi Filing Allowed', multi='filed'),
+        'filed_times': fields.function(_filed_field_calc, type='integer', string='Is Multi Filing Allowed', multi='filed'),
     }
 
     def button_filed_filing_form(self, cr, uid, ids, context):
@@ -344,12 +346,12 @@ class ProjectProjectInherit(osv.Model):
 # 'attachment_id': fields.many2one('ir.attachment', 'Attachment'),
 # 'parent_id': fields.many2one('document.directory', 'Directory'),
 # 'filing_id': fields.many2one('project.project.filed.filing', 'Filing'),
-#         'project_id': fields.many2one('project.project', 'Project'),
-#         'version': fields.integer('Version'),
-#         'create_date': fields.datetime('Created Date', readonly=True),
-#         'create_uid': fields.many2one('res.users', 'Owner', readonly=True),
-#         'write_date': fields.datetime('Modification date', select=True),
-#         'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
+# 'project_id': fields.many2one('project.project', 'Project'),
+# 'version': fields.integer('Version'),
+# 'create_date': fields.datetime('Created Date', readonly=True),
+# 'create_uid': fields.many2one('res.users', 'Owner', readonly=True),
+# 'write_date': fields.datetime('Modification date', select=True),
+# 'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
 #     }
 #
 #     def init(self, cr):
