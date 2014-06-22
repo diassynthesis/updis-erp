@@ -1,7 +1,7 @@
 "id","name","parent_id:id","index"
 dir_up_project,项目目录,,1
 
-dir_up_project_going,项目进行中文件,dir_up_project,11
+dir_up_project_going,项目待归档文件,dir_up_project,11
 dir_up_project_filed,项目归档文件,dir_up_project,12
 
 

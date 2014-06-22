@@ -35,7 +35,7 @@ class DocumentDirectoryAccess(osv.osv):
             if access[method] is False:
                 return False
             if access.code and access.code.strip():
-                cxt = {
+                ctx = {
                     'self': self,
                     'object': access,
                     'obj': access,
@@ -47,9 +47,9 @@ class DocumentDirectoryAccess(osv.osv):
                     'user': self.pool.get('res.users').browse(cr, uid, uid),
                     'result': None,
                 }
-                cxt.update(context.get('cxt', {}))
-                eval(access.code.strip(), cxt, mode="exec", nocopy=True)  # nocopy allows to return 'action'
-                return True if cxt.get('result', None) else False
+                ctx.update(context.get('ctx', {}))
+                eval(access.code.strip(), ctx, mode="exec", nocopy=True)  # nocopy allows to return 'action'
+                return True if ctx.get('result', None) else False
             else:
                 return True
         else:

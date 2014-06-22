@@ -5,7 +5,7 @@
             <field name="name">project.project.active.tasking.form</field>
             <field name="model">project.project.active.tasking</field>
             <field name="arch" type="xml">
-                <form string="Project" version="7.0">
+                <form string="Project" version="7.0" create="false" delete="false">
                     <header>
                         <field name="state" widget="statusbar"
                                readonly="1"/>
@@ -364,45 +364,5 @@
                 </form>
             </field>
         </record>
-
-        <record id="project_project_active_tasking_inherit" model="ir.ui.view">
-            <field name="name">project.project.active.tasking.inherit</field>
-            <field name="model">project.project</field>
-            <field name="inherit_id" ref="edit_project_inherit"/>
-            <field name="arch" type="xml">
-                <xpath expr="//div[@name='related_forms']" position="before">
-                    <!--button name="btn_active_tasking"
-                            class="oe_highlight"
-                            string="产品要求评审及任务下达记录"
-                            type="object"
-                            groups="project.group_project_user"/-->
-                    <tr>
-                        <td>
-                            <field name="active_tasking" readonly="1" required="0" class="oe_inline" nolabel="1"
-                                   target="new" attrs="{'invisible':[('is_import','=',True)]}"/>
-                        </td>
-                        <td>
-                            <field name="active_tasking_state" readonly="1"/>
-                        </td>
-                        <td>
-                            <field name="active_tasking_is_wait_user_process" invisible="1"/>
-                            <field name="is_import" invisible="1"/>
-                            <div attrs="{'invisible':[('active_tasking_is_wait_user_process','=',False)]}">
-                                <span class="hint-red">
-                                    等待处理
-                                </span>
-                            </div>
-                            <div attrs="{'invisible':[('is_import','=',False)]}">
-                                <span>
-                                    导入项目,不存在下达记录
-                                </span>
-                            </div>
-                        </td>
-                    </tr>
-                </xpath>
-            </field>
-        </record>
-
-
     </data>
 </openerp>

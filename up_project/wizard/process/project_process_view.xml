@@ -8,12 +8,6 @@
             <field name="arch" type="xml">
                 <xpath expr="//header[@name='project_header']" position="after">
                     <header attrs="{'invisible':[('state','!=','project_processing')]}">
-                        <button name="process_finish"
-                                class="oe_highlight"
-                                string="项目归档"
-                                confirm="确定项目已经完结进入归档状态?进入归档状态的项目不可回退！"
-                                attrs="{'invisible':['|',('state','!=','project_processing'),('is_user_is_project_manager','=',False)]}"
-                                groups="project.group_project_user"/>
                         <field name="state_process" widget="statusbar" readonly="1"/>
                     </header>
                 </xpath>
@@ -75,13 +69,12 @@
                             confirm="确定恢复项目到进行状态?"
                             attrs="{'invisible':['|',('state','!=','project_pause'),('is_user_is_project_manager','=',False)]}"
                             groups="project.group_project_user"/>
-                    <button name="process_finish"
+                    <button name="button_process_finish" type="object"
                             class="oe_highlight"
                             string="项目归档"
                             confirm="确定项目进入归档状态?进入归档状态的项目不可回退！"
-                            attrs="{'invisible':['|',('state','not in',['project_stop','project_pause']),('is_user_is_project_manager','=',False)]}"
+                            attrs="{'invisible':['|',('state','not in',['project_stop','project_pause','project_processing']),('is_project_member','=',False)]}"
                             groups="project.group_project_user"/>
-
                 </xpath>
             </field>
         </record>

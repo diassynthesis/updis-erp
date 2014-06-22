@@ -307,6 +307,15 @@ class updis_project(osv.osv):
         # Not a Member
         return False
 
+    def _is_project_member(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            if self.is_project_member(cr, context.get('uid', 1), obj.id, context=context):
+                result[obj.id] = True
+            else:
+                result[obj.id] = False
+        return result
+
     _columns = {
         # 基础信息
         # 'analytic_account_id': fields.boolean("Over Ride"),
@@ -327,14 +336,15 @@ class updis_project(osv.osv):
         'country_id': fields.many2one('res.country', string='Country'),
         "state_id": fields.many2one('res.country.state', string='State'),
         "city": fields.char(size=128, string="City"),
-        'state': fields.selection([("project_active", u"Project Active"),
-                                   ("project_cancelled", u"Project Cancelled"),
-                                   ("project_processing", u"Project Processing"),
-                                   ("project_stop", u"Project Stop"),
-                                   ("project_pause", u"Project Pause"),
-                                   ("project_filed", u"Project Filing"),
-                                   ("project_finish", u"Project Filed"),
-                                  ], string="State"),
+        'state': fields.selection(
+            [("project_active", u"Project Active"),
+             ("project_cancelled", u"Project Cancelled"),
+             ("project_processing", u"Project Processing"),
+             ("project_stop", u"Project Stop"),
+             ("project_pause", u"Project Pause"),
+             ("project_filed", u"Project Filing"),
+             ("project_finish", u"Project Filed"), ]
+            , string="State"),
         'project_log': fields.html(u"Project Log Info", readonly=True),
         "xiangmubianhao": fields.char(u"Project Num", select=True, size=128, ),
         "chenjiebumen_id": fields.many2one("hr.department", u"In Charge Department"),
@@ -361,6 +371,8 @@ class updis_project(osv.osv):
                                     string="Is User is in Admin"),
         'is_user_is_project_manager': fields.function(_is_user_is_project_manager, type="boolean",
                                                       string="Is User is The Project Manager"),
+        'is_project_member': fields.function(_is_project_member, type="boolean",
+                                             string="Is User is The Project Member"),
 
         'partner_type': fields.selection([("WT200508180001", u"深圳规划局"),
                                           ("WT200508180002", u"深圳市其他"),
@@ -508,19 +520,19 @@ class updis_project(osv.osv):
                 domain = ['|', '&', ('status_code', '=', 10105),
                           ('chenjiebumen_id', '=', user_department_id)] + domain
 
-        #Operator Room
+        # Operator Room
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context):
             status_code += [10103]
-            #Engineer Room
+        # Engineer Room
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context):
             status_code += [10104]
 
-        #Manager
-        manager_domain = ['|', '&', ('status_code', 'in', [20101, 50101, 60101]), ('user_id', '=', uid)]
+        # Manager
+        manager_domain = ['|', '&', ('status_code', 'in', [20101, 50101, 60101, 30101, 30104]), ('user_id', '=', uid)]
 
-        #Filed Manager
-        if self.user_has_groups(cr, uid, 'up_project.group_up_project_filed_manager', context=context):
-            status_code += [30101]
+        # Filed Manager
+        if self.user_has_groups(cr, uid, 'up_project.group_up_project_filed_manager,up_project.group_up_project_filed_elec_manager', context=context):
+            status_code += [30103]
 
         domain = ['|', ('status_code', 'in', status_code)] + domain
         return manager_domain + domain

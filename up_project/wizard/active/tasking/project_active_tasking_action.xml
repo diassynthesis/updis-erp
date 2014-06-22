@@ -84,7 +84,7 @@ http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.proj
 big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您的审批,请及时处理项目和跟进项目进度 """ % (http_address,object.name)
 model = 'project.project.active.tasking'
 res_id = object.id
-group_id = 'group_up_project_jingyingshi'
+group_id = 'up_project.group_up_project_jingyingshi'
 pool.get('sms.sms').send_sms_to_group(cr,uid,from_rec,content,model,res_id,group_id,context)
 pool.get('sms.sms').send_big_ant_to_group(cr,uid,from_rec,subject,big_ant_content,model,res_id,group_id,context)
             </field>

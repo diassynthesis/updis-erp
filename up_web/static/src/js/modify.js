@@ -150,11 +150,11 @@ openerp.up_web = function (instance) {
             ttl = ttl || 24 * 60 * 60 * 365;
             var domain = $('#openerp-domain-value').text();
             document.cookie = [
-                this.name + '|' + name + '=' + encodeURIComponent(JSON.stringify(value)),
+                    this.name + '|' + name + '=' + encodeURIComponent(JSON.stringify(value)),
                 'path=/',
-                'max-age=' + ttl,
-                'expires=' + new Date(new Date().getTime() + ttl * 1000).toGMTString(),
-                'domain=' + domain
+                    'max-age=' + ttl,
+                    'expires=' + new Date(new Date().getTime() + ttl * 1000).toGMTString(),
+                    'domain=' + domain
             ].join(';');
         }
     });
@@ -172,9 +172,9 @@ openerp.up_web = function (instance) {
                     height: height, // height not including margins, borders or padding
                     controls:   // controls to add to the toolbar
                         "bold italic underline strikethrough | font size " +
-                            " style " +
-                            "| color highlight removeformat | bullets numbering | outdent " +
-                            "indent |  alignleft center alignright justify | undo redo | link unlink | fileuploader imageuploader videouploader icon | source",
+                        " style " +
+                        "| color highlight removeformat | bullets numbering | outdent " +
+                        "indent |  alignleft center alignright justify | undo redo | link unlink | fileuploader imageuploader videouploader icon | source",
                     //"bold italic underline strikethrough " +
                     //"| removeformat | bullets numbering | outdent " +
                     //"indent | link unlink | fileuploader imageuploader icon | source",
@@ -614,12 +614,83 @@ openerp.up_web = function (instance) {
                 new instance.web.CompoundContext(self.build_context(), context || {})
             );
             pop.on("elements_selected", self, function (element_ids) {
-                _.each(element_ids,function (element_id) {
+                _.each(element_ids, function (element_id) {
                     self.add_id(element_id);
                 });
                 self.focus();
             });
         }
     });
+
+    instance.web.ListView.include({
+
+        resize_fields: function () {
+            if (!this.editor.is_editing()) {
+                return;
+            }
+            for (var i = 0, len = this.fields_for_resize.length; i < len; ++i) {
+                var item = this.fields_for_resize[i];
+                if (!item.field.get('effective_invisible')) {
+                    this.resize_field(item.field, item.cell);
+                }
+            }
+        },
+
+        setup_events: function () {
+            var self = this;
+            _.each(this.editor.form.fields, function (field, field_name) {
+                var set_invisible = function () {
+                    field.set({'force_invisible': field.get('effective_readonly')});
+                };
+                field.on("change:effective_readonly", self, set_invisible);
+                set_invisible();
+                field.on('change:effective_invisible', self, function () {
+                    if (field.get('effective_invisible')) {
+                        return;
+                    }
+                    var item = _(self.fields_for_resize).find(function (item) {
+                        return item.field === field;
+                    });
+                    if (item) {
+                        setTimeout(function () {
+                            self.resize_field(item.field, item.cell);
+                        }, 0);
+                    }
+
+                });
+            });
+            this.editor.$el.on('keyup keypress keydown', function (e) {
+                if (!self.editor.is_editing()) {
+                    return true;
+                }
+                var key = _($.ui.keyCode).chain()
+                    .map(function (v, k) {
+                        return {name: k, code: v};
+                    })
+                    .find(function (o) {
+                        return o.code === e.which;
+                    })
+                    .value();
+                if (!key) {
+                    return true;
+                }
+                var method = e.type + '_' + key.name;
+                if (!(method in self)) {
+                    return true;
+                }
+                return self[method](e);
+            });
+        }
+    });
+
+    instance.web.View.include({
+
+        is_action_enabled: function (action) {
+            var attrs = this.fields_view.arch.attrs;
+            var context = this.dataset.context;
+            return (action in attrs) && eval(attrs[action]) != undefined ? JSON.parse(eval(attrs[action])) : true;
+        }
+    });
+
 
 };
