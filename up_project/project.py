@@ -221,7 +221,7 @@ class updis_project(osv.osv):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
             review_id = obj.create_uid.id
-            if review_id == uid:
+            if review_id == context.get('uid', 1):
                 result[obj.id] = True
             else:
                 result[obj.id] = False
@@ -234,35 +234,34 @@ class updis_project(osv.osv):
             result[obj.id] = True
         return result
 
-
     def _is_user_in_operator_group(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            result[obj.id] = self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context)
+            result[obj.id] = self.user_has_groups(cr, context.get('uid', 1), 'up_project.group_up_project_jingyingshi', context=context)
         return result
 
     def _is_user_in_engineer_group(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            result[obj.id] = self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context)
+            result[obj.id] = self.user_has_groups(cr, context.get('uid', 1), 'up_project.group_up_project_zongshishi', context=context)
         return result
 
     def _is_chief(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            result[obj.id] = self.user_has_groups(cr, uid, 'up_project.group_up_project_chief', context=context)
+            result[obj.id] = self.user_has_groups(cr, context.get('uid', 1), 'up_project.group_up_project_chief', context=context)
         return result
 
     def _is_admin(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            result[obj.id] = self.user_has_groups(cr, uid, 'up_project.group_up_project_admin', context=context)
+            result[obj.id] = self.user_has_groups(cr, context.get('uid', 1), 'up_project.group_up_project_admin', context=context)
         return result
 
     def _is_user_is_project_manager(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            if uid in [r.id for r in obj.user_id]:
+            if context.get('uid', 1) in [r.id for r in obj.user_id]:
                 result[obj.id] = True
             else:
                 result[obj.id] = False
