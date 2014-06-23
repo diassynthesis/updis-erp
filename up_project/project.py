@@ -348,6 +348,7 @@ class updis_project(osv.osv):
         "xiangmubianhao": fields.char(u"Project Num", select=True, size=128, ),
         "chenjiebumen_id": fields.many2one("hr.department", u"In Charge Department"),
         "guimo": fields.char(u"Scale", size=64),
+        # Second type
         "categories_id": fields.many2one("project.upcategory", u"项目类别"),
         "customer_contact": fields.many2one('res.partner', 'Customer Contact'),
         "guanlijibie": fields.selection([('LH200307240001', u'院级'), ('LH200307240002', u'所级')], u'Project Level'),

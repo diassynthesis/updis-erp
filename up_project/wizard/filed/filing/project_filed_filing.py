@@ -382,4 +382,5 @@ class SecondaryCategory(osv.Model):
     _name = 'project.project.filed.filling.secondcategory'
     _columns = {
         'name': fields.char('Name', size=128),
+        'category_id':fields.many2one('project.upcategory','Project Category'),
     }

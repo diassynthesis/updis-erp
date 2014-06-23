@@ -45,6 +45,7 @@
             <field name="arch" type="xml">
                 <tree string="Project Filed Document Secondary Category" version="7.0" editable="top">
                     <field name="name"/>
+                    <field name="category_id"/>
                 </tree>
             </field>
         </record>

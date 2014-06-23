@@ -79,6 +79,10 @@
             <field name="name">咨询</field>
             <field name="project_type" ref="project_type_consulting"/>
         </record>
+        <record id="cat13" model="project.upcategory">
+            <field name="name">交通专项</field>
+            <field name="project_type" ref="project_type_planning"/>
+        </record>
 
 
         <!--project.config.sms-->
