@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="ListView.row.binary">
+        <t t-if="is_downloadable === 3">
+            <a t-att-href="href" target="_blank"><t t-esc="text"/></a> (<t t-esc="size"/>)
+        </t>
+        <t t-if="is_downloadable === 1">
+            <a style="text-decoration:none; color:#4c4c4c;"><t t-esc="text"/></a> (<t t-esc="size"/>)(需要下载审批)
+        </t>
+        <t t-if="is_downloadable === 0">
+            <a style="text-decoration:none; color:#4c4c4c;"><t t-esc="text"/></a> (<t t-esc="size"/>)(无权限下载)
+        </t>
+    </t>
+</templates>

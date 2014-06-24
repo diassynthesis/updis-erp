@@ -20,6 +20,7 @@ UPDIS Implementation Guide.""",
         'hr_view.xml',
         'res_users.xml',
         'training.xml',
+        'hr_wish_view.xml',
     ],
     'js': [
         'static/src/js/updis.js',

@@ -1,0 +1,53 @@
+.oe_view_manager_sidebar .oe_multi_container {
+    position: absolute;
+}
+
+.oe_view_manager_sidebar .oe_multi_container .multi_file_uploader_container .qq-uploader .qq-upload-button {
+    background-color: #ececec;
+    color: #4c4c4c;
+    padding: 0 10px 0 10px;
+    border: 1px solid rgba(0, 0, 0, 0.4) !important;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(155, 155, 155, 0.4) inset;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(155, 155, 155, 0.4) inset;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    width: 60px;
+}
+
+.oe_view_manager_sidebar .oe_multi_container .multi_file_uploader_container .qq-uploader .qq-upload-button-hover {
+    background-color: #fbfbfb;
+    color: #4c4c4c;
+    padding: 0 10px 0 10px;
+    border: 1px solid rgba(0, 0, 0, 0.4) !important;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(155, 155, 155, 0.4) inset;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(155, 155, 155, 0.4) inset;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    width: 60px;
+}
+
+.oe_view_manager_sidebar .oe_multi_container .multi_file_uploader_container .qq-uploader .qq-upload-list {
+    border: 1px solid #afafb6;
+    background: white;
+    padding: 4px 0;
+    min-width: 140px;
+    text-align: left;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    display: none;
+}
+
+.oe_view_manager_sidebar .oe_multi_container .multi_file_uploader_container .qq-uploader .qq-upload-list li {
+    font-size: 13px !important;
+    margin: 2px 0 2px 0;
+
+}
+
+.openerp .oe_list_content > tbody > tr > td.oe_list_field_binary {
+    white-space: normal !important;
+}
+

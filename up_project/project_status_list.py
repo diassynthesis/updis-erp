@@ -12,8 +12,10 @@ status_code = {
     'processing_add_member': 20101,
     'processing_filed': 20102,
 
-    'filed_start': 30101,
-    'filed_end': 30102,
+    'apply_filing': 30101,
+    'manager_approve': 30104,
+    'approve_filing': 30103,
+    'end_filing': 30102,
 
     'project_cancel': 40101,
     'project_stop': 50101,

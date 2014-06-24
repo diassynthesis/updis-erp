@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!--wizard-->
+        <record id="view_up_library_book_record_wiz_form" model="ir.ui.view">
+            <field name="name">library.book.record.wizard.form</field>
+            <field name="model">library.book.record.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Borrowing Record" version="7.0">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="book_id" placeholder="Book Name"
+                                       readonly="context.get('is_in_book_view',0)"/>
+                            </h1>
+                        </div>
+                        <group invisible="1">
+                            <field name="record_id"/>
+                        </group>
+                        <group>
+                            <group>
+                                <group>
+                                    <field name="borrower"/>
+                                </group>
+                                <group>
+                                    <field name="borrow_date" on_change="on_change_borrow_date(borrow_date)"/>
+                                    <field name="due_to_return_date"/>
+                                </group>
+                                <group>
+                                    <field name="is_returned" on_change="on_change_is_returned(is_returned)"/>
+                                </group>
+                                <group>
+                                    <field name="return_date" attrs="{'required':[('is_returned','=',True)]}"/>
+                                </group>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Save" class="oe_highlight" name="save" type="object"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="view_up_library_book_wiz_form" model="ir.ui.view">
+            <field name="name">library.book.book.wizard.form</field>
+            <field name="model">library.book.book.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Books" version="7.0">
+                    <sheet>
+                        <div class="oe_left">
+                            <field name="image" widget='image' class="oe_avatar" placeholder="封面上传"
+                                   options='{"preview_image": "image_medium", "size": [90,90]}'/>
+                            <div style="color:grey;margin-left: 20px;">
+                                封面上传
+                            </div>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Book Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="code"/>
+                                <field name="category"/>
+                                <field name="type"/>
+                                <field name="author"/>
+                                <field name="publisher"/>
+                            </group>
+                            <group>
+                                <field name="purchase_date"/>
+                                <field name="price"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="comment" nolabel="1" placeholder="Comment"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Save" class="oe_highlight" name="save" type="object"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <!--actions-->
+        <record id="mark_as_borrowed" model="ir.actions.act_window">
+            <field name="name">Mark As Borrowed Action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">library.book.record.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_up_library_book_record_wiz_form"/>
+            <field name="target">new</field>
+            <field name="context">{'is_in_book_view':1,'to_borrowed':True}</field>
+        </record>
+        <record id="mark_as_return" model="ir.actions.act_window">
+            <field name="name">Mark As Returned Action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">library.book.record.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_up_library_book_record_wiz_form"/>
+            <field name="target">new</field>
+            <field name="context">{'is_in_book_view':1,'to_return':True}</field>
+        </record>
+        <record id="mark_as_bought" model="ir.actions.act_window">
+            <field name="name">Mark As Bought Action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">library.book.book.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_up_library_book_wiz_form"/>
+            <field name="target">new</field>
+            <field name="context">{'to_bought':True}</field>
+        </record>
+        <!--library.book.book-->
+        <record id="view_up_library_book_search" model="ir.ui.view">
+            <field name="name">library.book.book.search</field>
+            <field name="model">library.book.book</field>
+            <field name="arch" type="xml">
+                <search string="Book Search">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="category"/>
+                    <field name="type"/>
+                    <field name="author"/>
+                    <field name="price"/>
+                    <field name="state"/>
+                    <filter name="be-borrowed" string="Be Borrowed" domain="[('state','in',['borrowed'])]"/>
+                    <filter name="in-store" string="In Store" domain="[('state','in',['in_store'])]"/>
+                    <filter name="be-lost-a-scrap" string="Be Lost And Scrap"
+                            domain="[('state','in',['scrap','lost'])]"/>
+                    <group expand="0" string="Group by...">
+                        <filter name="by-category" string="By Category" domain="[]"
+                                context="{'group_by':'category'}"/>
+                        <filter name="by-type" string="By Type" domain="[]"
+                                context="{'group_by':'type'}"/>
+                        <filter name="by-state" string="By State" domain="[]"
+                                context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="view_up_library_book_tree" model="ir.ui.view">
+            <field name="name">library.book.book.tree</field>
+            <field name="model">library.book.book</field>
+            <field name="arch" type="xml">
+                <tree string="Books" version="7.0" colors="grey:state in ('lost','scrap');red:state=='borrowed'">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="category"/>
+                    <field name="type"/>
+                    <field name="author"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_up_library_book_form" model="ir.ui.view">
+            <field name="name">library.book.book.form</field>
+            <field name="model">library.book.book</field>
+            <field name="arch" type="xml">
+                <form string="Books" version="7.0">
+                    <header>
+                        <button name="%(mark_as_borrowed)d" type="action"
+                                string="Mask As Borrowed" class="oe_highlight"
+                                groups="up_library.library_manager"
+                                attrs="{'invisible':['|',('is_borrowable','=',False),('state','in',['scrap','lost'])]}"/>
+                        <button name="%(mark_as_return)d" type="action"
+                                string="Mask As Returned" class="oe_highlight"
+                                groups="up_library.library_manager"
+                                attrs="{'invisible':['|',('is_borrowable','=',True),('state','in',['scrap','lost'])]}"/>
+                        <button name="mark_as_scrap" type="object"
+                                string="Mask As Scrap"
+                                groups="up_library.library_manager"
+                                states="in_store,borrowed,lost"
+                                confirm="Are you sure this book is scrap?"/>
+                        <button name="mark_as_lost" type="object"
+                                string="Mask As Lost"
+                                groups="up_library.library_manager"
+                                states="in_store,borrowed,scrap"
+                                confirm="Are you sure this book is lost?"/>
+                        <button name="recover" type="object"
+                                string="Recover"
+                                groups="up_library.library_manager"
+                                states="scrap,lost"
+                                confirm="Are you sure this book recovered?"/>
+                        <field name="state" widget="statusbar" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_left">
+                            <field name="image" widget='image' class="oe_avatar" placeholder="封面上传"
+                                   options='{"preview_image": "image_medium", "size": [90,90]}'/>
+                            <div style="color:grey;margin-left: 20px;">
+                                封面上传
+                            </div>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Book Name"/>
+                            </h1>
+                        </div>
+                        <group invisible="1">
+                            <field name="is_borrowable"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="code"/>
+                                <field name="category"/>
+                                <field name="type"/>
+                                <field name="author"/>
+                                <field name="publisher"/>
+                            </group>
+                            <group>
+                                <field name="purchase_date"/>
+                                <field name="price"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="comment"/>
+                        </group>
+                        <notebook>
+                            <page string="Borrow Record">
+                                <field name="record_ids" readonly="1"
+                                       context="{'is_in_book_view':1,'is_in_book_view_footer':0}"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!--library.book.record-->
+        <record id="view_up_library_record_search" model="ir.ui.view">
+            <field name="name">library.book.record.search</field>
+            <field name="model">library.book.record</field>
+            <field name="arch" type="xml">
+                <search string="Book Record Search">
+                    <field name="book_id"/>
+                    <field name="borrower"/>
+                    <field name="borrow_date"/>
+                    <field name="due_to_return_date"/>
+                    <field name="is_returned"/>
+                    <field name="return_date"/>
+                </search>
+            </field>
+        </record>
+        <record id="view_up_library_book_record_tree" model="ir.ui.view">
+            <field name="name">library.book.record.tree</field>
+            <field name="model">library.book.record</field>
+            <field name="arch" type="xml">
+                <tree string="Borrowing Record" version="7.0" create="false"
+                      colors="grey:need_return==0;red:need_return==1;orange:need_return==2">
+                    <field name="book_id" invisible="context.get('is_in_book_view',0)"/>
+                    <field name="borrower"/>
+                    <field name="borrow_date"/>
+                    <field name="due_to_return_date"/>
+                    <field name="is_returned"/>
+                    <field name="return_date"/>
+                    <field name="need_return" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_up_library_book_record_form" model="ir.ui.view">
+            <field name="name">library.book.record.form</field>
+            <field name="model">library.book.record</field>
+            <field name="arch" type="xml">
+                <form string="Borrowing Record" version="7.0" create="false">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="book_id" placeholder="Book Name"
+                                       readonly="context.get('is_in_book_view',0)"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <group>
+                                    <field name="borrower"/>
+                                </group>
+                                <group>
+                                    <field name="borrow_date" on_change="on_change_borrow_date(borrow_date)"/>
+                                    <field name="due_to_return_date"/>
+                                </group>
+                                <group>
+                                    <field name="is_returned" on_change="on_change_is_returned(is_returned)"/>
+                                </group>
+                                <group>
+                                    <field name="return_date" attrs="{'required':[('is_returned','=',True)]}"/>
+                                </group>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!--library.book.wish-->
+        <record id="view_up_library_wish_search" model="ir.ui.view">
+            <field name="name">library.book.wish.search</field>
+            <field name="model">library.book.wish</field>
+            <field name="arch" type="xml">
+                <search string="Book Wish Search">
+                    <field name="name"/>
+                    <field name="author"/>
+                    <field name="publisher"/>
+                    <field name="state"/>
+                    <filter name="need-process" string="Need Process" domain="[('state','=','apply')]"/>
+                    <group expand="0" string="Group by...">
+                        <filter name="by-state" string="By State" domain="[]"
+                                context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="view_up_library_book_wish_tree" model="ir.ui.view">
+            <field name="name">library.book.wish.tree</field>
+            <field name="model">library.book.wish</field>
+            <field name="arch" type="xml">
+                <tree string="Wish Book" version="7.0" colors="red:state=='apply';grey:state=='fail'">
+                    <field name="name"/>
+                    <field name="author"/>
+                    <field name="publisher"/>
+                    <field name="state"/>
+                    <field name="create_uid"/>
+                    <field name="create_date"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_up_library_book_wish_form" model="ir.ui.view">
+            <field name="name">library.book.wish.form</field>
+            <field name="model">library.book.wish</field>
+            <field name="arch" type="xml">
+                <form string="Wish Book" version="7.0">
+                    <header>
+                        <button name="%(mark_as_bought)d" type="action"
+                                string="Marked As bought" class="oe_highlight"
+                                states="apply"
+                                groups="up_library.library_manager"/>
+                        <button name="reject_wish_request" type="object"
+                                string="Marked As Un bought"
+                                states="apply"
+                                groups="up_library.library_manager"
+                                confirm="Are you sure you want reject this wish book?"/>
+                        <field name="state" widget="statusbar" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_left">
+                            <field name="image" widget='image' class="oe_avatar" placeholder="封面上传"
+                                   options='{"preview_image": "image_medium", "size": [90,90]}'/>
+                            <div style="color:grey;margin-left: 20px;">
+                                封面上传
+                            </div>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Book Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="author"/>
+                                <field name="publisher"/>
+                            </group>
+                            <group>
+                                <field name="price"/>
+                            </group>
+                            <group colspan="2">
+                                <label for="comment" string="Comment"/>
+                                <field name="comment" nolabel="1" placeholder="Comment" colspan="2"/>
+                            </group>
+                            <group>
+                                <field name="link_book_id" attrs="{'invisible':[('state','!=','bought')]}"
+                                       readonly="1"/>
+                            </group>
+                            <newline/>
+                            <group col="4" colspan="2">
+                                <field name="create_uid" readonly="1"/>
+                                <field name="create_date" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</openerp>

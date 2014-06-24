@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_up_library_config_category_tree" model="ir.ui.view">
+            <field name="name">library.book.category.tree</field>
+            <field name="model">library.book.category</field>
+            <field name="arch" type="xml">
+                <tree string="Book Category Config" version="7.0" editable="top">
+                    <field name="parent_id"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_up_library_config_type_tree" model="ir.ui.view">
+            <field name="name">library.book.type.tree</field>
+            <field name="model">library.book.type</field>
+            <field name="arch" type="xml">
+                <tree string="Book Type Config" version="7.0" editable="top">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <!--library.book.config-->
+        <record id="view_up_library_book_config_tree" model="ir.ui.view">
+            <field name="name">library.book.config.tree</field>
+            <field name="model">library.book.config</field>
+            <field name="arch" type="xml">
+                <tree string="log" version="7.0" delete="false" create="false" editable="bottom">
+                    <field name="name" readonly="1"/>
+                    <field name="value"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</openerp>

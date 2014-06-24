@@ -1,5 +1,6 @@
 import project
+import attachment
 import project_sms
 import hr_employee
-import project_config
+import config
 from . import wizard, report

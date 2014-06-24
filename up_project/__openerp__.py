@@ -8,15 +8,21 @@
 UPDIS Project Module.""",
     'author': 'cysnake4713',
     'website': 'http://openerp.com',
-    'depends': ['base', 'project', 'oecn_base_fonts', 'report_webkit'],
+    'depends': ['base', 'project', 'oecn_base_fonts', 'report_webkit',],
     'init_xml': [
 
     ],
     'update_xml': [
-
+        'report/header.xml',
         'security/updis_security.xml',
         'security/ir.model.access.csv',
+        'data/updis_data.xml',
+        'data/document.directory.csv',
+        'data/project.project.filed.type.csv',
+        'data/project.project.filed.tag.csv',
+        'data/project.project.filed.filling.secondcategory.csv',
         'project_view.xml',
+        'project_form_view.xml',
 
         'wizard/active/project_active_view.xml',
         'wizard/active/tasking/project_active_tasking_action.xml',
@@ -30,16 +36,17 @@ UPDIS Project Module.""",
 
         'wizard/filed/project_filed_view.xml',
         'wizard/filed/project_filed_workflow.xml',
+        'wizard/filed/filing/project_filing.xml',
 
 
         'project_workflow.xml',
 
         'report/active/renwuxiada.xml',
-        'data/updis_data.xml',
+        'report/filed/report.xml',
 
         'hr_view.xml',
         'res_partner.xml',
-        'project_config.xml',
+        'config/project_config.xml',
     ],
     'css': [
         'static/src/css/up_project.css'

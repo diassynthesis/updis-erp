@@ -5,13 +5,14 @@ import urllib2
 from up_tools.bigantlib import BigAntClient
 from urllib import urlencode
 
-from osv import osv, fields
+from openerp.osv import osv, fields
 
 
 class sms(osv.Model):
     _sms_gateway = "http://web.mobset.com/SDK/Sms_Send.asp"
     _name = "sms.sms"
     _order = "id desc"
+    _bigAntClient = BigAntClient()
     _columns = {
         'subject': fields.char('Subject', size=256),
         'content': fields.text("Content", size=2000),
@@ -55,8 +56,7 @@ class sms(osv.Model):
                 params['recvLoginNames'] = sms.to
                 params['subject'] = sms.subject
                 params['content'] = sms.content
-                bigAntClient = BigAntClient()
-                resp = bigAntClient.Employee___asmx.SendMessenge.post(**params)
+                resp = self._bigAntClient.Employee___asmx.SendMessenge.post(**params)
 
                 if resp.text == "1":
                     sms_server_id = 'Success'
@@ -145,24 +145,17 @@ class sms(osv.Model):
                     'sms_server_id': str(e),
                 })
 
-    def send_sms_to_group(self, cr, uid, from_rec, content, model, res_id, group_id, context=None):
-
-        model_pool = self.pool.get('ir.model.data')
-        model_ids = model_pool.search(cr, 1, [('model', '=', 'res.groups'), ('name', '=', group_id)],
-                                      context=context)
-
-        models = model_pool.browse(cr, 1, model_ids, context=context)
-        if models:
-            groups_pool = self.pool.get("res.groups")
-            group = groups_pool.browse(cr, 1, models[0].res_id, context=context)
+    def send_sms_to_group(self, cr, uid, from_rec, content, model, res_id, group_xml_id, context=None):
+        (module, xml_id) = group_xml_id.split('.')
+        group = self.pool.get('ir.model.data').get_object(cr, 1, module, xml_id, context=context)
+        if group:
             to = ','.join(
                 [rid.mobile_phone.strip() for rid in group.users if rid.mobile_phone and rid.mobile_phone.strip()])
 
             if to:
-                sms = self.pool.get('sms.sms')
-                sid = sms.create(cr, uid, {'from': from_rec, 'to': to, 'content': content,
-                                           'model': model, 'res_id': res_id},
-                                 context=context)
+                self.create(cr, uid, {'from': from_rec, 'to': to, 'content': content,
+                                      'model': model, 'res_id': res_id},
+                            context=context)
 
     def send_sms_to_users(self, cr, uid, users, from_rec, content, model, res_id, context=None):
         to = ','.join(
@@ -199,23 +192,15 @@ class sms(osv.Model):
                                'type': 'big_ant'},
                               context=context)
 
-    def send_big_ant_to_group(self, cr, uid, from_rec, subject, content, model, res_id, group_id, context=None):
-
-        model_pool = self.pool.get('ir.model.data')
-        model_ids = model_pool.search(cr, 1, [('model', '=', 'res.groups'), ('name', '=', group_id)],
-                                      context=context)
-
-        models = model_pool.browse(cr, 1, model_ids, context=context)
-        if models:
-            groups_pool = self.pool.get("res.groups")
-            group = groups_pool.browse(cr, 1, models[0].res_id, context=context)
+    def send_big_ant_to_group(self, cr, uid, from_rec, subject, content, model, res_id, group_xml_id, context=None):
+        (module, xml_id) = group_xml_id.split('.')
+        group = self.pool.get('ir.model.data').get_object(cr, 1, module, xml_id, context=context)
+        if group:
             to = ';'.join([user.big_ant_login_name for user in group.users if user.big_ant_login_name])
-
             if to:
-                sms = self.pool.get('sms.sms')
-                sid = sms.create(cr, uid, {'from': from_rec, 'to': to, 'subject': subject, 'content': content,
-                                           'model': model, 'res_id': res_id, 'type': 'big_ant'},
-                                 context=context)
+                self.create(cr, uid, {'from': from_rec, 'to': to, 'subject': subject, 'content': content,
+                                      'model': model, 'res_id': res_id, 'type': 'big_ant'},
+                            context=context)
 
     def send_big_ant_to_config_group(self, cr, uid, config_group_id, from_rec, subject, content, model, res_id,
                                      context=None):

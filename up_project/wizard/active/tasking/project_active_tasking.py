@@ -78,14 +78,13 @@ class project_active_tasking(osv.osv):
                         result_flag = True
 
                     config_group_id = tools.get_id_by_external_id(cr, self.pool,
-                                                          extends_id="project_active_tasking_config_record",
-                                                          model="project.active.tasking.config")
+                                                                  extends_id="project_active_tasking_config_record",
+                                                                  model="project.active.tasking.config")
                     config_group = self.pool.get('project.active.tasking.config').browse(cr, 1, config_group_id,
                                                                                          context=context)
                     config_group_ids = [z.id for z in config_group.cover_director_config]
                     if user_department_id == project_department_id and current_uid in config_group_ids:
                         result_flag = True
-
 
             result[obj.id] = result_flag
         return result
@@ -172,9 +171,9 @@ class project_active_tasking(osv.osv):
         "hetongyizhi": fields.selection([(u"合同/协议要求表述不一致已解决", u"合同/协议要求表述不一致已解决"),
                                          (u"没有出现不一致", u"没有出现不一致")], u"不一致是否解决", ),
         "ziyuan": fields.selection([(u'人力资源满足', u'人力资源满足'), (u'人力资源不足', u'人力资源不足')], u'人力资源', ),
-        "shebei": fields.selection([(u'设备满足', '设备满足'), (u'设备不满足', u'设备不满足')], u"设备", ), #本院是否有能力满足规定要求
-        "gongqi": fields.selection([(u'工期可接受', '工期可接受'), (u'工期太紧', u'工期太紧')], u"工期", ), #本院是否有能力满足规定要求
-        "shejifei": fields.selection([(u'设计费合理', '设计费合理'), (u'设计费太低', u'设计费太低')], u'设计费', ), #本院是否有能力满足规定要求
+        "shebei": fields.selection([(u'设备满足', u'设备满足'), (u'设备不满足', u'设备不满足')], u"设备", ),  #本院是否有能力满足规定要求
+        "gongqi": fields.selection([(u'工期可接受', u'工期可接受'), (u'工期太紧', u'工期太紧')], u"工期", ),  #本院是否有能力满足规定要求
+        "shejifei": fields.selection([(u'设计费合理', u'设计费合理'), (u'设计费太低', u'设计费太低')], u'设计费', ),  #本院是否有能力满足规定要求
 
 
         "duofanghetong": fields.boolean(u"多方合同"),
@@ -187,7 +186,7 @@ class project_active_tasking(osv.osv):
         'is_cover_sign': fields.function(_is_cover_sign, type="boolean",
                                          string="Is Sign by Cover Director"),
         'is_cover_sign_final': fields.function(_is_cover_sign_final, type="boolean",
-                                         string="Is Sign by Cover Director Final"),
+                                               string="Is Sign by Cover Director Final"),
         'director_reviewer_apply_id': fields.many2one('res.users', string=u'Review Apply By'),
         'director_reviewer_apply_image': fields.related('director_reviewer_apply_id', "sign_image", type="binary",
                                                         string=u'Review Image'),
@@ -341,9 +340,21 @@ class project_active_tasking(osv.osv):
         log_info = u'总师室打回申请单'
         return self._send_workflow_signal(cr, uid, ids, log_info, 'jingyinshi_reject')
 
+    def _update_attachments(self, cr, uid, ids, context=None):
+        attachment_obj = self.pool.get('ir.attachment')
+        dummy, trash_dir_id = self.pool.get('ir.model.data').get_object_reference(cr, 1, 'up_project', 'dir_up_project_trash')
+        dummy, actived_dir_id = self.pool.get('ir.model.data').get_object_reference(cr, 1, 'up_project', 'dir_up_project_active')
+        for tasking in self.browse(cr, uid, ids, context):
+            all_attachments = attachment_obj.search(cr, uid, [('res_model', '=', 'project.project'), ('res_id', '=', tasking.project_id)], context)
+            saved_attachment_ids = [a.id for a in tasking.project_id.attachments] + [a.id for a in tasking.else_attachments]
+            trash_attachment_ids = set(all_attachments) - set(saved_attachment_ids)
+            if saved_attachment_ids: attachment_obj.write(cr, 1, saved_attachment_ids, {'parent_id': actived_dir_id}, context)
+            if trash_attachment_ids: attachment_obj.write(cr, 1, list(trash_attachment_ids), {'parent_id': trash_dir_id}, context)
+
 
     def manager_review_accept(self, cr, uid, ids, context=None):
         self._sign_form(cr, uid, ids, 'director_approve', 'director_approve_time', context=context)
+        self._update_attachments(cr, uid, ids, context=None)
         log_info = u'负责人确认,启动项目'
         return self._send_workflow_signal(cr, uid, ids, log_info, 'fuzeren_submit')
 
@@ -399,6 +410,23 @@ class project_active_tasking(osv.osv):
             vals['else_attachments'] = val
 
         return super(project_active_tasking, self).write(cr, uid, ids, vals, context=context)
+
+    def reject_commit_phone(self, cr, uid, id, comment, context=None):
+        if context is None:
+            context = {}
+        record_id = id
+        tasking = self.pool.get("project.project.active.tasking").browse(cr, uid, record_id, context)
+        tasking.write({
+            'reject_logs': [(0, 0, {'comment': comment, 'state': tasking.state})],
+        })
+        if tasking.state == "suozhangshenpi":
+            return tasking.draft_reject()
+        if tasking.state == "zhidingbumen":
+            return tasking.operator_reject()
+        if tasking.state == "zhidingfuzeren":
+            return tasking.engineer_reject()
+        if tasking.state == "suozhangqianzi":
+            return tasking.manager_reject()
 
 
 class project_project_inherit(osv.osv):

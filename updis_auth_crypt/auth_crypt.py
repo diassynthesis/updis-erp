@@ -29,7 +29,7 @@ def gen_salt(length=8, symbols=None):
     return ''.join(sample(symbols, length))
 
 
-def md5crypt( raw_pw, salt='', magic=magic_md5 ):
+def md5crypt(raw_pw, salt='', magic=magic_md5):
     h = hashlib.md5(raw_pw).hexdigest()
     return h
 
@@ -53,7 +53,7 @@ class res_users(osv.osv):
             cr.execute('update res_users set password_crypt=%s where id=%s', (encrypted, int(id)))
         del value
 
-    def get_pw( self, cr, uid, ids, name, args, context ):
+    def get_pw(self, cr, uid, ids, name, args, context):
         cr.execute('select id, password from res_users where id in %s', (tuple(map(int, ids)),))
         stored_pws = cr.fetchall()
         res = {}
@@ -67,6 +67,10 @@ class res_users(osv.osv):
         'password': fields.function(get_pw, fnct_inv=set_pw, type='char', string='Password', invisible=True,
                                     store=True),
         'password_crypt': fields.char(string='Encrypted Password', invisible=True),
+    }
+
+    _defaults = {
+        'password_crypt': '202cb962ac59075b964b07152d234b70',
     }
 
     def check_credentials(self, cr, uid, password):

@@ -1,7 +1,10 @@
 # -*- encoding:utf-8 -*-
 import datetime
-from osv import osv, fields
+from operator import itemgetter
+from openerp import SUPERUSER_ID
+from openerp.osv import osv, fields
 from up_tools import tools
+from openerp.tools.translate import _
 
 
 class project_project_wizard(osv.osv_memory):
@@ -100,6 +103,8 @@ class project_project_wizard(osv.osv_memory):
         record_id = context and context.get('active_id', False) or False
         project = self.pool.get("project.project").browse(cr, uid, record_id, context)
         self_record = self.browse(cr, uid, ids[0], context)
+        tasking_obj = self.pool['project.project.active.tasking']
+        tasking_id = tasking_obj.search(cr, uid, [('project_id', '=', record_id)], context=context)
         project.write({
             'user_id': [(6, 0, [r.id for r in self_record.user_id])],
             'name': self_record.name,
@@ -122,6 +127,8 @@ class project_project_wizard(osv.osv_memory):
             'waibao': self_record.waibao,
             'shizhenpeitao': self_record.shizhenpeitao,
         })
+        tasking_obj.write(cr, uid, tasking_id, {'tender_category': self_record.toubiaoleibie, }, context=context)
+
         return True
 
     def onchange_country_id(self, cr, uid, ids, type_id, context=None):
@@ -161,6 +168,13 @@ class project_upcategory(osv.osv):
         res = self.name_get(cr, uid, ids, context=context)
         return dict(res)
 
+    def _get_sequence(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        SQL = "SELECT count(*) FROM project_project WHERE categories_id = %d"
+        for obj in self.browse(cr, uid, ids, context=context):
+            cr.execute(SQL % obj.id)
+            result[obj.id] = map(itemgetter(0), cr.fetchall())[0]
+        return result
 
     _columns = {
         "name": fields.char("Category", size=64, required=True),
@@ -169,12 +183,13 @@ class project_upcategory(osv.osv):
         'summary': fields.text("Summary"),
         'parent_id': fields.many2one('project.upcategory', "Parent Category", ondelete='set null', select=True),
         'child_ids': fields.one2many('project.upcategory', 'parent_id', 'Child Categories'),
+        'index': fields.function(_get_sequence, type='integer', store=True, string='Sequence'),
 
     }
     _sql_constraints = [
         ('name', 'unique(parent_id,name)', 'The name of the category must be unique')
     ]
-    _order = 'parent_id,name asc'
+    _order = 'index desc'
     _constraints = [
         (osv.osv._check_recursion, 'Error! You cannot create recursive categories', ['parent_id'])
     ]
@@ -186,7 +201,7 @@ class project_log(osv.osv):
     _order = "log_date desc"
     _columns = {
         'log_date': fields.datetime('Created on'),
-        'project_id': fields.many2one('project.project', "related Project"),
+        'project_id': fields.many2one('project.project', "related Project", ondelete="cascade"),
         'log_user': fields.many2one('res.users', 'Log User'),
         'log_info': fields.char(size=256, string="Log Info"),
     }
@@ -206,18 +221,7 @@ class updis_project(osv.osv):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
             review_id = obj.create_uid.id
-            if review_id == uid:
-                result[obj.id] = True
-            else:
-                result[obj.id] = False
-
-        return result
-
-    def _is_project_director(self, cr, uid, ids, field_name, args, context=None):
-        result = dict.fromkeys(ids, False)
-        for obj in self.browse(cr, uid, ids, context=context):
-            review_id = obj.director_reviewer_id.id
-            if review_id == uid:
+            if review_id == context.get('uid', 1):
                 result[obj.id] = True
             else:
                 result[obj.id] = False
@@ -230,35 +234,34 @@ class updis_project(osv.osv):
             result[obj.id] = True
         return result
 
-
     def _is_user_in_operator_group(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            result[obj.id] = self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context)
+            result[obj.id] = self.user_has_groups(cr, context.get('uid', 1), 'up_project.group_up_project_jingyingshi', context=context)
         return result
 
     def _is_user_in_engineer_group(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            result[obj.id] = self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context)
+            result[obj.id] = self.user_has_groups(cr, context.get('uid', 1), 'up_project.group_up_project_zongshishi', context=context)
         return result
 
     def _is_chief(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            result[obj.id] = self.user_has_groups(cr, uid, 'up_project.group_up_project_chief', context=context)
+            result[obj.id] = self.user_has_groups(cr, context.get('uid', 1), 'up_project.group_up_project_chief', context=context)
         return result
 
     def _is_admin(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            result[obj.id] = self.user_has_groups(cr, uid, 'up_project.group_up_project_admin', context=context)
+            result[obj.id] = self.user_has_groups(cr, context.get('uid', 1), 'up_project.group_up_project_admin', context=context)
         return result
 
     def _is_user_is_project_manager(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            if uid in [r.id for r in obj.user_id]:
+            if context.get('uid', 1) in [r.id for r in obj.user_id]:
                 result[obj.id] = True
             else:
                 result[obj.id] = False
@@ -271,9 +274,50 @@ class updis_project(osv.osv):
             result[obj.id] = ','.join(project_manager_name)
         return result
 
+    def is_project_member(self, cr, uid, project_id, context):
+        project = self.browse(cr, uid, project_id, context=context)
+        # Is project director?
+        hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
+        if hr_id and self.user_has_groups(cr, uid, "up_project.group_up_project_suozhang", context=context):
+            hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
+            user_department_id = hr_record.department_id.id if hr_record.department_id else "-1"
+            project_department_id = project.chenjiebumen_id.id if project.chenjiebumen_id else None
+            job_name = hr_record.job_id.name if hr_record.job_id else None
+            if user_department_id == project_department_id and (job_name == u"所长" or job_name == u"分院院长"):
+                return True
+        # Is Project Operator
+        if project.guanlijibie == 'LH200307240001' and uid in [z.id for z in project.zhuguanzongshi_id]:
+            return True
+        # Is Project Manager
+        user_id = self.read(cr, uid, project_id, ['user_id'], context=context)['user_id']
+        if uid in user_id:
+            return True
+        # Is Project common member
+        common_member = []
+        for member_job in project.member_ids:
+            common_member += [u.user_id.id for u in member_job.validation_user_ids if u.user_id]
+            common_member += [u.user_id.id for u in member_job.audit_user_ids if u.user_id]
+            common_member += [u.user_id.id for u in member_job.profession_manager_user_ids if u.user_id]
+            common_member += [u.user_id.id for u in member_job.design_user_ids if u.user_id]
+            common_member += [u.user_id.id for u in member_job.proofread_user_ids if u.user_id]
+            common_member += [u.user_id.id for u in member_job.drawing_user_ids if u.user_id]
+        if uid in set(common_member):
+            return True
+        # Not a Member
+        return False
+
+    def _is_project_member(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            if self.is_project_member(cr, context.get('uid', 1), obj.id, context=context):
+                result[obj.id] = True
+            else:
+                result[obj.id] = False
+        return result
+
     _columns = {
         # 基础信息
-        #  'analytic_account_id': fields.boolean("Over Ride"),
+        # 'analytic_account_id': fields.boolean("Over Ride"),
 
         'user_id': fields.many2many('res.users', 'project_user_id_res_user', 'project_user_id', 'res_user_id',
                                     string='Project Manager',
@@ -291,18 +335,20 @@ class updis_project(osv.osv):
         'country_id': fields.many2one('res.country', string='Country'),
         "state_id": fields.many2one('res.country.state', string='State'),
         "city": fields.char(size=128, string="City"),
-        'state': fields.selection([("project_active", u"Project Active"),
-                                   ("project_cancelled", u"Project Cancelled"),
-                                   ("project_processing", u"Project Processing"),
-                                   ("project_stop", u"Project Stop"),
-                                   ("project_pause", u"Project Pause"),
-                                   ("project_filed", u"Project Filing"),
-                                   ("project_finish", u"Project Filed"),
-                                  ], string="State"),
+        'state': fields.selection(
+            [("project_active", u"Project Active"),
+             ("project_cancelled", u"Project Cancelled"),
+             ("project_processing", u"Project Processing"),
+             ("project_stop", u"Project Stop"),
+             ("project_pause", u"Project Pause"),
+             ("project_filed", u"Project Filing"),
+             ("project_finish", u"Project Filed"), ]
+            , string="State"),
         'project_log': fields.html(u"Project Log Info", readonly=True),
         "xiangmubianhao": fields.char(u"Project Num", select=True, size=128, ),
         "chenjiebumen_id": fields.many2one("hr.department", u"In Charge Department"),
         "guimo": fields.char(u"Scale", size=64),
+        # Second type
         "categories_id": fields.many2one("project.upcategory", u"项目类别"),
         "customer_contact": fields.many2one('res.partner', 'Customer Contact'),
         "guanlijibie": fields.selection([('LH200307240001', u'院级'), ('LH200307240002', u'所级')], u'Project Level'),
@@ -311,8 +357,6 @@ class updis_project(osv.osv):
         "waibao": fields.boolean("Is Outsourcing"),
         'is_project_creater': fields.function(_is_project_creater, type="boolean",
                                               string="Is Project Creater"),
-        'is_project_director': fields.function(_is_project_director, type="boolean",
-                                               string="Is Project Director"),
         'is_project_created': fields.function(_is_project_created, type="boolean",
                                               string="Is Project Created"),
         'member_ids': fields.one2many('project.members', 'project_id', string="Members"),
@@ -327,6 +371,8 @@ class updis_project(osv.osv):
                                     string="Is User is in Admin"),
         'is_user_is_project_manager': fields.function(_is_user_is_project_manager, type="boolean",
                                                       string="Is User is The Project Manager"),
+        'is_project_member': fields.function(_is_project_member, type="boolean",
+                                             string="Is User is The Project Member"),
 
         'partner_type': fields.selection([("WT200508180001", u"深圳规划局"),
                                           ("WT200508180002", u"深圳市其他"),
@@ -355,13 +401,10 @@ class updis_project(osv.osv):
         'import_alinkman': fields.char(size=256, string='Import Alinkman'),
         'import_proejct_number': fields.char(size=256, string='Import Project Num'),
         'temp_status': fields.char(size=56, string="Temp Status"),
-
         'attachments': fields.many2many("ir.attachment", "project_attachments", "project_id", "attachment_id",
                                         string="related_files"),
-
         'project_manager_name': fields.function(_get_project_manager_name, type='char', readonly=True,
                                                 string="Project Manager Name For export"),
-
     }
 
     def _get_default_country(self, cr, uid, context):
@@ -407,7 +450,7 @@ class updis_project(osv.osv):
             return project_id[0][project_form_field].id
         else:
             suozhangshenpi = self.pool.get(form_name)
-            #by pass
+            # by pass
             suozhangshenpi_id = suozhangshenpi.create(cr, 1, {'project_id': ids[0]}, context=context)
             self.write(cr, 1, ids, {project_form_field: suozhangshenpi_id})
             return suozhangshenpi_id
@@ -446,11 +489,11 @@ class updis_project(osv.osv):
             'context': context,
         }
 
-    def project_need_process_action(self, cr, uid, context=None):
+    def get_need_process_action_domain(self, cr, uid, context=None):
         domain = ['&', ('create_uid', '=', uid), ('status_code', '=', 10101)]
         status_code = []
 
-        #director
+        # director
         hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
         if hr_id:
             hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
@@ -477,34 +520,31 @@ class updis_project(osv.osv):
                 domain = ['|', '&', ('status_code', '=', 10105),
                           ('chenjiebumen_id', '=', user_department_id)] + domain
 
-        #Operator Room
+        # Operator Room
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context):
             status_code += [10103]
-            #Engineer Room
+        # Engineer Room
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_zongshishi', context=context):
             status_code += [10104]
 
-        #Manager
-        manager_domain = ['|', '&', ('status_code', 'in', [20101, 50101, 60101]), ('user_id', '=', uid)]
+        # Manager
+        manager_domain = ['|', '&', ('status_code', 'in', [20101, 50101, 60101, 30101, 30104]), ('user_id', '=', uid)]
 
-        #Filed Manager
-        if self.user_has_groups(cr, uid, 'up_project.group_up_project_filed_manager', context=context):
-            status_code += [30101]
+        # Filed Manager
+        if self.user_has_groups(cr, uid, 'up_project.group_up_project_filed_manager,up_project.group_up_project_filed_elec_manager', context=context):
+            status_code += [30103]
 
         domain = ['|', ('status_code', 'in', status_code)] + domain
-        domain = manager_domain + domain
+        return manager_domain + domain
 
-        view_form = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
-                                                                  ('name', '=',
-                                                                   'edit_project_inherit')],
-                                                          context=context)
-        view_form_id = self.pool.get('ir.model.data').read(cr, 1, view_form[0], ['res_id'])
-
-        view_tree = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'ir.ui.view'),
-                                                                  ('name', '=',
-                                                                   'view_project_tree_need_process')],
-                                                          context=context)
-        view_tree_id = self.pool.get('ir.model.data').read(cr, 1, view_tree[0], ['res_id'])
+    def project_need_process_action(self, cr, uid, context=None):
+        domain = self.get_need_process_action_domain(cr, uid, context=context)
+        view_form_id = tools.get_id_by_external_id(cr, self.pool,
+                                                   extends_id="edit_project_inherit",
+                                                   model="ir.ui.view")
+        view_tree_id = tools.get_id_by_external_id(cr, self.pool,
+                                                   extends_id="view_project_tree_need_process",
+                                                   model="ir.ui.view")
 
         return {
             'name': u'待处理项目',
@@ -515,12 +555,12 @@ class updis_project(osv.osv):
             'target': 'current',
             'domain': domain,
             'context': context,
-            'views': [(view_tree_id['res_id'], 'tree'), (view_form_id['res_id'], 'form')],
+            'views': [(view_tree_id, 'tree'), (view_form_id, 'form')],
         }
 
     def all_projects_action(self, cr, uid, context=None):
         domain = ['|', ('state', 'not in', ['project_active', 'project_cancelled']), ('create_uid', '=', uid)]
-        #if self.user_has_groups(cr, uid, 'up_project.group_up_project_suozhang', context=context):
+        # if self.user_has_groups(cr, uid, 'up_project.group_up_project_suozhang', context=context):
         domain = ['|', '&', ('state', 'in', ['project_active', 'project_cancelled']),
                   ('director_reviewer_id', '=', uid)] + domain
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_jingyingshi', context=context):
@@ -587,7 +627,7 @@ class project_members(osv.osv):
                                                'employee_id', string="Proofread Members"),
         'drawing_user_ids': fields.many2many('hr.employee', 'project_members_drawing_hr_employee', 'project_member_id',
                                              'employee_id', string="Drawing/Writing Members"),
-        'project_id': fields.many2one('project.project', string="Project"),
+        'project_id': fields.many2one('project.project', string="Project", ondelete="cascade"),
     }
     _defaults = {
     }

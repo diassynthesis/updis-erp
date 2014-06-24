@@ -16,7 +16,7 @@ class updis_contract_expenses(osv.osv):
         'price': fields.float(string='Obtain Price', digits=(16, 6)),
         'comment': fields.text(string="Comment"),
         'handler': fields.many2one('hr.employee', string='Handler'),
-        'contract_id': fields.many2one('project.contract.contract', string="Contract"),
+        'contract_id': fields.many2one('project.contract.contract', string="Contract", ondelete="cascade"),
     }
 
     _defaults = {
@@ -41,7 +41,7 @@ class updis_contract_invoice(osv.osv):
         'clear_date': fields.date(string='Invoice Clear Date'),
         "is_import": fields.boolean(string="Is Import"),
 
-        'contract_id': fields.many2one('project.contract.contract', string="Contract"),
+        'contract_id': fields.many2one('project.contract.contract', string="Contract", ondelete="cascade"),
         'department_id': fields.related('contract_id', 'design_department', relation='hr.department', type="many2one",
                                         string="Design Department", readonly=1),
         'contract_num': fields.related('contract_id', 'number', type="char",
@@ -138,7 +138,7 @@ class updis_contract_income(osv.osv):
                                         'invoice_id', string='Invoices'),
         "is_import": fields.boolean(string="Is Import"),
 
-        'contract_id': fields.many2one('project.contract.contract', string="Contract"),
+        'contract_id': fields.many2one('project.contract.contract', string="Contract", ondelete="cascade"),
         'department_id': fields.related('contract_id', 'design_department', relation='hr.department', type="many2one",
                                         string="Design Department", readonly=1),
         'contract_num': fields.related('contract_id', 'number', type="char",
@@ -268,7 +268,7 @@ class updis_contract_contract(osv.osv):
         'comment': fields.text(string="Comment"),
         "change": fields.selection([(u"转让", u"转让"), (u"正常", u"正常"), (u"变更", u"变更")], string="Contract Change"),
 
-        'income_ids': fields.one2many('project.contract.income', 'contract_id', string='Incomes', ondelete="cascade"),
+        'income_ids': fields.one2many('project.contract.income', 'contract_id', string='Incomes'),
         'invoice_ids': fields.one2many('project.contract.invoice', 'contract_id', string='Invoices',
                                        ondelete="cascade"),
         'expenses_ids': fields.one2many('project.contract.expenses', 'contract_id', string='Third Party Expenses',
@@ -284,7 +284,7 @@ class updis_contract_contract(osv.osv):
         "import_number": fields.char(size=128, string="Import Number"),
         "is_import": fields.boolean(string="Is Import"),
 
-        'project_id': fields.many2one('project.project', string="Project"),
+        'project_id': fields.many2one('project.project', string="Project", ondelete="cascade"),
         'project_number': fields.related('project_id', 'xiangmubianhao', type='char', string="Project Number"),
         'project_category': fields.related('project_id', 'categories_id', type="many2one",
                                            relation="project.upcategory", string="Project Category"),
@@ -457,7 +457,7 @@ class updis_contract_contract(osv.osv):
 
     def all_contract_action(self, cr, uid, context=None):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
-        context['search_default_is-common-contract'] = 1
+        #context['search_default_is-common-contract'] = 1
         context.update({
             'show_sign_date': 0,
             'show_name': 0,
@@ -474,19 +474,20 @@ class updis_contract_contract(osv.osv):
             'view_type': 'form',
             'res_model': 'project.contract.contract',
             'target': 'current',
-            'domain': domain,
+            'domain': domain + [('type', '=', 'common')],
             'context': context,
         }
 
     def third_party_contract_action(self, cr, uid, context=None):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
-        context['search_default_is-third-party-contract'] = 1
+        #context['search_default_is-third-party-contract'] = 1
         context.update({
             'show_project_id': 0,
             'show_third_party_company': 0,
             'show_sign_date': 0,
-
+            'show_name': 0,
         })
+        context.update({'tree_view_ref': 'up_contract.project_contract_third_party_tree'})
         return {
             'name': u'所有合同',
             'type': 'ir.actions.act_window',
@@ -494,14 +495,14 @@ class updis_contract_contract(osv.osv):
             'view_type': 'form',
             'res_model': 'project.contract.contract',
             'target': 'current',
-            'domain': domain,
+            'domain': domain + [('type', '=', 'third_party')],
             'context': context,
         }
 
 
     def tender_contract_action(self, cr, uid, context=None):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
-        context['search_default_is-tender-contract'] = 1
+        #context['search_default_is-tender-contract'] = 1
         context['default_type'] = 'tender'
         context.update({
             'show_name': 0,
@@ -517,6 +518,6 @@ class updis_contract_contract(osv.osv):
             'view_type': 'form',
             'res_model': 'project.contract.contract',
             'target': 'current',
-            'domain': domain,
+            'domain': domain + [('type', '=', 'tender')],
             'context': context,
         }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data noupdate="0">
+
+        <!--document.directory-->
+        <record id="doc_direct_000001" model="document.directory">
+            <field name="name">公共目录</field>
+        </record>
+    </data>
+</openerp>

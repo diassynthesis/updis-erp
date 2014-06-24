@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <!--project.project.filed.filing.attachment.analysis-->
+        <!--record id="view_project_filing_attach_analysis_tree" model="ir.ui.view">
+            <field name="name">project.project.filed.filing.attachment.analysis.tree</field>
+            <field name="model">project.project.filed.filing.attachment.analysis</field>
+            <field name="arch" type="xml">
+                <tree string="Filing Attachments Analysis" version="7.0" edit="false" create="false" delete="false">
+                    <field name="attachment_id"/>
+                    <field name="parent_id"/>
+                    <field name="create_date"/>
+                    <field name="create_uid"/>
+                    <field name="version"/>
+                </tree>
+            </field>
+        </record-->
+        <!--project.project.filed.tag-->
+        <record id="view_project_filed_filling_tag_tree" model="ir.ui.view">
+            <field name="name">project.project.filed.tag.tree</field>
+            <field name="model">project.project.filed.tag</field>
+            <field name="arch" type="xml">
+                <tree string="Project Tags" version="7.0" editable="top"
+                      colors="red:parent_id_id==%(project_filed_tag_1001)d;orange:parent_id_id==%(project_filed_tag_1002)d;blue:parent_id_id==%(project_filed_tag_1003)d;green:parent_id_id==%(project_filed_tag_1004)d">
+                    <field name="name"/>
+                    <field name="parent_id"/>
+                    <field name="parent_id_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <!--project.project.filed.filing-->
+        <record id="view_project_filed_filing_tree" model="ir.ui.view">
+            <field name="name">project.project.filed.filing.tree</field>
+            <field name="model">project.project.filed.filing</field>
+            <field name="arch" type="xml">
+                <tree string="Project Filing Histories" version="7.0" create="false" delete="false" edit="false"
+                      colors="red:state=='approve_filing';grey:state=='end_filing'">
+                    <field name="name"/>
+                    <field name="state"/>
+                    <field name="create_date"/>
+                    <field name="create_uid"/>
+                    <field name="write_date"/>
+                    <field name="write_uid"/>
+                    <field name="version"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_project_filed_filing_form" model="ir.ui.view">
+            <field name="name">project.project.filed.filing.form</field>
+            <field name="model">project.project.filed.filing</field>
+            <field name="arch" type="xml">
+                <form string="Project Filing" version="7.0" create="false" delete="false" edit="context['editable']">
+                    <header>
+                        <button name="button_apply_filing" type="object" string="Apply Filing" class="oe_highlight"
+                                attrs="{'invisible':['|',('state','not in',['apply_filing']),('is_project_member','=',False)]}"/>
+                        <button name="button_manager_approve" type="object" string="Manager Approve" class="oe_highlight"
+                                attrs="{'invisible':['|',('state','not in',['manager_approve']),('is_user_is_project_manager','=',False)]}"/>
+                        <button name="button_manager_disapprove" type="object" string="Manager Disapprove"
+                                attrs="{'invisible':['|',('state','not in',['manager_approve']),('is_user_is_project_manager','=',False)]}"/>
+                        <button name="button_approve_filing" type="object" string="Approve Filing" class="oe_highlight" states="approve_filing"
+                                groups="up_project.group_up_project_filed_manager"/>
+                        <button name="button_disapprove_filing" type="object" string="Dispprove Filing" states="approve_filing"
+                                groups="up_project.group_up_project_filed_manager"/>
+                        <!--button name="button_elec_approve" type="object" string="Elec Files Approve"
+                                attrs="{'invisible':['|',('state','not in',['approve_filing']),('elec_file_approver_id','!=',False)]}"
+                                groups="up_project.group_up_project_filed_elec_manager" class="oe_highlight"/-->
+                        <field name="state" widget="statusbar" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <group invisible="1">
+                            <field name="is_project_member"/>
+                            <field name="is_user_is_project_manager"/>
+                        </group>
+                        <div class="sheet-title">
+                            <h1>项目文件归档表</h1>
+                        </div>
+                        <notebook>
+                            <page string="第一步:项目基本信息填写">
+                                <group string="Project Info">
+                                    <group colspan="2">
+                                        <field name="project_id" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="project_user" widget="many2many_tags"/>
+                                        <field name="project_category_id"/>
+                                        <field name="project_second_category" widget="many2many_tags" domain="[('category_id.id','=',project_category_id)]"
+                                               help="项目二级分类的填写请参考文档 QW4.2.3-2技术文件和资料归档规定--二级分类.doc"/>
+                                        <field name="end_stage"/>
+                                    </group>
+                                    <group>
+                                        <field name="project_serial_number"/>
+                                        <field name="project_scale"/>
+                                        <label string="Project Location" for="country_id"/>
+                                        <div class="address_format">
+                                            <field name="project_country_id" class="oe_no_button" nolabel="1" style="width: 20%%"/>
+                                            <field name="project_state_id" widget="selection" options="{'no_open':True}"
+                                                   placeholder="State" nolabel="1" style="width: 20%%"/>
+                                            <field name="project_city" nolabel="1" style="width: 20%%"/>
+                                        </div>
+                                    </group>
+                                </group>
+                                <group string="Paper Filing Info" colspan="2" col="4">
+                                    <label for="project_begin_date" string="Project Period"/>
+                                    <div>
+                                        <field name="project_begin_date" nolabel="1" style="width: 20%%"/>
+                                        至
+                                        <field name="project_end_date" nolabel="1" style="width: 20%%"/>
+                                    </div>
+                                    <newline/>
+                                    <field name="tag_ids" domain="[('parent_id','!=',None)]">
+                                        <tree>
+                                            <field name="name"/>
+                                            <field name="parent_id"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                                <group colspan="2">
+                                    <label string=""/>
+                                    <div class="oe_edit_only oe_tips" colspan="1">
+                                        <p>项目概况的说明要求言简意赅，以300字左右为宜，包括： </p>
+                                        <p>项目来源(委托/招标/邀标); 项目开展周期;</p>
+                                        <p>项目背景; 项目目的(主要说明甲方想解决的核心问题);</p>
+                                        <p>核心项目成果; 项目技术特色</p>
+                                    </div>
+                                    <field name="description"/>
+                                    <field name="note" placeholder="(自填案例名称，借鉴的主要内容)"/>
+                                    <field name="show_images" widget="many2many_binary"
+                                           res_model="project.project" res_id="project_id"
+                                           context="{'parent_id':%(dir_up_project_going_brief_picture)d}"/>
+                                </group>
+                                <group colspan="2" col="4">
+                                    <field name="manager_approver_id" readonly="1"/>
+                                    <field name="manager_approver_date" readonly="1"/>
+                                </group>
+                            </page>
+                            <page string="第二步:纸质文件归档填写">
+                                <group colspan="2" col="1">
+                                    <label for="record_ids"/>
+                                    <div class="oe_edit_only oe_tips">
+                                        <p>点击“添加一个项目”按钮可以添加一条纸质文件记录.</p>
+                                    </div>
+                                    <field name="record_ids" nolabel="1">
+                                        <tree editable="bottom">
+                                            <field name="name"/>
+                                            <field name="type_id"/>
+                                            <field name="copy_count"
+                                                   attrs="{'invisible':[('type_id','in',[%(project_filed_type_0004)d,%(project_filed_type_0007)d])]}"/>
+                                            <field name="page_count"
+                                                   attrs="{'invisible':[('type_id','in',[%(project_filed_type_0007)d])]}"/>
+                                            <field name="document_number" attrs="{'readonly':[('type_id','not in',[%(project_filed_type_0006)d])]}"/>
+                                            <field name="comment"/>
+                                        </tree>
+                                    </field>
+                                    <group colspan="2" col="4">
+                                        <field name="paper_file_approver_id" readonly="1"/>
+                                        <field name="paper_file_approver_date" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <!--page string="第三步:电子文件归档信息填写">
+                                <group string="Elec Document Filing Info" colspan="2" col="1">
+                                    <div class="oe_edit_only">
+                                        <p>点击“点此添加电子文件到目录”按钮可以快速上传文件到项目文件夹，上传文件成功后点击"添加"按钮添加本次需要归档的文件</p>
+                                        <button name="button_show_filing_update_list" class="oe_left oe_highlight oe_edit_only"
+                                                string="上传待归档电子文件"
+                                                type="object" states="apply_filing"/>
+                                    </div>
+                                    <label for="attachment_ids" string="Need Filing Elec Attachments"/>
+                                    <field name="attachment_ids" nolabel="1"
+                                           domain="[('res_model', '=', 'project.project'),('res_id', '=', project_id),('parent_id','child_of',%(up_project.dir_up_project_going)d)]"/>
+                                    <button name="button_show_filing_attachment_analysis" class="oe_left oe_link"
+                                            string="查看电子归档文件历史记录"
+                                            type="object"/>
+                                </group>
+                                <group colspan="2" col="4">
+                                    <field name="elec_file_approver_id" readonly="1"/>
+                                    <field name="elec_file_approver_date" readonly="1"/>
+                                </group>
+                            </page-->
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</openerp>

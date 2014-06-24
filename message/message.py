@@ -2,9 +2,10 @@
 import time
 import datetime
 import urllib2
+from openerp import SUPERUSER_ID
 from openerp.tools import config
-from osv import osv, fields
-import tools
+from openerp.osv import osv, fields
+from  openerp import tools
 import openerp.pooler as pooler
 from openerp.tools.safe_eval import safe_eval as eval
 import threading
@@ -187,6 +188,33 @@ class Message(osv.Model):
             result[obj.id] = category_message_title_meta
         return result
 
+    def _get_vote_count(self, cr, uid, ids, field_name, args, context=None):
+        """
+            Either way, it must return a dictionary of values of the form
+            {'id_1_': 'value_1_', 'id_2_': 'value_2_',...}.
+
+            If multi is set, then field_name is replaced by field_names:
+            a list of the field names that should be calculated.
+            Each value in the returned dictionary is also a dictionary from field name to value.
+            For example, if the fields 'name', and 'age' are both based on the vital_statistics function,
+            then the return value of vital_statistics might look like this when ids is [1, 2, 5]:
+            {
+                1: {'name': 'Bob', 'age': 23},
+                2: {'name': 'Sally', 'age', 19},
+                5: {'name': 'Ed', 'age': 62}
+            }
+        """
+        result = dict.fromkeys(ids, False)
+        message_vote_obj = self.pool.get('message.vote')
+        for message in self.browse(cr, uid, ids, context=context):
+            vote_like_count = len(message_vote_obj.search(cr, SUPERUSER_ID, [('message_id', '=', message.id), ('up', '=', True)], context))
+            vote_unlike_count = len(message_vote_obj.search(cr, SUPERUSER_ID, [('message_id', '=', message.id), ('up', '=', False)], context))
+            result[message.id] = {
+                'vote_like': vote_like_count,
+                'vote_unlike': vote_unlike_count,
+            }
+        return result
+
     _columns = {
         'name': fields.char("Title", size=128, required=True),
         'shorten_name': fields.function(_get_shorten_name, type="char", size=256, string="Shorten title"),
@@ -231,6 +259,10 @@ class Message(osv.Model):
                                                readonly=True),
         'write_date_display': fields.function(_get_write_date_display, type="datetime", string="Write Date Display",
                                               readonly=True),
+        'vote_user_ids': fields.many2many('res.users', 'message_vote', 'message_id', 'user_id', string='Votes',
+                                          help='Users that voted for this message'),
+        'vote_like': fields.function(_get_vote_count, type="integer", string='Like', multi='vote'),
+        'vote_unlike': fields.function(_get_vote_count, type='integer', string='Unlike', multi='vote'),
     }
     _defaults = {
         'fbbm': _default_fbbm,
@@ -343,8 +375,29 @@ class Message(osv.Model):
         for v in TYPE:
             fresh_old = CMSFresh(v)
             fresh_old.start()
-
         return True
+
+    def vote_like(self, cr, uid, user_id, message_id, context=None):
+        message_vote_obj = self.pool.get('message.vote')
+        message = self.read(cr, SUPERUSER_ID, int(message_id), ['vote_user_ids'], context=context)
+        new_has_voted = not (user_id in message.get('vote_user_ids'))
+        if new_has_voted:
+            message_vote_obj.create(cr, SUPERUSER_ID, {'message_id': message.get('id'), 'user_id': user_id, 'up': True})
+        else:
+            self.write(cr, SUPERUSER_ID, [message.get('id')], {'vote_user_ids': [(3, user_id)]}, context=context)
+            message_vote_obj.create(cr, SUPERUSER_ID, {'message_id': message.get('id'), 'user_id': user_id, 'up': True})
+        return new_has_voted or False
+
+    def vote_unlike(self, cr, uid, user_id, message_id, context=None):
+        message_vote_obj = self.pool.get('message.vote')
+        message = self.read(cr, SUPERUSER_ID, int(message_id), ['vote_user_ids'], context=context)
+        new_has_voted = not (user_id in message.get('vote_user_ids'))
+        if new_has_voted:
+            message_vote_obj.create(cr, SUPERUSER_ID, {'message_id': message.get('id'), 'user_id': user_id, 'up': False})
+        else:
+            self.write(cr, SUPERUSER_ID, [message.get('id')], {'vote_user_ids': [(3, user_id)]}, context=context)
+            message_vote_obj.create(cr, SUPERUSER_ID, {'message_id': message.get('id'), 'user_id': user_id, 'up': False})
+        return new_has_voted or False
 
 
 class CMSFresh(threading.Thread):

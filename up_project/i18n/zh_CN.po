@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenERP Server 7.0-20130306-002055\n"
+"Project-Id-Version: OpenERP Server 7.0-20131022-232438\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-02 05:10+0000\n"
-"PO-Revision-Date: 2013-08-02 05:10+0000\n"
+"POT-Creation-Date: 2014-06-22 14:47+0000\n"
+"PO-Revision-Date: 2014-06-22 14:47+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,28 +15,17 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-
-#. module: up_project
-#: field:project.members,profession_manager_user_ids:0
-msgid "Profession Manager Members"
-msgstr "专业负责"
-
-#. module: up_project
-#: selection:project.project,active_tasking_state:0
-#: selection:project.project.active.tasking,state:0
-msgid "负责人签字"
-msgstr "负责人签字"
-
-#. module: up_project
-#: field:project.project,create_uid:0
-msgid "Author"
-msgstr "创建者"
-
 #. module: up_project
 #: report:project.active.tasking.report.pdf:0
-#: view:project.project.active.tasking:0
-msgid "序号"
-msgstr "序号"
+msgid "会 签 栏"
+msgstr "会 签 栏"
+
+#. module: up_project
+#: selection:project.project,filed_filing_state:0
+#: view:project.project.filed.filing:0
+#: selection:project.project.filed.filing,state:0
+msgid "Apply Filing"
+msgstr "申请归档"
 
 #. module: up_project
 #: view:project.project.active.tasking:0
@@ -44,113 +33,19 @@ msgid "请求审评:"
 msgstr "请求审评:"
 
 #. module: up_project
-#: field:project.project,zhuguanzongshi_id:0
-#: field:project.project.active.tasking.engineer,zhuguanzongshi_id:0
-#: field:project.project.wizard,zhuguanzongshi_id:0
-msgid "主管总师"
-msgstr "主管总师"
+#: field:project.active.tasking.config,name:0
+msgid "Record Name"
+msgstr "名称"
 
 #. module: up_project
-#: model:ir.actions.act_window,name:up_project.act_project_config_profession
-msgid "Project Config Profession"
-msgstr "项目专业设定"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "承接部门 				负责人"
-msgstr "承接部门 				负责人"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "项目名称"
-msgstr "项目名称"
-
-#. module: up_project
-#: selection:project.project,city_type:0
-#: selection:project.project.wizard,city_type:0
-msgid "地级市"
-msgstr "地级市"
-
-#. module: up_project
-#: view:project.project:0
-msgid "确定要取消项目么?"
-msgstr "确定要取消项目么?"
-
-#. module: up_project
-#: field:project.project,is_import:0
-msgid "Is import Data"
-msgstr "是否为导入条目"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "主管总师："
-msgstr "主管总师："
-
-#. module: up_project
-#: model:ir.actions.server,name:up_project.project_active_tasking_operator_room_send_sms
-msgid "发送经营室审批通知短信"
-msgstr "发送经营室审批通知短信"
-
-#. module: up_project
-#: field:project.log,log_user:0
-msgid "Log User"
-msgstr "行为人"
-
-#. module: up_project
-#: model:ir.model,name:up_project.model_project_project_active_tasking_engineer
-#: selection:project.project,state_active:0
-msgid "Project Active Tasking"
-msgstr "任务下达"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: view:project.project.active.tasking:0
-#: field:project.project.active.tasking,fujiayaoqiu:0
-msgid "附加要求"
-msgstr "附加要求"
+#: model:ir.model,name:up_project.model_project_project_config_wizard
+msgid "project.project.config.wizard"
+msgstr "project.project.config.wizard"
 
 #. module: up_project
 #: view:project.upcategory:0
 msgid "Project Category Config"
 msgstr "项目分类设置"
-
-#. module: up_project
-#: field:project.project.active.tasking,partner_address:0
-msgid "Custom Address"
-msgstr "甲方地址"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "任务要求："
-msgstr "任务要求："
-
-#. module: up_project
-#: model:ir.model,name:up_project.model_project_members
-#: view:project.project:0
-msgid "Project Members"
-msgstr "项目成员"
-
-#. module: up_project
-#: model:ir.actions.act_window,name:up_project.project_active_tasking_operator_form_action
-msgid "project operator room approve wizard"
-msgstr "经营室审批"
-
-#. module: up_project
-#: field:project.project,begin_date:0
-msgid "Begin Date"
-msgstr "开始日期"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,express_requirement:0
-msgid "有口头要求记录"
-msgstr "有口头要求记录"
-
-#. module: up_project
-#: view:project.project:0
-#: view:project.project.wizard:0
-msgid "Partner Info"
-msgstr "甲方信息"
 
 #. module: up_project
 #: field:project.project,comment:0
@@ -160,13 +55,14 @@ msgstr "备注"
 #. module: up_project
 #: selection:project.project,active_tasking_state:0
 #: selection:project.project.active.tasking,state:0
+#: selection:project.project.active.tasking.reject.log,state:0
 msgid "经营室审批"
 msgstr "经营室审批"
 
 #. module: up_project
-#: selection:project.project,state_filed:0
-msgid "Project Start File"
-msgstr "开始归档"
+#: view:project.project.filed.filing:0
+msgid "Manager Approve"
+msgstr "项目负责人审批通过"
 
 #. module: up_project
 #: report:project.active.tasking.report.pdf:0
@@ -174,143 +70,37 @@ msgid "分区规划"
 msgstr "分区规划"
 
 #. module: up_project
-#: field:project.project.active.tasking.operator,chenjiebumen_id:0
-msgid "承接部门"
-msgstr "承接部门"
+#: field:project.project.active.tasking.operator,xiangmubianhao:0
+msgid "项目编号"
+msgstr "项目编号"
 
 #. module: up_project
-#: model:ir.model,name:up_project.model_project_profession
-msgid "Project Profession"
-msgstr "专业"
+#: field:project.project.active.tasking,is_display_button:0
+msgid "Is Display Button"
+msgstr "是否显示按钮"
 
 #. module: up_project
-#: field:project.project,shifoutoubiao:0
-#: field:project.project.wizard,shifoutoubiao:0
-msgid "Is Tender"
-msgstr "是否投标"
+#: field:project.project.active.tasking,director_reviewer_groups:0
+#: field:project.project.active.tasking,is_project_director:0
+msgid "Is User is The Project Director"
+msgstr "Is User is The Project Director"
 
 #. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,yinfacuoshi:0
-#: selection:project.project.active.tasking.operator,yinfacuoshi:0
-msgid "不接受"
-msgstr "不接受"
+#: view:project.project.filed.tag:0
+msgid "Project Tags"
+msgstr "关键字"
 
 #. module: up_project
-#: view:project.project:0
-msgid "确定项目已经完结进入归档状态?进入归档状态的项目不可回退！"
-msgstr "确定项目已经完结进入归档状态?进入归档状态的项目不可回退！"
+#: model:res.groups,name:up_project.group_up_project_admin
+msgid "管理员"
+msgstr "管理员（可创建和删除合同）"
 
 #. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "工程项目"
-msgstr "工程项目"
-
-#. module: up_project
-#: model:ir.actions.server,name:up_project.open_view_project_all
-msgid "Action Projects"
-msgstr "项目信息"
-
-#. module: up_project
-#: field:project.project.active.tasking,ziyuan:0
-msgid "人力资源"
-msgstr "人力资源"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,difangfagui:0
-#: selection:project.project.active.tasking,fujiayaoqiu:0
-#: selection:project.project.active.tasking,yinhanyaoqiu:0
-msgid "有（需在评审记录一栏中标明记录）"
-msgstr "有（需在评审记录一栏中标明记录）"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-msgid "确定打回所长申请?"
-msgstr "确定打回所长申请?"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-msgid "提交经营室审批"
-msgstr "提交经营室审批"
-
-#. module: up_project
-#: field:project.project,shizhenpeitao:0
-#: field:project.project.wizard,shizhenpeitao:0
-msgid "Is City"
-msgstr "市政配套"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: view:project.project.active.tasking:0
-msgid "产品要求评审及任务下达记录"
-msgstr "产品要求评审及任务下达记录"
-
-#. module: up_project
-#: field:project.project.active.tasking,categories_else:0
-#: field:project.project.active.tasking.engineer,categories_else:0
-msgid "Else Category"
-msgstr "其他"
-
-#. module: up_project
-#: field:project.log,project_id:0
-msgid "related Project"
-msgstr "相关项目"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-msgid "投标类别:"
-msgstr "投标类别:"
-
-#. module: up_project
-#: view:project.project:0
-msgid "确定要跳过启动流程么？"
-msgstr "确定要跳过启动流程么？"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,ziyuan:0
-msgid "人力资源不足"
-msgstr "人力资源不足"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-msgid "设计要求是否得到规定"
-msgstr "设计要求是否得到规定"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,express_requirement:0
-msgid "有招标书"
-msgstr "有招标书"
-
-#. module: up_project
-#: selection:project.project,active_tasking_state:0
-#: selection:project.project.active.tasking,state:0
-msgid "所长审批"
-msgstr "所长审批"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "综合标 			项目管理级别："
-msgstr "综合标 			项目管理级别："
-
-#. module: up_project
-#: selection:project.project,active_tasking_state:0
-#: selection:project.project.active.tasking,state:0
-msgid "提出申请"
-msgstr "提出申请"
-
-#. module: up_project
-#: field:project.project.active.tasking,jinyinshi_submitter_id:0
-msgid "Operator Room Submitter"
-msgstr "经营室审批人"
-
-#. module: up_project
-#: field:project.project,toubiaoleibie:0
-#: field:project.project.wizard,toubiaoleibie:0
-msgid "Tender Type"
-msgstr "投标类别"
+#: field:project.project,categories_id:0
+#: field:project.project.active.tasking.engineer,categories_id:0
+#: field:project.project.wizard,categories_id:0
+msgid "项目类别"
+msgstr "项目类别"
 
 #. module: up_project
 #: report:project.active.tasking.report.pdf:0
@@ -318,49 +108,9 @@ msgid "评审方式："
 msgstr "评审方式："
 
 #. module: up_project
-#: field:project.project,is_user_in_operator_group:0
-msgid "Is User In Operator Room"
-msgstr "用户是否属于经营室"
-
-#. module: up_project
-#: field:project.project,guimo:0
-#: field:project.project.wizard,guimo:0
-msgid "Scale"
-msgstr "规模"
-
-#. module: up_project
-#: field:project.project,import_is_hidden:0
-msgid "Import Is Hidden"
-msgstr "导入：是否隐藏"
-
-#. module: up_project
 #: report:project.active.tasking.report.pdf:0
 msgid "项目负责人："
 msgstr "项目负责人："
-
-#. module: up_project
-#: field:project.project,primary_work:0
-msgid "Primary Work"
-msgstr "主要任务"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,yinfacuoshi:0
-#: selection:project.project.active.tasking.operator,yinfacuoshi:0
-msgid "外协"
-msgstr "外协"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,renwuyaoqiu:0
-#: selection:project.project.active.tasking.operator,renwuyaoqiu:0
-msgid "见洽谈记录"
-msgstr "见洽谈记录"
-
-#. module: up_project
-#: view:project.project:0
-msgid "状态"
-msgstr "状态"
 
 #. module: up_project
 #: view:project.project.active.tasking:0
@@ -368,63 +118,14 @@ msgid "建议项目负责人:"
 msgstr "建议项目负责人:"
 
 #. module: up_project
-#: help:project.project.active.tasking,state:0
-msgid "When project is created, the state is 'open'"
-msgstr "当项目建立时，状态为'open'"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,pingshenfangshi:0
-#: selection:project.project.active.tasking.operator,pingshenfangshi:0
-msgid "审批"
-msgstr "审批"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "委托单位"
-msgstr "委托单位"
-
-#. module: up_project
 #: field:project.members,validation_user_ids:0
 msgid "Validation Members"
 msgstr "专业分工"
 
 #. module: up_project
-#: view:project.project:0
-msgid "确定项目停滞?"
-msgstr "确定项目停滞?"
-
-#. module: up_project
-#: view:project.project:0
-msgid "恢复项目"
-msgstr "恢复项目"
-
-#. module: up_project
-#: field:project.members,profession:0
-msgid "Profession"
-msgstr "专业"
-
-#. module: up_project
-#: field:project.profession,short_name:0
-msgid "Short Name"
-msgstr "缩写名"
-
-#. module: up_project
-#: model:ir.model,name:up_project.model_project_project_wizard
-msgid "Project Wizard"
-msgstr "项目"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,hetongyizhi:0
-msgid "合同/协议要求表述不一致已解决"
-msgstr "合同/协议要求表述不一致已解决"
-
-#. module: up_project
-#: selection:project.project,active_tasking_state:0
-#: selection:project.project.active.tasking,state:0
-msgid "总师室审批"
-msgstr "总师室审批"
+#: view:project.project.filed.filing:0
+msgid "项目来源(委托/招标/邀标); 项目开展周期;"
+msgstr "项目来源(委托/招标/邀标); 项目开展周期;"
 
 #. module: up_project
 #: view:project.project.active.tasking:0
@@ -433,92 +134,18 @@ msgstr "建议设计部门:"
 
 #. module: up_project
 #: selection:project.project,state_process:0
-msgid "Project Process Filed"
-msgstr "项目进行-归档"
-
-#. module: up_project
-#: selection:project.project,city_type:0
-#: selection:project.project.wizard,city_type:0
-msgid "县级市"
-msgstr "县级市"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,renwuyaoqiu:0
-#: selection:project.project.active.tasking.operator,renwuyaoqiu:0
-msgid "见合同草案"
-msgstr "见合同草案"
-
-#. module: up_project
-#: view:project.project:0
-msgid "项目归档"
-msgstr "项目归档"
-
-#. module: up_project
-#: field:project.project,related_user_id:0
-msgid "Related Users ID"
-msgstr "相关用户编号"
-
-#. module: up_project
-#: field:project.project,import_proxy_name:0
-msgid "Import Proxy Name"
-msgstr "导入：甲方名"
-
-#. module: up_project
-#: selection:project.project,state_process:0
 msgid "Project Add Member"
 msgstr "添加成员"
 
 #. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "规模"
-msgstr "规模"
+#: field:project.profession,active:0
+msgid "Active"
+msgstr "有效"
 
 #. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "控规"
-msgstr "控规"
-
-#. module: up_project
-#: field:project.project,import_flag:0
-msgid "Import Flag"
-msgstr "导入：flag"
-
-#. module: up_project
-#: model:ir.actions.act_window,name:up_project.project_project_wizard_action
-msgid "project Basic Info Change"
-msgstr "项目基础信息变更"
-
-#. module: up_project
-#: view:project.project:0
 #: view:project.project.wizard:0
 msgid "In charge Relate"
 msgstr "主管信息"
-
-#. module: up_project
-#: field:project.project.active.tasking.engineer,category_name:0
-msgid "Project Category Name"
-msgstr "项目分类名称"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-msgid "市政配套:"
-msgstr "市政配套:"
-
-#. module: up_project
-#: sql_constraint:project.upcategory:0
-msgid "The name of the category must be unique"
-msgstr "项目分类名称必须不可重复"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "评审主持人："
-msgstr "评审主持人："
-
-#. module: up_project
-#: view:project.project:0
-msgid "提示"
-msgstr "提示"
 
 #. module: up_project
 #: view:project.project.active.tasking:0
@@ -527,29 +154,9 @@ msgid "提交总师室审批"
 msgstr "提交总师室审批"
 
 #. module: up_project
-#: model:ir.ui.menu,name:up_project.project_related_to_me
-msgid "Project Related To Me"
-msgstr "待处理项目"
-
-#. module: up_project
-#: field:project.upcategory,child_ids:0
-msgid "Child Categories"
-msgstr "子分类"
-
-#. module: up_project
-#: field:project.project.active.tasking,director_reviewer_apply_time:0
-msgid "Director Reviewer Approve Time"
-msgstr "所长签字时间"
-
-#. module: up_project
-#: view:project.project:0
-msgid "确定项目中止?进入中止状态的项目不可回退！"
-msgstr "确定项目中止?进入中止状态的项目不可回退！"
-
-#. module: up_project
-#: model:ir.model,name:up_project.model_project_upcategory
-msgid "Project Category"
-msgstr "项目分类"
+#: view:project.project.active.tasking:0
+msgid "打回申请单"
+msgstr "打回申请单"
 
 #. module: up_project
 #: view:project.project:0
@@ -557,28 +164,15 @@ msgstr "项目分类"
 #: field:project.project.active.tasking,state:0
 #: view:project.project.wizard:0
 #: field:project.project.wizard,state_id:0
+#: view:res.partner:0
 msgid "State"
 msgstr "省"
 
 #. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project,guanlijibie:0
-#: selection:project.project.active.tasking.engineer,guanlijibie:0
-#: selection:project.project.wizard,guanlijibie:0
-msgid "所级"
-msgstr "所级"
-
-#. module: up_project
-#: view:project.project:0
-#: view:project.project.wizard:0
-msgid "项目编号:"
-msgstr "项目编号:"
-
-#. module: up_project
-#: field:project.project.active.tasking,renwuyaoqiu:0
-#: field:project.project.active.tasking.operator,renwuyaoqiu:0
-msgid "任务要求"
-msgstr "任务要求"
+#: view:project.project.filed.filing:0
+#: field:project.project.filed.filing,state:0
+msgid "State"
+msgstr "状态"
 
 #. module: up_project
 #: report:project.active.tasking.report.pdf:0
@@ -587,85 +181,45 @@ msgid "工期太紧"
 msgstr "工期太紧"
 
 #. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,ziyuan:0
-msgid "人力资源满足"
-msgstr "人力资源满足"
+#: selection:project.project,active_tasking_state:0
+msgid "归档"
+msgstr "归档"
 
 #. module: up_project
-#: field:project.project.active.tasking,zongshishi_submitter_id:0
-msgid "Zongshishi Submitter"
-msgstr "总师室审批人"
+#: field:project.project.active.tasking.reject.log,comment:0
+#: field:project.project.active.tasking.reject.wizard,comment:0
+msgid "Reject Reason"
+msgstr "打回原因"
 
 #. module: up_project
-#: model:ir.actions.server,name:up_project.project_active_tasking_manager_send_sms
-msgid "发送项目负责人审批通知短信"
-msgstr "发送项目负责人审批通知短信"
+#: view:project.project.config.wizard:0
+msgid "项目专业配置"
+msgstr "项目专业配置"
 
 #. module: up_project
-#: selection:project.project,toubiaoleibie:0
-#: selection:project.project.active.tasking,tender_category:0
-#: selection:project.project.active.tasking.engineer,tender_category:0
-#: selection:project.project.wizard,toubiaoleibie:0
-msgid "综合标"
-msgstr "综合标"
+#: field:project.project.filed.filing,project_end_date:0
+msgid "Project End Date"
+msgstr "归档日期"
 
 #. module: up_project
-#: field:project.project.active.tasking,pingshenfangshi:0
-#: field:project.project.active.tasking.operator,pingshenfangshi:0
-msgid "评审方式"
-msgstr "评审方式"
+#: selection:project.project.filed.filing,end_stage:0
+msgid "确认方案"
+msgstr "确认方案"
 
 #. module: up_project
-#: view:project.project:0
-msgid "Project Comments"
-msgstr "备注"
+#: field:project.project.active.tasking,jianyishejibumen_id:0
+msgid "建议设计部门"
+msgstr "建议设计部门"
 
 #. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,shejifei:0
-msgid "设计费合理"
-msgstr "设计费合理"
+#: model:ir.actions.act_window,name:up_project.act_active_tasking_wizard
+msgid "Project Tasking Config Action Wizard"
+msgstr "项目下达表单配置"
 
 #. module: up_project
-#: view:project.project:0
-msgid "文档名"
-msgstr "文档名"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,shebei:0
-msgid "设备不满足"
-msgstr "设备不满足"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,express_requirement:0
-msgid "有协议/合同草案"
-msgstr "有协议/合同草案"
-
-#. module: up_project
-#: field:project.project,status_code:0
-msgid "Status Code"
-msgstr "Status Code"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-msgid "确定打回总师室申请?"
-msgstr "确定打回总师室申请?"
-
-#. module: up_project
-#: field:project.project,member_ids:0
-msgid "Members"
-msgstr "成员"
-
-#. module: up_project
-#: view:project.project:0
-#: field:project.project,country_id:0
-#: view:project.project.wizard:0
-#: field:project.project.wizard,country_id:0
-msgid "Country"
-msgstr "国家"
+#: model:ir.model,name:up_project.model_project_engineer_room_config_wizard
+msgid "project Engineer Room Config"
+msgstr "项目总师设置"
 
 #. module: up_project
 #: view:project.project.active.tasking:0
@@ -679,67 +233,33 @@ msgid "工期可接受"
 msgstr "工期可接受"
 
 #. module: up_project
-#: field:project.project,active_tasking_is_wait_user_process:0
-msgid "Active Tasking Is Waiting User"
-msgstr "Active Tasking Is Waiting User"
+#: view:res.partner:0
+msgid "True"
+msgstr "True"
 
 #. module: up_project
-#: view:project.project.active.tasking:0
-msgid "评审内容"
-msgstr "评审内容"
+#: field:project.project,is_admin:0
+msgid "Is User is in Admin"
+msgstr "Is User is in Admin"
 
 #. module: up_project
-#: field:project.project.active.tasking,express_requirement:0
-msgid "Express Requirement"
-msgstr "明示要求"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "评 审 结 果 与 任 务 下 达"
-msgstr "评 审 结 果 与 任 务 下 达"
-
-#. module: up_project
-#: view:project.project:0
-#: field:project.project,project_logs:0
-msgid "Project Logs"
-msgstr "项目历史记录"
-
-#. module: up_project
-#: field:project.members,drawing_user_ids:0
-msgid "Drawing/Writing Members"
-msgstr "制图/文字"
+#: field:project.project.filed.filing,is_project_member:0
+msgid "Is Member of Project"
+msgstr "Is Member of Project"
 
 #. module: up_project
 #: field:project.upcategory,parent_id:0
 msgid "Parent Category"
-msgstr "父分类"
+msgstr "上级分类"
 
 #. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,pingshenfangshi:0
-#: selection:project.project.active.tasking.operator,pingshenfangshi:0
-msgid "会签"
-msgstr "会签"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-#: view:project.project.active.tasking.engineer:0
-msgid "审批通过"
-msgstr "审批通过"
-
-#. module: up_project
-#: view:project.project:0
-msgid "确定项目进入归档状态?进入归档状态的项目不可回退！"
-msgstr "确定项目进入归档状态?进入归档状态的项目不可回退！"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "评 审 人"
-msgstr "评 审 人"
+#: selection:project.project,filed_filing_state:0
+#: selection:project.project.filed.filing,state:0
+msgid "Filing Complete"
+msgstr "归档完成"
 
 #. module: up_project
 #: model:ir.model,name:up_project.model_project_type
-#: view:project.project:0
 #: field:project.project,project_type:0
 #: field:project.project.active.tasking.engineer,project_type:0
 #: view:project.project.wizard:0
@@ -747,11 +267,6 @@ msgstr "评 审 人"
 #: field:project.upcategory,project_type:0
 msgid "Project Type"
 msgstr "项目种类"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "修规(详细蓝图)"
-msgstr "修规(详细蓝图)"
 
 #. module: up_project
 #: field:project.project,import_proejct_number:0
@@ -769,25 +284,9 @@ msgid "档案管理员"
 msgstr "档案管理员"
 
 #. module: up_project
-#: model:ir.model,name:up_project.model_project_project_active_tasking_operator
-msgid "project.project.active.tasking.operator"
-msgstr "项目 经营室"
-
-#. module: up_project
-#: view:project.project:0
-msgid "Project Process"
-msgstr "项目流程"
-
-#. module: up_project
-#: model:ir.actions.server,name:up_project.project_active_tasking_engineer_room_send_sms
-msgid "发送总师室审批通知短信"
-msgstr "发送总师室审批通知短信"
-
-#. module: up_project
-#: field:project.project.active.tasking,chenjiefuzeren_id:0
-#: field:project.project.active.tasking.engineer,chenjiefuzeren_id:0
-msgid "承接项目负责人"
-msgstr "承接项目负责人"
+#: view:project.project.filed.filing:0
+msgid "项目二级分类的填写请参考文档 QW4.2.3-2技术文件和资料归档规定--二级分类.doc"
+msgstr "项目二级分类的填写请参考文档 QW4.2.3-2技术文件和资料归档规定--二级分类.doc"
 
 #. module: up_project
 #: field:project.project,active_tasking:0
@@ -795,29 +294,637 @@ msgid "Active Tasking Form"
 msgstr "任务下达表"
 
 #. module: up_project
-#: field:project.project,next_work_plan:0
-msgid "Next Work Plan"
-msgstr "下阶段工作安排"
+#: view:project.project.active.tasking:0
+msgid "项目管理级别:"
+msgstr "项目管理级别:"
 
 #. module: up_project
-#: view:project.project.active.tasking.operator:0
-msgid "Tasking Operator Form"
+#: view:project.project.active.tasking:0
+msgid "会签栏"
+msgstr "会签栏"
+
+#. module: up_project
+#: field:project.project.filed.filing,create_uid:0
+msgid "Owner"
+msgstr "创建人"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,renwuyaoqiu:0
+#: selection:project.project.active.tasking.operator,renwuyaoqiu:0
+msgid "见合同草案"
+msgstr "见合同草案"
+
+#. module: up_project
+#: field:project.project,import_schedule:0
+msgid "Import Schedule"
+msgstr "导入：schedule"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "注："
+msgstr "注："
+
+#. module: up_project
+#: field:project.upcategory,name:0
+msgid "Category"
+msgstr "分类"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+msgid "项目负责人:"
+msgstr "项目负责人:"
+
+#. module: up_project
+#: field:project.members,audit_user_ids:0
+msgid "Audit Members"
+msgstr "审核"
+
+#. module: up_project
+#: view:project.project:0
+#: field:project.project,city:0
+#: view:project.project.wizard:0
+#: field:project.project.wizard,city:0
+#: view:res.partner:0
+msgid "City"
+msgstr "城市"
+
+#. module: up_project
+#: view:project.project:0
+msgid "强制转换到：归档完成"
+msgstr "强制转换到：归档完成"
+
+#. module: up_project
+#: field:project.project.filed.filing,project_country_id:0
+msgid "Project Country"
+msgstr "国家"
+
+#. module: up_project
+#: selection:project.project,active_tasking_state:0
+#: selection:project.project.active.tasking,state:0
+#: selection:project.project.active.tasking.reject.log,state:0
+msgid "提出申请"
+msgstr "提出申请"
+
+#. module: up_project
+#: view:project.engineer.room.config.wizard:0
+msgid "Project Engineer Config"
+msgstr "总师设置"
+
+#. module: up_project
+#: model:ir.actions.server,name:up_project.project_active_tasking_manager_send_sms
+msgid "发送项目负责人审批通知短信"
+msgstr "发送项目负责人审批通知短信"
+
+#. module: up_project
+#: view:project.project:0
+#: field:project.project,user_id:0
+#: field:project.project.active.tasking.engineer,user_id:0
+#: field:project.project.filed.filing,project_user:0
+#: field:project.project.wizard,user_id:0
+msgid "Project Manager"
+msgstr "项目负责人"
+
+#. module: up_project
+#: field:project.project,waibao:0
+#: field:project.project.wizard,waibao:0
+msgid "Is Outsourcing"
+msgstr "是否外包"
+
+#. module: up_project
+#: model:res.groups,name:up_project.group_up_project_zongshishi
+msgid "总师室人员"
+msgstr "总师室人员"
+
+#. module: up_project
+#: view:project.project:0
+#: view:project.project.active.tasking:0
+#: view:project.project.wizard:0
+#: field:project.project.wizard,name:0
+msgid "Project Name"
+msgstr "项目名称"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: view:project.project.active.tasking:0
+msgid "明示要求"
+msgstr "明示要求"
+
+#. module: up_project
+#: view:project.project:0
+msgid "导入项目,不存在下达记录"
+msgstr "导入项目,不存在下达记录"
+
+#. module: up_project
+#: view:project.project:0
+#: view:project.project.filed.filing:0
+msgid "项目文件归档表"
+msgstr "项目文件归档表"
+
+#. module: up_project
+#: view:project.project:0
+msgid "状态"
+msgstr "状态"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "与以前表述不一致的合同/ 协议要求是否                               解决"
+msgstr "与以前表述不一致的合同/ 协议要求是否                               解决"
+
+#. module: up_project
+#: model:ir.actions.server,name:up_project.project_active_tasking_engineer_room_send_sms
+msgid "发送总师室审批通知短信"
+msgstr "发送总师室审批通知短信"
+
+#. module: up_project
+#: model:ir.actions.act_window,name:up_project.act_project_project_filed_filing_second_cate_settings
+msgid "Project Secondary Category"
+msgstr "项目二级分类配置"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+msgid "评审意见"
+msgstr "评审意见"
+
+#. module: up_project
+#: model:res.groups,name:up_project.group_up_project_common_user
+msgid "普通用户"
+msgstr "普通用户"
+
+#. module: up_project
+#: view:project.project.filed.filing:0
+msgid "(自填案例名称，借鉴的主要内容)"
+msgstr "(自填案例名称，借鉴的主要内容)"
+
+#. module: up_project
+#: field:project.project,guanlijibie:0
+#: field:project.project.wizard,guanlijibie:0
+msgid "Project Level"
+msgstr "项目级别"
+
+#. module: up_project
+#: view:project.project.config.filed.settings:0
+msgid "归档文件二级分类配置"
+msgstr "归档文件二级分类配置"
+
+#. module: up_project
+#: selection:project.project,state_filed:0
+msgid "Project End File"
+msgstr "项目归档结束"
+
+#. module: up_project
+#: field:project.project.active.tasking,zongshishi_submit_datetime:0
+msgid "Zongshishi Submit Date"
+msgstr "总师室签字时间"
+
+#. module: up_project
+#: field:project.project.active.tasking,director_reviewer_apply_id:0
+msgid "Review Apply By"
+msgstr "所长"
+
+#. module: up_project
+#: field:project.project.filed.record,page_count:0
+msgid "Page Count"
+msgstr "页数"
+
+#. module: up_project
+#: selection:project.project,city_type:0
+#: selection:project.project.wizard,city_type:0
+msgid "直辖市"
+msgstr "直辖市"
+
+#. module: up_project
+#: model:ir.ui.menu,name:up_project.project_form_config
+msgid "Project Form Config"
+msgstr "项目表单配置"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,shejifei:0
+msgid "设计费太低"
+msgstr "设计费太低"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project,toubiaoleibie:0
+#: selection:project.project.active.tasking,tender_category:0
+#: selection:project.project.active.tasking.engineer,tender_category:0
+#: selection:project.project.wizard,toubiaoleibie:0
+msgid "商务标"
+msgstr "商务标"
+
+#. module: up_project
+#: field:project.project.active.tasking,hetongyizhi:0
+msgid "不一致是否解决"
+msgstr "不一致是否解决"
+
+#. module: up_project
+#: view:project.project:0
+msgid "确定恢复项目到进行状态?"
+msgstr "确定恢复项目到进行状态?"
+
+#. module: up_project
+#: field:project.project.config.filed.settings,filing_record_template:0
+msgid "Filing Record Template"
+msgstr "纸质文档模板"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+msgid "建表人："
+msgstr "建表人："
+
+#. module: up_project
+#: view:project.project:0
+msgid "(已归档"
+msgstr "(已归档"
+
+#. module: up_project
+#: view:project.project:0
+msgid "次)"
+msgstr "次)"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_project_active_tasking
+msgid "project.project.active.tasking"
+msgstr "任务下达"
+
+#. module: up_project
+#: view:project.active.tasking.config.wizard:0
+msgid "本页配置内容直接修改任务启动->任务下达页面的信息和功能,请谨慎处理"
+msgstr "本页配置内容直接修改任务启动->任务下达页面的信息和功能,请谨慎处理"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: view:project.project.active.tasking:0
+#: field:project.project.active.tasking,fujiayaoqiu:0
+msgid "附加要求"
+msgstr "附加要求"
+
+#. module: up_project
+#: view:project.active.tasking.config.wizard:0
+msgid "保存"
+msgstr "保存"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: view:project.project.active.tasking:0
+msgid "本院是否有能力满足规定要求"
+msgstr "本院是否有能力满足规定要求"
+
+#. module: up_project
+#: view:project.profession:0
+msgid "Project Profession Config"
+msgstr "项目专业设置"
+
+#. module: up_project
+#: model:res.groups,name:up_project.group_project_engineer_room_config
+msgid "项目总师室人员修改权限"
+msgstr "项目总师室人员修改权限"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+msgid "多方合同:"
+msgstr "多方合同:"
+
+#. module: up_project
+#: field:project.project,partner_type:0
+#: field:project.project.wizard,partner_type:0
+msgid "Partner Type"
+msgstr "甲方类别"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+msgid "类别:"
+msgstr "类别:"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+msgid "承接部门负责人"
+msgstr "承接部门负责人"
+
+#. module: up_project
+#: view:project.project:0
+msgid "项目终止"
+msgstr "项目终止"
+
+#. module: up_project
+#: field:project.project.active.tasking,form_name:0
+msgid "Form Name"
+msgstr "表名"
+
+#. module: up_project
+#: field:project.project.active.tasking,project_id:0
+msgid "Related Project"
+msgstr "相关项目"
+
+#. module: up_project
+#: view:project.project:0
+msgid "项目归档流程"
+msgstr "项目归档流程"
+
+#. module: up_project
+#: field:project.project,toubiaoleibie:0
+#: field:project.project.wizard,toubiaoleibie:0
+msgid "Tender Type"
+msgstr "投标类别"
+
+#. module: up_project
+#: field:project.project.active.tasking,partner_address:0
+msgid "Custom Address"
+msgstr "甲方地址"
+
+#. module: up_project
+#: field:project.project.filed.filing,project_city:0
+msgid "Project City"
+msgstr "城市"
+
+#. module: up_project
+#: view:project.project.config.filed.settings:0
+msgid "Apply"
+msgstr "确认"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "版别/修改码：E/1112"
+msgstr "版别/修改码：E/1112"
+
+#. module: up_project
+#: field:project.project,create_uid:0
+msgid "Author"
+msgstr "作者"
+
+#. module: up_project
+#: view:project.project.filed.filing:0
+msgid "点击“添加一个项目”按钮可以添加一条纸质文件记录."
+msgstr "点击“添加一个项目”按钮可以添加一条纸质文件记录."
+
+#. module: up_project
+#: model:ir.actions.act_window,name:up_project.act_project_config_profession
+msgid "Project Config Profession"
+msgstr "项目专业设定"
+
+#. module: up_project
+#: model:ir.actions.act_window,name:up_project.act_project_config_category
+msgid "Project Config Categories"
+msgstr "项目类型配置"
+
+#. module: up_project
+#: view:project.project:0
+msgid "确定要取消项目么?"
+msgstr "确定要取消项目么?"
+
+#. module: up_project
+#: field:project.project,is_import:0
+msgid "Is import Data"
+msgstr "是否为导入条目"
+
+#. module: up_project
+#: field:project.project.active.tasking,shejifei:0
+msgid "设计费"
+msgstr "设计费"
+
+#. module: up_project
+#: view:project.project:0
+msgid "Project Comments"
+msgstr "备注"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "任务要求："
+msgstr "任务要求："
+
+#. module: up_project
+#: model:ir.actions.act_window,name:up_project.project_active_tasking_operator_form_action
+msgid "project operator room approve wizard"
 msgstr "经营室审批"
 
 #. module: up_project
-#: field:project.project.active.tasking.engineer,shifoutoubiao:0
-msgid "is Tender?"
-msgstr "是否投标?"
+#: report:project.active.tasking.report.pdf:0
+msgid "评  审  人"
+msgstr "评  审  人"
+
+#. module: up_project
+#: view:project.project:0
+msgid "等待处理"
+msgstr "等待处理"
+
+#. module: up_project
+#: model:ir.actions.act_window,name:up_project.action_project_related_document
+msgid "项目相关文件"
+msgstr "项目相关文件"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,yinfacuoshi:0
+#: selection:project.project.active.tasking.operator,yinfacuoshi:0
+msgid "不接受"
+msgstr "不接受"
+
+#. module: up_project
+#: field:project.project.active.tasking.reject.log,state:0
+msgid "Reject State"
+msgstr "打回状态"
+
+#. module: up_project
+#: field:project.project.active.tasking,ziyuan:0
+msgid "人力资源"
+msgstr "人力资源"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,difangfagui:0
+#: selection:project.project.active.tasking,fujiayaoqiu:0
+#: selection:project.project.active.tasking,yinhanyaoqiu:0
+msgid "有（需在评审记录一栏中标明记录）"
+msgstr "有（需在评审记录一栏中标明记录）"
+
+#. module: up_project
+#: view:project.project.filed.filing:0
+msgid "Project Filing"
+msgstr "项目归档"
+
+#. module: up_project
+#: field:project.project.active.tasking,jianyixiangmufuzeren_id:0
+msgid "建议项目负责人"
+msgstr "建议项目负责人"
+
+#. module: up_project
+#: view:res.partner:0
+msgid "ZIP"
+msgstr "邮编"
 
 #. module: up_project
 #: view:project.project.active.tasking:0
-msgid "打回申请"
-msgstr "打回申请"
+msgid "设计要求是否得到规定"
+msgstr "设计要求是否得到规定"
+
+#. module: up_project
+#: field:project.project.filed.filing,paper_file_approver_date:0
+msgid "Paper File Approve Datetime"
+msgstr "签字时间"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "1. 评审方式中：总规项目为会议、一般项目为会签、规划局直接委托项目为审批；                                  2. 出现与以前表述不一致的合同/ 协议要求时，必需在评审记录中写明情况；                                  3. 评审记录栏填写不下时，可采取附页方式；                                  4. 所级项目不设主管总师。"
+msgstr "1. 评审方式中：总规项目为会议、一般项目为会签、规划局直接委托项目为审批；                                  2. 出现与以前表述不一致的合同/ 协议要求时，必需在评审记录中写明情况；                                  3. 评审记录栏填写不下时，可采取附页方式；                                  4. 所级项目不设主管总师。"
+
+#. module: up_project
+#: field:project.project,related_user_id:0
+msgid "Related Users ID"
+msgstr "相关用户编号"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "委托单位"
+msgstr "委托单位"
+
+#. module: up_project
+#: view:project.project:0
+msgid "恢复项目"
+msgstr "恢复项目"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,hetongyizhi:0
+msgid "合同/协议要求表述不一致已解决"
+msgstr "合同/协议要求表述不一致已解决"
+
+#. module: up_project
+#: view:project.project.config.wizard:0
+msgid "项目短信配置"
+msgstr "项目短信配置"
+
+#. module: up_project
+#: view:project.project.filed.filing:0
+msgid "Project Info"
+msgstr "项目基本信息"
+
+#. module: up_project
+#: field:project.project,import_proxy_name:0
+msgid "Import Proxy Name"
+msgstr "导入：甲方名"
+
+#. module: up_project
+#: selection:project.project,filed_filing_state:0
+#: view:project.project.filed.filing:0
+#: selection:project.project.filed.filing,state:0
+msgid "Approve Filing"
+msgstr "确认归档"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_project_filed_tag
+msgid "project.project.filed.tag"
+msgstr "项目关键词"
+
+#. module: up_project
+#: view:project.project.config.wizard:0
+msgid "项目启动-任务下达单配置"
+msgstr "项目启动-任务下达单配置"
+
+#. module: up_project
+#: field:project.upcategory,child_ids:0
+msgid "Child Categories"
+msgstr "子分类"
+
+#. module: up_project
+#: field:project.project.active.tasking,director_reviewer_apply_time:0
+msgid "Director Reviewer Approve Time"
+msgstr "所长签字时间"
+
+#. module: up_project
+#: field:project.project.filed.filing,end_stage:0
+msgid "End Stage"
+msgstr "中止项目填写阶段"
+
+#. module: up_project
+#: sql_constraint:project.project.filed.tag:0
+msgid "The name of the tag must be unique !"
+msgstr "名称不能重复 !"
+
+#. module: up_project
+#: view:project.project:0
+#: view:project.project.wizard:0
+msgid "项目编号:"
+msgstr "项目编号:"
+
+#. module: up_project
+#: selection:project.project,city_type:0
+#: selection:project.project.wizard,city_type:0
+msgid "计划单列市"
+msgstr "计划单列市"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,ziyuan:0
+msgid "人力资源满足"
+msgstr "人力资源满足"
+
+#. module: up_project
+#: field:project.project.filed.record,type_id:0
+msgid "Type"
+msgstr "类型"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "项目编号："
+msgstr "项目编号："
+
+#. module: up_project
+#: field:project.project,filed_filing_ids:0
+#: field:project.project.filed.record,filing_id:0
+msgid "Related Filing Form"
+msgstr "相关归档表"
+
+#. module: up_project
+#: field:project.project.filed.filing,project_state_id:0
+msgid "Project State"
+msgstr "省"
+
+#. module: up_project
+#: view:project.project.filed.filing:0
+msgid "第二步:纸质文件归档填写"
+msgstr "第二步:纸质文件归档填写"
+
+#. module: up_project
+#: field:project.project,status_code:0
+msgid "Status Code"
+msgstr "Status Code"
+
+#. module: up_project
+#: field:project.project,active_tasking_is_wait_user_process:0
+msgid "Active Tasking Is Waiting User"
+msgstr "Active Tasking Is Waiting User"
+
+#. module: up_project
+#: field:project.members,drawing_user_ids:0
+msgid "Drawing/Writing Members"
+msgstr "制图/文字"
 
 #. module: up_project
 #: view:project.project.active.tasking:0
-msgid "打回申请单"
-msgstr "打回申请单"
+#: view:project.project.active.tasking.engineer:0
+msgid "审批通过"
+msgstr "审批通过"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "修规(详细蓝图)"
+msgstr "修规(详细蓝图)"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_project_active_tasking_reject_wizard
+msgid "Project Active Tasking Reject"
+msgstr "Project Active Tasking Reject"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+msgid "提交所长审批"
+msgstr "提交所长审批"
+
+#. module: up_project
+#: field:project.project.active.tasking,gongqi:0
+msgid "工期"
+msgstr "工期"
 
 #. module: up_project
 #: field:project.config.sms,users:0
@@ -831,208 +938,46 @@ msgid "深圳规划局"
 msgstr "深圳规划局"
 
 #. module: up_project
-#: view:project.project.active.tasking:0
-msgid "会签栏"
-msgstr "会签栏"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-#: view:project.project.active.tasking.engineer:0
-msgid "项目管理级别:"
-msgstr "项目管理级别:"
-
-#. module: up_project
-#: field:project.project,questions:0
-msgid "Questions"
-msgstr "当前存在的问题"
-
-#. module: up_project
-#: field:project.project,state_active:0
-#: field:project.project,state_filed:0
-#: field:project.project,state_process:0
-msgid "unknown"
-msgstr "unknown"
-
-#. module: up_project
-#: field:project.project.wizard,name:0
-msgid "name"
-msgstr "名称"
-
-#. module: up_project
-#: field:project.project.wizard,xiangmubianhao:0
-msgid "Project Num"
-msgstr "项目编号"
-
-#. module: up_project
-#: field:project.project,write_uid:0
-msgid "Last Contributor"
-msgstr "最后修改人"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "评  审  意  见"
-msgstr "评  审  意  见"
-
-#. module: up_project
-#: field:project.project,is_user_in_engineer_group:0
-msgid "Is User In Engineer Room"
-msgstr "用户是否属于总师室"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,shejifei:0
-msgid "设计费太低"
-msgstr "设计费太低"
-
-#. module: up_project
-#: field:project.project,import_schedule:0
-msgid "Import Schedule"
-msgstr "导入：schedule"
-
-#. module: up_project
-#: field:project.project,categories_id:0
-#: field:project.project.active.tasking.engineer,categories_id:0
-#: field:project.project.wizard,categories_id:0
-msgid "项目类别"
-msgstr "项目类别"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "区域\\城镇体系\\总体规划"
-msgstr "区域\\城镇体系\\总体规划"
-
-#. module: up_project
-#: field:project.upcategory,name:0
-msgid "Category"
-msgstr "分类"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-#: view:project.project.active.tasking.engineer:0
-msgid "项目负责人:"
-msgstr "项目负责人:"
-
-#. module: up_project
-#: field:project.members,design_user_ids:0
-msgid "Design/Write Members"
-msgstr "设计/执笔"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-msgid "是否外包:"
-msgstr "是否外包:"
-
-#. module: up_project
-#: field:project.members,audit_user_ids:0
-msgid "Audit Members"
-msgstr "审核"
-
-#. module: up_project
-#: view:project.project.active.tasking.operator:0
-msgid "确定提交到总师室审批?"
-msgstr "确定提交到总师室审批?"
-
-#. module: up_project
-#: field:project.project,write_date:0
-msgid "Modification date"
-msgstr "最后修改日期"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "类别："
-msgstr "类别："
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-msgid "评审意见"
-msgstr "评审意见"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "投标类别："
-msgstr "投标类别："
-
-#. module: up_project
-#: field:project.project,plan_finish_date:0
-msgid "Plan Finish Date"
-msgstr "计划完成日期"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project,city_type:0
-#: selection:project.project,partner_type:0
-#: view:project.project.active.tasking:0
-#: selection:project.project.active.tasking,yinfacuoshi:0
-#: selection:project.project.active.tasking.operator,yinfacuoshi:0
-#: selection:project.project.wizard,city_type:0
-#: selection:project.project.wizard,partner_type:0
-msgid "其它"
-msgstr "其它"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,express_requirement:0
-msgid "有委托书"
-msgstr "有委托书"
-
-#. module: up_project
-#: model:ir.actions.act_window,name:up_project.project_active_tasking_engineer_form_action
-msgid "project  engineer room approve wizard"
-msgstr "总师室审批"
-
-#. module: up_project
-#: field:project.project.active.tasking,director_approve_time:0
-msgid "Director Approve Time"
-msgstr "所长签字时间"
-
-#. module: up_project
-#: field:project.project.active.tasking,category_name:0
-msgid "Category Name"
-msgstr "分类名"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-msgid "Attachment"
-msgstr "附件"
-
-#. module: up_project
-#: model:ir.actions.server,name:up_project.project_active_tasking_director_apply_send_sms
-msgid "发送所长审批通知短信"
-msgstr "发送所长审批通知短信"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-msgid "确定打回申请到发起人?"
-msgstr "确定打回申请到发起人?"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,yinfacuoshi:0
-#: selection:project.project.active.tasking.operator,yinfacuoshi:0
-msgid "加班"
-msgstr "加班"
-
-#. module: up_project
-#: field:project.log,log_info:0
-msgid "Log Info"
-msgstr "历史记录"
-
-#. module: up_project
-#: field:project.project.active.tasking,is_display_button:0
-msgid "Is Display Button"
-msgstr "是否显示按钮"
-
-#. module: up_project
-#: field:project.project.active.tasking.engineer,user_id:0
-#: field:project.project.wizard,user_id:0
-msgid "Project Manager"
+#: view:project.project.wizard:0
+msgid "项目负责人"
 msgstr "项目负责人"
 
 #. module: up_project
-#: field:project.project,waibao:0
-#: field:project.project.wizard,waibao:0
-msgid "Is Outsourcing"
-msgstr "是否外包"
+#: view:project.active.tasking.config.wizard:0
+msgid "确定保存更改?"
+msgstr "确定保存更改?"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_project_filed_filling_secondcategory
+msgid "project.project.filed.filling.secondcategory"
+msgstr "项目二级分类"
+
+#. module: up_project
+#: field:project.project,write_uid:0
+#: field:project.project.filed.filing,write_uid:0
+msgid "Last Contributor"
+msgstr "最后编辑人"
+
+#. module: up_project
+#: model:res.groups,name:up_project.group_project_base_info_admin
+msgid "项目基本信息修改"
+msgstr "项目基本信息修改"
+
+#. module: up_project
+#: field:project.project.filed.filing,project_second_category:0
+msgid "Secondary Categories"
+msgstr "二级分类"
+
+#. module: up_project
+#: view:project.project:0
+#: field:project.project,project_logs:0
+msgid "Project Logs"
+msgstr "项目历史记录"
+
+#. module: up_project
+#: field:project.project.filed.filing,version:0
+msgid "Filing Version"
+msgstr "归档版本"
 
 #. module: up_project
 #: model:ir.actions.act_window,name:up_project.act_project_config_sms
@@ -1040,33 +985,16 @@ msgid "Project Config SMS"
 msgstr "项目短信设置"
 
 #. module: up_project
-#: model:res.groups,name:up_project.group_up_project_zongshishi
-msgid "总师室人员"
-msgstr "总师室人员"
+#: field:project.project,state_active:0
+#: field:project.project,state_filed:0
+#: field:project.project,state_process:0
+msgid "unknown"
+msgstr "未知"
 
 #. module: up_project
-#: view:project.project:0
-#: view:project.project.active.tasking:0
-#: view:project.project.wizard:0
-msgid "Project Name"
-msgstr "项目名称"
-
-#. module: up_project
-#: field:project.project,is_project_created:0
-msgid "Is Project Created"
-msgstr "项目是否被创建"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: view:project.project.active.tasking:0
-msgid "明示要求"
-msgstr "明示要求"
-
-#. module: up_project
-#: field:project.project,customer_contact:0
-#: field:project.project.wizard,customer_contact:0
-msgid "Customer Contact"
-msgstr "甲方联系人"
+#: view:project.project.filed.filing:0
+msgid "Project Filing Histories"
+msgstr "归档历史"
 
 #. module: up_project
 #: field:project.project,import_alinkman:0
@@ -1074,121 +1002,28 @@ msgid "Import Alinkman"
 msgstr "Import Alinkman"
 
 #. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: view:project.project.active.tasking:0
-#: field:project.project.active.tasking,yaoqiuxingchengwenjian:0
-msgid "顾客要求形成文件否"
-msgstr "顾客要求形成文件否"
-
-#. module: up_project
-#: model:res.groups,name:up_project.group_up_project_suozhang
-msgid "所长"
-msgstr "所长"
-
-#. module: up_project
 #: view:project.project.wizard:0
 msgid "Wizard Form"
 msgstr "Wizard Form"
 
 #. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "评 审 内 容"
-msgstr "评 审 内 容"
-
-#. module: up_project
 #: view:project.project:0
+#: view:project.project.filed.filing:0
 #: view:project.project.wizard:0
 msgid "Project Location"
 msgstr "项目位置"
 
 #. module: up_project
-#: field:project.project,project_log:0
-msgid "Project Log Info"
-msgstr "项目历史记录"
-
-#. module: up_project
-#: model:res.groups,name:up_project.group_up_project_jingyingshi
-msgid "经营室人员"
-msgstr "经营室人员"
+#: model:ir.model,name:up_project.model_project_active_tasking_config_wizard
+msgid "project.active.tasking.config.wizard"
+msgstr "project.active.tasking.config.wizard"
 
 #. module: up_project
 #: report:project.active.tasking.report.pdf:0
-#: selection:project.project,toubiaoleibie:0
-#: selection:project.project.active.tasking,tender_category:0
-#: selection:project.project.active.tasking.engineer,tender_category:0
-#: selection:project.project.wizard,toubiaoleibie:0
-msgid "商务标"
-msgstr "商务标"
-
-#. module: up_project
-#: field:project.project,is_project_creater:0
-msgid "Is Project Creater"
-msgstr "Is Project Creater"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-msgid "确定提交到向经营室审批?"
-msgstr "确定提交到向经营室审批?"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,yaoqiuxingchengwenjian:0
-msgid "已形成"
-msgstr "已形成"
-
-#. module: up_project
-#: field:project.project.active.tasking,project_id:0
-msgid "Related Project"
-msgstr "相关项目"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,difangfagui:0
-#: selection:project.project.active.tasking,fujiayaoqiu:0
-#: selection:project.project.active.tasking,yinhanyaoqiu:0
-msgid "无"
-msgstr "无"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,shebei:0
-msgid "设备满足"
-msgstr "设备满足"
-
-#. module: up_project
-#: selection:project.project,state_active:0
-msgid "Project Active Filed"
-msgstr "结束"
-
-#. module: up_project
-#: model:res.groups,name:up_project.group_up_project_common_user
-msgid "普通用户"
-msgstr "普通用户"
-
-#. module: up_project
-#: field:project.upcategory,summary:0
-msgid "Summary"
-msgstr "综合"
-
-#. module: up_project
-#: field:project.project.active.tasking,jianyishejibumen_id:0
-msgid "建议设计部门"
-msgstr "建议设计部门"
-
-#. module: up_project
-#: field:project.profession,active:0
-msgid "Active"
-msgstr "是否生效"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "专项规划(研究)"
-msgstr "专项规划(研究)"
-
-#. module: up_project
-#: field:project.project.active.tasking.engineer,guanlijibie:0
-msgid "项目管理级别"
-msgstr "项目管理级别"
+#: selection:project.project.active.tasking,renwuyaoqiu:0
+#: selection:project.project.active.tasking.operator,renwuyaoqiu:0
+msgid "见委托书"
+msgstr "见委托书"
 
 #. module: up_project
 #: report:project.active.tasking.report.pdf:0
@@ -1196,72 +1031,19 @@ msgid "承接部门："
 msgstr "承接部门："
 
 #. module: up_project
-#: field:project.project,guanlijibie:0
-#: field:project.project.wizard,guanlijibie:0
-msgid "Project Level"
-msgstr "项目级别"
-
-#. module: up_project
-#: field:project.project.active.tasking,gongqi:0
-msgid "工期"
-msgstr "工期"
+#: model:res.groups,name:up_project.group_up_project_del_admin
+msgid "删除项目"
+msgstr "删除项目"
 
 #. module: up_project
 #: view:project.project:0
-msgid "结束启动流程"
-msgstr "结束启动流程"
-
-#. module: up_project
-#: view:project.project:0
-msgid "确定项目已经归档完成?进入归档完成状态的项目不可回退！请谨慎处理"
-msgstr "确定项目已经归档完成?进入归档完成状态的项目不可回退！请谨慎处理"
-
-#. module: up_project
-#: field:project.project.active.tasking,jianyixiangmufuzeren_id:0
-msgid "建议项目负责人"
-msgstr "建议项目负责人"
-
-#. module: up_project
-#: field:project.project,city_type:0
-#: field:project.project.wizard,city_type:0
-msgid "City Type"
-msgstr "城市类型"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "委托单位地址"
-msgstr "委托单位地址"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project,guanlijibie:0
-#: selection:project.project.active.tasking.engineer,guanlijibie:0
-#: selection:project.project.wizard,guanlijibie:0
-msgid "院级"
-msgstr "院级"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,renwuyaoqiu:0
-#: selection:project.project.active.tasking.operator,renwuyaoqiu:0
-msgid "见电话记录"
-msgstr "见电话记录"
+msgid "修改项目基本属性"
+msgstr "修改项目基本属性"
 
 #. module: up_project
 #: field:project.profession,code:0
 msgid "Code"
-msgstr "标志"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,hetongyizhi:0
-msgid "没有出现不一致"
-msgstr "没有出现不一致"
-
-#. module: up_project
-#: selection:project.project,state_filed:0
-msgid "Project End File"
-msgstr "项目归档结束"
+msgstr "代码"
 
 #. module: up_project
 #: view:project.project.active.tasking:0
@@ -1277,41 +1059,631 @@ msgstr "招标文件"
 
 #. module: up_project
 #: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,pingshenfangshi:0
-#: selection:project.project.active.tasking.operator,pingshenfangshi:0
-msgid "会议"
-msgstr "会议"
+msgid "评审主持人："
+msgstr "评审主持人："
 
 #. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "旧改项目"
-msgstr "旧改项目"
-
-#. module: up_project
-#: field:project.project.active.tasking,zongshishi_submit_datetime:0
-msgid "Zongshishi Submit Date"
-msgstr "总师室签字时间"
-
-#. module: up_project
-#: field:project.project.active.tasking,director_reviewer_apply_id:0
-msgid "Review Apply By"
-msgstr "所长"
-
-#. module: up_project
-#: selection:project.project,city_type:0
-#: selection:project.project.wizard,city_type:0
-msgid "直辖市"
-msgstr "直辖市"
-
-#. module: up_project
-#: view:project.project:0
-msgid "归档完成"
-msgstr "归档完成"
+#: field:project.project.active.tasking,pingshenfangshi:0
+#: field:project.project.active.tasking.operator,pingshenfangshi:0
+msgid "评审方式"
+msgstr "评审方式"
 
 #. module: up_project
 #: report:project.active.tasking.report.pdf:0
 msgid "城市设计"
 msgstr "城市设计"
+
+#. module: up_project
+#: view:project.active.tasking.config.wizard:0
+#: view:project.engineer.room.config.wizard:0
+#: view:project.project.active.tasking.engineer:0
+#: view:project.project.active.tasking.operator:0
+#: view:project.project.active.tasking.reject.wizard:0
+#: view:project.project.config.filed.settings:0
+#: view:project.project.wizard:0
+msgid "Cancel"
+msgstr "取消"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,yinfacuoshi:0
+#: selection:project.project.active.tasking.operator,yinfacuoshi:0
+msgid "院内调配"
+msgstr "院内调配"
+
+#. module: up_project
+#: view:project.config.sms:0
+msgid "Project SMS Config"
+msgstr "项目短信设置"
+
+#. module: up_project
+#: field:project.project,import_sum_up_flag:0
+msgid "Import Sum Up Flag"
+msgstr "Import Sum Up Flag"
+
+#. module: up_project
+#: model:res.groups,name:up_project.group_up_project_suozhang
+msgid "所长"
+msgstr "所长"
+
+#. module: up_project
+#: field:project.project,is_user_is_project_manager:0
+#: field:project.project.active.tasking,is_wait_user_process:0
+msgid "Is User is The Project Manager"
+msgstr "Is User is The Project Manager"
+
+#. module: up_project
+#: model:ir.actions.act_window,name:up_project.act_project_engineer_room_config
+msgid "Project Engineer Room Config Action"
+msgstr "项目总师室成员权限修改"
+
+#. module: up_project
+#: field:project.engineer.room.config.wizard,users:0
+msgid "Users"
+msgstr "Users"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_project_filing_record_template
+msgid "project.project.filing.record.template"
+msgstr "project.project.filing.record.template"
+
+#. module: up_project
+#: selection:project.project.active.tasking,state:0
+#: selection:project.project.active.tasking.reject.log,state:0
+msgid "表单归档"
+msgstr "表单审批完成，已归档"
+
+#. module: up_project
+#: view:project.project.config.wizard:0
+msgid "项目归档-项目文件归档表配置"
+msgstr "项目归档-项目文件归档表配置"
+
+#. module: up_project
+#: field:project.project.active.tasking,tender_category:0
+#: field:project.project.active.tasking.engineer,tender_category:0
+msgid "投标类别"
+msgstr "投标类别"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,renwuyaoqiu:0
+#: selection:project.project.active.tasking.operator,renwuyaoqiu:0
+msgid "见洽谈记录"
+msgstr "见洽谈记录"
+
+#. module: up_project
+#: view:project.project:0
+#: view:project.project.wizard:0
+msgid "城市类别"
+msgstr "城市类别"
+
+#. module: up_project
+#: view:project.project:0
+msgid "确认再次归档？再次归档会发起一次新的归档流程，请谨慎选择。"
+msgstr "确认再次归档？再次归档会发起一次新的归档流程，请谨慎选择。"
+
+#. module: up_project
+#: field:project.config.sms,name:0
+#: field:project.profession,name:0
+#: field:project.project.filed.filing,name:0
+#: field:project.project.filed.filling.secondcategory,name:0
+#: field:project.project.filed.record,name:0
+#: field:project.project.filed.tag,name:0
+#: field:project.project.filed.type,name:0
+#: field:project.upcategory,complete_name:0
+msgid "Name"
+msgstr "名称"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "QRT7.2.2-1"
+msgstr "QRT7.2.2-1"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+msgid "主管总师:"
+msgstr "主管总师:"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+msgid "确定启动项目?"
+msgstr "确定启动项目?"
+
+#. module: up_project
+#: sql_constraint:project.project:0
+msgid "xiangmubianhao must be unique !"
+msgstr "项目编号不可重复！"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_config_sms
+msgid "project.config.sms"
+msgstr "项目短信设置"
+
+#. module: up_project
+#: field:project.project,director_reviewer_id:0
+msgid "Review Director"
+msgstr "审批所长"
+
+#. module: up_project
+#: view:project.project.active.tasking.operator:0
+msgid "确定提交到总师室审批?"
+msgstr "确定提交到总师室审批?"
+
+#. module: up_project
+#: view:project.project.config.filed.settings:0
+msgid "归档文件类型配置"
+msgstr "归档文件类型配置"
+
+#. module: up_project
+#: view:project.project:0
+msgid "确定项目中止?进入中止状态的项目不可回退！"
+msgstr "确定项目中止?进入中止状态的项目不可回退！"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: view:project.project.active.tasking:0
+#: field:project.project.active.tasking,difangfagui:0
+msgid "地方规范或特殊法律法规"
+msgstr "地方规范或特殊法律法规"
+
+#. module: up_project
+#: field:project.project.filed.filing,record_ids:0
+msgid "Document Records"
+msgstr "归档文件记录"
+
+#. module: up_project
+#: field:project.project,zhuguanzongshi_id:0
+#: field:project.project.active.tasking.engineer,zhuguanzongshi_id:0
+#: field:project.project.wizard,zhuguanzongshi_id:0
+msgid "主管总师"
+msgstr "主管总师"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "承接部门 				负责人"
+msgstr "承接部门 				负责人"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "设计要求                               是否得到                               规定"
+msgstr "设计要求                               是否得到                               规定"
+
+#. module: up_project
+#: selection:project.project,city_type:0
+#: selection:project.project.wizard,city_type:0
+msgid "地级市"
+msgstr "地级市"
+
+#. module: up_project
+#: field:project.project.active.tasking,jinyinshi_submitter_id:0
+msgid "Operator Room Submitter"
+msgstr "经营室审批人"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_project_active_tasking_engineer
+#: selection:project.project,state_active:0
+msgid "Project Active Tasking"
+msgstr "任务下达"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_members
+#: view:project.project:0
+msgid "Project Members"
+msgstr "项目成员"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_profession
+msgid "Project Profession"
+msgstr "专业"
+
+#. module: up_project
+#: field:project.project,shifoutoubiao:0
+#: field:project.project.wizard,shifoutoubiao:0
+msgid "Is Tender"
+msgstr "是否投标"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "工程项目"
+msgstr "工程项目"
+
+#. module: up_project
+#: model:ir.actions.server,name:up_project.open_view_project_all
+msgid "Action Projects"
+msgstr "项目信息"
+
+#. module: up_project
+#: view:project.project:0
+msgid "项目取消"
+msgstr "项目取消"
+
+#. module: up_project
+#: field:project.project,shizhenpeitao:0
+#: field:project.project.wizard,shizhenpeitao:0
+msgid "Is City"
+msgstr "市政配套"
+
+#. module: up_project
+#: field:project.project.filed.filing,project_begin_date:0
+msgid "Project Begin Date"
+msgstr "项目开始时间"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+msgid "投标类别:"
+msgstr "投标类别:"
+
+#. module: up_project
+#: field:project.log,project_id:0
+msgid "related Project"
+msgstr "相关项目"
+
+#. module: up_project
+#: field:project.project.active.tasking,shebei:0
+msgid "设备"
+msgstr "设备"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,ziyuan:0
+msgid "人力资源不足"
+msgstr "人力资源不足"
+
+#. module: up_project
+#: selection:project.project,active_tasking_state:0
+#: selection:project.project.active.tasking,state:0
+#: selection:project.project.active.tasking.reject.log,state:0
+msgid "所长审批"
+msgstr "所长审批"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+msgid "确定审批通过并且提交到经营室审批?"
+msgstr "确定审批通过并且提交到经营室审批?"
+
+#. module: up_project
+#: view:project.project.config.wizard:0
+msgid "Project Config"
+msgstr "项目设置"
+
+#. module: up_project
+#: view:project.project:0
+msgid "确定项目停滞?"
+msgstr "确定项目停滞?"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: view:project.project.active.tasking:0
+#: field:project.project.active.tasking,yaoqiuxingchengwenjian:0
+msgid "顾客要求形成文件否"
+msgstr "顾客要求形成文件否"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_project_wizard
+msgid "Project Wizard"
+msgstr "项目"
+
+#. module: up_project
+#: model:ir.actions.server,name:up_project.project_active_tasking_engineer_form_action
+#: selection:project.project,active_tasking_state:0
+#: selection:project.project.active.tasking,state:0
+#: selection:project.project.active.tasking.reject.log,state:0
+msgid "总师室审批"
+msgstr "总师室审批"
+
+#. module: up_project
+#: field:project.project.active.tasking,express_requirement:0
+msgid "Express Requirement"
+msgstr "明示要求"
+
+#. module: up_project
+#: view:project.project:0
+msgid "项目归档"
+msgstr "项目归档"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,renwuyaoqiu:0
+#: selection:project.project.active.tasking.operator,renwuyaoqiu:0
+msgid "见电话记录"
+msgstr "见电话记录"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "控规"
+msgstr "控规"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: view:project.project.active.tasking:0
+msgid "序号"
+msgstr "序号"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_project_active_tasking_operator
+msgid "project.project.active.tasking.operator"
+msgstr "项目 经营室"
+
+#. module: up_project
+#: view:project.project:0
+msgid "确定要跳过启动流程么？"
+msgstr "确定要跳过启动流程么？"
+
+#. module: up_project
+#: view:project.project.config.wizard:0
+msgid "项目参数配置"
+msgstr "项目参数配置"
+
+#. module: up_project
+#: field:project.project.filed.record,copy_count:0
+msgid "Copy Count / Zhehe A1"
+msgstr "份数/折合A1"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+msgid "市政配套:"
+msgstr "市政配套:"
+
+#. module: up_project
+#: field:project.project.active.tasking,else_attachments:0
+msgid "Related files"
+msgstr "附件"
+
+#. module: up_project
+#: model:ir.actions.report.xml,name:up_project.report_project_filed_filing_report_pdf_paper
+msgid "QRT4.2.3-3项目归档表-纸质文件"
+msgstr "QRT4.2.3-3项目归档表-纸质文件"
+
+#. module: up_project
+#: field:project.project.filed.filing,is_user_is_project_manager:0
+msgid "Is user Project Manager"
+msgstr "Is user Project Manager"
+
+#. module: up_project
+#: field:project.project.active.tasking,zongshishi_submitter_id:0
+msgid "Zongshishi Submitter"
+msgstr "总师室审批人"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,shejifei:0
+msgid "设计费合理"
+msgstr "设计费合理"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,express_requirement:0
+msgid "有协议/合同草案"
+msgstr "有协议/合同草案"
+
+#. module: up_project
+#: field:project.project,member_ids:0
+msgid "Members"
+msgstr "成员"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,express_requirement:0
+msgid "有招标书"
+msgstr "有招标书"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+msgid "评审内容"
+msgstr "评审内容"
+
+#. module: up_project
+#: model:ir.actions.server,name:up_project.project_active_tasking_operator_room_send_sms
+msgid "发送经营室审批通知短信"
+msgstr "发送经营室审批通知短信"
+
+#. module: up_project
+#: view:project.project.filed.filing:0
+msgid "第一步:项目基本信息填写"
+msgstr "第一步:项目基本信息填写"
+
+#. module: up_project
+#: view:project.project.filed.filing:0
+msgid "项目背景; 项目目的(主要说明甲方想解决的核心问题);"
+msgstr "项目背景; 项目目的(主要说明甲方想解决的核心问题);"
+
+#. module: up_project
+#: view:project.project.config.filed.settings:0
+msgid "Project Filed Form Config"
+msgstr "项目归档表配置"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_project_config_filed_settings
+msgid "project.project.config.filed.settings"
+msgstr "project.project.config.filed.settings"
+
+#. module: up_project
+#: view:project.project.filed.filing:0
+msgid "核心项目成果; 项目技术特色"
+msgstr "核心项目成果; 项目技术特色"
+
+#. module: up_project
+#: field:project.project.filed.filing,create_date:0
+msgid "Created Date"
+msgstr "创建时间"
+
+#. module: up_project
+#: model:res.groups,name:up_project.group_up_project_chief
+msgid "院长"
+msgstr "院长"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+msgid "(代签)"
+msgstr "(代签)"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,hetongyizhi:0
+msgid "没有出现不一致"
+msgstr "没有出现不一致"
+
+#. module: up_project
+#: field:project.project,next_work_plan:0
+msgid "Next Work Plan"
+msgstr "下阶段工作安排"
+
+#. module: up_project
+#: view:project.project.active.tasking.operator:0
+msgid "Tasking Operator Form"
+msgstr "经营室审批"
+
+#. module: up_project
+#: field:project.project.filed.tag,parent_id_id:0
+msgid "Parent Id For colors"
+msgstr "Parent Id For colors"
+
+#. module: up_project
+#: model:ir.actions.act_window,name:up_project.act_wizard_project_config
+msgid "Project Config Action Wizard"
+msgstr "项目配置"
+
+#. module: up_project
+#: field:project.members,design_user_ids:0
+msgid "Design/Write Members"
+msgstr "设计/执笔"
+
+#. module: up_project
+#: selection:project.project.filed.filing,end_stage:0
+msgid "策划"
+msgstr "策划"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project,city_type:0
+#: selection:project.project,partner_type:0
+#: view:project.project.active.tasking:0
+#: selection:project.project.active.tasking,yinfacuoshi:0
+#: selection:project.project.active.tasking.operator,yinfacuoshi:0
+#: selection:project.project.wizard,city_type:0
+#: selection:project.project.wizard,partner_type:0
+msgid "其它"
+msgstr "其它"
+
+#. module: up_project
+#: view:res.partner:0
+msgid "Street..."
+msgstr "街道..."
+
+#. module: up_project
+#: field:project.project.active.tasking,director_approve_time:0
+msgid "Director Approve Time"
+msgstr "所长签字时间"
+
+#. module: up_project
+#: model:ir.actions.server,name:up_project.project_active_tasking_director_apply_send_sms
+msgid "发送所长审批通知短信"
+msgstr "发送所长审批通知短信"
+
+#. module: up_project
+#: view:project.active.tasking.config.wizard:0
+#: view:project.project.active.tasking:0
+#: view:project.project.active.tasking.reject.wizard:0
+msgid "Reject"
+msgstr "取消"
+
+#. module: up_project
+#: view:project.engineer.room.config.wizard:0
+msgid "此处可修改总师室成员权限组成员"
+msgstr "此处可修改总师室成员权限组成员"
+
+#. module: up_project
+#: field:project.project.filed.filing,tag_ids:0
+msgid "Tags"
+msgstr "关键字"
+
+#. module: up_project
+#: view:hr.employee:0
+#: field:hr.employee,related_project_members:0
+msgid "Related Projects"
+msgstr "相关项目"
+
+#. module: up_project
+#: view:project.project.wizard:0
+msgid "Other Info"
+msgstr "其它信息"
+
+#. module: up_project
+#: field:project.project,project_manager_name:0
+msgid "Project Manager Name For export"
+msgstr "项目负责人:导出用"
+
+#. module: up_project
+#: view:project.project:0
+msgid "历史记录"
+msgstr "历史记录"
+
+#. module: up_project
+#: view:project.project.active.tasking.engineer:0
+msgid "或"
+msgstr "或"
+
+#. module: up_project
+#: model:res.groups,name:up_project.group_up_project_jingyingshi
+msgid "经营室人员"
+msgstr "经营室人员"
+
+#. module: up_project
+#: field:project.project.active.tasking,reject_logs:0
+msgid "Reject Log"
+msgstr "Reject Log"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "评 审 内 容"
+msgstr "评 审 内 容"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "法定图则"
+msgstr "法定图则"
+
+#. module: up_project
+#: model:ir.actions.act_window,name:up_project.act_project_project_filed_filing_tags_settings
+msgid "Project Filed Tags"
+msgstr "项目归档关键字"
+
+#. module: up_project
+#: selection:project.project,state_active:0
+msgid "Project Active Filed"
+msgstr "结束"
+
+#. module: up_project
+#: field:project.project.filed.record,document_number:0
+msgid "Document Number"
+msgstr "文件号"
+
+#. module: up_project
+#: model:ir.ui.menu,name:up_project.project_engineer_room_config_menu
+msgid "Project Engineer Room Config"
+msgstr "项目总师室权限用户组修改"
+
+#. module: up_project
+#: field:project.project.active.tasking.engineer,guanlijibie:0
+msgid "项目管理级别"
+msgstr "项目管理级别"
+
+#. module: up_project
+#: field:project.project,attachments:0
+msgid "related_files"
+msgstr "related_files"
+
+#. module: up_project
+#: view:project.project:0
+msgid "结束启动流程"
+msgstr "结束启动流程"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,yinfacuoshi:0
+#: selection:project.project.active.tasking.operator,yinfacuoshi:0
+msgid "外协"
+msgstr "外协"
 
 #. module: up_project
 #: report:project.active.tasking.report.pdf:0
@@ -1323,47 +1695,14 @@ msgid "技术标"
 msgstr "技术标"
 
 #. module: up_project
-#: view:project.project.active.tasking.engineer:0
-#: view:project.project.active.tasking.operator:0
-#: view:project.project.wizard:0
-msgid "Cancel"
-msgstr "取消"
-
-#. module: up_project
 #: field:project.project.active.tasking,duofanghetong:0
 msgid "多方合同"
 msgstr "多方合同"
 
 #. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,yinfacuoshi:0
-#: selection:project.project.active.tasking.operator,yinfacuoshi:0
-msgid "院内调配"
-msgstr "院内调配"
-
-#. module: up_project
-#: model:res.groups,name:up_project.group_up_project_admin
-msgid "管理员"
-msgstr "管理员"
-
-#. module: up_project
-#: selection:project.project,city_type:0
-#: selection:project.project.wizard,city_type:0
-msgid "省会城市"
-msgstr "省会城市"
-
-#. module: up_project
-#: view:project.config.sms:0
-msgid "Project SMS Config"
-msgstr "项目短信设置"
-
-#. module: up_project
-#: view:project.project:0
-#: field:project.project,city:0
-#: view:project.project.wizard:0
-#: field:project.project.wizard,city:0
-msgid "City"
-msgstr "城市"
+#: model:ir.model,name:up_project.model_project_project_active_tasking_reject_log
+msgid "Project Active Tasking Reject Log"
+msgstr "Project Active Tasking Reject Log"
 
 #. module: up_project
 #: field:project.project,chenjiebumen_id:0
@@ -1372,94 +1711,48 @@ msgid "In Charge Department"
 msgstr "设计部门"
 
 #. module: up_project
-#: field:project.project.active.tasking.operator,xiangmubianhao:0
-msgid "项目编号"
-msgstr "项目编号"
-
-#. module: up_project
-#: field:project.project.active.tasking,shejifei:0
-msgid "设计费"
-msgstr "设计费"
-
-#. module: up_project
 #: view:project.project:0
+#: view:project.project.active.tasking:0
 #: view:project.project.wizard:0
-msgid "Other Info"
-msgstr "其它信息"
-
-#. module: up_project
-#: view:project.project.active.tasking.engineer:0
-msgid "engineer Form"
-msgstr "总师室表单"
-
-#. module: up_project
-#: field:project.project.active.tasking,hetongyizhi:0
-msgid "不一致是否解决"
-msgstr "不一致是否解决"
+msgid "甲方"
+msgstr "甲方"
 
 #. module: up_project
 #: view:project.project:0
-msgid "确定恢复项目到进行状态?"
-msgstr "确定恢复项目到进行状态?"
+msgid "请填写基础信息点击左上角保存后,点击当前页面下方的 \"项目流程\"标签卡 ---> \"产品要求评审及任务下达记录\" 开始启动流程．"
+msgstr "请填写基础信息点击左上角保存后,点击当前页面下方的 \"项目流程\"标签卡 ---> \"产品要求评审及任务下达记录\" 开始启动流程．"
 
 #. module: up_project
-#: view:project.project:0
-msgid "项目启动文档"
-msgstr "项目启动文档"
+#: model:ir.actions.server,name:up_project.open_view_project_filed
+msgid "Action Filed Projects"
+msgstr "Action Filed Projects"
 
 #. module: up_project
-#: view:project.project:0
-msgid "等待处理"
-msgstr "等待处理"
+#: field:project.project.filed.filing,manager_approver_id:0
+msgid "Manager Approver"
+msgstr "项目负责人签字"
+
+#. module: up_project
+#: view:project.project.config.wizard:0
+msgid "项目类别配置"
+msgstr "项目类别配置"
 
 #. module: up_project
 #: selection:project.project,active_tasking_state:0
 #: selection:project.project.active.tasking,state:0
-msgid "表单归档"
-msgstr "表单归档"
+#: selection:project.project.active.tasking.reject.log,state:0
+msgid "负责人签字"
+msgstr "负责人签字"
 
 #. module: up_project
-#: field:project.project,is_user_is_project_manager:0
-#: field:project.project.active.tasking,is_wait_user_process:0
-msgid "Is User is The Project Manager"
-msgstr "Is User is The Project Manager"
+#: field:project.project.filing.record.template,filing_record_id:0
+msgid "Record Id"
+msgstr "Record Id"
 
 #. module: up_project
-#: field:project.project.active.tasking,shebei:0
-msgid "设备"
-msgstr "设备"
-
-#. module: up_project
-#: selection:project.project,partner_type:0
-#: selection:project.project.wizard,partner_type:0
-msgid "深圳市其他"
-msgstr "深圳市其他"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-#: view:project.project.active.tasking.engineer:0
-msgid "类别:"
-msgstr "类别:"
-
-#. module: up_project
-#: model:ir.model,name:up_project.model_project_project_active_tasking
-msgid "project.project.active.tasking"
-msgstr "任务下达"
-
-#. module: up_project
-#: model:ir.ui.menu,name:up_project.project_config_sms_menu
-msgid "Project Sms Config"
-msgstr "项目短信设置"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "市政专项"
-msgstr "市政专项"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "设计要求 		  是否得到 		  规定"
-msgstr "设计要求 		  是否得到 		  规定"
+#: field:project.project,is_chief:0
+msgid "Is User is in Chief"
+msgstr "Is User is in Chief"
 
 #. module: up_project
 #: field:project.members,proofread_user_ids:0
@@ -1472,35 +1765,9 @@ msgid "项目停滞"
 msgstr "项目停滞"
 
 #. module: up_project
-#: field:project.project.active.tasking,tender_category:0
-#: field:project.project.active.tasking.engineer,tender_category:0
-msgid "投标类别"
-msgstr "投标类别"
-
-#. module: up_project
-#: field:project.project.active.tasking,director_approve:0
-msgid "Director Approve"
-msgstr "所长签字"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-msgid "与以前表述不一致的合同/协议要求是否解决"
-msgstr "与以前表述不一致的合同/协议要求是否解决"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "项目编号："
-msgstr "项目编号："
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "法定图则"
-msgstr "法定图则"
-
-#. module: up_project
-#: view:project.project:0
-msgid "项目取消"
-msgstr "项目取消"
+#: model:res.groups,name:up_project.group_up_project_filed_elec_manager
+msgid "项目归档电子档案审批"
+msgstr "项目归档电子档案审批"
 
 #. module: up_project
 #: report:project.active.tasking.report.pdf:0
@@ -1509,42 +1776,22 @@ msgid "未形成，但已确认"
 msgstr "未形成，但已确认"
 
 #. module: up_project
-#: view:project.project:0
-#: view:project.project.wizard:0
-msgid "城市类别"
-msgstr "城市类别"
+#: field:project.project.filed.tag,parent_id:0
+msgid "Parent Tag"
+msgstr "上级标签"
 
 #. module: up_project
-#: view:project.project.active.tasking:0
-msgid "确定启动项目?"
-msgstr "确定启动项目?"
+#: field:project.project.active.tasking,director_approve_image:0
+#: field:project.project.active.tasking,director_reviewer_apply_image:0
+#: field:project.project.active.tasking,jinyinshi_submitter_id_image:0
+#: field:project.project.active.tasking,zongshishi_submitter_id_image:0
+msgid "Review Image"
+msgstr "Review Image"
 
 #. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: view:project.project.active.tasking:0
-msgid "本院是否有能力满足规定要求"
-msgstr "本院是否有能力满足规定要求"
-
-#. module: up_project
-#: model:ir.ui.menu,name:up_project.project_config_profession_menu
-#: view:project.profession:0
-msgid "Project Profession Config"
-msgstr "项目专业设置"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-msgid "确定打回经营室申请?"
-msgstr "确定打回经营室申请?"
-
-#. module: up_project
-#: field:project.project.wizard,partner_id:0
-msgid "Customer"
-msgstr "甲方"
-
-#. module: up_project
-#: field:project.project,partner_id:0
-msgid "Customer"
-msgstr "甲方"
+#: model:ir.actions.act_window,name:up_project.project_project_wizard_action
+msgid "project Basic Info Change"
+msgstr "项目基础信息变更"
 
 #. module: up_project
 #: field:project.profession,order_num:0
@@ -1552,50 +1799,10 @@ msgid "Profession Order Num"
 msgstr "专业排序编号"
 
 #. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: selection:project.project.active.tasking,renwuyaoqiu:0
-#: selection:project.project.active.tasking.operator,renwuyaoqiu:0
-msgid "见委托书"
-msgstr "见委托书"
-
-#. module: up_project
-#: field:project.config.sms,name:0
-#: field:project.profession,name:0
-#: field:project.upcategory,complete_name:0
-msgid "Name"
-msgstr "名字"
-
-#. module: up_project
-#: view:project.project.wizard:0
-msgid "修改"
-msgstr "修改"
-
-#. module: up_project
-#: field:project.log,log_date:0
-#: field:project.project,create_date:0
-msgid "Created on"
-msgstr "创建日期"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "QRT7.2.2-1"
-msgstr "QRT7.2.2-1"
-
-#. module: up_project
-#: model:res.groups,name:up_project.group_project_base_info_admin
-msgid "项目基本信息修改"
-msgstr "项目基本信息修改"
-
-#. module: up_project
 #: selection:project.project,partner_type:0
 #: selection:project.project.wizard,partner_type:0
 msgid "市外"
 msgstr "市外"
-
-#. module: up_project
-#: field:project.project,temp_status:0
-msgid "Temp Status"
-msgstr "Temp Status"
 
 #. module: up_project
 #: report:project.active.tasking.report.pdf:0
@@ -1615,84 +1822,36 @@ msgid "Operator Room Submit Date"
 msgstr "经营室签字时间"
 
 #. module: up_project
-#: view:project.project.active.tasking:0
-msgid "多方合同:"
-msgstr "多方合同:"
-
-#. module: up_project
-#: field:project.project,partner_type:0
-#: field:project.project.wizard,partner_type:0
-msgid "Partner Type"
-msgstr "甲方类别"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-msgid "承接部门负责人"
-msgstr "承接部门负责人"
-
-#. module: up_project
 #: field:project.project,active_tasking_state:0
 msgid "Tasking State"
 msgstr "下达状态"
 
 #. module: up_project
-#: view:project.project:0
-msgid "项目终止"
-msgstr "项目终止"
-
-#. module: up_project
-#: field:project.project.active.tasking,form_name:0
-msgid "Form Name"
-msgstr "表名"
-
-#. module: up_project
-#: view:project.project:0
-msgid "修改项目基本属性"
-msgstr "修改项目基本属性"
-
-#. module: up_project
-#: model:ir.model,name:up_project.model_project_project
-#: field:project.members,project_id:0
-#: view:project.project:0
-#: view:project.project.active.tasking:0
-msgid "Project"
-msgstr "项目"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-#: view:project.project.active.tasking.engineer:0
-msgid "主管总师:"
-msgstr "主管总师:"
+#: model:ir.actions.act_window,name:up_project.act_project_project_filed_filing_type_settings
+msgid "Project Filed Type"
+msgstr "项目纸质文件类型配置"
 
 #. module: up_project
 #: field:project.project,xiangmubianhao:0
+#: field:project.project.wizard,xiangmubianhao:0
 msgid "Project Num"
 msgstr "项目编号"
 
 #. module: up_project
-#: model:ir.actions.server,name:up_project.action_project_related_to_me
-msgid "action.project.related.to.me"
-msgstr "待处理项目"
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,shebei:0
+msgid "设备满足"
+msgstr "设备满足"
 
 #. module: up_project
-#: sql_constraint:project.project:0
-msgid "xiangmubianhao must be unique !"
-msgstr "项目编号不可重复！"
-
-#. module: up_project
-#: model:ir.actions.report.xml,name:up_project.report_project_active_tasking_report_pdf
-msgid "QRT7.2.2-1产品要求评审及任务下达记录"
-msgstr "QRT7.2.2-1产品要求评审及任务下达记录"
+#: field:project.project.filed.filing,project_scale:0
+msgid "Project Scale"
+msgstr "规模"
 
 #. module: up_project
 #: report:project.active.tasking.report.pdf:0
-msgid "与以前表述不一致的合同/ 协议要求是否 		  解决"
-msgstr "与以前表述不一致的合同/ 协议要求是否 		  解决"
-
-#. module: up_project
-#: field:project.project,import_sum_up_flag:0
-msgid "Import Sum Up Flag"
-msgstr "Import Sum Up Flag"
+msgid "区域\\城镇体系\\总体规划"
+msgstr "区域\\城镇体系\\总体规划"
 
 #. module: up_project
 #: report:project.active.tasking.report.pdf:0
@@ -1702,30 +1861,14 @@ msgid "隐含要求"
 msgstr "隐含要求"
 
 #. module: up_project
-#: view:project.project.active.tasking:0
-msgid "评审人"
-msgstr "评审人"
+#: view:project.project.filed.type:0
+msgid "Project Filed Document Type"
+msgstr "文档类型"
 
 #. module: up_project
-#: report:project.active.tasking.report.pdf:0
-#: view:project.project.active.tasking:0
-msgid "总师室"
-msgstr "总师室"
-
-#. module: up_project
-#: model:ir.model,name:up_project.model_project_config_sms
-msgid "project.config.sms"
-msgstr "项目短信设置"
-
-#. module: up_project
-#: field:project.project,director_reviewer_id:0
-msgid "Review Director"
-msgstr "审批所长"
-
-#. module: up_project
-#: model:ir.model,name:up_project.model_project_log
-msgid "project.log"
-msgstr "project.log"
+#: view:project.project.filed.filing:0
+msgid "Paper Filing Info"
+msgstr "纸质文件归档记录"
 
 #. module: up_project
 #: field:project.project.active.tasking,yinfacuoshi:0
@@ -1734,23 +1877,12 @@ msgid "引发措施记录"
 msgstr "引发措施记录"
 
 #. module: up_project
-#: constraint:project.upcategory:0
-msgid "Error! You cannot create recursive categories"
-msgstr "不能创建重复的分类"
-
-#. module: up_project
-#: report:project.active.tasking.report.pdf:0
-msgid "版别/修改码：E/1112"
-msgstr "版别/修改码：E/1112"
+#: field:project.project.filed.filing,show_images:0
+msgid "Show Images"
+msgstr "推荐表达图纸"
 
 #. module: up_project
 #: view:project.project.active.tasking:0
-msgid "提交所长审批"
-msgstr "提交所长审批"
-
-#. module: up_project
-#: view:project.project.active.tasking:0
-#: view:project.project.active.tasking.engineer:0
 msgid "是否投标:"
 msgstr "是否投标:"
 
@@ -1760,36 +1892,688 @@ msgid "联系人及电话"
 msgstr "联系人及电话"
 
 #. module: up_project
-#: selection:project.project,state:0
-msgid "Project Active"
-msgstr "项目启动"
+#: field:project.members,profession_manager_user_ids:0
+msgid "Profession Manager Members"
+msgstr "专业负责"
 
 #. module: up_project
-#: selection:project.project,state:0
-msgid "Project Cancelled"
-msgstr "项目取消"
+#: view:project.project.active.tasking:0
+msgid "评审人"
+msgstr "评审人"
 
 #. module: up_project
-#: selection:project.project,state:0
-msgid "Project Processing"
-msgstr "项目进行中"
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,yaoqiuxingchengwenjian:0
+msgid "已形成"
+msgstr "已形成"
 
 #. module: up_project
-#: selection:project.project,state:0
-msgid "Project Stop"
-msgstr "项目终止"
+#: field:project.project.filed.filing,manager_approver_date:0
+msgid "Manager Approve Datetime"
+msgstr "签字时间"
 
 #. module: up_project
-#: selection:project.project,state:0
-msgid "Project Pause"
-msgstr "项目停滞"
+#: view:project.project.filed.filing:0
+msgid "Dispprove Filing"
+msgstr "拒绝归档"
 
 #. module: up_project
-#: selection:project.project,state:0
-msgid "Project Filing"
-msgstr "项目归档中"
+#: field:project.log,log_user:0
+msgid "Log User"
+msgstr "行为人"
 
 #. module: up_project
-#: selection:project.project,state:0
-msgid "Project Filed"
-msgstr "项目已归档"
+#: model:ir.actions.act_window,name:up_project.act_project_config_filed_settings
+msgid "Project Filed Config"
+msgstr "项目归档设置"
+
+#. module: up_project
+#: field:project.project,begin_date:0
+msgid "Begin Date"
+msgstr "任务下达时间"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,express_requirement:0
+msgid "有口头要求记录"
+msgstr "有口头要求记录"
+
+#. module: up_project
+#: view:project.project.wizard:0
+msgid "Partner Info"
+msgstr "甲方信息"
+
+#. module: up_project
+#: field:project.project.active.tasking.engineer,shifoutoubiao:0
+msgid "is Tender?"
+msgstr "是否投标?"
+
+#. module: up_project
+#: selection:project.project,state_filed:0
+msgid "Project Start File"
+msgstr "开始归档"
+
+#. module: up_project
+#: model:ir.actions.server,name:up_project.project_active_tasking_end_send_sms
+msgid "发送项目启动通知短信"
+msgstr "发送项目启动通知短信"
+
+#. module: up_project
+#: field:project.project,project_log:0
+msgid "Project Log Info"
+msgstr "项目历史记录"
+
+#. module: up_project
+#: field:project.project.active.tasking,director_approve:0
+msgid "Director Approve"
+msgstr "所长签字"
+
+#. module: up_project
+#: model:ir.actions.act_window,name:up_project.project_active_tasking_reject_wizard_action
+msgid "project Tasking Reject"
+msgstr "project Tasking Reject"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,shebei:0
+msgid "设备不满足"
+msgstr "设备不满足"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: view:project.project.active.tasking:0
+msgid "产品要求评审及任务下达记录"
+msgstr "产品要求评审及任务下达记录"
+
+#. module: up_project
+#: field:project.project.active.tasking,categories_else:0
+#: field:project.project.active.tasking.engineer,categories_else:0
+msgid "Else Category"
+msgstr "其他"
+
+#. module: up_project
+#: field:project.project,filed_filing_state:0
+msgid "Filing State"
+msgstr "归档状态"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "综合标 			项目管理级别："
+msgstr "综合标 			项目管理级别："
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_project
+#: field:project.members,project_id:0
+#: view:project.project:0
+#: view:project.project.active.tasking:0
+#: field:project.project.filed.filing,project_id:0
+msgid "Project"
+msgstr "项目"
+
+#. module: up_project
+#: field:project.project,is_user_in_operator_group:0
+msgid "Is User In Operator Room"
+msgstr "用户是否属于经营室"
+
+#. module: up_project
+#: field:project.project,import_is_hidden:0
+msgid "Import Is Hidden"
+msgstr "导入：是否隐藏"
+
+#. module: up_project
+#: field:project.project,primary_work:0
+msgid "Primary Work"
+msgstr "主要任务"
+
+#. module: up_project
+#: field:project.active.tasking.config,chief_engineer_config:0
+#: field:project.active.tasking.config.wizard,chief_engineer_config:0
+msgid "Chief Engineer"
+msgstr "主管总师名单"
+
+#. module: up_project
+#: field:project.project.filed.filing,note:0
+msgid "Note"
+msgstr "借鉴"
+
+#. module: up_project
+#: help:project.project.active.tasking,state:0
+msgid "When project is created, the state is 'open'"
+msgstr "当项目建立时，状态为'open'"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,pingshenfangshi:0
+#: selection:project.project.active.tasking.operator,pingshenfangshi:0
+msgid "审批"
+msgstr "审批"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+#: view:project.project.active.tasking.reject.wizard:0
+msgid "打回申请"
+msgstr "打回申请"
+
+#. module: up_project
+#: field:project.members,profession:0
+msgid "Profession"
+msgstr "专业"
+
+#. module: up_project
+#: field:project.profession,short_name:0
+msgid "Short Name"
+msgstr "缩写名"
+
+#. module: up_project
+#: selection:project.project,state_process:0
+msgid "Project Process Filed"
+msgstr "项目进行-归档"
+
+#. module: up_project
+#: selection:project.project,city_type:0
+#: selection:project.project.wizard,city_type:0
+msgid "县级市"
+msgstr "县级市"
+
+#. module: up_project
+#: field:project.project,plan_finish_date:0
+msgid "Plan Finish Date"
+msgstr "计划完成日期"
+
+#. module: up_project
+#: field:project.project,guimo:0
+#: field:project.project.wizard,guimo:0
+msgid "Scale"
+msgstr "规模"
+
+#. module: up_project
+#: view:project.project.filed.filing:0
+msgid "Project Period"
+msgstr "项目周期"
+
+#. module: up_project
+#: sql_constraint:project.upcategory:0
+msgid "The name of the category must be unique"
+msgstr "The name of the category must be unique"
+
+#. module: up_project
+#: view:project.project:0
+msgid "提示"
+msgstr "提示"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,difangfagui:0
+#: selection:project.project.active.tasking,fujiayaoqiu:0
+#: selection:project.project.active.tasking,yinhanyaoqiu:0
+msgid "无"
+msgstr "无"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_upcategory
+#: field:project.project.filed.filing,project_category_id:0
+msgid "Project Category"
+msgstr "项目分类"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_project_filed_filing
+msgid "project.project.filed.filing"
+msgstr "归档表单"
+
+#. module: up_project
+#: selection:project.project,city_type:0
+#: selection:project.project.wizard,city_type:0
+msgid "省会城市"
+msgstr "省会城市"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_project_filed_type
+msgid "project.project.filed.type"
+msgstr "project.project.filed.type"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_hr_employee
+msgid "Employee"
+msgstr "雇员"
+
+#. module: up_project
+#: field:project.log,log_info:0
+msgid "Log Info"
+msgstr "历史记录"
+
+#. module: up_project
+#: view:project.project.filed.filing:0
+msgid "Manager Disapprove"
+msgstr "负责人打回申请"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "主管总师："
+msgstr "主管总师："
+
+#. module: up_project
+#: view:project.project.filed.filling.secondcategory:0
+msgid "Project Filed Document Secondary Category"
+msgstr "项目二级分类"
+
+#. module: up_project
+#: field:project.project.filed.filing,paper_file_approver_id:0
+msgid "Paper File Approver"
+msgstr "纸质文件审批人"
+
+#. module: up_project
+#: field:project.log,log_date:0
+#: field:project.project,create_date:0
+#: field:project.project.active.tasking.reject.log,create_date:0
+msgid "Created on"
+msgstr "创建日期"
+
+#. module: up_project
+#: field:project.project.active.tasking,is_cover_sign:0
+msgid "Is Sign by Cover Director"
+msgstr "Is Sign by Cover Director"
+
+#. module: up_project
+#: view:project.project:0
+msgid "Projects"
+msgstr "项目列表"
+
+#. module: up_project
+#: selection:project.project,toubiaoleibie:0
+#: selection:project.project.active.tasking,tender_category:0
+#: selection:project.project.active.tasking.engineer,tender_category:0
+#: selection:project.project.wizard,toubiaoleibie:0
+msgid "综合标"
+msgstr "综合标"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "项目名称"
+msgstr "项目名称"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,pingshenfangshi:0
+#: selection:project.project.active.tasking.operator,pingshenfangshi:0
+msgid "会签"
+msgstr "会签"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_active_tasking_config
+msgid "project.active.tasking.config"
+msgstr "project.active.tasking.config"
+
+#. module: up_project
+#: view:project.project.filed.filing:0
+msgid "至"
+msgstr "至"
+
+#. module: up_project
+#: view:project.project.active.tasking.reject.wizard:0
+msgid "确定打回申请?"
+msgstr "确定打回申请?"
+
+#. module: up_project
+#: view:project.project:0
+msgid "多次项目归档申请"
+msgstr "多次项目归档申请"
+
+#. module: up_project
+#: field:project.project.filed.record,comment:0
+msgid "Comment"
+msgstr "备注"
+
+#. module: up_project
+#: selection:project.project.filed.filing,end_stage:0
+msgid "评审前方案"
+msgstr "评审前方案"
+
+#. module: up_project
+#: field:project.project,questions:0
+msgid "Questions"
+msgstr "当前存在的问题"
+
+#. module: up_project
+#: field:project.project,is_user_in_engineer_group:0
+msgid "Is User In Engineer Room"
+msgstr "用户是否属于总师室"
+
+#. module: up_project
+#: view:project.project:0
+msgid "Project Process"
+msgstr "项目流程"
+
+#. module: up_project
+#: view:project.active.tasking.config.wizard:0
+#: view:project.engineer.room.config.wizard:0
+#: view:project.project.config.filed.settings:0
+msgid "or"
+msgstr "或"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+msgid "是否外包:"
+msgstr "是否外包:"
+
+#. module: up_project
+#: view:project.project.config.wizard:0
+msgid "项目表单配置"
+msgstr "项目表单配置"
+
+#. module: up_project
+#: field:project.project.active.tasking.operator,chenjiebumen_id:0
+msgid "承接部门"
+msgstr "承接部门"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "类别："
+msgstr "类别："
+
+#. module: up_project
+#: view:project.project.config.filed.settings:0
+msgid "项目关键词配置"
+msgstr "项目关键词配置"
+
+#. module: up_project
+#: field:project.active.tasking.config,cover_director_config:0
+#: field:project.active.tasking.config.wizard,cover_director_config:0
+msgid "Cover Director"
+msgstr "所长审批阶段代签人"
+
+#. module: up_project
+#: field:project.project.active.tasking.engineer,category_name:0
+msgid "Project Category Name"
+msgstr "项目分类名称"
+
+#. module: up_project
+#: field:project.project.active.tasking,category_name:0
+msgid "Category Name"
+msgstr "分类名称"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,yinfacuoshi:0
+#: selection:project.project.active.tasking.operator,yinfacuoshi:0
+msgid "加班"
+msgstr "加班"
+
+#. module: up_project
+#: field:project.project,is_project_created:0
+msgid "Is Project Created"
+msgstr "项目是否被创建"
+
+#. module: up_project
+#: field:project.project,customer_contact:0
+#: field:project.project.wizard,customer_contact:0
+msgid "Customer Contact"
+msgstr "甲方联系人"
+
+#. module: up_project
+#: view:project.project:0
+msgid "项目启动流程"
+msgstr "项目启动流程"
+
+#. module: up_project
+#: model:ir.actions.server,name:up_project.open_view_project_related_to_me
+#: model:ir.ui.menu,name:up_project.menu_projects_related_to_me
+msgid "Projects Related To Me"
+msgstr "与我相关的项目"
+
+#. module: up_project
+#: field:project.project,is_project_creater:0
+msgid "Is Project Creater"
+msgstr "Is Project Creater"
+
+#. module: up_project
+#: field:project.project,is_project_member:0
+msgid "Is User is The Project Member"
+msgstr "Is User is The Project Member"
+
+#. module: up_project
+#: view:project.project.filed.filing:0
+msgid "项目概况的说明要求言简意赅，以300字左右为宜，包括："
+msgstr "项目概况的说明要求言简意赅，以300字左右为宜，包括："
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project,guanlijibie:0
+#: selection:project.project.active.tasking.engineer,guanlijibie:0
+#: selection:project.project.wizard,guanlijibie:0
+msgid "院级"
+msgstr "院级"
+
+#. module: up_project
+#: field:project.project,import_flag:0
+msgid "Import Flag"
+msgstr "导入：flag"
+
+#. module: up_project
+#: view:project.project.config.filed.settings:0
+msgid "Filing Records Template"
+msgstr "归档纸质文件模板"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "专项规划(研究)"
+msgstr "专项规划(研究)"
+
+#. module: up_project
+#: field:project.project.active.tasking,is_cover_sign_final:0
+msgid "Is Sign by Cover Director Final"
+msgstr "Is Sign by Cover Director Final"
+
+#. module: up_project
+#: view:project.project:0
+msgid "确定项目已经归档完成?进入归档完成状态的项目不可回退！请谨慎处理"
+msgstr "确定项目已经归档完成?进入归档完成状态的项目不可回退！请谨慎处理"
+
+#. module: up_project
+#: field:project.project,city_type:0
+#: field:project.project.wizard,city_type:0
+msgid "City Type"
+msgstr "城市类型"
+
+#. module: up_project
+#: field:project.project,filed_times:0
+#: field:project.project,is_multi_filing_allowed:0
+msgid "Is Multi Filing Allowed"
+msgstr "Is Multi Filing Allowed"
+
+#. module: up_project
+#: view:project.project:0
+msgid "确定项目进入归档状态?进入归档状态的项目不可回退！"
+msgstr "确定项目进入归档状态?进入归档状态的项目不可回退！"
+
+#. module: up_project
+#: view:project.project:0
+msgid "流程"
+msgstr "流程"
+
+#. module: up_project
+#: model:ir.actions.report.xml,name:up_project.report_project_filed_filing_report_pdf_info
+msgid "QRT4.2.3-3项目归档表-基本信息"
+msgstr "QRT4.2.3-3项目归档表-基本信息"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "规模"
+msgstr "规模"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,pingshenfangshi:0
+#: selection:project.project.active.tasking.operator,pingshenfangshi:0
+msgid "会议"
+msgstr "会议"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "旧改项目"
+msgstr "旧改项目"
+
+#. module: up_project
+#: field:project.project.active.tasking,renwuyaoqiu:0
+#: field:project.project.active.tasking.operator,renwuyaoqiu:0
+msgid "任务要求"
+msgstr "任务要求"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project,guanlijibie:0
+#: selection:project.project.active.tasking.engineer,guanlijibie:0
+#: selection:project.project.wizard,guanlijibie:0
+msgid "所级"
+msgstr "所级"
+
+#. module: up_project
+#: field:project.project,write_date:0
+#: field:project.project.filed.filing,write_date:0
+msgid "Modification date"
+msgstr "最后修改时间"
+
+#. module: up_project
+#: view:project.project.active.tasking.engineer:0
+msgid "engineer Form"
+msgstr "总师室表单"
+
+#. module: up_project
+#: field:project.project,import_aaddress:0
+msgid "Import AAddress"
+msgstr "Import AAddress"
+
+#. module: up_project
+#: selection:project.project,partner_type:0
+#: selection:project.project.wizard,partner_type:0
+msgid "深圳市其他"
+msgstr "深圳市其他"
+
+#. module: up_project
+#: field:project.project.filed.filing,description:0
+msgid "Description"
+msgstr "概况"
+
+#. module: up_project
+#: model:ir.actions.server,name:up_project.action_project_need_process
+#: model:ir.ui.menu,name:up_project.project_need_process
+msgid "Project Need Process"
+msgstr "待处理项目"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: view:project.project.active.tasking:0
+msgid "总师室"
+msgstr "总师室"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "市政专项"
+msgstr "市政专项"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_ir_attachment
+msgid "ir.attachment"
+msgstr "ir.attachment"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+msgid "与以前表述不一致的合同/协议要求是否解决"
+msgstr "与以前表述不一致的合同/协议要求是否解决"
+
+#. module: up_project
+#: view:project.project:0
+#: field:project.project.wizard,partner_id:0
+msgid "Customer"
+msgstr "甲方"
+
+#. module: up_project
+#: constraint:project.upcategory:0
+msgid "Error! You cannot create recursive categories"
+msgstr "错误：你不能创建含有循环的类型"
+
+#. module: up_project
+#: selection:project.project,filed_filing_state:0
+#: selection:project.project.filed.filing,state:0
+msgid "Manager Approving"
+msgstr "负责人审批"
+
+#. module: up_project
+#: view:project.engineer.room.config.wizard:0
+#: view:project.project.wizard:0
+msgid "修改"
+msgstr "修改"
+
+#. module: up_project
+#: view:project.project:0
+#: field:project.project,country_id:0
+#: view:project.project.wizard:0
+#: field:project.project.wizard,country_id:0
+msgid "Country"
+msgstr "国家"
+
+#. module: up_project
+#: field:project.project,temp_status:0
+msgid "Temp Status"
+msgstr "Temp Status"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "投标类别："
+msgstr "投标类别："
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "评  审  意  见"
+msgstr "评  审  意  见"
+
+#. module: up_project
+#: view:project.project.active.tasking:0
+msgid "审批通过并提交经营室"
+msgstr "审批通过并提交经营室"
+
+#. module: up_project
+#: field:project.upcategory,summary:0
+msgid "Summary"
+msgstr "摘要"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "评 审 结 果 与 任 务 下 达"
+msgstr "评 审 结 果 与 任 务 下 达"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+msgid "委托单位地址"
+msgstr "委托单位地址"
+
+#. module: up_project
+#: field:project.upcategory,index:0
+msgid "Sequence"
+msgstr "序列"
+
+#. module: up_project
+#: model:ir.actions.report.xml,name:up_project.report_project_active_tasking_report_pdf
+msgid "QRT7.2.2-1产品要求评审及任务下达记录"
+msgstr "QRT7.2.2-1产品要求评审及任务下达记录"
+
+#. module: up_project
+#: field:project.project.filed.filing,project_serial_number:0
+msgid "Project Serial Number"
+msgstr "项目编号"
+
+#. module: up_project
+#: report:project.active.tasking.report.pdf:0
+#: selection:project.project.active.tasking,express_requirement:0
+msgid "有委托书"
+msgstr "有委托书"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_log
+msgid "project.log"
+msgstr "project.log"
+
+#. module: up_project
+#: model:ir.model,name:up_project.model_project_project_filed_record
+msgid "project.project.filed.record"
+msgstr "project.project.filed.record"
+

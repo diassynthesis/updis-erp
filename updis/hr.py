@@ -1,6 +1,10 @@
 #-*- encoding: utf-8 -*-
 import datetime
-from osv import fields, osv
+from operator import itemgetter
+import random
+import math
+from openerp import SUPERUSER_ID
+from openerp.osv import fields, osv
 
 
 class hr_employee_updis(osv.osv):
@@ -85,6 +89,9 @@ class hr_employee_updis(osv.osv):
         'trains': fields.one2many('updis.hr.training.record', 'employee',
                                   # 'employee_training_rel', 'employee_id', 'training_id',
                                   'Trains'),
+        'speciality_id': fields.many2many('hr.employee.speciality', 'hr_employee_with_special_rel', 'employee_id',
+                                          'speciality_id',
+                                          string='Specialities'),
     }
 
     def clear_have_vac_days(self, cr, uid, ids, context=None):
@@ -93,3 +100,56 @@ class hr_employee_updis(osv.osv):
 
     def onchange_address_id(self, cr, uid, ids, address, context=None):
         return {'value': {}}
+
+
+class EmployeeSpeciality(osv.osv):
+    _description = "Employee Speciality"
+    _name = 'hr.employee.speciality'
+
+    _columns = {
+        'name': fields.char(size=128, string='Name', required=1),
+        'parent_id': fields.many2one('hr.employee.speciality', string='Parent Name'),
+        'child_ids': fields.one2many('hr.employee.speciality', 'parent_id', string='Children Name'),
+
+    }
+
+    def _check_recursion(self, cr, uid, ids, context=None):
+        level = 100
+        ids = [ids] if isinstance(ids, int) else ids
+        while len(ids):
+            cr.execute('select distinct parent_id from hr_employee_speciality where id IN %s', (tuple(ids), ))
+            ids = filter(None, map(lambda x: x[0], cr.fetchall()))
+            if not level:
+                return False
+            level -= 1
+        return True
+
+    _constraints = [
+        (_check_recursion, 'Error! You cannot create recursive Speciality.', ['parent_id'])
+    ]
+
+    _sql_constraints = [('speciality_name_unique', 'unique(name)', 'name must be unique !')]
+
+
+class EmployeeBirthdayWish(osv.osv):
+    _description = "Birthday Wish"
+    _name = 'hr.birthday.wish'
+    _columns = {
+        'name': fields.text('Wish'),
+    }
+
+    def get_today_birthday(self, cr, uid):
+        total_wish = self.search(cr, 1, [])
+        no = int(len(total_wish) * random.random()) if total_wish else None
+        if no:
+            random_wish = total_wish[no]
+        else:
+            random_wish = None
+        wishes = self.browse(cr, SUPERUSER_ID, random_wish).name if random_wish else ''
+        cr.execute(
+            "select DISTINCT h.id as id from hr_employee as h , resource_resource as r " +
+            "Where date_part('day', h.birthday) = date_part('day', CURRENT_DATE) And " +
+            "date_part('MONTH', h.birthday) = date_part('MONTH', CURRENT_DATE) AND " +
+            "r.active is true and h.resource_id = r.id")
+        employees = self.pool.get('hr.employee').browse(cr, uid, map(itemgetter(0), cr.fetchall()))
+        return [e.name for e in employees], wishes

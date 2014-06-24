@@ -7,7 +7,7 @@
     'author': 'matt.cai',
     'license': 'AGPL-3',
     'depends': ['web'],
-    'auto_install': True,
+    'auto_install': False,
     'css': [
     ],
     'js': [

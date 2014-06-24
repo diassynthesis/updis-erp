@@ -5,7 +5,7 @@
             <field name="name">project.project.active.tasking.form</field>
             <field name="model">project.project.active.tasking</field>
             <field name="arch" type="xml">
-                <form string="Project" version="7.0">
+                <form string="Project" version="7.0" create="false" delete="false">
                     <header>
                         <field name="state" widget="statusbar"
                                readonly="1"/>
@@ -31,6 +31,7 @@
                             <field name="director_reviewer_groups"/>
                             <field name="is_cover_sign"/>
                             <field name="is_cover_sign_final"/>
+                            <field name="project_id"/>
                         </group>
                         <group colspan="2" name="project_num"
                                attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}">
@@ -107,7 +108,7 @@
                                         </div>
                                         <field name="director_reviewer_apply_time" readonly="1"/>
                                         <div attrs="{'invisible':[('is_cover_sign','=',False)]}">
-                                                (代签)
+                                            (代签)
                                         </div>
                                     </td>
                                 </tr>
@@ -129,7 +130,7 @@
                                                attrs="{'required':[('state','in',['open','suozhangshenpi'])],'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])]}"/>
                                         <div>
                                             <field name="attachments" widget="many2many_binary"
-                                                   domain="[('res_model','=','project.project.active.tasking')]"
+                                                   res_model="project.project" res_id="project_id" context="{'parent_id':%(dir_up_project_activing)d}"
                                                    attrs="{'readonly':['|','&amp;',('is_project_creater','=',False),('is_display_button','=',False),('state','not in',['open','suozhangshenpi'])],
                                                    'invisible':[('is_project_director','!=',True),('is_project_creater','!=',True),('is_user_in_operator_group','!=',True),('is_user_in_engineer_group','!=',True),('is_chief','!=',True),('is_admin','!=',True)]}"
                                                     />
@@ -257,6 +258,7 @@
                             <group class="activetable" col="4"
                                    attrs="{'invisible':[('state','in',['open','suozhangshenpi','zhidingbumen'])]}">
                                 <field name="else_attachments" widget="many2many_binary"
+                                       res_model="project.project" res_id="project_id" context="{'parent_id':%(dir_up_project_activing)d}"
                                        attrs="{'readonly':[('state','not in',['zhidingbumen','zhidingfuzeren','suozhangqianzi'])]}"
                                        colspan="4"/>
 
@@ -362,45 +364,5 @@
                 </form>
             </field>
         </record>
-
-        <record id="project_project_active_tasking_inherit" model="ir.ui.view">
-            <field name="name">project.project.active.tasking.inherit</field>
-            <field name="model">project.project</field>
-            <field name="inherit_id" ref="edit_project_inherit"/>
-            <field name="arch" type="xml">
-                <xpath expr="//div[@name='related_forms']" position="before">
-                    <!--button name="btn_active_tasking"
-                            class="oe_highlight"
-                            string="产品要求评审及任务下达记录"
-                            type="object"
-                            groups="project.group_project_user"/-->
-                    <tr>
-                        <td>
-                            <field name="active_tasking" readonly="1" required="0" class="oe_inline" nolabel="1"
-                                   target="new" attrs="{'invisible':[('is_import','=',True)]}"/>
-                        </td>
-                        <td>
-                            <field name="active_tasking_state" readonly="1"/>
-                        </td>
-                        <td>
-                            <field name="active_tasking_is_wait_user_process" invisible="1"/>
-                            <field name="is_import" invisible="1"/>
-                            <div attrs="{'invisible':[('active_tasking_is_wait_user_process','=',False)]}">
-                                <span class="hint-red">
-                                    等待处理
-                                </span>
-                            </div>
-                            <div attrs="{'invisible':[('is_import','=',False)]}">
-                                <span>
-                                    导入项目,不存在下达记录
-                                </span>
-                            </div>
-                        </td>
-                    </tr>
-                </xpath>
-            </field>
-        </record>
-
-
     </data>
 </openerp>

@@ -1,0 +1,617 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* up_library
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0-20131022-232438\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-12-25 09:38+0000\n"
+"PO-Revision-Date: 2013-12-25 09:38+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: up_library
+#: model:ir.actions.act_window,name:up_library.action_up_library_type_config
+#: model:ir.ui.menu,name:up_library.menu_up_library_type_config
+msgid "Library Type Config"
+msgstr "图书类型配置"
+
+#. module: up_library
+#: field:library.book.record,borrow_date:0
+#: field:library.book.record.wizard,borrow_date:0
+msgid "Borrow Date"
+msgstr "借阅日期"
+
+#. module: up_library
+#: view:library.book.wish:0
+msgid "Marked As bought"
+msgstr "已购买"
+
+#. module: up_library
+#: model:ir.model,name:up_library.model_library_book_book_wizard
+msgid "Book Info Wizard"
+msgstr "图书信息"
+
+#. module: up_library
+#: model:ir.actions.act_window,name:up_library.mark_as_borrowed
+msgid "Mark As Borrowed Action"
+msgstr "已借出"
+
+#. module: up_library
+#: view:library.book.book:0
+msgid "Are you sure this book is lost?"
+msgstr "你确认将本图书标记成丢失?"
+
+#. module: up_library
+#: view:library.book.type:0
+msgid "Book Type Config"
+msgstr "图书类型配置"
+
+#. module: up_library
+#: selection:library.book.wish,state:0
+msgid "Bought"
+msgstr "已购买"
+
+#. module: up_library
+#: view:library.book.book:0
+#: view:library.book.wish:0
+msgid "By State"
+msgstr "按状态"
+
+#. module: up_library
+#: view:library.book.book:0
+msgid "Borrow Record"
+msgstr "借阅记录"
+
+#. module: up_library
+#: field:library.book.book,is_borrowable:0
+#: field:library.book.book.wizard,is_borrowable:0
+msgid "Is Borrowable"
+msgstr "是否可借"
+
+#. module: up_library
+#: view:library.book.wish:0
+msgid "Marked As Un bought"
+msgstr "未购买"
+
+#. module: up_library
+#: constraint:library.book.category:0
+msgid "Error! You cannot create recursive Categories."
+msgstr "错误!你不能创建一个含有循环的分项"
+
+#. module: up_library
+#: view:library.book.book:0
+msgid "Be Lost And Scrap"
+msgstr "所有遗失和损坏"
+
+#. module: up_library
+#: model:ir.actions.act_window,name:up_library.action_up_library_all_wish_book
+msgid "all Wish Book"
+msgstr "所有心愿图书"
+
+#. module: up_library
+#: model:ir.ui.menu,name:up_library.menu_up_library_config
+msgid "Library Config"
+msgstr "图书管理配置"
+
+#. module: up_library
+#: field:library.book.category,name:0
+msgid "Book Category Name"
+msgstr "分项名称"
+
+#. module: up_library
+#: view:library.book.book:0
+msgid "Are you sure this book is scrap?"
+msgstr "你确定本图书已经损坏?"
+
+#. module: up_library
+#: field:library.book.wish,link_book_id:0
+msgid "Link Book"
+msgstr "相关图书"
+
+#. module: up_library
+#: field:library.book.record,is_returned:0
+#: field:library.book.record.wizard,is_returned:0
+msgid "Is Book Returned"
+msgstr "已经归还"
+
+#. module: up_library
+#: view:library.book.book:0
+msgid "Mask As Lost"
+msgstr "已丢失"
+
+#. module: up_library
+#: field:library.book.record,need_return:0
+#: field:library.book.record.wizard,need_return:0
+msgid "Need Return"
+msgstr "是否需要归还"
+
+#. module: up_library
+#: model:ir.actions.act_window,name:up_library.action_up_library_all_borrowing
+msgid "All Borrowing Book"
+msgstr "所有在借图书"
+
+#. module: up_library
+#: view:library.book.book:0
+#: field:library.book.book,name:0
+#: view:library.book.book.wizard:0
+#: field:library.book.book.wizard,name:0
+#: view:library.book.record:0
+#: view:library.book.record.wizard:0
+#: view:library.book.wish:0
+#: field:library.book.wish,name:0
+msgid "Book Name"
+msgstr "图书名称"
+
+#. module: up_library
+#: field:library.book.book,image_small:0
+#: field:library.book.book.wizard,image_small:0
+#: field:library.book.wish,image_small:0
+msgid "Small-sized image"
+msgstr "小图片"
+
+#. module: up_library
+#: view:library.book.book:0
+msgid "Recover"
+msgstr "恢复"
+
+#. module: up_library
+#: model:ir.ui.menu,name:up_library.menu_up_library_my_borrowed_book
+msgid "My Borrowed Record"
+msgstr "我借阅过的图书"
+
+#. module: up_library
+#: view:library.book.book:0
+msgid "Be Borrowed"
+msgstr "已借出"
+
+#. module: up_library
+#: model:ir.actions.act_window,name:up_library.action_up_library_my_wish_book
+msgid "My Wish Book"
+msgstr "我的心愿图书"
+
+#. module: up_library
+#: model:ir.ui.menu,name:up_library.menu_up_library_management_root
+msgid "Library Management"
+msgstr "图书馆"
+
+#. module: up_library
+#: field:library.book.type,name:0
+msgid "Book Type Name"
+msgstr "图书类型名称"
+
+#. module: up_library
+#: model:ir.actions.act_window,name:up_library.action_up_library_else_config
+#: model:ir.ui.menu,name:up_library.menu_up_library_else_config
+msgid "Library Else Config"
+msgstr "其它配置"
+
+#. module: up_library
+#: field:library.book.book,state:0
+#: field:library.book.book.wizard,state:0
+#: field:library.book.wish,state:0
+msgid "State"
+msgstr "状态"
+
+#. module: up_library
+#: model:ir.actions.act_window,name:up_library.action_up_library_all_books
+msgid "All Books"
+msgstr "所有图书"
+
+#. module: up_library
+#: view:library.book.book.wizard:0
+#: view:library.book.record.wizard:0
+msgid "Save"
+msgstr "保存"
+
+#. module: up_library
+#: field:library.book.book,type:0
+#: field:library.book.book.wizard,type:0
+msgid "Type"
+msgstr "类型"
+
+#. module: up_library
+#: selection:library.book.book,state:0
+#: selection:library.book.book.wizard,state:0
+msgid "Borrowed"
+msgstr "已借出"
+
+#. module: up_library
+#: model:ir.ui.menu,name:up_library.menu_up_library_my_library
+msgid "My Library"
+msgstr "我的图书馆"
+
+#. module: up_library
+#: view:library.book.book:0
+msgid "Mask As Returned"
+msgstr "已归还"
+
+#. module: up_library
+#: view:library.book.book:0
+msgid "Book Search"
+msgstr "图书搜索"
+
+#. module: up_library
+#: view:library.book.book:0
+msgid "Mask As Borrowed"
+msgstr "已借出"
+
+#. module: up_library
+#: model:ir.model,name:up_library.model_library_book_log
+msgid "Log Record"
+msgstr "历史记录"
+
+#. module: up_library
+#: model:ir.model,name:up_library.model_library_book_record_wizard
+msgid "Book Record Wizard"
+msgstr "借阅记录"
+
+#. module: up_library
+#: field:library.book.book,publisher:0
+#: field:library.book.book.wizard,publisher:0
+#: field:library.book.wish,publisher:0
+msgid "Publisher"
+msgstr "出版社"
+
+#. module: up_library
+#: model:ir.model,name:up_library.model_library_book_category
+msgid "Book Category"
+msgstr "图书分项"
+
+#. module: up_library
+#: view:library.book.book.wizard:0
+#: view:library.book.record.wizard:0
+msgid "Cancel"
+msgstr "取消"
+
+#. module: up_library
+#: field:library.book.category,full_name:0
+msgid "Full Name"
+msgstr "分项路径"
+
+#. module: up_library
+#: view:library.book.config:0
+msgid "log"
+msgstr "log"
+
+#. module: up_library
+#: field:library.book.book,comment:0
+#: view:library.book.book.wizard:0
+#: field:library.book.book.wizard,comment:0
+#: view:library.book.wish:0
+#: field:library.book.wish,comment:0
+msgid "Comment"
+msgstr "简介"
+
+#. module: up_library
+#: model:ir.ui.menu,name:up_library.menu_up_library_my_borrowing_book
+msgid "My Borrowing Record"
+msgstr "我的在借图书"
+
+#. module: up_library
+#: model:ir.model,name:up_library.model_library_book_wish
+#: view:library.book.wish:0
+msgid "Wish Book"
+msgstr "心愿图书"
+
+#. module: up_library
+#: field:library.book.book,image:0
+#: field:library.book.book.wizard,image:0
+#: field:library.book.wish,image:0
+msgid "Image"
+msgstr "图片"
+
+#. module: up_library
+#: model:ir.actions.act_window,name:up_library.action_up_library_my_borrowing
+msgid "My Borrowing Book"
+msgstr "我的在借图书"
+
+#. module: up_library
+#: view:library.book.book:0
+#: view:library.book.wish:0
+msgid "Group by..."
+msgstr "分组..."
+
+#. module: up_library
+#: field:library.book.book,image_medium:0
+#: field:library.book.book.wizard,image_medium:0
+#: field:library.book.wish,image_medium:0
+msgid "Medium-sized image"
+msgstr "中号图片"
+
+#. module: up_library
+#: model:ir.ui.menu,name:up_library.menu_up_library_all_wish_books
+msgid "All Wish Books"
+msgstr "所有心愿图书"
+
+#. module: up_library
+#: model:ir.actions.act_window,name:up_library.action_up_library_all_borrowed
+msgid "All Borrowed Book"
+msgstr "所有借阅记录"
+
+#. module: up_library
+#: selection:library.book.wish,state:0
+msgid "Fail"
+msgstr "未购买"
+
+#. module: up_library
+#: model:ir.ui.menu,name:up_library.menu_up_library_all_books
+msgid "Library Books"
+msgstr "所有图书"
+
+#. module: up_library
+#: view:library.book.record:0
+#: view:library.book.record.wizard:0
+msgid "Borrowing Record"
+msgstr "借阅记录"
+
+#. module: up_library
+#: view:library.book.book.wizard:0
+#: view:library.book.record.wizard:0
+msgid "or"
+msgstr "或者"
+
+#. module: up_library
+#: field:library.book.book,category:0
+#: field:library.book.book.wizard,category:0
+msgid "Category"
+msgstr "分项"
+
+#. module: up_library
+#: view:library.book.wish:0
+msgid "Book Wish Search"
+msgstr "心愿搜索"
+
+#. module: up_library
+#: field:library.book.record,book_id:0
+#: field:library.book.record.wizard,book_id:0
+msgid "Book"
+msgstr "图书"
+
+#. module: up_library
+#: model:ir.model,name:up_library.model_library_book_type
+msgid "Book Type"
+msgstr "图书类型"
+
+#. module: up_library
+#: model:ir.ui.menu,name:up_library.menu_up_library_library_borrowed_history
+msgid "Library Borrowed Record"
+msgstr "所有借阅记录"
+
+#. module: up_library
+#: field:library.book.book,record_ids:0
+#: field:library.book.book.wizard,record_ids:0
+msgid "Records"
+msgstr "借阅记录"
+
+#. module: up_library
+#: model:ir.model,name:up_library.model_library_book_record
+#: field:library.book.record.wizard,record_id:0
+msgid "Book Record"
+msgstr "借阅记录"
+
+#. module: up_library
+#: view:library.book.category:0
+msgid "Book Category Config"
+msgstr "图书分项配置"
+
+#. module: up_library
+#: view:library.book.book:0
+msgid "Are you sure this book recovered?"
+msgstr "你确定恢复本图书状态?"
+
+#. module: up_library
+#: model:res.groups,comment:up_library.library_admin
+msgid "the Library Admin will be able to control all library config."
+msgstr "图书管理员可以配置和管理图书所有内容."
+
+#. module: up_library
+#: view:library.book.book:0
+msgid "Mask As Scrap"
+msgstr "已损坏"
+
+#. module: up_library
+#: field:library.book.category,child_ids:0
+msgid "Child Category Name"
+msgstr "子分项"
+
+#. module: up_library
+#: selection:library.book.book,state:0
+#: selection:library.book.book.wizard,state:0
+msgid "Scrap"
+msgstr "损坏"
+
+#. module: up_library
+#: model:ir.actions.act_window,name:up_library.action_up_library_category_config
+#: model:ir.ui.menu,name:up_library.menu_up_library_category_config
+msgid "Library Category Config"
+msgstr "图书分项配置"
+
+#. module: up_library
+#: view:library.book.book:0
+msgid "By Type"
+msgstr "按类型"
+
+#. module: up_library
+#: model:ir.ui.menu,name:up_library.menu_up_library_my_wished_book
+msgid "My Wished Book"
+msgstr "我的心愿图书"
+
+#. module: up_library
+#: field:library.book.book,author:0
+#: field:library.book.book.wizard,author:0
+#: field:library.book.wish,author:0
+msgid "Book Author"
+msgstr "作者"
+
+#. module: up_library
+#: model:ir.actions.act_window,name:up_library.action_up_library_my_borrowed
+msgid "My Borrowed Book"
+msgstr "我的借阅记录"
+
+#. module: up_library
+#: field:library.book.book,code:0
+#: field:library.book.book.wizard,code:0
+msgid "Code"
+msgstr "编码"
+
+#. module: up_library
+#: view:library.book.wish:0
+msgid "Need Process"
+msgstr "待处理"
+
+#. module: up_library
+#: help:library.book.book,image:0
+#: help:library.book.book.wizard,image:0
+#: help:library.book.wish,image:0
+msgid "This field holds the image used as avatar for this book, limited to 1024x1024px"
+msgstr "This field holds the image used as avatar for this book, limited to 1024x1024px"
+
+#. module: up_library
+#: view:library.book.book:0
+#: view:library.book.book.wizard:0
+msgid "Books"
+msgstr "图书"
+
+#. module: up_library
+#: field:library.book.book,has_image:0
+#: field:library.book.book.wizard,has_image:0
+#: field:library.book.wish,has_image:0
+msgid "Have Image"
+msgstr "有图片"
+
+#. module: up_library
+#: model:ir.ui.menu,name:up_library.menu_up_library_management
+msgid "Library Manage"
+msgstr "图书管理"
+
+#. module: up_library
+#: field:library.book.book,purchase_date:0
+#: field:library.book.book.wizard,purchase_date:0
+msgid "Purchase Date"
+msgstr "采购日期"
+
+#. module: up_library
+#: view:library.book.book:0
+#: selection:library.book.book,state:0
+#: selection:library.book.book.wizard,state:0
+msgid "In Store"
+msgstr "可借阅"
+
+#. module: up_library
+#: sql_constraint:library.book.book:0
+#: sql_constraint:library.book.book.wizard:0
+msgid "The code of the book must be unique!"
+msgstr "图书编号必须唯一!"
+
+#. module: up_library
+#: model:res.groups,name:up_library.library_manager
+msgid "Library Manager"
+msgstr "图书管理经理"
+
+#. module: up_library
+#: field:library.book.record,borrower:0
+#: field:library.book.record.wizard,borrower:0
+msgid "Book Borrower"
+msgstr "借阅人"
+
+#. module: up_library
+#: model:res.groups,name:up_library.library_admin
+msgid "Library Admin"
+msgstr "图书管理员"
+
+#. module: up_library
+#: model:ir.model,name:up_library.model_library_book_book
+msgid "Book Info"
+msgstr "图书信息"
+
+#. module: up_library
+#: model:res.groups,comment:up_library.library_manager
+msgid "the Library Manager will be able to control all book."
+msgstr "图书经理可以管理图书的借阅等内容."
+
+#. module: up_library
+#: model:ir.actions.act_window,name:up_library.mark_as_return
+msgid "Mark As Returned Action"
+msgstr "标记为已归还"
+
+#. module: up_library
+#: field:library.book.record,return_date:0
+#: field:library.book.record.wizard,return_date:0
+msgid "Return Date"
+msgstr "归还日期"
+
+#. module: up_library
+#: view:library.book.wish:0
+msgid "Are you sure you want reject this wish book?"
+msgstr "你确定否决这个心愿请求?"
+
+#. module: up_library
+#: field:library.book.config,name:0
+msgid "Name"
+msgstr "名称"
+
+#. module: up_library
+#: selection:library.book.book,state:0
+#: selection:library.book.book.wizard,state:0
+msgid "Lost"
+msgstr "遗失"
+
+#. module: up_library
+#: model:ir.ui.menu,name:up_library.menu_up_library_library_borrowing_record
+msgid "Library Borrowing Record"
+msgstr "所有在借记录"
+
+#. module: up_library
+#: field:library.book.category,parent_id:0
+msgid "Parent Category Name"
+msgstr "父分项"
+
+#. module: up_library
+#: field:library.book.config,value:0
+msgid "Value"
+msgstr "值"
+
+#. module: up_library
+#: model:ir.model,name:up_library.model_library_book_config
+msgid "library.book.config"
+msgstr "图书管理属性"
+
+#. module: up_library
+#: field:library.book.record,due_to_return_date:0
+#: field:library.book.record.wizard,due_to_return_date:0
+msgid "Due To Return Date"
+msgstr "应还日期"
+
+#. module: up_library
+#: model:ir.actions.act_window,name:up_library.mark_as_bought
+msgid "Mark As Bought Action"
+msgstr "标记为已购进"
+
+#. module: up_library
+#: view:library.book.record:0
+msgid "Book Record Search"
+msgstr "借阅记录搜索"
+
+#. module: up_library
+#: view:library.book.book:0
+msgid "By Category"
+msgstr "按照分项"
+
+#. module: up_library
+#: selection:library.book.wish,state:0
+msgid "Apply"
+msgstr "申请中"
+
+#. module: up_library
+#: field:library.book.book,price:0
+#: field:library.book.book.wizard,price:0
+#: field:library.book.wish,price:0
+msgid "Price"
+msgstr "价格(元)"
+

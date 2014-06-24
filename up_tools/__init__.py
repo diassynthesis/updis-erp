@@ -1,2 +1,2 @@
 __author__ = 'cysnake4713'
-import tools
+import osv_log

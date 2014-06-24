@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_document_directory_access_all,document.directory.access all,model_document_directory_access,,1,1,1,1
+access_document_directory_all,document.directory,model_document_directory,,1,1,1,1
+access_document_storage,access_document_storage,document.model_document_storage,,1,1,1,1
+access_document_storage,access_document_storage,document.model_document_storage,,1,0,0,0
+access_ir_attachment_application_all,access_ir_attachment_application_all,model_ir_attachment_application,,1,0,0,0
+access_ir_attachment_application_manager,access_ir_attachment_application_manager,model_ir_attachment_application,up_document.group_attachment_download_manager,1,1,1,1
+access_ir_attachment_log,access_ir_attachment_log,model_ir_attachment_log,,1,1,1,1

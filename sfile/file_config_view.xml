@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!--sfile.file.config-->
+        <record id="view_sfile_config_tree" model="ir.ui.view">
+            <field name="name">sfile.file.config.tree</field>
+            <field name="model">sfile.file.config</field>
+            <field name="arch" type="xml">
+                <tree string="Config" version="7.0" delete="false" create="false" editable="bottom">
+                    <field name="name" readonly="1"/>
+                    <field name="value"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</openerp>

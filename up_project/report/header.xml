@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="updis_project_head" model="ir.header_webkit">
+            <field name="name">UPDIS WEBKIT HEAD</field>
+            <field name="orientation">Portrait</field>
+            <field name="format">A4</field>
+            <field name="margin_top" eval="10"/>
+            <field name="margin_bottom" eval="20"/>
+            <field name="css"><![CDATA[
+        body {
+            font-family: "Microsoft YaHei", "SimSun", "Lucida Grande", Helvetica, Verdana, Arial, sans-serif;
+            font-size: 14px;
+            padding-top: 15px;
+        }
+
+        .pdf-title {
+            text-align: center;
+        }
+
+        div.pdf-small-title {
+            display: inline;
+        }
+
+        div.pdf-small-title > div {
+            display: inline-block;
+        }
+
+        div.pdf-small-title > .pdf-small-title-right {
+            float: right;
+        }
+
+        div.pdf-small-title > .pdf-small-title-center {
+            margin-left: 200px;
+        }
+
+        div.pdf-table > table {
+            border: solid #000000 2px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        div.pdf-table > table > tbody > tr > td {
+            border: solid #000000 1px;
+            padding: 5px;
+        }
+
+        div.pdf-table > table > tbody > tr > td.table-content {
+            font-size: 14px;
+        }
+                ]]>
+            </field>
+            <field name="html">
+                <![CDATA[
+            <html>
+                <body>
+                </body>
+            </html>]]>
+            </field>
+            <field name="footer_html"><![CDATA[
+            <html>
+                <body>
+                    <div style="padding-top:10px">${helper.embed_logo_by_name('updis_logo',width=200)|n}</div>
+                </body>
+            </html>]]>
+            </field>
+        </record>
+    </data>
+</openerp>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!--document.directory.access-->
+        <record id="view_document_directory_access_tree" model="ir.ui.view">
+            <field name="name">document.directory.access.tree</field>
+            <field name="model">document.directory.access</field>
+            <field name="arch" type="xml">
+                <tree string="Access" version="7.0">
+                    <field name="group_id"/>
+                    <field name="perm_read"/>
+                    <field name="perm_write"/>
+                    <field name="is_downloadable"/>
+                    <field name="is_need_approval" attrs="{'readonly':[('is_downloadable','=',False)]}"/>
+                    <field name="code"/>
+                    <field name="perm_create_unlink"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_document_directory_access_form" model="ir.ui.view">
+            <field name="name">document.directory.access.form</field>
+            <field name="model">document.directory.access</field>
+            <field name="arch" type="xml">
+                <form string="Access" version="7.0" editable="bottom">
+                    <sheet>
+                        <group colspan="2">
+                            <field name="group_id"/>
+                        </group>
+                        <newline/>
+                        <group>
+                            <group>
+                                <field name="perm_write"/>
+                                <field name="perm_create_unlink"/>
+                            </group>
+                            <group>
+                                <field name="is_downloadable"/>
+                                <field name="is_need_approval" attrs="{'readonly':[('is_downloadable','=',False)]}"/>
+                            </group>
+                        </group>
+                        <newline/>
+                        <group>
+                            <field name="code"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_document_directory_config_inherit" model="ir.ui.view">
+            <field name="name">document.directory.form.inherit</field>
+            <field name="model">document.directory</field>
+            <field name="inherit_id" ref="document.view_document_directory_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="related_action_id" readonly="1"
+                           groups="base.group_document_user"/>
+                    <button string="Create Action" type="action" name="%(action_document_direct_action_wiz)d"
+                            attrs="{'invisible':[('related_action_id','!=',False)]}"
+                            groups="base.group_document_user"/>
+                    <button string="Delete Action" type="object" name="delete_related_action"
+                            attrs="{'invisible':[('related_action_id','=',False)]}"
+                            groups="base.group_document_user"/>
+                    <newline/>
+                    <field name="index"/>
+                </xpath>
+                <xpath expr="//field[@name='parent_id']" position="replace">
+                    <field name="parent_id" on_change="onchange_parent_id(parent_id)">
+                        <tree>
+                            <field name="name"/>
+                            <field name="parent_id"/>
+                        </tree>
+                    </field>
+                </xpath>
+                <xpath expr="//page[@string='Security']/label[2]" position="replace">
+                    <label colspan="4" style="color:red;"
+                           string="These groups, however, will automatic add to children directories everytime,Please check the groups status everytime you change the parent directories!"/>
+                    <group>
+                        <button name="convert_child_privilege" type="object" string="Convert child directories privilege"
+                                confirm="Are you sure you want override all chrild directories privilege? This operation can't rollback!"/>
+                    </group>
+                    <newline/>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_document_directory_public_struct_tree">
+            <field name="name">document.directory.structure.tree</field>
+            <field name="model">document.directory</field>
+            <field name="field_parent">child_ids</field>
+            <field name="arch" type="xml">
+                <tree string="Directories" toolbar="1">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_document_directory_public_config_tree" model="ir.ui.view">
+            <field name="name">document.directory.public.tree</field>
+            <field name="model">document.directory</field>
+            <field name="field_parent">child_ids</field>
+            <field name="arch" type="xml">
+                <tree string="Public Directories">
+                    <field name="name"/>
+                    <field name="parent_id"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="write_date"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_document_directory_tree_inherit" model="ir.ui.view">
+            <field name="name">document.directory.tree.inherit</field>
+            <field name="model">document.directory</field>
+            <field name="inherit_id" ref="document.view_document_directory_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='type']" position="replace">
+                    <field name="parent_id"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_document_directory_public_config_form" model="ir.ui.view">
+            <field name="name">document.directory.public.config.form</field>
+            <field name="model">document.directory</field>
+            <field name="arch" type="xml">
+                <form string="Public Directories" col="4" version="7.0">
+                    <group col="4">
+                        <field name="name"/>
+                        <field name="parent_id" required="1" on_change="onchange_parent_id(parent_id)"
+                               domain="[('id','child_of',%(up_document.doc_direct_000001)d),('id','!=',%(up_document.doc_direct_000001)d)]"
+                               context="{'tree_view_ref': 'up_document.view_document_directory_public_config_tree','form_view_ref': 'up_document.view_document_directory_public_config_form','default_user_id': '', }"/>
+                        <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                        <field name="user_id" invisible="1"/>
+                        <field name="index"/>
+                    </group>
+                    <notebook colspan="4">
+                        <!--page string="Documents">
+                            <field name="file_ids" context="{'tree_view_ref':'up_document.view_document_file_public_tree'}"/>
+                        </page-->
+                        <page string="Security">
+                            <div>
+                                <label colspan="4"
+                                       string="Only members of these groups will have access to this directory and its files."/>
+                            </div>
+                            <div>
+                                <label colspan="4" style="color:red;"
+                                       string="These groups, however, will automatic add to children directories everytime,Please check the groups status everytime you change the parent directories!"/>
+                            </div>
+                            <field name="group_ids" colspan="4" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+        <act_window id="acttion_download_attachments_wiz"
+                    name="Download Attachments"
+                    src_model="ir.attachment"
+                    res_model="ir.attachment.download.wizard"
+                    view_type="form" view_mode="form"
+                    key2="client_action_multi" target="new" multi="True"/>
+        <!--record id="view_attach_filter_inherit3" model="ir.ui.view">
+            <field name="name">IR Attachment2 inherit</field>
+            <field name="model">ir.attachment</field>
+            <field name="inherit_id" ref="document.view_attach_filter_inherit2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@string='Directory']" position="attributes">
+                    <attribute name="name">by-directory</attribute>
+                </xpath>
+            </field>
+        </record-->
+    </data>
+</openerp>
