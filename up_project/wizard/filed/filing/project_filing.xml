@@ -116,14 +116,15 @@
                                     </field>
                                 </group>
                                 <group colspan="2">
-                                    <label string=""/>
+                                    <label for="description"/>
                                     <div class="oe_edit_only oe_tips" colspan="1">
                                         <p>项目概况的说明要求言简意赅，以300字左右为宜，包括： </p>
                                         <p>项目来源(委托/招标/邀标); 项目开展周期;</p>
                                         <p>项目背景; 项目目的(主要说明甲方想解决的核心问题);</p>
                                         <p>核心项目成果; 项目技术特色</p>
                                     </div>
-                                    <field name="description"/>
+                                    <label string=""/>
+                                    <field name="description" nolabel="1"/>
                                     <field name="note" placeholder="(自填案例名称，借鉴的主要内容)"/>
                                     <field name="show_images" widget="many2many_binary"
                                            res_model="project.project" res_id="project_id"
