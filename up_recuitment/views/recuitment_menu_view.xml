@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="action_recuitment_manage" model="ir.actions.act_window">
+            <field name="name">Recruitment Management</field>
+            <field name="res_model">hr.member</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!--Recruitment-->
+        <menuitem name="Recruitment" id="menu_recruitment_root" parent="hr.menu_hr_root" sequence="15"/>
+
+        <menuitem name="Recruitment Manage" id="menu_recruitment_manage" sequence="10"
+                  parent="menu_recruitment_root" action="action_recuitment_manage"/>
+        <!--Public Document Config-->
+    </data>
+</openerp>

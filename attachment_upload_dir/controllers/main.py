@@ -13,7 +13,7 @@ def upload_attachment(self, req, callback, model, id, ufile, res_id=None, res_mo
                     var win = window.top.window;
                     win.jQuery(win).trigger(%s, %s);
                 </script>"""
-    context = eval(res_context)
+    context = eval(res_context) if res_context else {}
     model = res_model or model
     id = res_id or id
     try:
