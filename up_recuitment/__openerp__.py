@@ -3,7 +3,6 @@
     'name': 'UPDIS Recuitment Module',
     'version': '0.1',
     'category': 'UPDIS Recuitment',
-    'complexity': "easy",
     'description': """
 UPDIS Recuitment Module.""",
     'author': 'cysnake4713',
@@ -22,5 +21,4 @@ UPDIS Recuitment Module.""",
     ],
     'demo': [],
     'installable': True,
-    'application': True
 }
