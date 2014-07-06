@@ -71,6 +71,7 @@
                         <group invisible="1">
                             <field name="is_project_member"/>
                             <field name="is_user_is_project_manager"/>
+                            <field name="project_id" readonly="1"/>
                         </group>
                         <div class="sheet-title">
                             <h1>项目文件归档表</h1>
@@ -79,7 +80,7 @@
                             <page string="第一步:项目基本信息填写">
                                 <group string="Project Info">
                                     <group colspan="2">
-                                        <field name="project_id" readonly="1"/>
+                                        <field name="project_name"/>
                                     </group>
                                     <group>
                                         <field name="project_user" widget="many2many_tags"/>

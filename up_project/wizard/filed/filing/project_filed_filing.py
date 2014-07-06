@@ -23,6 +23,7 @@ class ProjectFiledFiling(osv.Model):
         'state': fields.selection(
             selection=FILING_STATE, string='State'),
         'project_id': fields.many2one('project.project', 'Project', required=True),
+        'project_name': fields.char('Project Name', 256),
         'project_serial_number': fields.related('project_id', 'xiangmubianhao', type='char', readonly=True, string='Project Serial Number'),
         'project_scale': fields.related('project_id', 'guimo', type='char', string='Project Scale', readonly=True),
         'project_user': fields.related('project_id', 'user_id', type="many2many", relation='res.users', string='Project Manager', readonly=True),
@@ -273,7 +274,7 @@ class ProjectProjectInherit(osv.Model):
                 for template_id in template_ids:
                     data = self.pool['project.project.filed.record'].copy_data(cr, uid, template_id, context=context)
                     new_datas += [(0, 0, data), ]
-                filing_id = filing_obj.create(cr, uid, {'project_id': ids[0], 'record_ids': new_datas, }, context=context)
+                filing_id = filing_obj.create(cr, uid, {'project_id': ids[0], 'record_ids': new_datas, 'project_name': project.name}, context=context)
                 # Write Status Code
                 project.write({'status_code': 30101})
             # else if project is in project filed state
@@ -352,9 +353,9 @@ class ProjectProjectInherit(osv.Model):
 # 'create_uid': fields.many2one('res.users', 'Owner', readonly=True),
 # 'write_date': fields.datetime('Modification date', select=True),
 # 'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
-#     }
+# }
 #
-#     def init(self, cr):
+# def init(self, cr):
 #         openerp.tools.sql.drop_view_if_exists(cr, 'project_project_filed_filing_attachment_analysis')
 #         cr.execute(
 #             " CREATE VIEW project_project_filed_filing_attachment_analysis AS ( "
@@ -382,5 +383,5 @@ class SecondaryCategory(osv.Model):
     _name = 'project.project.filed.filling.secondcategory'
     _columns = {
         'name': fields.char('Name', size=128),
-        'category_id':fields.many2one('project.upcategory','Project Category'),
+        'category_id': fields.many2one('project.upcategory', 'Project Category'),
     }
