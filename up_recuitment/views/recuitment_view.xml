@@ -52,8 +52,7 @@
                         </group>
                         <group>
                             <field name="resume"/>
-                            <field name="works" widget="many2many_binary"
-                                   res_model="hr.member" context="{'parent_id':%(dir_up_hr_recuitment)d}"/>
+                            <field name="works"/>
                         </group>
                     </sheet>
                 </form>

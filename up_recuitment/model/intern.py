@@ -22,5 +22,5 @@ class HrMember(osv.Model):
         'qq': fields.char('QQ or Weichat', size=32),
         'image': fields.binary('Image'),
         'resume': fields.binary('Resume'),
-        'works': fields.many2many('ir.attachment', 'rel_hr_mem_ir_attach', 'member_id', 'attachment_id', 'Works'),
+        'works': fields.binary('Works'),
     }
