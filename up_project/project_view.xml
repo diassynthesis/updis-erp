@@ -111,6 +111,7 @@
                     <field name="user_id" string="Project Manager"/>
                     <field name="partner_id" string="Customer"/>
                     <field name="state"/>
+                    <field name="project_sub_state"/>
                     <field name="begin_date"/>
                 </tree>
             </field>
@@ -135,6 +136,7 @@
                     <field name="user_id" string="Project Manager"/>
                     <field name="partner_id" string="Customer"/>
                     <field name="state"/>
+                    <field name="project_sub_state"/>
                     <field name="begin_date"/>
                 </tree>
             </field>

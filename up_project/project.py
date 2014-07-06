@@ -1,10 +1,12 @@
 # -*- encoding:utf-8 -*-
 import datetime
 from operator import itemgetter
-from openerp import SUPERUSER_ID
 from openerp.osv import osv, fields
 from up_tools import tools
-from openerp.tools.translate import _
+from up_project.wizard.active.tasking import project_active_tasking
+from up_project.wizard.filed.filing import project_filed_filing
+
+SUB_SELECTION = project_active_tasking.SELECTION + project_filed_filing.FILING_STATE
 
 
 class project_project_wizard(osv.osv_memory):
@@ -274,6 +276,15 @@ class updis_project(osv.osv):
             result[obj.id] = ','.join(project_manager_name)
         return result
 
+    def _get_project_sub_state(self, cr, uid, ids, field_name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            if obj.state == 'project_active':
+                result[obj.id] = obj.active_tasking.state
+            elif obj.state == 'project_filed':
+                result[obj.id] = self._get_filing_state(cr, uid, [obj.id], field_name, args, context=None)[obj.id]
+        return result
+
     def is_project_member(self, cr, uid, project_id, context):
         project = self.browse(cr, uid, project_id, context=context)
         # Is project director?
@@ -405,6 +416,7 @@ class updis_project(osv.osv):
                                         string="related_files"),
         'project_manager_name': fields.function(_get_project_manager_name, type='char', readonly=True,
                                                 string="Project Manager Name For export"),
+        'project_sub_state': fields.function(_get_project_sub_state, type='selection', selection=SUB_SELECTION, string='Sub State'),
     }
 
     def _get_default_country(self, cr, uid, context):

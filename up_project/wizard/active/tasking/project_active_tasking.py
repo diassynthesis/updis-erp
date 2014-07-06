@@ -6,6 +6,15 @@ from up_tools import tools
 
 __author__ = 'cysnake4713'
 
+SELECTION = [
+    # ("draft",u"New project"),
+    ("open", u"提出申请"),
+    ("suozhangshenpi", u"所长审批"),
+    ("zhidingbumen", u"经营室审批"),
+    ("zhidingfuzeren", u"总师室审批"),
+    ("suozhangqianzi", u"负责人签字"),
+    ("end", u'归档'),
+]
 
 class project_active_tasking(osv.osv):
     _log_access = True
@@ -143,20 +152,12 @@ class project_active_tasking(osv.osv):
         'form_name': fields.char(size=128, string="Form Name"),
         "project_id": fields.many2one('project.project', string='Related Project', ondelete="cascade",
                                       required=True),
-        "state": fields.selection([
-                                      # ("draft",u"New project"),
-                                      ("open", u"提出申请"),
-                                      ("suozhangshenpi", u"所长审批"),
-                                      ("zhidingbumen", u"经营室审批"),
-                                      ("zhidingfuzeren", u"总师室审批"),
-                                      ("suozhangqianzi", u"负责人签字"),
-                                      ("end", u'表单归档'),
-                                  ], "State", help='When project is created, the state is \'open\''),
+        "state": fields.selection(SELECTION, "State", help='When project is created, the state is \'open\''),
 
         "partner_address": fields.related('partner_id', "street", type="char", string='Custom Address'),
 
 
-        #Director apply
+        # Director apply
         "yaoqiuxingchengwenjian": fields.selection([
                                                        (u"已形成", u"已形成"),
                                                        (u"未形成，但已确认", u"未形成，但已确认")],
@@ -171,7 +172,7 @@ class project_active_tasking(osv.osv):
         "hetongyizhi": fields.selection([(u"合同/协议要求表述不一致已解决", u"合同/协议要求表述不一致已解决"),
                                          (u"没有出现不一致", u"没有出现不一致")], u"不一致是否解决", ),
         "ziyuan": fields.selection([(u'人力资源满足', u'人力资源满足'), (u'人力资源不足', u'人力资源不足')], u'人力资源', ),
-        "shebei": fields.selection([(u'设备满足', u'设备满足'), (u'设备不满足', u'设备不满足')], u"设备", ),  #本院是否有能力满足规定要求
+        "shebei": fields.selection([(u'设备满足', u'设备满足'), (u'设备不满足', u'设备不满足')], u"设备", ),  # 本院是否有能力满足规定要求
         "gongqi": fields.selection([(u'工期可接受', u'工期可接受'), (u'工期太紧', u'工期太紧')], u"工期", ),  #本院是否有能力满足规定要求
         "shejifei": fields.selection([(u'设计费合理', u'设计费合理'), (u'设计费太低', u'设计费太低')], u'设计费', ),  #本院是否有能力满足规定要求
 
@@ -312,7 +313,7 @@ class project_active_tasking(osv.osv):
 
     def draft_reject(self, cr, uid, ids, context=None):
         # self._sign_form(cr, uid, ids, 'director_reviewer_apply_id', 'director_reviewer_apply_time', is_clean=True,
-        #                 context=context)
+        # context=context)
         log_info = u'所长打回申请单'
         return self._send_workflow_signal(cr, uid, ids, log_info, 'draft_reject')
 
@@ -438,15 +439,7 @@ class project_project_inherit(osv.osv):
                                           ondelete="cascade"),
         'active_tasking_is_wait_user_process': fields.related('active_tasking', 'is_wait_user_process', type='boolean',
                                                               string="Active Tasking Is Waiting User"),
-        'active_tasking_state': fields.related('active_tasking', 'state', type='selection', selection=[
-            # ("draft",u"New project"),
-            ("open", u"提出申请"),
-            ("suozhangshenpi", u"所长审批"),
-            ("zhidingbumen", u"经营室审批"),
-            ("zhidingfuzeren", u"总师室审批"),
-            ("suozhangqianzi", u"负责人签字"),
-            ("end", u'归档'),
-        ], string='Tasking State'),
+        'active_tasking_state': fields.related('active_tasking', 'state', type='selection', selection=SELECTION, string='Tasking State'),
     }
 
     def act_active_tasking(self, cr, uid, ids, context=None):
