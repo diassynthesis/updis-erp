@@ -88,6 +88,9 @@
                     <field name="department_id"/>
                     <field name="user"/>
                     <field name="usage"/>
+                    <field name="create_date"/>
+                    <field name="purchase_date"/>
+                    <field name="location"/>
                     <field name="unit_price"/>
                 </tree>
             </field>
