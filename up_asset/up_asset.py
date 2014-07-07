@@ -20,6 +20,7 @@ class up_asset_asset(osv.osv):
     _inherit = 'log.log'
     _description = 'Asset Asset'
     _log_access = True
+    _order = 'purchase_date desc'
 
     _columns = {
         'category_id': fields.many2one('updis.asset.category', string="Category", required=True),
