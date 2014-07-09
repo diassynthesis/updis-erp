@@ -12,6 +12,8 @@ UPDIS Recuitment Module.""",
         'data/document.directory.csv',
         'views/recuitment_menu_view.xml',
         'views/recuitment_view.xml',
+
+        'security/ir.model.access.csv',
     ],
     'js': [
     ],
