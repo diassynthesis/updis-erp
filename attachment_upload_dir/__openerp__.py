@@ -16,6 +16,7 @@ Document Upload Plugin Directory Support
         'static/src/xml/*.xml',
     ],
     'js': [
+        'static/src/js/dir.js',
     ],
     'auto_install': False,
     'installable': True,
