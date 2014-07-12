@@ -18,6 +18,9 @@ Document Upload Plugin Directory Support
     'js': [
         'static/src/js/dir.js',
     ],
+    'css': [
+        'static/src/css/directory.css',
+    ],
     'auto_install': False,
     'installable': True,
 }
