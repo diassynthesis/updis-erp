@@ -182,7 +182,12 @@ class IrAttachmentInherit(osv.osv):
         return True
 
     def get_directory_documents(self, cr, uid, directory_id, res_id, res_model, context):
-        ids = self.search(cr, uid, [('parent_id', '=', directory_id), ('res_id', '=', res_id), ('res_model', '=', res_model)], context=context)
+        domain = [('parent_id', '=', directory_id)]
+        if res_id:
+            domain += [('res_id', '=', res_id)]
+        if res_model:
+            domain += [('res_model', '=', res_model)]
+        ids = self.search(cr, uid, domain, context=context)
         return self.read(cr, uid, ids, ['name'], context=context)
 
 
