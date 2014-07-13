@@ -22,7 +22,9 @@
                 <button class="button-refresh" title="Refresh"/>
             </div>
             <div class="tips">
-                all this is s s s
+                <t t-if="widget.directory.is_downloadable and widget.directory.is_need_appoval">
+                    该文件夹下文件需要下载审批
+                </t>
             </div>
         </div>
         <div class="tree-child-holder">
