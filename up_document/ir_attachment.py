@@ -113,7 +113,7 @@ class IrAttachmentInherit(osv.osv):
             3: can be download
         }
         """
-        #Superuser can download anyway
+        # Superuser can download anyway
         if self.user_has_groups(cr, uid, 'base.group_document_user', context=context) or uid == 1:
             return 3
         # #init values
@@ -181,6 +181,10 @@ class IrAttachmentInherit(osv.osv):
                 self.pool.get('sms.sms').send_big_ant_to_group(cr, 1, from_rec, subject, content, model, res_id, group_id, context=None)
         return True
 
+    def get_directory_documents(self, cr, uid, directory_id, res_id, res_model, context):
+        ids = self.search(cr, uid, [('parent_id', '=', directory_id), ('res_id', '=', res_id), ('res_model', '=', res_model)], context=context)
+        return self.read(cr, uid, ids, ['name'], context=context)
+
 
 class IrAttachmentDownloadWizard(osv.osv_memory):
     _name = "ir.attachment.download.wizard"
@@ -216,8 +220,8 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
     _columns = {
         'name': fields.char('File Name', readonly=True),
         # 'format': fields.selection([('csv', 'CSV File'),
-        #                             ('po', 'PO File'),
-        #                             ('tgz', 'TGZ Archive')], 'File Format', required=True),
+        # ('po', 'PO File'),
+        # ('tgz', 'TGZ Archive')], 'File Format', required=True),
         'attachment_ids': fields.many2many('ir.attachment', 'rel_attachment_download_wizard', 'wizard_id', 'attachment_id', string='Attachments'),
         'data': fields.binary('File', readonly=True),
         'state': fields.selection([('choose', 'choose'),  # choose language

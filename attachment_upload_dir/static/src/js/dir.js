@@ -10,8 +10,6 @@ openerp.attachment_upload_dir = function (instance) {
 
     var WidgetManager = instance.web.Class.extend({
 
-        read_fields: ['name'],
-
         get_directory: function (id, context) {
             var obj = new instance.web.Model('document.directory');
             return obj.call('get_directory_info', [id, {'context': context}])
@@ -19,8 +17,39 @@ openerp.attachment_upload_dir = function (instance) {
         get_directory_child: function (id, context) {
             var obj = new instance.web.Model('document.directory');
             return obj.call('get_directory_child_info', [id, {'context': context}])
+        },
+        get_directory_documents: function (directory_id, res_id, res_model, context) {
+            var obj = new instance.web.Model('ir.attachment');
+            return obj.call('get_directory_documents', [directory_id, res_id, res_model, {'context': context}])
         }
 
+
+    });
+
+
+    instance.attachment_upload_dir.DocumentWidget = instance.web.Widget.extend({
+        template: 'DocumentElement',
+        widgetManager: new WidgetManager(),
+        init: function (parent, document) {
+            this._super(parent, document);
+            this.document = document;
+            this.dataset = parent.dataset;
+        },
+        start: function () {
+            this.bind_events();
+            this._super();
+        },
+        bind_events: function () {
+            var self = this;
+            self.$el.hover(
+                function () {
+                    $(this).find("div.button-holder").css("visibility", "visible");
+                },
+                function () {
+                    $(this).find("div.button-holder").css("visibility", "collapse");
+                }
+            );
+        }
     });
 
     instance.attachment_upload_dir.DirectoryWidget = instance.web.Widget.extend({
@@ -68,22 +97,34 @@ openerp.attachment_upload_dir = function (instance) {
             var self = this;
             self.$el.find("div.arrow").click(function () {
                 if (!self.$el.hasClass("oe_opened")) {
-                    self.create_child_directory();
+                    self.create_child_directories();
+                    self.create_child_documents();
                     self.$el.addClass("oe_opened");
                 }
             });
             self.$el.find("div.directory-line").dblclick(function () {
                 if (!self.$el.hasClass("oe_opened")) {
-                    self.create_child_directory();
+                    self.create_child_directories();
+                    self.create_child_documents();
                     self.$el.addClass("oe_opened");
                 }
             });
         },
-        create_child_directory: function () {
+        create_child_directories: function () {
             var self = this;
             self.widgetManager.get_directory_child(self.directory.id, self.dataset.context).done(function (result) {
                 _.each(result, function (directory) {
                     new instance.attachment_upload_dir.DirectoryWidget(self, directory).appendTo(self.$el.children('div.tree-child-holder').children('div.oe-directory-holder'));
+                });
+            });
+        },
+        create_child_documents: function () {
+            var self = this;
+            var res_id = self.dataset.context.default_res_id;
+            var res_model = self.dataset.context.default_res_model;
+            self.widgetManager.get_directory_documents(self.directory.id, res_id, res_model, self.dataset.context).done(function (result) {
+                _.each(result, function (document) {
+                    new instance.attachment_upload_dir.DocumentWidget(self, document).appendTo(self.$el.children('div.tree-child-holder').children('div.oe-document-holder'));
                 });
             });
         }
