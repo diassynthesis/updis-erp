@@ -12,10 +12,15 @@ openerp.attachment_upload_dir = function (instance) {
 
         read_fields: ['name'],
 
-        get_widget: function (id) {
+        get_directory: function (id, context) {
             var obj = new instance.web.Model('document.directory');
-            return obj.call('read', [id, this.read_fields])
+            return obj.call('get_directory_info', [id, {'context': context}])
+        },
+        get_directory_child: function (id, context) {
+            var obj = new instance.web.Model('document.directory');
+            return obj.call('get_directory_child_info', [id, {'context': context}])
         }
+
     });
 
     instance.attachment_upload_dir.DirectoryWidget = instance.web.Widget.extend({
@@ -25,15 +30,18 @@ openerp.attachment_upload_dir = function (instance) {
         init: function (parent, directory) {
             this._super(parent, directory);
             this.directory = directory;
+            this.dataset = parent.dataset;
         },
 
         start: function (r) {
             this.bind_events();
+            this.bind_data_events();
             this._super();
         },
 
         bind_events: function () {
-            this.$el.find("div.oe-line").hover(
+            var self = this;
+            self.$el.find("div.oe-line").hover(
                 function () {
                     $(this).find("div.button-holder").css("visibility", "visible");
                 },
@@ -41,19 +49,42 @@ openerp.attachment_upload_dir = function (instance) {
                     $(this).find("div.button-holder").css("visibility", "collapse");
                 }
             );
-            this.$el.find("div.arrow").click(function () {
-                if ($(this).parent().parent().hasClass("oe_open") == true) {
-                    $(this).parent().parent().removeClass("oe_open");
+            self.$el.find("div.arrow").click(function () {
+                if (self.$el.hasClass("oe_open") == true) {
+                    self.$el.removeClass("oe_open");
                 } else {
-                    $(this).parent().parent().addClass("oe_open oe_opened");
+                    self.$el.addClass("oe_open");
                 }
             });
-            this.$el.find("div.directory-line").dblclick(function () {
-                if ($(this).parent().hasClass("oe_open") == true) {
-                    $(this).parent().removeClass("oe_open");
+            self.$el.find("div.directory-line").dblclick(function () {
+                if (self.$el.hasClass("oe_open") == true) {
+                    self.$el.removeClass("oe_open");
                 } else {
-                    $(this).parent().addClass("oe_open oe_opened");
+                    self.$el.addClass("oe_open");
                 }
+            });
+        },
+        bind_data_events: function () {
+            var self = this;
+            self.$el.find("div.arrow").click(function () {
+                if (!self.$el.hasClass("oe_opened")) {
+                    self.create_child_directory();
+                    self.$el.addClass("oe_opened");
+                }
+            });
+            self.$el.find("div.directory-line").dblclick(function () {
+                if (!self.$el.hasClass("oe_opened")) {
+                    self.create_child_directory();
+                    self.$el.addClass("oe_opened");
+                }
+            });
+        },
+        create_child_directory: function () {
+            var self = this;
+            self.widgetManager.get_directory_child(self.directory.id, self.dataset.context).done(function (result) {
+                _.each(result, function (directory) {
+                    new instance.attachment_upload_dir.DirectoryWidget(self, directory).appendTo(self.$el.children('div.tree-child-holder').children('div.oe-directory-holder'));
+                });
             });
         }
 
@@ -114,7 +145,7 @@ openerp.attachment_upload_dir = function (instance) {
         dir_render_all: function (ids) {
             var self = this;
             _.each(ids, function (id) {
-                self.widgetManager.get_widget(id).done(function (result) {
+                self.widgetManager.get_directory(id, self.dataset.context).done(function (result) {
                     new instance.attachment_upload_dir.DirectoryWidget(self, result).appendTo(self.$el.find('div.oe-document-tree'));
                 });
             });

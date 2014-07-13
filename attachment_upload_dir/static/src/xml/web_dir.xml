@@ -1,40 +1,37 @@
 <template>
-    <div t-name="DocumentElement">
-        <div class="oe-line document-line">
-            <div class="document-select">
-                <input type="checkbox" name="radiogroup"/>
-            </div>
-            <div class="name"></div>
-            <div class="button-holder">
-                <button class="button-update" title="Update"/>
-                <button class="button-rename" title="Rename"/>
-                <button class="button-delete" title="Delete"/>
-            </div>
+    <div t-name="DocumentElement" class="oe-line document-line">
+        <div class="document-select">
+            <input type="checkbox" name="radiogroup"/>
+        </div>
+        <div class="name"></div>
+        <div class="button-holder">
+            <button class="button-update" title="Update"/>
+            <button class="button-rename" title="Rename"/>
+            <button class="button-delete" title="Delete"/>
         </div>
     </div>
 
-    <div t-name="DirectoryElement">
-        <div class="tree-directory-container">
-            <div class="oe-line directory-line">
-                <div class="arrow"></div>
-                <div class="name"><t t-esc="widget.directory.name"/></div>
-                <div class="button-holder">
-                    <button class="button-upload" title="Upload"/>
-                    <button class="button-refresh" title="Refresh"/>
-                </div>
-                <div class="tips">
-                    all this is s s s
-                </div>
+    <div t-name="DirectoryElement" class="tree-directory-container">
+        <div class="oe-line directory-line">
+            <div class="arrow"></div>
+            <div class="name">
+                <t t-esc="widget.directory.name"/>
             </div>
-            <div class="tree-child-holder">
-                <div class="oe-directory-holder"></div>
-                <div class="oe-document-holder"></div>
+            <div class="button-holder">
+                <button class="button-upload" title="Upload"/>
+                <button class="button-refresh" title="Refresh"/>
             </div>
+            <div class="tips">
+                all this is s s s
+            </div>
+        </div>
+        <div class="tree-child-holder">
+            <div class="oe-directory-holder"></div>
+            <div class="oe-document-holder"></div>
         </div>
     </div>
 
     <div t-name="DirView">
         <div class="oe-document-tree"/>
     </div>
-
 </template>

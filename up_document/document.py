@@ -148,13 +148,13 @@ class DocumentDirectoryInherit(osv.osv):
         # if user is document admin
         if self.user_has_groups(cr, uid, 'base.group_document_user', context=context) or uid == 1:
             return True
-        #init values
+        # init values
         if context is None:
             context = {}
         user = self.pool.get('res.users').browse(cr, uid, uid)
         user_group = [u.id for u in user.groups_id]
         # each directory
-        for directory in self.browse(cr, uid, directory_id, context):
+        for directory in self.browse(cr, uid, [directory_id], context):
             for group in directory.group_ids:
                 if group.group_id.id in user_group:
                     if group.calc_privilege(method, context=context):
@@ -189,3 +189,30 @@ class DocumentDirectoryInherit(osv.osv):
     def write(self, cr, uid, ids, vals, context=None):
         self._check_group_write_privilege(cr, uid, ids, context)
         return super(DocumentDirectoryInherit, self).write(cr, uid, ids, vals, context)
+
+    def get_directory_info(self, cr, uid, directory_id, context=None):
+        directory = self.browse(cr, uid, directory_id, context)
+        result = {
+            'id': directory.id,
+            'name': directory.name,
+            'is_writable': self.check_directory_privilege(cr, uid, directory_id, 'perm_write', context=context),
+            'is_downloadable': self.check_directory_privilege(cr, uid, directory_id, 'is_downloadable', context=context),
+            'is_need_appoval': self.check_directory_privilege(cr, uid, directory_id, 'is_need_appoval', context=context),
+        }
+        return result
+
+    def get_directory_child_info(self, cr, uid, id, context=None):
+        ids = self.search(cr, uid, [('parent_id', '=', id)], context=context)
+        directorys = self.browse(cr, uid, ids, context)
+        result = []
+        for directory in directorys:
+            result += [
+                {
+                    'id': directory.id,
+                    'name': directory.name,
+                    'is_writable': directory.check_directory_privilege('perm_write', context=context),
+                    'is_downloadable': directory.check_directory_privilege('is_downloadable', context=context),
+                    'is_need_appoval': directory.check_directory_privilege('is_need_appoval', context=context),
+                }
+            ]
+        return result

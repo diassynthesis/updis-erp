@@ -1,5 +1,6 @@
 .openerp .oe-document-tree {
     font-size: 14px;
+    padding-left: 20px;
 }
 
 .openerp .oe-document-tree .tree-directory-container {
@@ -44,7 +45,8 @@
 
 .openerp .oe-document-tree .tree-directory-container .directory-line .tips {
     color: grey;
-    margin-left: 40px;
+    margin-right: 200px;
+    float:right;
 }
 
 .openerp .oe-document-tree .oe_open > .directory-line {
