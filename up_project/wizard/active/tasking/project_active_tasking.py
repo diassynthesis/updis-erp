@@ -6,15 +6,6 @@ from up_tools import tools
 
 __author__ = 'cysnake4713'
 
-SELECTION = [
-    # ("draft",u"New project"),
-    ("open", u"提出申请"),
-    ("suozhangshenpi", u"所长审批"),
-    ("zhidingbumen", u"经营室审批"),
-    ("zhidingfuzeren", u"总师室审批"),
-    ("suozhangqianzi", u"负责人签字"),
-    ("end", u'归档'),
-]
 
 class project_active_tasking(osv.osv):
     _log_access = True
@@ -145,6 +136,15 @@ class project_active_tasking(osv.osv):
                 result[obj.id] = False
         return result
 
+    SELECTION = [
+        # ("draft",u"New project"),
+        ("open", u"提出申请"),
+        ("suozhangshenpi", u"所长审批"),
+        ("zhidingbumen", u"经营室审批"),
+        ("zhidingfuzeren", u"总师室审批"),
+        ("suozhangqianzi", u"负责人签字"),
+        ("end", u'归档'),
+    ]
 
     _columns = {
         'is_display_button': fields.function(_is_display_button, type="boolean",
@@ -173,7 +173,7 @@ class project_active_tasking(osv.osv):
                                          (u"没有出现不一致", u"没有出现不一致")], u"不一致是否解决", ),
         "ziyuan": fields.selection([(u'人力资源满足', u'人力资源满足'), (u'人力资源不足', u'人力资源不足')], u'人力资源', ),
         "shebei": fields.selection([(u'设备满足', u'设备满足'), (u'设备不满足', u'设备不满足')], u"设备", ),  # 本院是否有能力满足规定要求
-        "gongqi": fields.selection([(u'工期可接受', u'工期可接受'), (u'工期太紧', u'工期太紧')], u"工期", ),  #本院是否有能力满足规定要求
+        "gongqi": fields.selection([(u'工期可接受', u'工期可接受'), (u'工期太紧', u'工期太紧')], u"工期", ),  # 本院是否有能力满足规定要求
         "shejifei": fields.selection([(u'设计费合理', u'设计费合理'), (u'设计费太低', u'设计费太低')], u'设计费', ),  #本院是否有能力满足规定要求
 
 
@@ -439,7 +439,7 @@ class project_project_inherit(osv.osv):
                                           ondelete="cascade"),
         'active_tasking_is_wait_user_process': fields.related('active_tasking', 'is_wait_user_process', type='boolean',
                                                               string="Active Tasking Is Waiting User"),
-        'active_tasking_state': fields.related('active_tasking', 'state', type='selection', selection=SELECTION, string='Tasking State'),
+        'active_tasking_state': fields.related('active_tasking', 'state', type='selection', selection=project_active_tasking.SELECTION, string='Tasking State'),
     }
 
     def act_active_tasking(self, cr, uid, ids, context=None):

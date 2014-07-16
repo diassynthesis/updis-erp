@@ -3,10 +3,6 @@ import datetime
 from operator import itemgetter
 from openerp.osv import osv, fields
 from up_tools import tools
-from up_project.wizard.active.tasking import project_active_tasking
-from up_project.wizard.filed.filing import project_filed_filing
-
-SUB_SELECTION = project_active_tasking.SELECTION + project_filed_filing.FILING_STATE
 
 
 class project_project_wizard(osv.osv_memory):
@@ -326,6 +322,9 @@ class updis_project(osv.osv):
                 result[obj.id] = False
         return result
 
+    def get_sub_state(self, cr, uid, context):
+        return self.pool['project.project.active.tasking'].SELECTION + self.pool['project.project.filed.filing'].FILING_STATE
+
     _columns = {
         # 基础信息
         # 'analytic_account_id': fields.boolean("Over Ride"),
@@ -416,12 +415,12 @@ class updis_project(osv.osv):
                                         string="related_files"),
         'project_manager_name': fields.function(_get_project_manager_name, type='char', readonly=True,
                                                 string="Project Manager Name For export"),
-        'project_sub_state': fields.function(_get_project_sub_state, type='selection', selection=SUB_SELECTION, string='Sub State'),
+        'project_sub_state': fields.function(_get_project_sub_state, type='selection', selection=get_sub_state,
+                                             string='Sub State'),
     }
 
     def _get_default_country(self, cr, uid, context):
-        id = self.pool.get('res.country').search(cr, uid, [('name', '=', u'中国')], context=context)
-        return id
+        return self.pool.get('res.country').search(cr, uid, [('name', '=', u'中国')], context=context)
 
     _defaults = {
         'state': lambda *a: 'project_active',

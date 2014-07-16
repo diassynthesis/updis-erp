@@ -4,8 +4,7 @@ from openerp.osv import fields
 from openerp.osv import osv
 from openerp.tools.translate import _
 
-FILING_STATE = [('apply_filing', 'Apply Filing'), ('manager_approve', 'Manager Approving'), ('approve_filing', 'Approve Filing'),
-                ('end_filing', 'Filing Complete')]
+
 
 
 class ProjectFiledFiling(osv.Model):
@@ -13,6 +12,8 @@ class ProjectFiledFiling(osv.Model):
 
     _order = 'create_date desc'
 
+    FILING_STATE = [('apply_filing', 'Apply Filing'), ('manager_approve', 'Manager Approving'), ('approve_filing', 'Approve Filing'),
+                ('end_filing', 'Filing Complete')]
     # noinspection PyUnusedLocal
     def _get_name(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, u'项目文件归档表')
@@ -253,7 +254,7 @@ class ProjectProjectInherit(osv.Model):
 
     _columns = {
         'filed_filing_ids': fields.one2many('project.project.filed.filing', 'project_id', 'Related Filing Form'),
-        'filed_filing_state': fields.function(_get_filing_state, type='selection', selection=FILING_STATE, string='Filing State'),
+        'filed_filing_state': fields.function(_get_filing_state, type='selection', selection=ProjectFiledFiling.FILING_STATE, string='Filing State'),
         'is_multi_filing_allowed': fields.function(_filed_field_calc, type='boolean', string='Is Multi Filing Allowed', multi='filed'),
         'filed_times': fields.function(_filed_field_calc, type='integer', string='Is Multi Filing Allowed', multi='filed'),
     }
