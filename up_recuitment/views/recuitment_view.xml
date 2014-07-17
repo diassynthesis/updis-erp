@@ -51,8 +51,10 @@
                             </group>
                         </group>
                         <group>
-                            <field name="resume"/>
-                            <field name="works"/>
+                            <field name="resume" filename="resume_name"/>
+                            <field name="resume_name" invisible="1"/>
+                            <field name="works" filename="works_name"/>
+                            <field name="works_name" invisible="1"/>
                         </group>
                     </sheet>
                 </form>

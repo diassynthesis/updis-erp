@@ -1,14 +1,13 @@
 # coding=utf-8
 __author__ = 'cysnake4713'
 
-
 from openerp.osv import osv, fields
 
 
 class HrMember(osv.Model):
     _name = 'hr.member'
     _columns = {
-        'name': fields.char('Name', 64,required=True),
+        'name': fields.char('Name', 64, required=True),
         'type': fields.selection([('intern', 'Intern'), ('recuit', 'Recuit')], 'Member Type'),
         'gender': fields.selection([(u'男', u'男'), (u'女', u'女')], 'Gender'),
         'birthday': fields.date('Birthday'),
@@ -22,5 +21,7 @@ class HrMember(osv.Model):
         'qq': fields.char('QQ or Weichat', size=32),
         'image': fields.binary('Image'),
         'resume': fields.binary('Resume'),
+        'resume_name': fields.char('Resume Name', 128),
         'works': fields.binary('Works'),
+        'works_name': fields.char('Works Name', 128),
     }
