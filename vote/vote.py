@@ -3,13 +3,13 @@ from datetime import datetime
 __author__ = 'cysnake4713'
 from openerp import tools
 
-from osv import osv, fields
+from openerp.osv import osv, fields
 
 
 class VoteCategory(osv.osv):
     _name = "updis.vote"
     _description = 'UPDIS Vote Category'
-    _order = "name"
+    _order = "id desc"
     _log_access = True
 
     def _image_resize_image_fixed(self, cr, uid, ids, name, args, context=None):
