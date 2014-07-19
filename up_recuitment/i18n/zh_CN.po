@@ -1,0 +1,173 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* up_recuitment
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0-20131022-232438\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-07-19 00:03+0000\n"
+"PO-Revision-Date: 2014-07-19 00:03+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: up_recuitment
+#: field:hr.member,native_place:0
+msgid "Native Place"
+msgstr "籍贯"
+
+#. module: up_recuitment
+#: view:hr.member:0
+msgid "Access"
+msgstr "Access"
+
+#. module: up_recuitment
+#: model:ir.ui.menu,name:up_recuitment.menu_recruitment_manage
+msgid "Recruitment Manage"
+msgstr "招聘管理"
+
+#. module: up_recuitment
+#: field:hr.member,type:0
+msgid "Member Type"
+msgstr "类型"
+
+#. module: up_recuitment
+#: model:res.groups,name:up_recuitment.group_up_recuitment_user
+msgid "招聘员工"
+msgstr "招聘员工"
+
+#. module: up_recuitment
+#: field:hr.member,works_name:0
+msgid "Works Name"
+msgstr "作品文件名"
+
+#. module: up_recuitment
+#: field:hr.member,qq:0
+msgid "QQ or Weichat"
+msgstr "QQ 或 微信"
+
+#. module: up_recuitment
+#: field:hr.member,academy:0
+msgid "Academy"
+msgstr "毕业院校"
+
+#. module: up_recuitment
+#: view:hr.member:0
+msgid "照片"
+msgstr "照片"
+
+#. module: up_recuitment
+#: field:hr.member,moblie:0
+msgid "Moblie"
+msgstr "手机"
+
+#. module: up_recuitment
+#: model:res.groups,name:up_recuitment.group_up_recuitment_manager
+msgid "招聘经理"
+msgstr "招聘经理"
+
+#. module: up_recuitment
+#: field:hr.member,birthday:0
+msgid "Birthday"
+msgstr "生日"
+
+#. module: up_recuitment
+#: field:hr.member,create_date:0
+msgid "Created on"
+msgstr "创建时间"
+
+#. module: up_recuitment
+#: selection:hr.member,type:0
+msgid "Recuit"
+msgstr "社会招聘"
+
+#. module: up_recuitment
+#: model:ir.actions.act_window,name:up_recuitment.action_recuitment_manage
+msgid "Recruitment Management"
+msgstr "招聘管理"
+
+#. module: up_recuitment
+#: field:hr.member,end_date:0
+msgid "End Date"
+msgstr "实习结束时间"
+
+#. module: up_recuitment
+#: view:hr.member:0
+#: field:hr.member,name:0
+msgid "Name"
+msgstr "名称"
+
+#. module: up_recuitment
+#: field:hr.member,gender:0
+msgid "Gender"
+msgstr "性别"
+
+#. module: up_recuitment
+#: model:ir.model,name:up_recuitment.model_hr_member
+msgid "hr.member"
+msgstr "hr.member"
+
+#. module: up_recuitment
+#: view:hr.member:0
+msgid "Recuitment"
+msgstr "招聘"
+
+#. module: up_recuitment
+#: selection:hr.member,gender:0
+msgid "男"
+msgstr "男"
+
+#. module: up_recuitment
+#: field:hr.member,works:0
+msgid "Works"
+msgstr "作品上传"
+
+#. module: up_recuitment
+#: field:hr.member,major:0
+msgid "Major"
+msgstr "专业"
+
+#. module: up_recuitment
+#: field:hr.member,image:0
+msgid "Image"
+msgstr "头像"
+
+#. module: up_recuitment
+#: field:hr.member,resume:0
+msgid "Resume"
+msgstr "简历上传"
+
+#. module: up_recuitment
+#: selection:hr.member,gender:0
+msgid "女"
+msgstr "女"
+
+#. module: up_recuitment
+#: model:ir.ui.menu,name:up_recuitment.menu_recruitment_root
+msgid "Recruitment"
+msgstr "招聘"
+
+#. module: up_recuitment
+#: selection:hr.member,type:0
+msgid "Intern"
+msgstr "实习生"
+
+#. module: up_recuitment
+#: field:hr.member,start_date:0
+msgid "Start Date"
+msgstr "实习开始时间"
+
+#. module: up_recuitment
+#: field:hr.member,resume_name:0
+msgid "Resume Name"
+msgstr "简历文件名"
+
+#. module: up_recuitment
+#: field:hr.member,folk:0
+msgid "Folk"
+msgstr "民族"
+

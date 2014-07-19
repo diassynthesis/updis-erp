@@ -50,11 +50,14 @@
                                 <field name="folk"/>
                             </group>
                         </group>
-                        <group>
+                        <group colspan="2">
                             <field name="resume" filename="resume_name"/>
                             <field name="resume_name" invisible="1"/>
                             <field name="works" filename="works_name"/>
                             <field name="works_name" invisible="1"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="create_date" readonly="1"/>
                         </group>
                     </sheet>
                 </form>

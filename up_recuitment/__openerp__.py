@@ -9,11 +9,13 @@ UPDIS Recuitment Module.""",
     'website': 'http://openerp.com',
     'depends': ['base', 'hr', 'up_document'],
     'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
+
         'data/document.directory.csv',
         'views/recuitment_menu_view.xml',
         'views/recuitment_view.xml',
 
-        'security/ir.model.access.csv',
     ],
     'js': [
     ],

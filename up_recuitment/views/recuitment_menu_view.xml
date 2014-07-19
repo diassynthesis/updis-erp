@@ -8,7 +8,8 @@
             <field name="view_mode">tree,form</field>
         </record>
         <!--Recruitment-->
-        <menuitem name="Recruitment" id="menu_recruitment_root" parent="hr.menu_hr_root" sequence="15"/>
+        <menuitem name="Recruitment" id="menu_recruitment_root" parent="hr.menu_hr_root" sequence="15"
+                groups="up_recuitment.group_up_recuitment_user"/>
 
         <menuitem name="Recruitment Manage" id="menu_recruitment_manage" sequence="10"
                   parent="menu_recruitment_root" action="action_recuitment_manage"/>

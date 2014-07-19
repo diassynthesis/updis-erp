@@ -24,4 +24,5 @@ class HrMember(osv.Model):
         'resume_name': fields.char('Resume Name', 128),
         'works': fields.binary('Works'),
         'works_name': fields.char('Works Name', 128),
+        'create_date': fields.datetime('Created on', select=True),
     }
