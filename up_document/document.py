@@ -29,7 +29,7 @@ class DocumentDirectoryAccess(osv.osv):
     }
 
     def calc_privilege(self, cr, uid, access_id, method, context):
-        access = self.browse(cr, uid, access_id[0], context)
+        access = self.browse(cr, 1, access_id[0], context)
         # If method need eval
         if method in ['perm_write', 'is_downloadable']:
             if access[method] is False:
@@ -144,7 +144,7 @@ class DocumentDirectoryInherit(osv.osv):
             ret['value'].update(vals)
         return ret
 
-    def check_directory_privilege(self, cr, uid, directory_id, method, context=None):
+    def check_directory_privilege(self, cr, uid, directory_ids, method, context=None):
         # if user is document admin
         if self.user_has_groups(cr, uid, 'base.group_document_user', context=context) or uid == 1:
             if method == 'is_need_appoval':
@@ -154,10 +154,10 @@ class DocumentDirectoryInherit(osv.osv):
         # init values
         if context is None:
             context = {}
-        user = self.pool.get('res.users').browse(cr, uid, uid)
+        user = self.pool.get('res.users').browse(cr, 1, uid)
         user_group = [u.id for u in user.groups_id]
         # each directory
-        for directory in self.browse(cr, uid, [directory_id], context):
+        for directory in self.browse(cr, uid, directory_ids, context):
             for group in directory.group_ids:
                 if group.group_id.id in user_group:
                     if group.calc_privilege(method, context=context):
@@ -198,9 +198,9 @@ class DocumentDirectoryInherit(osv.osv):
         result = {
             'id': directory.id,
             'name': directory.name,
-            'is_writable': self.check_directory_privilege(cr, uid, directory_id, 'perm_write', context=context),
-            'is_downloadable': self.check_directory_privilege(cr, uid, directory_id, 'is_downloadable', context=context),
-            'is_need_appoval': self.check_directory_privilege(cr, uid, directory_id, 'is_need_appoval', context=context),
+            'is_writable': directory.check_directory_privilege('perm_write', context=context),
+            'is_downloadable': directory.check_directory_privilege('is_downloadable', context=context),
+            'is_need_approval': directory.check_directory_privilege('is_need_approval', context=context),
         }
         return result
 
@@ -215,7 +215,7 @@ class DocumentDirectoryInherit(osv.osv):
                     'name': directory.name,
                     'is_writable': directory.check_directory_privilege('perm_write', context=context),
                     'is_downloadable': directory.check_directory_privilege('is_downloadable', context=context),
-                    'is_need_appoval': directory.check_directory_privilege('is_need_appoval', context=context),
+                    'is_need_approval': directory.check_directory_privilege('is_need_approval', context=context),
                 }
             ]
         return result

@@ -7,8 +7,7 @@
             <t t-esc="widget.document.name"/>
         </div>
         <div class="button-holder">
-            <button class="button-update" title="Update"/>
-            <button class="button-rename" title="Rename"/>
+            <button class="button-detail" title="Detail"/>
             <button class="button-delete" title="Delete"/>
         </div>
     </div>
@@ -24,7 +23,7 @@
                 <button class="button-refresh" title="Refresh"/>
             </div>
             <div class="tips">
-                <t t-if="widget.directory.is_downloadable and widget.directory.is_need_appoval">
+                <t t-if="widget.directory.is_downloadable and widget.directory.is_need_approval">
                     该文件夹下文件需要下载审批
                 </t>
             </div>
