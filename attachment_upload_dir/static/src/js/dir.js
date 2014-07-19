@@ -22,9 +22,9 @@ openerp.attachment_upload_dir = function (instance) {
             var obj = new instance.web.Model('ir.attachment');
             return obj.call('get_directory_documents', [directory_id, res_id, res_model, {'context': context}])
         },
-        delete_document:function(document_ids,context){
+        delete_document: function (document_ids, context) {
             var obj = new instance.web.Model('ir.attachment');
-            return obj.call('unlink', [document_ids,  {'context': context}])
+            return obj.call('unlink', [document_ids, {'context': context}])
         }
 
 
@@ -56,24 +56,36 @@ openerp.attachment_upload_dir = function (instance) {
                 }
             );
         },
-        bind_data_events:function(){
+        bind_data_events: function () {
             var self = this;
-            self.$el.find('button.button-delete').click(function(){
-                if(confirm('确认删除么？')){
+            self.$el.find('button.button-delete:first').click(function () {
+                if (confirm('确认删除么？')) {
                     self.delete();
                 }
             });
+            self.$el.find('button.button-detail:first').click(function () {
+                self.do_action({
+                    type: 'ir.actions.act_window',
+                    res_model: 'ir.attachment',
+                    res_id: self.document.id,
+                    views: [
+                        [false, 'form']
+                    ],
+                    target: 'current',
+                    context: self.dataset.context
+                });
+                return false;
+            });
         },
-        delete:function(){
+        delete: function () {
             var self = this;
-            self.widgetManager.delete_document(self.document.id,self.dataset.context).done(function(){
+            self.widgetManager.delete_document(self.document.id, self.dataset.context).done(function () {
                 self.refresh_parent();
             });
         },
-        refresh_parent:function(){
+        refresh_parent: function () {
             this.parent.refresh_files();
-        }
-
+        },
     });
 
     instance.attachment_upload_dir.DirectoryWidget = instance.web.Widget.extend({
@@ -136,7 +148,7 @@ openerp.attachment_upload_dir = function (instance) {
                     self.$el.addClass("oe_opened");
                 }
             });
-            self.$el.find("button.button-refresh:first").click(function(){
+            self.$el.find("button.button-refresh:first").click(function () {
                 self.refresh_directories();
                 self.refresh_files();
             });
@@ -163,14 +175,14 @@ openerp.attachment_upload_dir = function (instance) {
                 });
             });
         },
-        refresh_files:function(){
-            _.each(this.child_files,function(file){
+        refresh_files: function () {
+            _.each(this.child_files, function (file) {
                 file.destroy();
             });
             this.create_child_documents();
         },
-        refresh_directories:function(){
-            _.each(this.child_directories,function(dir){
+        refresh_directories: function () {
+            _.each(this.child_directories, function (dir) {
                 dir.destroy();
             });
             this.create_child_directories();
