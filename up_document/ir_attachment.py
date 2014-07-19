@@ -60,11 +60,13 @@ class IrAttachmentInherit(osv.osv):
 
     def unlink(self, cr, uid, ids, context=None):
         self._check_group_unlink_privilege(cr, uid, ids, context)
-        return super(IrAttachmentInherit, self).unlink(cr, uid, ids, context)
+        self.log_info(cr, uid, ids, _('unlink this file'), context=context)
+        return super(IrAttachmentInherit, self).write(cr, uid, ids, {'is_deleted': True}, context=context)
 
     def write(self, cr, uid, ids, vals, context=None):
         self._check_group_write_privilege(cr, uid, ids, context)
-        self.log_info(cr, uid, ids, _('update this file'), context=context)
+        if not ('is_deleted' in vals and vals['is_deleted'] is True):
+            self.log_info(cr, uid, ids, _('update this file'), context=context)
         return super(IrAttachmentInherit, self).write(cr, uid, ids, vals, context)
 
     def log_info(self, cr, uid, ids, message, context):
@@ -93,6 +95,7 @@ class IrAttachmentInherit(osv.osv):
         'is_downloadable': fields.function(_is_download_able, type='integer', string='Is Downloadable'),
         'application_ids': fields.one2many('ir.attachment.application', 'attachment_id', 'Applications'),
         'log_ids': fields.one2many('ir.attachment.log', 'attachment_id', 'Logs'),
+        'is_deleted': fields.boolean('Is Deleted'),
     }
 
     _sql_constraints = [
