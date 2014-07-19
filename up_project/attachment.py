@@ -38,12 +38,15 @@ class IrAttachmentInherit(osv.Model):
     _inherit = 'ir.attachment'
 
     def unlink(self, cr, uid, ids, context=None):
+        if isinstance(ids, (int, long)):
+            ids = [ids]
         records = self.browse(cr, uid, ids, context)
         for record in records:
             if record.res_model == 'project.project':
                 trash = self.pool['ir.model.data'].get_object(cr, uid, 'up_project', 'dir_up_project_trash', context=context)
                 self.write(cr, uid, ids, {'parent_id': trash.id}, context=context)
-                return super(IrAttachmentInherit, self).unlink(cr, uid, ids, context)
+            return super(IrAttachmentInherit, self).unlink(cr, uid, ids, context)
+
 
     def filing_project_attachments(self, cr, uid, ids, context):
         for attachment in self.browse(cr, uid, ids, context):

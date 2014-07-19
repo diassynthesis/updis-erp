@@ -185,7 +185,7 @@ class IrAttachmentInherit(osv.osv):
         return True
 
     def get_directory_documents(self, cr, uid, directory_id, res_id, res_model, context):
-        domain = [('parent_id', '=', directory_id)]
+        domain = [('parent_id', '=', directory_id), ('is_deleted', '=', False)]
         if res_id:
             domain += [('res_id', '=', res_id)]
         if res_model:

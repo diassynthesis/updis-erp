@@ -147,7 +147,7 @@ class DocumentDirectoryInherit(osv.osv):
     def check_directory_privilege(self, cr, uid, directory_ids, method, context=None):
         # if user is document admin
         if self.user_has_groups(cr, uid, 'base.group_document_user', context=context) or uid == 1:
-            if method == 'is_need_appoval':
+            if method == 'is_need_approval':
                 return False
             else:
                 return True

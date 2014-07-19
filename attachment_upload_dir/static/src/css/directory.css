@@ -84,7 +84,7 @@
     background-image: url('/web/static/src/img/icons/gtk-refresh.png');
 }
 
-.openerp .oe-document-tree .tree-directory-container .button-holder .button-update {
+.openerp .oe-document-tree .tree-directory-container .button-holder .button-detail {
     background-image: url('/web/static/src/img/icons/gtk-edit.png');
 }
 

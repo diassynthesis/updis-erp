@@ -21,6 +21,10 @@ openerp.attachment_upload_dir = function (instance) {
         get_directory_documents: function (directory_id, res_id, res_model, context) {
             var obj = new instance.web.Model('ir.attachment');
             return obj.call('get_directory_documents', [directory_id, res_id, res_model, {'context': context}])
+        },
+        delete_document:function(document_ids,context){
+            var obj = new instance.web.Model('ir.attachment');
+            return obj.call('unlink', [document_ids,  {'context': context}])
         }
 
 
@@ -34,9 +38,11 @@ openerp.attachment_upload_dir = function (instance) {
             this._super(parent, document);
             this.document = document;
             this.dataset = parent.dataset;
+            this.parent = parent;
         },
         start: function () {
             this.bind_events();
+            this.bind_data_events();
             this._super();
         },
         bind_events: function () {
@@ -49,7 +55,25 @@ openerp.attachment_upload_dir = function (instance) {
                     $(this).find("div.button-holder").css("visibility", "collapse");
                 }
             );
+        },
+        bind_data_events:function(){
+            var self = this;
+            self.$el.find('button.button-delete').click(function(){
+                if(confirm('确认删除么？')){
+                    self.delete();
+                }
+            });
+        },
+        delete:function(){
+            var self = this;
+            self.widgetManager.delete_document(self.document.id,self.dataset.context).done(function(){
+                self.refresh_parent();
+            });
+        },
+        refresh_parent:function(){
+            this.parent.refresh_files();
         }
+
     });
 
     instance.attachment_upload_dir.DirectoryWidget = instance.web.Widget.extend({
@@ -60,6 +84,9 @@ openerp.attachment_upload_dir = function (instance) {
             this._super(parent, directory);
             this.directory = directory;
             this.dataset = parent.dataset;
+            this.parent = parent;
+            this.child_directories = [];
+            this.child_files = [];
         },
 
         start: function (r) {
@@ -114,7 +141,9 @@ openerp.attachment_upload_dir = function (instance) {
             var self = this;
             self.widgetManager.get_directory_child(self.directory.id, self.dataset.context).done(function (result) {
                 _.each(result, function (directory) {
-                    new instance.attachment_upload_dir.DirectoryWidget(self, directory).appendTo(self.$el.children('div.tree-child-holder').children('div.oe-directory-holder'));
+                    var dir = new instance.attachment_upload_dir.DirectoryWidget(self, directory);
+                    self.child_directories = self.child_directories.concat(dir);
+                    dir.appendTo(self.$el.children('div.tree-child-holder').children('div.oe-directory-holder'));
                 });
             });
         },
@@ -124,10 +153,24 @@ openerp.attachment_upload_dir = function (instance) {
             var res_model = self.dataset.context.default_res_model;
             self.widgetManager.get_directory_documents(self.directory.id, res_id, res_model, self.dataset.context).done(function (result) {
                 _.each(result, function (document) {
-                    new instance.attachment_upload_dir.DocumentWidget(self, document).appendTo(self.$el.children('div.tree-child-holder').children('div.oe-document-holder'));
+                    var file = new instance.attachment_upload_dir.DocumentWidget(self, document);
+                    self.child_files = self.child_files.concat(file);
+                    file.appendTo(self.$el.children('div.tree-child-holder').children('div.oe-document-holder'));
                 });
             });
-        }
+        },
+        refresh_files:function(){
+            _.each(this.child_files,function(file){
+                file.destroy();
+            });
+            this.create_child_documents();
+        },
+        refresh_directories:function(){
+            _.each(this.child_directories,function(dir){
+                dir.destroy();
+            });
+            this.create_child_directories();
+        },
 
     });
 
