@@ -3,11 +3,8 @@ import datetime
 from operator import itemgetter
 from openerp.osv import osv, fields
 from up_tools import tools
-from up_project.wizard.active.tasking import project_active_tasking
-from up_project.wizard.filed.filing import project_filed_filing
 
-SUB_SELECTION = project_active_tasking.SELECTION + project_filed_filing.FILING_STATE
-
+SUB_SELECTION = []
 
 class project_project_wizard(osv.osv_memory):
     _name = "project.project.wizard"

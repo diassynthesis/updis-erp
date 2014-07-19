@@ -136,6 +136,10 @@ openerp.attachment_upload_dir = function (instance) {
                     self.$el.addClass("oe_opened");
                 }
             });
+            self.$el.find("button.button-refresh:first").click(function(){
+                self.refresh_directories();
+                self.refresh_files();
+            });
         },
         create_child_directories: function () {
             var self = this;
