@@ -17,6 +17,7 @@ Document Upload Plugin Directory Support
     ],
     'js': [
         'static/src/js/dir.js',
+        'static/src/js/lib/jquery.fileupload.js',
     ],
     'css': [
         'static/src/css/directory.css',

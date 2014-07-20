@@ -21,6 +21,7 @@
             <div class="button-holder">
                 <button class="button-upload" title="Upload"/>
                 <button class="button-refresh" title="Refresh"/>
+                <input type="file" name="files[]" multiple="" class="file-upload"/>
             </div>
             <div class="tips">
                 <t t-if="widget.directory.is_downloadable and widget.directory.is_need_approval">
@@ -29,6 +30,7 @@
             </div>
         </div>
         <div class="tree-child-holder">
+            <div class="oe-upload-holder"></div>
             <div class="oe-directory-holder"></div>
             <div class="oe-document-holder"></div>
         </div>

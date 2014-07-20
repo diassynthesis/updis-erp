@@ -8,6 +8,7 @@ openerp.attachment_upload_dir = function (instance) {
 
     instance.web.views.add('dir', 'instance.attachment_upload_dir.DirView');
 
+
     var WidgetManager = instance.web.Class.extend({
 
         get_directory: function (id, context) {
@@ -85,7 +86,7 @@ openerp.attachment_upload_dir = function (instance) {
         },
         refresh_parent: function () {
             this.parent.refresh_files();
-        },
+        }
     });
 
     instance.attachment_upload_dir.DirectoryWidget = instance.web.Widget.extend({
@@ -129,6 +130,21 @@ openerp.attachment_upload_dir = function (instance) {
                     self.$el.removeClass("oe_open");
                 } else {
                     self.$el.addClass("oe_open");
+                }
+            });
+            self.$el.find("button.button-upload:first").click(function(e){
+                self.$el.find("input.file-upload:first").click();
+                e.preventDefault();
+            });
+            self.$el.find("input.file-upload:first").fileupload({
+                dataType: 'json',
+                url: '/path/to/upload/handler.json',
+                sequentialUploads: true,
+                formData: {script: true},
+                done: function (e, data) {
+                    $.each(data.result.files, function (index, file) {
+                        $('<p/>').text(file.name).appendTo(document.body);
+                    });
                 }
             });
         },
@@ -187,6 +203,9 @@ openerp.attachment_upload_dir = function (instance) {
             });
             this.create_child_directories();
         },
+        multi_upload: function (parent) {
+
+        }
 
     });
 

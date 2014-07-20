@@ -46,7 +46,7 @@
 .openerp .oe-document-tree .tree-directory-container .directory-line .tips {
     color: grey;
     margin-right: 200px;
-    float:right;
+    float: right;
 }
 
 .openerp .oe-document-tree .oe_open > .directory-line {
@@ -98,4 +98,8 @@
 
 .openerp .oe-document-tree .tree-directory-container .button-holder .button-rename {
     background-image: url('/web/static/src/img/icons/STOCK_UNDERLINE.png');
+}
+
+.openerp .oe-document-tree .tree-directory-container .button-holder .file-upload {
+    display: none !important;
 }
