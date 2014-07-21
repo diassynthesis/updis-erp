@@ -1,4 +1,12 @@
 <template>
+    <div t-name="DocumentProcess" class="progress">
+        <div class="progress-bar" role="progressbar" t-attf-aria-valuenow="#{progress}" aria-valuemin="0"
+             aria-valuemax="100"
+             t-attf-style="width: #{progress}%;">
+            上传中 <t t-esc="progress"/>%
+        </div>
+    </div>
+
     <div t-name="DocumentElement" class="oe-line document-line">
         <div class="document-select">
             <input type="checkbox" name="radiogroup"/>
@@ -21,7 +29,9 @@
             <div class="button-holder">
                 <button class="button-upload" title="Upload"/>
                 <button class="button-refresh" title="Refresh"/>
-                <input type="file" name="files[]" multiple="" class="file-upload"/>
+                <input type="file" name="qqfile" multiple="" class="file-upload"/>
+            </div>
+            <div class="oe-upload-holder">
             </div>
             <div class="tips">
                 <t t-if="widget.directory.is_downloadable and widget.directory.is_need_approval">
@@ -30,7 +40,6 @@
             </div>
         </div>
         <div class="tree-child-holder">
-            <div class="oe-upload-holder"></div>
             <div class="oe-directory-holder"></div>
             <div class="oe-document-holder"></div>
         </div>

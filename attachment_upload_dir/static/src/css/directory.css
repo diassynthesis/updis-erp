@@ -58,6 +58,12 @@
     display: block;
 }
 
+.openerp .oe-document-tree .tree-directory-container .oe-upload-holder {
+    /*display: none;*/
+    width: 200px;
+    height: 16px;
+}
+
 .openerp .oe-document-tree .tree-directory-container .directory-line .name {
     background-image: url('/web/static/src/img/icons/terp-folder-yellow.png');
 }

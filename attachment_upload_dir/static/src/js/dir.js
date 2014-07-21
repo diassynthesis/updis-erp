@@ -5,6 +5,7 @@ openerp.attachment_upload_dir = function (instance) {
 
     var _lt = instance.web._lt;
     var _t = instance.web._t;
+    var Qweb = instance.web.qweb;
 
     instance.web.views.add('dir', 'instance.attachment_upload_dir.DirView');
 
@@ -132,19 +133,41 @@ openerp.attachment_upload_dir = function (instance) {
                     self.$el.addClass("oe_open");
                 }
             });
-            self.$el.find("button.button-upload:first").click(function(e){
+            self.$el.find("button.button-upload:first").click(function (e) {
                 self.$el.find("input.file-upload:first").click();
                 e.preventDefault();
             });
+            var data = {
+                parent_id: self.directory.id,
+                session_id: openerp.instances.instance0.session.session_id
+            };
+            if (self.dataset.context.res_id) {
+                data.res_id = self.dataset.context.res_id;
+            }
+            if (self.dataset.context.res_model) {
+                data.res_model = self.dataset.context.res_model;
+            }
             self.$el.find("input.file-upload:first").fileupload({
                 dataType: 'json',
-                url: '/path/to/upload/handler.json',
+                url: '/web/clupload/multi_upload',
                 sequentialUploads: true,
-                formData: {script: true},
+                formData: data,
                 done: function (e, data) {
-                    $.each(data.result.files, function (index, file) {
-                        $('<p/>').text(file.name).appendTo(document.body);
-                    });
+//                    $.each(data.result.files, function (index, file) {
+//                        self.$el.find('div.oe-upload-holder:first').css('display','None');
+//                        $('<p/>').text(file.name).appendTo(document.body);
+//                    });
+                    if (!self.$el.hasClass("oe_opened")) {
+                        self.refresh_files();
+                    }
+                    self.$el.find('div.oe-upload-holder:first').html('');
+                    alert('上传完成！');
+                },
+                progressall: function (e, data) {
+//                    self.$el.find('div.oe-upload-holder:first').css('display','block');
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    var progress_template = Qweb.render('DocumentProcess', {'progress': progress});
+                    self.$el.find('div.oe-upload-holder:first').html(progress_template);
                 }
             });
         },
@@ -204,6 +227,7 @@ openerp.attachment_upload_dir = function (instance) {
             this.create_child_directories();
         },
         multi_upload: function (parent) {
+            B
 
         }
 

@@ -18,9 +18,9 @@ class InternalHomeExtend(InternalHome):
         try:
             attachment_id = attachment_obj.create(
                 {
-                    'name': qqfile,
-                    'datas': base64.encodestring(req.httprequest.data),
-                    'datas_fname': qqfile,
+                    'name': qqfile.filename,
+                    'datas': base64.encodestring(qqfile.read()),
+                    'datas_fname': qqfile.filename,
                     'parent_id': int(parent_id),
                     'res_model': res_model,
                     'res_id': int(res_id),
@@ -46,8 +46,8 @@ class InternalHomeExtend(InternalHome):
         except Exception, e:
             error = {'message': e.message, 'data': {'debug': ''}}
             args = {'error': error, 'filename': qqfile}
-        return req.make_response(simplejson.dumps(args))
-
+        # return req.make_response(simplejson.dumps(args))
+        return req.make_response(simplejson.dumps({}))
 
 class BinaryExtend(Binary):
     @openerpweb.httprequest
