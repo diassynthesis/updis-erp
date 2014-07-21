@@ -11,6 +11,7 @@ __author__ = 'cysnake4713'
 
 
 class InternalHomeExtend(InternalHome):
+
     @openerp.addons.web.http.httprequest
     def multi_upload(self, req, qqfile, parent_id, res_id=0, res_model=None):
         attachment_obj = req.session.model('ir.attachment')
