@@ -24,7 +24,8 @@ class IrAttachmentInherit(osv.osv):
                 'res_model': attachment.res_model,
                 'res_id': attachment.res_id,
             }
-            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('perm_write', context=context):
+            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('perm_write',
+                                                                                           context=context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Unlink some of the attachments.'))
 
     def _check_group_write_privilege(self, cr, uid, ids, context=None):
@@ -35,14 +36,16 @@ class IrAttachmentInherit(osv.osv):
                 'res_model': attachment.res_model,
                 'res_id': attachment.res_id,
             }
-            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('perm_write', context=context):
+            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('perm_write',
+                                                                                           context=context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Write some of the attachments.'))
 
     def _check_group_create_privilege(self, cr, uid, vals, context=None):
         if not context:
             context = {}
         directory_obj = self.pool.get('document.directory')
-        parent_id = vals['parent_id'] if 'parent_id' in vals else (context['parent_id'] if 'parent_id' in context else None)
+        parent_id = vals['parent_id'] if 'parent_id' in vals else (
+            context['parent_id'] if 'parent_id' in context else None)
         if parent_id:
             directory = directory_obj.browse(cr, uid, parent_id, context=context)
             context['ctx'] = {
@@ -61,7 +64,12 @@ class IrAttachmentInherit(osv.osv):
     def unlink(self, cr, uid, ids, context=None):
         self._check_group_unlink_privilege(cr, uid, ids, context)
         self.log_info(cr, uid, ids, _('unlink this file'), context=context)
-        return super(IrAttachmentInherit, self).write(cr, uid, ids, {'is_deleted': True}, context=context)
+        junk_dir_id = self.pool['ir.model.data'].get_object_reference(cr, uid, 'up_document', 'doc_direct_100001')[1]
+        for attachment in self.browse(cr, uid, ids, context):
+            return super(IrAttachmentInherit, self).write(cr, uid, attachment.id, {'is_deleted': True,
+                                                                                   'parent_id': junk_dir_id,
+                                                                                   'name': fields.datetime.now() + attachment.name},
+                                                          context=context)
 
     def write(self, cr, uid, ids, vals, context=None):
         self._check_group_write_privilege(cr, uid, ids, context)
@@ -91,7 +99,8 @@ class IrAttachmentInherit(osv.osv):
         return result
 
     _columns = {
-        'file_size_human': fields.function(_get_file_size, type='float', digits=[10, 3], method=True, string='File Size Human (MB)'),
+        'file_size_human': fields.function(_get_file_size, type='float', digits=[10, 3], method=True,
+                                           string='File Size Human (MB)'),
         'is_downloadable': fields.function(_is_download_able, type='integer', string='Is Downloadable'),
         'application_ids': fields.one2many('ir.attachment.application', 'attachment_id', 'Applications'),
         'log_ids': fields.one2many('ir.attachment.log', 'attachment_id', 'Logs'),
@@ -145,7 +154,8 @@ class IrAttachmentInherit(osv.osv):
                         continue
                     is_need_approval = group_id.calc_privilege('is_need_approval', context=context)
                     # can be download status:
-                    if (is_download_able and not is_need_approval) or (is_download_able and is_need_approval and is_pass_approval):
+                    if (is_download_able and not is_need_approval) or (
+                                    is_download_able and is_need_approval and is_pass_approval):
                         return 3
                     # can't be download but can apply
                     if is_download_able and is_need_approval and not is_pass_approval:
@@ -156,7 +166,8 @@ class IrAttachmentInherit(osv.osv):
     def is_pass_approval(self, cr, uid, attachment_id, context):
         application_obj = self.pool.get('ir.attachment.application')
         application_ids = application_obj.search(cr, uid,
-                                                 [('attachment_id', '=', attachment_id[0]), ('apply_user_id', '=', uid), ('state', '=', 'approve'),
+                                                 [('attachment_id', '=', attachment_id[0]), ('apply_user_id', '=', uid),
+                                                  ('state', '=', 'approve'),
                                                   ('expire_date', '>=', fields.datetime.now())],
                                                  context=context)
         if application_ids:
@@ -168,7 +179,8 @@ class IrAttachmentInherit(osv.osv):
         application_obj = self.pool.get('ir.attachment.application')
         for attachment in self.browse(cr, uid, ids, context):
             application_ids = application_obj.search(cr, uid,
-                                                     [('attachment_id', '=', attachment.id), ('apply_user_id', '=', uid),
+                                                     [('attachment_id', '=', attachment.id),
+                                                      ('apply_user_id', '=', uid),
                                                       ('state', '=', None)],
                                                      context=context)
             if not application_ids:
@@ -181,7 +193,8 @@ class IrAttachmentInherit(osv.osv):
                 model = 'ir.attachment'
                 res_id = attachment.id
                 group_id = 'up_document.group_attachment_download_manager'
-                self.pool.get('sms.sms').send_big_ant_to_group(cr, 1, from_rec, subject, content, model, res_id, group_id, context=None)
+                self.pool.get('sms.sms').send_big_ant_to_group(cr, 1, from_rec, subject, content, model, res_id,
+                                                               group_id, context=None)
         return True
 
     def get_directory_documents(self, cr, uid, directory_id, res_id, res_model, context):
@@ -230,7 +243,8 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         # 'format': fields.selection([('csv', 'CSV File'),
         # ('po', 'PO File'),
         # ('tgz', 'TGZ Archive')], 'File Format', required=True),
-        'attachment_ids': fields.many2many('ir.attachment', 'rel_attachment_download_wizard', 'wizard_id', 'attachment_id', string='Attachments'),
+        'attachment_ids': fields.many2many('ir.attachment', 'rel_attachment_download_wizard', 'wizard_id',
+                                           'attachment_id', string='Attachments'),
         'data': fields.binary('File', readonly=True),
         'state': fields.selection([('choose', 'choose'),  # choose language
                                    ('get', 'get')])  # get the file
@@ -259,7 +273,8 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         self.write(cr, uid, ids, {'state': 'get',
                                   'data': out,
                                   'name': filename}, context=context)
-        self.pool.get('ir.attachment').log_info(cr, uid, record_ids, _('have been zipped and download'), context=context)
+        self.pool.get('ir.attachment').log_info(cr, uid, record_ids, _('have been zipped and download'),
+                                                context=context)
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'ir.attachment.download.wizard',
@@ -310,7 +325,8 @@ class IrAttachmentApplication(osv.osv):
         self.write(cr, uid, ids, {
             'approve_user_id': uid,
             'approve_date': fields.datetime.now(),
-            'expire_date': (datetime.datetime.now() + datetime.timedelta(days=7)).strftime(tools.DEFAULT_SERVER_DATETIME_FORMAT),
+            'expire_date': (datetime.datetime.now() + datetime.timedelta(days=7)).strftime(
+                tools.DEFAULT_SERVER_DATETIME_FORMAT),
             'state': 'approve',
         }, context=context)
         return True
@@ -319,7 +335,8 @@ class IrAttachmentApplication(osv.osv):
         self.write(cr, uid, ids, {
             'approve_user_id': uid,
             'approve_date': fields.datetime.now(),
-            'expire_date': (datetime.datetime.now() + datetime.timedelta(days=7)).strftime(tools.DEFAULT_SERVER_DATETIME_FORMAT),
+            'expire_date': (datetime.datetime.now() + datetime.timedelta(days=7)).strftime(
+                tools.DEFAULT_SERVER_DATETIME_FORMAT),
             'state': 'disapprove',
         }, context=context)
         return True

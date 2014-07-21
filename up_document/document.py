@@ -170,8 +170,8 @@ class DocumentDirectoryInherit(osv.osv):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Unlink some of the directories.'))
 
     def _check_group_create_privilege(self, cr, uid, vals, context=None):
-        parent_id = vals['parent_id']
-        if parent_id:
+        if 'parent_id' in vals and vals['parent_id']:
+            parent_id = vals['parent_id']
             directory = self.browse(cr, uid, parent_id, context=context)
             if not directory.check_directory_privilege('perm_create_unlink', context=context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Create the directory.'))
