@@ -15,6 +15,7 @@ Independent Super File Version control System
         'security/ir.model.access.csv',
 
         'data/document.directory.csv',
+        'data/up_document_data.xml',
 
         'attachment_view.xml',
         'document_wizard_view.xml',
