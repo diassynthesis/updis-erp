@@ -3,7 +3,7 @@
         <div class="progress-bar" role="progressbar" t-attf-aria-valuenow="#{progress}" aria-valuemin="0"
              aria-valuemax="100"
              t-attf-style="width: #{progress}%;">
-            上传中 <t t-esc="progress"/>%
+            上传中<t t-esc="progress"/>%
         </div>
     </div>
 
@@ -12,7 +12,9 @@
             <input type="checkbox" name="radiogroup"/>
         </div>
         <div class="name">
-            <t t-esc="widget.document.name"/>
+            <a t-attf-href="#{widget.document.url}">
+                <t t-esc="widget.document.name"/>
+            </a>
         </div>
         <div class="button-holder">
             <button class="button-detail" title="Detail"/>

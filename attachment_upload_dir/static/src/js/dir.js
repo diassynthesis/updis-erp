@@ -41,6 +41,8 @@ openerp.attachment_upload_dir = function (instance) {
             this.document = document;
             this.dataset = parent.dataset;
             this.parent = parent;
+            var base_url = '/web/binary/saveas?model=ir.attachment&field=datas&filename_field=name';
+            this.document.url = base_url + '&id=' + this.document.id + '&session_id=' + openerp.instances.instance0.session.session_id;
         },
         start: function () {
             this.bind_events();
