@@ -11,7 +11,6 @@ __author__ = 'cysnake4713'
 
 
 class InternalHomeExtend(InternalHome):
-
     @openerp.addons.web.http.httprequest
     def multi_upload(self, req, qqfile, parent_id, res_id=0, res_model=None):
         attachment_obj = req.session.model('ir.attachment')
@@ -25,20 +24,21 @@ class InternalHomeExtend(InternalHome):
                     'res_model': res_model,
                     'res_id': int(res_id),
                 })
-            args = {
-                'url': '',
-                'filename': qqfile,
-                'id': attachment_id,
-                'success': True,
-            }
+            args = {'files': [{"name": qqfile.filename,
+                               "size": 0,
+                               "url": "",
+                               "thumbnailUrl": "",
+                               "deleteUrl": "",
+                               "deleteType": "DELETE", }]}
         except Fault, e:
-            error = {'message': e.faultCode, 'data': {'debug': ''}}
-            args = {'error': error, 'filename': qqfile}
+            args = {"files": [{"name": "picture1.jpg",
+                               "size": 902604,
+                               "error": e.faultCode}]}
         except Exception, e:
-            error = {'message': e.message, 'data': {'debug': ''}}
-            args = {'error': error, 'filename': qqfile}
-        # return req.make_response(simplejson.dumps(args))
-        return req.make_response(simplejson.dumps({}))
+            args = {"files": [{"name": "picture1.jpg",
+                               "size": 902604,
+                               "error": e.message}]}
+        return req.make_response(simplejson.dumps(args))
 
 
 class BinaryExtend(Binary):
@@ -52,9 +52,11 @@ class BinaryExtend(Binary):
                 return super(BinaryExtend, self).saveas(req, model, field, id, filename_field, **kw)
             else:
                 if download_able == 1:
-                    args = {'error': {'message': _('You apply download request but not approve yet! Please be patient'), 'data': {'debug': ''}}}
+                    args = {'error': {'message': _('You apply download request but not approve yet! Please be patient'),
+                                      'data': {'debug': ''}}}
                 else:
-                    args = {'error': {'message': _('You have no privilege to download some of the attachments'), 'data': {'debug': ''}}}
+                    args = {'error': {'message': _('You have no privilege to download some of the attachments'),
+                                      'data': {'debug': ''}}}
 
                 return req.make_response(simplejson.dumps(args))
         else:
@@ -73,7 +75,8 @@ class BinaryExtend(Binary):
                 return super(BinaryExtend, self).saveas_ajax(req, data, token)
             else:
                 if download_able == 1:
-                    args = {'message': _('You have no privilege to download some of the attachments, Please apply download request.'),
+                    args = {'message': _(
+                        'You have no privilege to download some of the attachments, Please apply download request.'),
                             'data': {}, }
                 else:
                     args = {'message': _('You have no privilege to download some of the attachments'), 'data': {}, }

@@ -155,21 +155,34 @@ openerp.up_document = function (instance) {
                 sequentialUploads: true,
                 formData: data,
                 done: function (e, data) {
-//                    $.each(data.result.files, function (index, file) {
-//                        self.$el.find('div.oe-upload-holder:first').css('display','None');
-//                        $('<p/>').text(file.name).appendTo(document.body);
-//                    });
-                    if (self.$el.hasClass("oe_opened")) {
-                        self.refresh_files();
+                    if (data.result.files[0].error) {
+                        instance.webclient.notification.warn(
+                            _t("上传错误!"),
+                            _t(data.result.files[0].error));
                     }
-                    self.$el.find('div.oe-upload-holder:first').html('');
-                    alert('上传完成！');
+                },
+                fail: function (e, data) {
+                    instance.webclient.notification.warn(
+                        _t("网络错误"),
+                        _t("请检查传输情况并重新上传文件"));
+                    // data.errorThrown
+                    // data.textStatus;
+                    // data.jqXHR;
                 },
                 progressall: function (e, data) {
 //                    self.$el.find('div.oe-upload-holder:first').css('display','block');
                     var progress = parseInt(data.loaded / data.total * 100, 10);
                     var progress_template = Qweb.render('DocumentProcess', {'progress': progress});
                     self.$el.find('div.oe-upload-holder:first').html(progress_template);
+                    if (progress == 100) {
+                        if (self.$el.hasClass("oe_opened")) {
+                            self.refresh_files();
+                        }
+                        self.$el.find('div.oe-upload-holder:first').html('');
+                        instance.webclient.notification.notify(
+                        _t("上传完成"),
+                        _t(""));
+                    }
                 }
             });
         },
@@ -240,7 +253,7 @@ openerp.up_document = function (instance) {
         template: "DirView",
         display_name: _lt('Dir'),
         view_type: "dir",
-        searchable : false,
+        searchable: false,
         widgetManager: new WidgetManager(),
 
         init: function (parent, dataset, view_id, options) {
