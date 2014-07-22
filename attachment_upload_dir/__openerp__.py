@@ -16,13 +16,8 @@ Document Upload Plugin Directory Support
         'static/src/xml/*.xml',
     ],
     'js': [
-        'static/src/js/lib/bootstrap.min.js',
-        'static/src/js/dir.js',
-        'static/src/js/lib/jquery.fileupload.js',
     ],
     'css': [
-        'static/src/css/progress.css',
-        'static/src/css/directory.css',
     ],
     'auto_install': False,
     'installable': True,

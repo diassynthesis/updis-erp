@@ -28,12 +28,6 @@
                 'up_document.view_document_directory_public_config_form','default_user_id': ''}
             </field>
         </record>
-        <!--record id="act_wd_sfile_all_file_form" model="ir.actions.act_window.view">
-            <field name="view_id" ref="view_sfile_file_file_form"/>
-            <field name="view_mode">form</field>
-            <field name="act_window_id" ref="action_ir_attach_public"/>
-            <field name="sequence">15</field>
-        </record-->
         <!-- Document Download Application Management-->
         <record id="action_attachment_download_my" model="ir.actions.act_window">
             <field name="name">My Attachment Download Application</field>

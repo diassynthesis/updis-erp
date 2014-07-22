@@ -18,7 +18,7 @@
             <field name="view_id" ref="up_project.view_dir_temp"/>
             <field name="target">new</field>
             <field name="domain" eval="[('parent_id', '=', ref('up_project.dir_up_project'))]"/>
-            <field name="context">{'search_index_model': ('res_model', '=', 'project.project'),'search_index_id': ('res_id', '=',active_id),'default_res_model': 'project.project','default_res_id':active_id,'eval_context': True,}</field>
+            <field name="context">{'res_model': 'project.project','res_id':active_id}</field>
         </record>
         <record id="project_project_wizard_form" model="ir.ui.view">
             <field name="name">project.project.wizard.form</field>

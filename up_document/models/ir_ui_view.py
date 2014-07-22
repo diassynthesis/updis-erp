@@ -1,6 +1,6 @@
-__author__ = 'cysnake4713'
 from openerp.osv import osv, fields
 from lxml import etree
+__author__ = 'cysnake4713'
 
 
 class IrUiViewInherit(osv.osv):

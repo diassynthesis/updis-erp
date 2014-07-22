@@ -1,3 +1,2 @@
-__author__ = 'cysnake4713'
 import controllers
-import models
+__author__ = 'cysnake4713'

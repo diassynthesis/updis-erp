@@ -19,6 +19,8 @@ class IrAttachmentInherit(osv.osv):
     def _check_group_unlink_privilege(self, cr, uid, ids, context=None):
         if not context:
             context = {}
+        if isinstance(ids, (int, long)):
+            ids = [ids]
         for attachment in self.browse(cr, uid, ids, context):
             context['ctx'] = {
                 'res_model': attachment.res_model,
@@ -62,6 +64,8 @@ class IrAttachmentInherit(osv.osv):
         return attachment_id
 
     def unlink(self, cr, uid, ids, context=None):
+        if isinstance(ids, (int, long)):
+            ids = [ids]
         self._check_group_unlink_privilege(cr, uid, ids, context)
         self.log_info(cr, uid, ids, _('unlink this file'), context=context)
         junk_dir_id = self.pool['ir.model.data'].get_object_reference(cr, uid, 'up_document', 'doc_direct_100001')[1]

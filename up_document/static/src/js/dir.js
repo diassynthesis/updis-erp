@@ -1,13 +1,13 @@
 /**
  * Created by cysnake4713 on 14-7-12.
  */
-openerp.attachment_upload_dir = function (instance) {
+openerp.up_document = function (instance) {
 
     var _lt = instance.web._lt;
     var _t = instance.web._t;
     var Qweb = instance.web.qweb;
 
-    instance.web.views.add('dir', 'instance.attachment_upload_dir.DirView');
+    instance.web.views.add('dir', 'instance.up_document.DirView');
 
 
     var WidgetManager = instance.web.Class.extend({
@@ -33,7 +33,7 @@ openerp.attachment_upload_dir = function (instance) {
     });
 
 
-    instance.attachment_upload_dir.DocumentWidget = instance.web.Widget.extend({
+    instance.up_document.DocumentWidget = instance.web.Widget.extend({
         template: 'DocumentElement',
         widgetManager: new WidgetManager(),
         init: function (parent, document) {
@@ -92,7 +92,7 @@ openerp.attachment_upload_dir = function (instance) {
         }
     });
 
-    instance.attachment_upload_dir.DirectoryWidget = instance.web.Widget.extend({
+    instance.up_document.DirectoryWidget = instance.web.Widget.extend({
         template: 'DirectoryElement',
         widgetManager: new WidgetManager(),
 
@@ -159,7 +159,7 @@ openerp.attachment_upload_dir = function (instance) {
 //                        self.$el.find('div.oe-upload-holder:first').css('display','None');
 //                        $('<p/>').text(file.name).appendTo(document.body);
 //                    });
-                    if (!self.$el.hasClass("oe_opened")) {
+                    if (self.$el.hasClass("oe_opened")) {
                         self.refresh_files();
                     }
                     self.$el.find('div.oe-upload-holder:first').html('');
@@ -198,7 +198,7 @@ openerp.attachment_upload_dir = function (instance) {
             var self = this;
             self.widgetManager.get_directory_child(self.directory.id, self.dataset.context).done(function (result) {
                 _.each(result, function (directory) {
-                    var dir = new instance.attachment_upload_dir.DirectoryWidget(self, directory);
+                    var dir = new instance.up_document.DirectoryWidget(self, directory);
                     self.child_directories = self.child_directories.concat(dir);
                     dir.appendTo(self.$el.children('div.tree-child-holder').children('div.oe-directory-holder'));
                 });
@@ -210,7 +210,7 @@ openerp.attachment_upload_dir = function (instance) {
             var res_model = self.dataset.context.default_res_model;
             self.widgetManager.get_directory_documents(self.directory.id, res_id, res_model, self.dataset.context).done(function (result) {
                 _.each(result, function (document) {
-                    var file = new instance.attachment_upload_dir.DocumentWidget(self, document);
+                    var file = new instance.up_document.DocumentWidget(self, document);
                     self.child_files = self.child_files.concat(file);
                     file.appendTo(self.$el.children('div.tree-child-holder').children('div.oe-document-holder'));
                 });
@@ -235,11 +235,12 @@ openerp.attachment_upload_dir = function (instance) {
 
     });
 
-    instance.attachment_upload_dir.DirView = instance.web.View.extend({
+    instance.up_document.DirView = instance.web.View.extend({
 
         template: "DirView",
         display_name: _lt('Dir'),
         view_type: "dir",
+        searchable : false,
         widgetManager: new WidgetManager(),
 
         init: function (parent, dataset, view_id, options) {
@@ -291,7 +292,7 @@ openerp.attachment_upload_dir = function (instance) {
             var self = this;
             _.each(ids, function (id) {
                 self.widgetManager.get_directory(id, self.dataset.context).done(function (result) {
-                    new instance.attachment_upload_dir.DirectoryWidget(self, result).appendTo(self.$el.find('div.oe-document-tree'));
+                    new instance.up_document.DirectoryWidget(self, result).appendTo(self.$el.find('div.oe-document-tree'));
                 });
             });
 

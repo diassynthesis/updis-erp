@@ -31,15 +31,6 @@ class InternalHomeExtend(InternalHome):
                 'id': attachment_id,
                 'success': True,
             }
-        # try:
-        #     Model = req.session.model('ir.attachment')
-        #     args = self._create_attachment(req, qqfile, path="/mp4")
-        #     # model, field, id=None, filename_field=None, **kw)
-        #     url = 'http://file.updis.cn:81/mp4/%s' % (args['filename'])
-        #     args['url'] = url
-        #     args['id'] = 'v' + args['filename'].split(".")[0][18:25]
-        #     args['filename'] = qqfile
-
         except Fault, e:
             error = {'message': e.faultCode, 'data': {'debug': ''}}
             args = {'error': error, 'filename': qqfile}
@@ -48,6 +39,7 @@ class InternalHomeExtend(InternalHome):
             args = {'error': error, 'filename': qqfile}
         # return req.make_response(simplejson.dumps(args))
         return req.make_response(simplejson.dumps({}))
+
 
 class BinaryExtend(Binary):
     @openerpweb.httprequest
