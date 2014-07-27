@@ -28,8 +28,10 @@ class DocumentDirectoryAccess(osv.osv):
         'code': '',
     }
 
-    def calc_privilege(self, cr, uid, access_id, method, context):
-        access = self.browse(cr, 1, access_id[0], context)
+    def calc_privilege(self, cr, uid, ids, method, context):
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        access = self.browse(cr, 1, ids[0], context)
         # If method need eval
         if method in ['perm_write', 'is_downloadable']:
             if access[method] is False:
@@ -144,7 +146,9 @@ class DocumentDirectoryInherit(osv.osv):
             ret['value'].update(vals)
         return ret
 
-    def check_directory_privilege(self, cr, uid, directory_ids, method, context=None):
+    def check_directory_privilege(self, cr, uid, ids, method, context=None):
+        if isinstance(ids, (int, long)):
+            ids = [ids]
         # if user is document admin
         if self.user_has_groups(cr, uid, 'base.group_document_user', context=context) or uid == 1:
             if method == 'is_need_approval':
@@ -157,7 +161,7 @@ class DocumentDirectoryInherit(osv.osv):
         user = self.pool.get('res.users').browse(cr, 1, uid)
         user_group = [u.id for u in user.groups_id]
         # each directory
-        for directory in self.browse(cr, uid, directory_ids, context):
+        for directory in self.browse(cr, uid, ids, context):
             for group in directory.group_ids:
                 if group.group_id.id in user_group:
                     if group.calc_privilege(method, context=context):

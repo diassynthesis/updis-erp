@@ -33,6 +33,8 @@ class IrAttachmentInherit(osv.osv):
     def _check_group_write_privilege(self, cr, uid, ids, context=None):
         if not context:
             context = {}
+        if isinstance(ids, (int, long)):
+            ids = [ids]
         for attachment in self.browse(cr, uid, ids, context):
             context['ctx'] = {
                 'res_model': attachment.res_model,
@@ -111,9 +113,9 @@ class IrAttachmentInherit(osv.osv):
         'is_deleted': fields.boolean('Is Deleted'),
     }
 
-    _sql_constraints = [
-        ('filename_unique', 'unique (name,parent_id,res_model,res_id)', 'The file name in directory must be unique !'),
-    ]
+    # _sql_constraints = [
+    #     ('filename_unique', 'unique (name,parent_id,res_model,res_id)', 'The file name in directory must be unique !'),
+    # ]
 
     def on_change_name(self, cr, uid, ids, context=None):
         attachment = self.browse(cr, uid, ids, context)[0]

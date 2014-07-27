@@ -41,8 +41,7 @@ openerp.up_document = function (instance) {
             this.document = document;
             this.dataset = parent.dataset;
             this.parent = parent;
-            var base_url = '/web/binary/saveas?model=ir.attachment&field=datas&filename_field=name';
-            this.document.url = base_url + '&id=' + this.document.id + '&session_id=' + openerp.instances.instance0.session.session_id;
+            this.document.url = instance.session.url('/web/binary/saveas', {model: 'ir.attachment', 'filename_field': 'name', field: 'datas', id: this.document.id});
         },
         start: function () {
             this.bind_events();
@@ -180,8 +179,8 @@ openerp.up_document = function (instance) {
                         }
                         self.$el.find('div.oe-upload-holder:first').html('');
                         instance.webclient.notification.notify(
-                        _t("上传完成"),
-                        _t(""));
+                            _t("上传完成"),
+                            _t(""));
                     }
                 }
             });
