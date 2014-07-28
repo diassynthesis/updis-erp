@@ -17,13 +17,13 @@
                 webkit_header="updis_project_head"
                 file="up_project/report/filed/project_project_filed_filing_report_pdf_paper.mako"
                 auto="False"/>
-        <!--report id="report_project_filed_filing_report_pdf_elec"
+        <report id="report_project_filed_filing_report_pdf_elec"
                 string="QRT4.2.3-3项目归档表-电子文件"
                 model="project.project.filed.filing"
                 name="project.filed.filing.report.pdf.elec"
                 report_type="webkit"
                 webkit_header="updis_project_head"
                 file="up_project/report/filed/project_project_filed_filing_report_pdf_elec.mako"
-                auto="False"/-->
+                auto="False"/>
     </data>
 </openerp>
