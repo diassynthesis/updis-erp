@@ -148,16 +148,31 @@ openerp.up_document = function (instance) {
             if (self.dataset.context.res_model) {
                 data.res_model = self.dataset.context.res_model;
             }
+            var total_progress = 0;
             self.$el.find("input.file-upload:first").fileupload({
                 dataType: 'json',
                 url: '/web/clupload/multi_upload',
                 sequentialUploads: true,
                 formData: data,
+                add: function (e, data) {
+                    instance.web.blockUI();
+                    data.submit();
+                },
                 done: function (e, data) {
                     if (data.result.files[0].error) {
                         instance.webclient.notification.warn(
                             _t("上传错误!"),
                             _t(data.result.files[0].error));
+                    }
+                    if (total_progress == 100) {
+                        instance.web.unblockUI();
+                        if (self.$el.hasClass("oe_opened")) {
+                            self.refresh_files();
+                        }
+                        self.$el.find('div.oe-upload-holder:first').html('');
+                        instance.webclient.notification.notify(
+                            _t("上传完成"),
+                            _t(""));
                     }
                 },
                 fail: function (e, data) {
@@ -169,19 +184,9 @@ openerp.up_document = function (instance) {
                     // data.jqXHR;
                 },
                 progressall: function (e, data) {
-//                    self.$el.find('div.oe-upload-holder:first').css('display','block');
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    var progress_template = Qweb.render('DocumentProcess', {'progress': progress});
+                    total_progress = parseInt(data.loaded / data.total * 100, 10);
+                    var progress_template = Qweb.render('DocumentProcess', {'progress': total_progress});
                     self.$el.find('div.oe-upload-holder:first').html(progress_template);
-                    if (progress == 100) {
-                        if (self.$el.hasClass("oe_opened")) {
-                            self.refresh_files();
-                        }
-                        self.$el.find('div.oe-upload-holder:first').html('');
-                        instance.webclient.notification.notify(
-                            _t("上传完成"),
-                            _t(""));
-                    }
                 }
             });
         },
@@ -239,12 +244,7 @@ openerp.up_document = function (instance) {
                 dir.destroy();
             });
             this.create_child_directories();
-        },
-        multi_upload: function (parent) {
-            B
-
         }
-
     });
 
     instance.up_document.DirView = instance.web.View.extend({
