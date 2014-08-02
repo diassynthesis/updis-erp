@@ -17,6 +17,13 @@
             <field name="view_mode">dir</field>
             <field name="domain" eval="[('parent_id', '=', ref('up_document.doc_direct_000001'))]"/>
         </record>
+        <record id="action_all_document_directory_tree" model="ir.actions.act_window">
+            <field name="name">All Directories Structure</field>
+            <field name="res_model">document.directory</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">dir</field>
+            <field name="domain" eval="[('parent_id', '=', None)]"/>
+        </record>
         <!--Action Public Document Config-->
         <record id="action_document_dir_public_config" model="ir.actions.act_window">
             <field name="name">Public Document Directories Config</field>
@@ -62,6 +69,11 @@
         <menuitem name="Attachment Download Application Manage" id="menu_attachment_download_manage" sequence="20"
                   parent="menu_attachment_download_root" action="action_attachment_download_manage"
                   groups="up_document.group_attachment_download_manager"/>
+
+        <menuitem
+                action="action_all_document_directory_tree"
+                id="document.menu_document_directories_tree"
+                parent="document.menu_document_management_configuration" sequence="5"/>
 
     </data>
 </openerp>
