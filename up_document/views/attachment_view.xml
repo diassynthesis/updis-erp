@@ -13,9 +13,18 @@
                         <button string="Sync Name" name="on_change_name" class="oe_edit_only oe_link" type="object"/>
                     </group>
                 </xpath>
+                <xpath expr="//group[@string='Attached To']" position="attributes">
+                    <attribute name="groups">up_document.document_admin</attribute>
+                </xpath>
+                <xpath expr="//field[@name='type']" position="attributes">
+                    <attribute name="groups">up_document.document_admin</attribute>
+                </xpath>
                 <xpath expr="//div[@name='creation_div']" position="after">
                     <field name="is_deleted" readonly="1"/>
                 </xpath>
+                <field name="user_id" position="attributes">
+                    <attribute name="groups">up_document.document_admin</attribute>
+                </field>
                 <xpath expr="//group[@string='Indexed Content']" position="replace">
                     <group colspan="4">
                         <notebook>
@@ -31,9 +40,6 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="Indexed Content">
-                                <field name="index_content" nolabel="1"/>
-                            </page>
                             <page string="Logs">
                                 <field name="log_ids" readonly="1">
                                     <tree>
@@ -42,6 +48,9 @@
                                         <field name="message"/>
                                     </tree>
                                 </field>
+                            </page>
+                            <page string="Indexed Content">
+                                <field name="index_content" nolabel="1"/>
                             </page>
                         </notebook>
                     </group>
