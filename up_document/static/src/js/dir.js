@@ -218,8 +218,8 @@ openerp.up_document = function (instance) {
         },
         create_child_documents: function () {
             var self = this;
-            var res_id = self.dataset.context.default_res_id;
-            var res_model = self.dataset.context.default_res_model;
+            var res_id = self.dataset.context.res_id;
+            var res_model = self.dataset.context.res_model;
             self.widgetManager.get_directory_documents(self.directory.id, res_id, res_model, self.dataset.context).done(function (result) {
                 _.each(result, function (document) {
                     var file = new instance.up_document.DocumentWidget(self, document);
