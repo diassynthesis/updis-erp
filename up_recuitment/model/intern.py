@@ -25,4 +25,9 @@ class HrMember(osv.Model):
         'works': fields.binary('Works'),
         'works_name': fields.char('Works Name', 128),
         'create_date': fields.datetime('Created on', select=True),
+        'id_number': fields.char('ID Number', size=32),
+        'id_image': fields.binary('ID Scan Image'),
+        'id_image_name': fields.char('ID Scan Image Name', size=64),
+        'student_id_image': fields.binary('Student ID Image'),
+        'student_id_image_name': fields.char('Student ID Image Name', size=64),
     }

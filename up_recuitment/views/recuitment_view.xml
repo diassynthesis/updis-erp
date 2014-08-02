@@ -55,6 +55,11 @@
                             <field name="resume_name" invisible="1"/>
                             <field name="works" filename="works_name"/>
                             <field name="works_name" invisible="1"/>
+                            <field name="id_number"/>
+                            <field name="id_image" filename="id_image_name"/>
+                            <field name="id_image_name" invisible="1"/>
+                            <field name="student_id_image" filename="student_id_image_name"/>
+                            <field name="student_id_image_name" invisible="1"/>
                         </group>
                         <group colspan="2">
                             <field name="create_date" readonly="1"/>
