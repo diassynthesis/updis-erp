@@ -43,12 +43,12 @@ class IrAttachmentInherit(osv.Model):
             src_dir = attachment.parent_id.id
             target_dir = dir_map[src_dir]
             if target_dir:
-                conflict_attachment_id = self.search(cr, uid, [('name', '=', attachment.name),
-                                                               ('res_model', '=', attachment.res_model), ('res_id', '=', attachment.res_id),
-                                                               ('parent_id', '=', target_dir)], context=context)
-                if conflict_attachment_id:
-                    conflict_attachment = self.browse(cr, uid, conflict_attachment_id[0], context=context)
-                    conflict_attachment.write({'name': u'历史版本' + conflict_attachment.create_date + '_' + conflict_attachment.name}, context=context)
+                # conflict_attachment_id = self.search(cr, uid, [('name', '=', attachment.name),
+                #                                                ('res_model', '=', attachment.res_model), ('res_id', '=', attachment.res_id),
+                #                                                ('parent_id', '=', target_dir)], context=context)
+                # if conflict_attachment_id:
+                #     conflict_attachment = self.browse(cr, uid, conflict_attachment_id[0], context=context)
+                #     conflict_attachment.write({'name': u'历史版本' + conflict_attachment.create_date + '_' + conflict_attachment.name}, context=context)
                 attachment.write({'parent_id': target_dir}, context=context)
 
 

@@ -14,19 +14,19 @@ openerp.up_document = function (instance) {
 
         get_directory: function (id, context) {
             var obj = new instance.web.Model('document.directory');
-            return obj.call('get_directory_info', [id, {'context': context}])
+            return obj.call('get_directory_info', [id,  context])
         },
         get_directory_child: function (id, context) {
             var obj = new instance.web.Model('document.directory');
-            return obj.call('get_directory_child_info', [id, {'context': context}])
+            return obj.call('get_directory_child_info', [id,  context])
         },
         get_directory_documents: function (directory_id, res_id, res_model, context) {
             var obj = new instance.web.Model('ir.attachment');
-            return obj.call('get_directory_documents', [directory_id, res_id, res_model, {'context': context}])
+            return obj.call('get_directory_documents', [directory_id, res_id, res_model,  context])
         },
         delete_document: function (document_ids, context) {
             var obj = new instance.web.Model('ir.attachment');
-            return obj.call('unlink', [document_ids, {'context': context}])
+            return obj.call('unlink', [document_ids, context])
         }
 
 

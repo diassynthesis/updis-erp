@@ -27,15 +27,14 @@ class ProjectFiledFilingPDF(report_sxw.rml_parse):
         attach_analysis_obj = self.pool['project.project.filed.filing.attachment.analysis']
         elec_attachments_ids = attach_analysis_obj.search(cr, uid, [('project_id', '=', filing.project_id.id)], order='version desc, project_id',
                                                           context=context)
-        elec_attachments = [(a.parent_id.name_get()[0][1], a) for a in attach_analysis_obj.browse(cr, uid, elec_attachments_ids, context)]
+        elec_attachments = [(a.parent_id.name_get()[0][1], a) for a in attach_analysis_obj.browse(cr, 1, elec_attachments_ids, context)]
         elec_attachments = reduce(merge_list, elec_attachments, OrderedDict({}))
-        elec_attachments.items()
         self.localcontext.update({
             'cr': cr,
             'object': filing,
             'tags': tags,
             'paper_attachemnts': paper_attachemnts,
-            # 'elec_attachments': elec_attachments,
+            'elec_attachments': elec_attachments,
         })
 
 

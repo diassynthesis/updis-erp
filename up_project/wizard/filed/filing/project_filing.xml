@@ -176,7 +176,7 @@
                                         <p class="oe_tips">点击“上传待归档电子文件”按钮可以快速上传文件到项目文件夹，上传文件成功后点击"添加"按钮添加本次需要归档的文件</p>
                                         <p class="oe_tips">注：要求上传重要评审会议演示稿（总规类不少于2次，其它不少于1次）；建议上传策划书</p>
                                         <button name="%(button_show_filing_update_list)d" class="oe_left oe_highlight oe_edit_only"
-                                                string="上传待归档电子文件" states="apply_filing" type="action" context="{'res_id':project_id}"/>
+                                                string="上传待归档电子文件" states="apply_filing" type="action" context="{'ctx':{'res_id':project_id,'res_model':'project.project'},'res_id':project_id,'res_model':'project.project'}"/>
                                     </div>
                                     <label for="attachment_ids" string="Need Filing Elec Attachments"/>
                                     <field name="attachment_ids" nolabel="1"
