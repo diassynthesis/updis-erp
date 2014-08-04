@@ -28,6 +28,15 @@
                 <xpath expr="//group[@string='Indexed Content']" position="replace">
                     <group colspan="4">
                         <notebook>
+                            <page string="Logs">
+                                <field name="log_ids" readonly="1">
+                                    <tree>
+                                        <field name="create_date"/>
+                                        <field name="create_uid"/>
+                                        <field name="message"/>
+                                    </tree>
+                                </field>
+                            </page>
                             <page string="Download Application">
                                 <field name="application_ids" readonly="1">
                                     <tree>
@@ -40,16 +49,7 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="Logs">
-                                <field name="log_ids" readonly="1">
-                                    <tree>
-                                        <field name="create_date"/>
-                                        <field name="create_uid"/>
-                                        <field name="message"/>
-                                    </tree>
-                                </field>
-                            </page>
-                            <page string="Indexed Content">
+                            <page string="Indexed Content" groups="up_document.document_admin">
                                 <field name="index_content" nolabel="1"/>
                             </page>
                         </notebook>
