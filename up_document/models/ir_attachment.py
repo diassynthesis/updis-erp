@@ -17,12 +17,24 @@ from openerp.addons.document.document import document_file
 
 
 def monkey_create(self, cr, uid, vals, context=None):
+    def get_partner_id(cr, uid, res_model, res_id, context=None):
+        """ A helper to retrieve the associated partner from any res_model+id
+            It is a hack that will try to discover if the mentioned record is
+            clearly associated with a partner record.
+        """
+        obj_model = self.pool.get(res_model)
+        if obj_model._name == 'res.partner':
+            return res_id
+        elif 'partner_id' in obj_model._columns and obj_model._columns['partner_id']._obj == 'res.partner':
+            bro = obj_model.browse(cr, uid, res_id, context=context)
+            return bro.partner_id.id
+        return False
     if context is None:
         context = {}
     vals['parent_id'] = context.get('parent_id', False) or vals.get('parent_id', False)
     # take partner from uid
     if vals.get('res_id', False) and vals.get('res_model', False) and not vals.get('partner_id', False):
-        vals['partner_id'] = self.__get_partner_id(cr, uid, vals['res_model'], vals['res_id'], context)
+        vals['partner_id'] = get_partner_id(cr, uid, vals['res_model'], vals['res_id'], context)
     return super(document_file, self).create(cr, uid, vals, context)
 
 
@@ -62,6 +74,19 @@ class IrAttachmentInherit(osv.osv):
             else:
                 result[attach.id] = attach.db_datas
         return result
+
+    def _file_read(self, cr, uid, location, fname, bin_size=False):
+        full_path = self._full_path(cr, uid, location, fname)
+        r = ''
+        try:
+            if bin_size:
+                r = os.path.getsize(full_path)
+            else:
+                r = file(full_path, 'rb')
+        except IOError:
+            _logger.error("_read_file reading %s", full_path)
+        return r
+
 
     def _data_set(self, cr, uid, id, name, file, arg, context=None):
         # We dont handle setting data to null
@@ -154,6 +179,7 @@ class IrAttachmentInherit(osv.osv):
                 'message': message,
                 'attachment_id': attachment_id,
             }, context=context)
+        return True
 
     # noinspection PyUnusedLocal
     def _get_file_size(self, cr, uid, ids, field_name, arg, context):
@@ -176,7 +202,7 @@ class IrAttachmentInherit(osv.osv):
         'application_ids': fields.one2many('ir.attachment.application', 'attachment_id', 'Applications'),
         'log_ids': fields.one2many('ir.attachment.log', 'attachment_id', 'Logs'),
         'is_deleted': fields.boolean('Is Deleted'),
-        'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="binary", nodrop=True),
+        'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="file", nodrop=True),
     }
 
     # _sql_constraints = [
