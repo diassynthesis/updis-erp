@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
 import datetime
+import hashlib
+import os
 from openerp import tools
 
 __author__ = 'cysnake4713'
@@ -10,11 +12,74 @@ from zipfile import ZipFile
 
 from openerp.osv import osv
 from openerp.osv import fields
-from openerp.tools.translate import _
+from openerp.tools.translate import _, _logger
+from openerp.addons.document.document import document_file
+
+
+def monkey_create(self, cr, uid, vals, context=None):
+    if context is None:
+        context = {}
+    vals['parent_id'] = context.get('parent_id', False) or vals.get('parent_id', False)
+    # take partner from uid
+    if vals.get('res_id', False) and vals.get('res_model', False) and not vals.get('partner_id', False):
+        vals['partner_id'] = self.__get_partner_id(cr, uid, vals['res_model'], vals['res_id'], context)
+    return super(document_file, self).create(cr, uid, vals, context)
+
+
+document_file.create = monkey_create
 
 
 class IrAttachmentInherit(osv.osv):
     _inherit = 'ir.attachment'
+
+    def _file_write(self, cr, uid, location, file):
+        fname = hashlib.sha1(file.read()).hexdigest()
+        # scatter files across 1024 dirs
+        # we use '/' in the db (even on windows)
+        fname = fname[:3] + '/' + fname
+        full_path = self._full_path(cr, uid, location, fname)
+        file_size = 0
+        try:
+            file.seek(0, 0)
+            dirname = os.path.dirname(full_path)
+            if not os.path.isdir(dirname):
+                os.makedirs(dirname)
+            file.save(full_path)
+            file_size = os.path.getsize(full_path)
+        except IOError:
+            _logger.error("_file_write writing %s", full_path)
+        return fname, file_size
+
+    def _data_get(self, cr, uid, ids, name, arg, context=None):
+        if context is None:
+            context = {}
+        result = {}
+        location = self.pool.get('ir.config_parameter').get_param(cr, uid, 'ir_attachment.location')
+        bin_size = context.get('bin_size')
+        for attach in self.browse(cr, uid, ids, context=context):
+            if location and attach.store_fname:
+                result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size)
+            else:
+                result[attach.id] = attach.db_datas
+        return result
+
+    def _data_set(self, cr, uid, id, name, file, arg, context=None):
+        # We dont handle setting data to null
+        if not file:
+            return True
+        if context is None:
+            context = {}
+        location = self.pool.get('ir.config_parameter').get_param(cr, uid, 'ir_attachment.location')
+        file_size = 0
+        if location:
+            attach = self.browse(cr, uid, id, context=context)
+            if attach.store_fname:
+                self._file_delete(cr, uid, location, attach.store_fname)
+            file_name, file_size = self._file_write(cr, uid, location, file)
+            super(IrAttachmentInherit, self).write(cr, uid, [id], {'store_fname': file_name, 'file_size': file_size}, context=context)
+        else:
+            super(IrAttachmentInherit, self).write(cr, uid, [id], {'db_datas': file.read(), 'file_size': file_size}, context=context)
+        return True
 
     def _check_group_unlink_privilege(self, cr, uid, ids, context=None):
         if not context:
@@ -111,10 +176,11 @@ class IrAttachmentInherit(osv.osv):
         'application_ids': fields.one2many('ir.attachment.application', 'attachment_id', 'Applications'),
         'log_ids': fields.one2many('ir.attachment.log', 'attachment_id', 'Logs'),
         'is_deleted': fields.boolean('Is Deleted'),
+        'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="binary", nodrop=True),
     }
 
     # _sql_constraints = [
-    #     ('filename_unique', 'unique (name,parent_id,res_model,res_id)', 'The file name in directory must be unique !'),
+    # ('filename_unique', 'unique (name,parent_id,res_model,res_id)', 'The file name in directory must be unique !'),
     # ]
 
     def on_change_name(self, cr, uid, ids, context=None):

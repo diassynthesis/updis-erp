@@ -18,12 +18,12 @@ class InternalHomeExtend(InternalHome):
             attachment_id = attachment_obj.create(
                 {
                     'name': qqfile.filename,
-                    'datas': base64.encodestring(qqfile.read()),
+                    'datas': qqfile,
                     'datas_fname': qqfile.filename,
                     'parent_id': int(parent_id),
                     'res_model': res_model,
                     'res_id': int(res_id),
-                })
+                }, context=req.context)
             args = {'files': [{"name": qqfile.filename,
                                "size": 0,
                                "url": "",
@@ -31,12 +31,12 @@ class InternalHomeExtend(InternalHome):
                                "deleteUrl": "",
                                "deleteType": "DELETE", }]}
         except Fault, e:
-            args = {"files": [{"name": "picture1.jpg",
-                               "size": 902604,
+            args = {"files": [{"name": qqfile.filename,
+                               "size": 0,
                                "error": e.faultCode}]}
         except Exception, e:
-            args = {"files": [{"name": "picture1.jpg",
-                               "size": 902604,
+            args = {"files": [{"name": qqfile.filename,
+                               "size": 0,
                                "error": e.message}]}
         return req.make_response(simplejson.dumps(args))
 
