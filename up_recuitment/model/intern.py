@@ -30,4 +30,8 @@ class HrMember(osv.Model):
         'id_image_name': fields.char('ID Scan Image Name', size=64),
         'student_id_image': fields.binary('Student ID Image'),
         'student_id_image_name': fields.char('Student ID Image Name', size=64),
+
+        'emergency_name': fields.char('Emergency Name', 64),
+        'emergency_relation': fields.char('Emergency Relation', 64),
+        'emergency_phone': fields.char('Emergency Phone', 64),
     }

@@ -49,6 +49,11 @@
                                 <field name="native_place"/>
                                 <field name="folk"/>
                             </group>
+                            <group>
+                                <field name="emergency_name"/>
+                                <field name="emergency_relation"/>
+                                <field name="emergency_phone"/>
+                            </group>
                         </group>
                         <group colspan="2">
                             <field name="resume" filename="resume_name"/>
