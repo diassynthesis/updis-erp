@@ -3,6 +3,7 @@ import datetime
 import hashlib
 import os
 from openerp import tools
+from osv.orm import Model
 
 __author__ = 'cysnake4713'
 
@@ -101,9 +102,9 @@ class IrAttachmentInherit(osv.osv):
             if attach.store_fname:
                 self._file_delete(cr, uid, location, attach.store_fname)
             file_name, file_size = self._file_write(cr, uid, location, file)
-            super(IrAttachmentInherit, self).write(cr, uid, [id], {'store_fname': file_name, 'file_size': file_size}, context=context)
+            super(Model, self).write(cr, uid, [id], {'store_fname': file_name, 'file_size': file_size}, context=context)
         else:
-            super(IrAttachmentInherit, self).write(cr, uid, [id], {'db_datas': file.read(), 'file_size': file_size}, context=context)
+            super(Model, self).write(cr, uid, [id], {'db_datas': file.read(), 'file_size': file_size}, context=context)
         return True
 
     def _check_group_unlink_privilege(self, cr, uid, ids, context=None):

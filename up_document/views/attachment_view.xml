@@ -66,11 +66,9 @@
             <field name="model">ir.attachment</field>
             <field name="inherit_id" ref="document.view_document_file_tree"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='name']" position="before">
-                    <field name="datas" filename="name" widget="binary"/>
-                </xpath>
                 <xpath expr="//field[@name='name']" position="attributes">
-                    <attribute name="invisible">1</attribute>
+                    <attribute name="widget">bigbinary</attribute>
+                    <attribute name="filename">file_size</attribute>
                 </xpath>
                 <xpath expr="//field[@name='company_id']" position="attributes">
                     <attribute name="invisible">1</attribute>
@@ -81,7 +79,9 @@
                 <xpath expr="//field[@name='user_id']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-                <xpath expr="//field[@name='type']" position="replace"/>
+                <xpath expr="//field[@name='type']" position="replace">
+                    <field name="file_size" invisible="1"/>
+                </xpath>
             </field>
         </record>
         <!--ir.attachment.access-->

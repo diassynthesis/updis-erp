@@ -1,4 +1,5 @@
 import base64
+import xmlrpclib
 import simplejson
 from xmlrpclib import Fault
 from openerp.osv import osv
@@ -45,14 +46,14 @@ class BinaryExtend(Binary):
 
     def attachment_saveas(self, req, model, field, id=None, filename_field=None, **kw):
         Model = req.session.model(model)
-        fields = [field]
+        fields = ['datas']
         if filename_field:
             fields.append(filename_field)
         if id:
             res = Model.read([int(id)], fields, req.context)[0]
         else:
             res = Model.default_get(fields, req.context)
-        file_out = res.get(field, '')
+        file_out = res.get('datas', '')
         if not file_out:
             return req.not_found()
         else:
@@ -60,8 +61,8 @@ class BinaryExtend(Binary):
             if filename_field:
                 filename = res.get(filename_field, '') or filename
             return req.make_response(file_out,
-                [('Content-Type', 'application/octet-stream'),
-                 ('Content-Disposition', content_disposition(filename, req))])
+                                     [('Content-Type', 'application/octet-stream'),
+                                      ('Content-Disposition', content_disposition(filename, req))])
 
     @openerpweb.httprequest
     def saveas(self, req, model, field, id=None, filename_field=None, **kw):
@@ -97,7 +98,7 @@ class BinaryExtend(Binary):
         if filename_field:
             fields.append(filename_field)
         if data:
-            res = { field: data }
+            res = {field: data}
         elif id:
             res = Model.read([int(id)], fields, context)[0]
         else:
@@ -105,15 +106,15 @@ class BinaryExtend(Binary):
         file_out = res.get(field, '')
         if not file_out:
             raise ValueError(_("No content found for field '%s' on '%s:%s'") %
-                (field, model, id))
+                             (field, model, id))
         else:
             filename = '%s_%s' % (model.replace('.', '_'), id)
             if filename_field:
                 filename = res.get(filename_field, '') or filename
             return req.make_response(file_out,
-                headers=[('Content-Type', 'application/octet-stream'),
-                        ('Content-Disposition', content_disposition(filename, req))],
-                cookies={'fileToken': token})
+                                     headers=[('Content-Type', 'application/octet-stream'),
+                                              ('Content-Disposition', content_disposition(filename, req))],
+                                     cookies={'fileToken': token})
 
     @openerpweb.httprequest
     def saveas_ajax(self, req, data, token):

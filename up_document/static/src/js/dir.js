@@ -14,15 +14,15 @@ openerp.up_document = function (instance) {
 
         get_directory: function (id, context) {
             var obj = new instance.web.Model('document.directory');
-            return obj.call('get_directory_info', [id,  context])
+            return obj.call('get_directory_info', [id, context])
         },
         get_directory_child: function (id, context) {
             var obj = new instance.web.Model('document.directory');
-            return obj.call('get_directory_child_info', [id,  context])
+            return obj.call('get_directory_child_info', [id, context])
         },
         get_directory_documents: function (directory_id, res_id, res_model, context) {
             var obj = new instance.web.Model('ir.attachment');
-            return obj.call('get_directory_documents', [directory_id, res_id, res_model,  context])
+            return obj.call('get_directory_documents', [directory_id, res_id, res_model, context])
         },
         delete_document: function (document_ids, context) {
             var obj = new instance.web.Model('ir.attachment');
@@ -323,4 +323,33 @@ openerp.up_document = function (instance) {
             this._super();
         }
     });
+
+
+    instance.web.list.BigBinary = instance.web.list.Column.extend({
+        /**
+         * Return a link to the binary data as a file
+         *
+         * @private
+         */
+        _format: function (row_data, options) {
+            var text = _t("Download");
+            var download_url;
+            var size = 0;
+            download_url = instance.session.url('/web/binary/saveas', {model: options.model, field: 'name', id: options.id});
+            if (this.filename) {
+                size = instance.web.human_size(row_data[this.filename].value);
+            }
+            download_url += '&filename_field=' + this.id;
+            text = _.str.sprintf(_t("Download \"%s\""), instance.web.format_value(
+                row_data[this.id].value, {type: 'char'}));
+            return _.template('<a href="<%-href%>"><%-text%></a> (<%-size%>)', {
+                text: text,
+                href: download_url,
+                size: size
+            });
+        }
+    });
+
+
+    instance.web.list.columns.add('field.bigbinary', 'instance.web.list.BigBinary');
 };
