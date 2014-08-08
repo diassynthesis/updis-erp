@@ -43,7 +43,6 @@ class InternalHomeExtend(InternalHome):
 
 
 class BinaryExtend(Binary):
-
     def attachment_saveas(self, req, model, field, id=None, filename_field=None, **kw):
         Model = req.session.model(model)
         fields = ['datas']
@@ -137,3 +136,31 @@ class BinaryExtend(Binary):
                 return req.make_response(simplejson.dumps(args))
         else:
             return super(BinaryExtend, self).saveas_ajax(req, data, token)
+
+
+    @openerpweb.httprequest
+    def upload_attachment(self, req, callback, model, id, ufile, res_id=None, res_model=None, res_context="{}"):
+        Model = req.session.model('ir.attachment')
+        out = """<script language="javascript" type="text/javascript">
+                        var win = window.top.window;
+                        win.jQuery(win).trigger(%s, %s);
+                    </script>"""
+        context = eval(res_context)
+        model = res_model or model
+        id = res_id or id
+        try:
+            attachment_id = Model.create(
+                {
+                    'name': ufile.filename,
+                    'datas': ufile,
+                    'datas_fname': ufile.filename,
+                    'res_model': model,
+                    'res_id': int(id),
+                }, context)
+            args = {
+                'filename': ufile.filename,
+                'id': attachment_id
+            }
+        except xmlrpclib.Fault, e:
+            args = {'error': e.faultCode}
+        return out % (simplejson.dumps(callback), simplejson.dumps(args))
