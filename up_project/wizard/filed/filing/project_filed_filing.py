@@ -169,6 +169,11 @@ class ProjectFiledFiling(osv.Model):
             'domain': [('project_id', '=', filing.project_id.id)],
         }
 
+    def write(self, cr, user, ids, vals, context=None):
+        if 'show_images' in vals:
+            super(ProjectFiledFiling, self).write(cr, user, ids, {'show_images': [(5,)]}, context)
+        return super(ProjectFiledFiling, self).write(cr, user, ids, vals, context)
+
 
 class ProjectFiledFilingTag(osv.Model):
     _name = 'project.project.filed.tag'
