@@ -187,9 +187,7 @@ openerp.up_document = function (instance) {
                     instance.webclient.notification.warn(
                         _t("网络错误"),
                         _t("请检查传输情况并重新上传文件"));
-                    // data.errorThrown
-                    // data.textStatus;
-                    // data.jqXHR;
+                    self.$el.find('div.oe-upload-holder:first').html('');
                 },
                 progressall: function (e, data) {
                     total_progress = parseInt(data.loaded / data.total * 100, 10);
@@ -354,52 +352,22 @@ openerp.up_document = function (instance) {
 
     instance.web.list.columns.add('field.bigbinary', 'instance.web.list.BigBinary');
 
-    instance.web.form.BigBinary = instance.web.form.AbstractField.extend(instance.web.form.ReinitializeFieldMixin, {
+    instance.web.form.BigBinary = instance.web.form.FieldBinaryFile.extend({
         template: 'BigFieldBinaryFile',
-        on_save_as: function (ev) {
-            var value = this.get('value');
-            if (!value) {
-                this.do_warn(_t("Save As..."), _t("The field is empty, there's nothing to save !"));
-                ev.stopPropagation();
-            } else {
-                instance.web.blockUI();
-                var c = instance.webclient.crashmanager;
-                this.session.get_file({
-                    url: '/web/binary/saveas_ajax',
-                    data: {data: JSON.stringify({
-                        model: this.view.dataset.model,
-                        id: (this.view.datarecord.id || ''),
-                        field: this.name,
-                        filename_field: (this.node.attrs.filename || ''),
-                        data: instance.web.form.is_bin_size(value) ? null : value,
-                        context: this.view.dataset.get_context()
-                    })},
-                    complete: instance.web.unblockUI,
-                    error: c.rpc_error.bind(c)
-                });
-                ev.stopPropagation();
-                return false;
-            }
-        },
         initialize_content: function () {
             var self = this;
-            if (this.get("effective_readonly")) {
-                var self = this;
-                this.$el.find('a').click(function (ev) {
-                    if (self.get('value')) {
-                        self.on_save_as(ev);
-                    }
-                    return false;
-                });
-            }
+            this._super();
+            this.$el.find('button.oe_field_button:first').click(this.on_file_update);
+            this.$el.find('input.oe_form_binary_file:first').css('z-index', -99);
+            this.max_upload_size = 1024 * 1024 * 1024;
             var data = {
                 session_id: openerp.instances.instance0.session.session_id,
                 attachment_id: self.view.datarecord.id
             };
-            if (!this.view.datarecord.id){
+            if (!this.view.datarecord.id) {
                 instance.webclient.notification.warn(
-                            _t("文件尚未创建!"),
-                            _t("请先保存文件一次，再进行上传操作！"));
+                    _t("文件尚未创建!"),
+                    _t("请先保存文件一次，再进行上传操作！"));
             }
             var total_progress = 0;
             self.$el.find("input.file-upload:first").fileupload({
@@ -426,20 +394,19 @@ openerp.up_document = function (instance) {
                     }
                     if (total_progress == 100) {
                         instance.web.unblockUI();
-                        if (self.$el.hasClass("oe_opened")) {
-                            self.refresh_files();
-                        }
                         self.$el.find('div.oe-upload-holder:first').html('');
                         instance.webclient.notification.notify(
                             _t("上传完成"),
                             _t(""));
                     }
+                    self.$el.find('input.field_binary:first').val(data.files[0].name);
                 },
                 fail: function (e, data) {
                     instance.web.unblockUI();
                     instance.webclient.notification.warn(
                         _t("网络错误"),
                         _t("请检查传输情况并重新上传文件"));
+                    self.$el.find('div.oe-upload-holder:first').html('');
                 },
                 progressall: function (e, data) {
                     total_progress = parseInt(data.loaded / data.total * 100, 10);
@@ -448,23 +415,12 @@ openerp.up_document = function (instance) {
                 }
             });
         },
-        render_value: function () {
-            if (!this.get("effective_readonly")) {
-                var show_value;
-                if (this.node.attrs.filename) {
-                    show_value = this.view.datarecord[this.node.attrs.filename] || '';
-                } else {
-                    show_value = (this.get('value') != null && this.get('value') !== false) ? this.get('value') : '';
-                }
-            } else {
-                this.$el.find('a').toggle(!!this.get('value'));
-                if (this.get('value')) {
-                    var show_value = _t("Download")
-                    if (this.view)
-                        show_value += " " + (this.view.datarecord[this.node.attrs.filename] || '');
-                    this.$el.find('a').text(show_value);
-                }
-            }
+        on_file_update: function (e) {
+            e.preventDefault();
+            this.$el.find("input.file-upload:first").click();
+        },
+        on_file_change: function (e) {
+
         }
     });
 

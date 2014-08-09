@@ -58,15 +58,13 @@
         <div class="oe-document-tree"/>
     </div>
 
-    <div t-name="BigFieldBinaryFile">
-        <t t-if="!widget.get('effective_readonly')">
-            <input type="file" name="qqfile"  class="file-upload"/>
+    <div t-name="BigFieldBinaryFile"  t-extend="FieldBinaryFile">
+        <t t-jquery="input.field_binary" t-operation="after">
+            <div style="display:none">
+                <input type="file" name="qqfile"  class="file-upload"/>
+            </div>
             <div class="oe-upload-holder"/>
         </t>
-        <t t-if="widget.get('effective_readonly')">
-            <span t-att-style="widget.node.attrs.style">
-                <a href="javascript:void(0)" class="oe_form_uri"/>
-            </span>
-        </t>
+
     </div>
 </template>
