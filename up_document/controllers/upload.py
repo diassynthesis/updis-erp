@@ -164,3 +164,29 @@ class BinaryExtend(Binary):
         except xmlrpclib.Fault, e:
             args = {'error': e.faultCode}
         return out % (simplejson.dumps(callback), simplejson.dumps(args))
+
+    @openerp.addons.web.http.httprequest
+    def update_attachment(self, req, qqfile, attachment_id=0):
+        attachment_obj = req.session.model('ir.attachment')
+        attachment_id = int(attachment_id)
+        try:
+            attachment_obj.write(attachment_id,
+                                 {
+                                     'datas': qqfile,
+                                     'datas_fname': qqfile.filename,
+                                 }, context=req.context)
+            args = {'files': [{"name": qqfile.filename,
+                               "size": 0,
+                               "url": "",
+                               "thumbnailUrl": "",
+                               "deleteUrl": "",
+                               "deleteType": "DELETE", }]}
+        except Fault, e:
+            args = {"files": [{"name": qqfile.filename,
+                               "size": 0,
+                               "error": e.faultCode}]}
+        except Exception, e:
+            args = {"files": [{"name": qqfile.filename,
+                               "size": 0,
+                               "error": e.message}]}
+        return req.make_response(simplejson.dumps(args))

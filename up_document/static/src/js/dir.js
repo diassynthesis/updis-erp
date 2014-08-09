@@ -183,6 +183,7 @@ openerp.up_document = function (instance) {
                     }
                 },
                 fail: function (e, data) {
+                    instance.web.unblockUI();
                     instance.webclient.notification.warn(
                         _t("网络错误"),
                         _t("请检查传输情况并重新上传文件"));
@@ -352,4 +353,120 @@ openerp.up_document = function (instance) {
 
 
     instance.web.list.columns.add('field.bigbinary', 'instance.web.list.BigBinary');
+
+    instance.web.form.BigBinary = instance.web.form.AbstractField.extend(instance.web.form.ReinitializeFieldMixin, {
+        template: 'BigFieldBinaryFile',
+        on_save_as: function (ev) {
+            var value = this.get('value');
+            if (!value) {
+                this.do_warn(_t("Save As..."), _t("The field is empty, there's nothing to save !"));
+                ev.stopPropagation();
+            } else {
+                instance.web.blockUI();
+                var c = instance.webclient.crashmanager;
+                this.session.get_file({
+                    url: '/web/binary/saveas_ajax',
+                    data: {data: JSON.stringify({
+                        model: this.view.dataset.model,
+                        id: (this.view.datarecord.id || ''),
+                        field: this.name,
+                        filename_field: (this.node.attrs.filename || ''),
+                        data: instance.web.form.is_bin_size(value) ? null : value,
+                        context: this.view.dataset.get_context()
+                    })},
+                    complete: instance.web.unblockUI,
+                    error: c.rpc_error.bind(c)
+                });
+                ev.stopPropagation();
+                return false;
+            }
+        },
+        initialize_content: function () {
+            var self = this;
+            if (this.get("effective_readonly")) {
+                var self = this;
+                this.$el.find('a').click(function (ev) {
+                    if (self.get('value')) {
+                        self.on_save_as(ev);
+                    }
+                    return false;
+                });
+            }
+            var data = {
+                session_id: openerp.instances.instance0.session.session_id,
+                attachment_id: self.view.datarecord.id
+            };
+            if (!this.view.datarecord.id){
+                instance.webclient.notification.warn(
+                            _t("文件尚未创建!"),
+                            _t("请先保存文件一次，再进行上传操作！"));
+            }
+            var total_progress = 0;
+            self.$el.find("input.file-upload:first").fileupload({
+                dataType: 'json',
+                url: '/web/binary/update_attachment',
+                sequentialUploads: false,
+                formData: data,
+                add: function (e, data) {
+                    var uploadFile = data.files[0];
+                    if (uploadFile.size > 1000 * 1024 * 1024) { // 2mb
+                        instance.webclient.notification.warn(
+                            _t("文件过大!"),
+                            _t("上传文件超过1GB！请分卷压缩后上传。"));
+                    } else {
+                        instance.web.blockUI();
+                        data.submit();
+                    }
+                },
+                done: function (e, data) {
+                    if (data.result.files[0].error) {
+                        instance.webclient.notification.warn(
+                            _t("上传错误!"),
+                            _t(data.result.files[0].error));
+                    }
+                    if (total_progress == 100) {
+                        instance.web.unblockUI();
+                        if (self.$el.hasClass("oe_opened")) {
+                            self.refresh_files();
+                        }
+                        self.$el.find('div.oe-upload-holder:first').html('');
+                        instance.webclient.notification.notify(
+                            _t("上传完成"),
+                            _t(""));
+                    }
+                },
+                fail: function (e, data) {
+                    instance.web.unblockUI();
+                    instance.webclient.notification.warn(
+                        _t("网络错误"),
+                        _t("请检查传输情况并重新上传文件"));
+                },
+                progressall: function (e, data) {
+                    total_progress = parseInt(data.loaded / data.total * 100, 10);
+                    var progress_template = Qweb.render('DocumentProcess', {'progress': total_progress});
+                    self.$el.find('div.oe-upload-holder:first').html(progress_template);
+                }
+            });
+        },
+        render_value: function () {
+            if (!this.get("effective_readonly")) {
+                var show_value;
+                if (this.node.attrs.filename) {
+                    show_value = this.view.datarecord[this.node.attrs.filename] || '';
+                } else {
+                    show_value = (this.get('value') != null && this.get('value') !== false) ? this.get('value') : '';
+                }
+            } else {
+                this.$el.find('a').toggle(!!this.get('value'));
+                if (this.get('value')) {
+                    var show_value = _t("Download")
+                    if (this.view)
+                        show_value += " " + (this.view.datarecord[this.node.attrs.filename] || '');
+                    this.$el.find('a').text(show_value);
+                }
+            }
+        }
+    });
+
+    instance.web.form.widgets.add('bigbinary', 'instance.web.form.BigBinary');
 };

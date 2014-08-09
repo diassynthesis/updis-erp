@@ -39,7 +39,14 @@ def monkey_create(self, cr, uid, vals, context=None):
     return super(document_file, self).create(cr, uid, vals, context)
 
 
+def monkey_write(self, cr, uid, ids, vals, context=None):
+    if context is None:
+        context = {}
+    return super(document_file, self).write(cr, uid, ids, vals, context)
+
+
 document_file.create = monkey_create
+document_file.write = monkey_write
 
 
 class IrAttachmentInherit(osv.osv):
