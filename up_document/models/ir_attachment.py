@@ -18,7 +18,7 @@ from openerp.addons.document.document import document_file
 
 
 def monkey_create(self, cr, uid, vals, context=None):
-    def get_partner_id(cr, uid, res_model, res_id, context=None):
+    def get_partner_id(cri, uidi, res_model, res_id, contexts=None):
         """ A helper to retrieve the associated partner from any res_model+id
             It is a hack that will try to discover if the mentioned record is
             clearly associated with a partner record.
@@ -27,9 +27,10 @@ def monkey_create(self, cr, uid, vals, context=None):
         if obj_model._name == 'res.partner':
             return res_id
         elif 'partner_id' in obj_model._columns and obj_model._columns['partner_id']._obj == 'res.partner':
-            bro = obj_model.browse(cr, uid, res_id, context=context)
+            bro = obj_model.browse(cri, uidi, res_id, context=contexts)
             return bro.partner_id.id
         return False
+
     if context is None:
         context = {}
     vals['parent_id'] = context.get('parent_id', False) or vals.get('parent_id', False)
@@ -49,22 +50,23 @@ document_file.create = monkey_create
 document_file.write = monkey_write
 
 
+# noinspection PyUnusedLocal
 class IrAttachmentInherit(osv.osv):
     _inherit = 'ir.attachment'
 
-    def _file_write(self, cr, uid, location, file):
-        fname = hashlib.sha1(file.read()).hexdigest()
+    def _file_write(self, cr, uid, location, qqfile):
+        fname = hashlib.sha1(qqfile.read()).hexdigest()
         # scatter files across 1024 dirs
         # we use '/' in the db (even on windows)
         fname = fname[:3] + '/' + fname
         full_path = self._full_path(cr, uid, location, fname)
         file_size = 0
         try:
-            file.seek(0, 0)
+            qqfile.seek(0, 0)
             dirname = os.path.dirname(full_path)
             if not os.path.isdir(dirname):
                 os.makedirs(dirname)
-            file.save(full_path)
+            qqfile.save(full_path)
             file_size = os.path.getsize(full_path)
         except IOError:
             _logger.error("_file_write writing %s", full_path)
@@ -95,10 +97,10 @@ class IrAttachmentInherit(osv.osv):
             _logger.error("_read_file reading %s", full_path)
         return r
 
-
-    def _data_set(self, cr, uid, id, name, file, arg, context=None):
+    # noinspection PySuperArguments
+    def _data_set(self, cr, uid, id, name, qqfile, arg, context=None):
         # We dont handle setting data to null
-        if not file:
+        if not qqfile:
             return True
         if context is None:
             context = {}
@@ -108,10 +110,10 @@ class IrAttachmentInherit(osv.osv):
             attach = self.browse(cr, uid, id, context=context)
             if attach.store_fname:
                 self._file_delete(cr, uid, location, attach.store_fname)
-            file_name, file_size = self._file_write(cr, uid, location, file)
+            file_name, file_size = self._file_write(cr, uid, location, qqfile)
             super(Model, self).write(cr, uid, [id], {'store_fname': file_name, 'file_size': file_size}, context=context)
         else:
-            super(Model, self).write(cr, uid, [id], {'db_datas': file.read(), 'file_size': file_size}, context=context)
+            super(Model, self).write(cr, uid, [id], {'db_datas': qqfile.read(), 'file_size': file_size}, context=context)
         return True
 
     def _check_group_unlink_privilege(self, cr, uid, ids, context=None):
@@ -260,8 +262,8 @@ class IrAttachmentInherit(osv.osv):
                         continue
                     is_need_approval = group_id.calc_privilege('is_need_approval', context=context)
                     # can be download status:
-                    if (is_download_able and not is_need_approval) or (
-                                    is_download_able and is_need_approval and is_pass_approval):
+                    if (is_download_able and not is_need_approval) or \
+                            (is_download_able and is_need_approval and is_pass_approval):
                         return 3
                     # can't be download but can apply
                     if is_download_able and is_need_approval and not is_pass_approval:
