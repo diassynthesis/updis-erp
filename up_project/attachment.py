@@ -28,9 +28,8 @@ FILING_DIR_MAP = {
     'dir_up_project_going_brief_picture': 'dir_up_project_filed_brief_picture',
     'dir_up_project_going_data': 'dir_up_project_filed_data',
     'dir_up_project_going_data_cadastral': 'dir_up_project_filed_data_cadastral',
-    'dir_up_project_going_data_terrain': 'dir_up_project_filed_data_terrain',
-    'dir_up_project_going_data_tellite': 'dir_up_project_filed_data_tellite',
     'dir_up_project_going_data_outsource': 'dir_up_project_filed_data_outsource',
+    'dir_up_project_going_processing_else':'dir_up_project_filed_processing_else',
 }
 
 
