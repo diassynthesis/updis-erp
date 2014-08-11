@@ -4,7 +4,6 @@ from operator import itemgetter
 from openerp.osv import osv, fields
 from up_tools import tools
 
-SUB_SELECTION = []
 
 class project_project_wizard(osv.osv_memory):
     _name = "project.project.wizard"
