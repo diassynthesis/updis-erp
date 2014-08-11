@@ -1,6 +1,9 @@
 # -*- encoding: utf-8 -*-
 import datetime
+import hashlib
+import os
 from openerp import tools
+from osv.orm import Model
 
 __author__ = 'cysnake4713'
 
@@ -10,39 +13,143 @@ from zipfile import ZipFile
 
 from openerp.osv import osv
 from openerp.osv import fields
-from openerp.tools.translate import _
+from openerp.tools.translate import _, _logger
+from openerp.addons.document.document import document_file
 
 
+def monkey_create(self, cr, uid, vals, context=None):
+    def get_partner_id(cri, uidi, res_model, res_id, contexts=None):
+        """ A helper to retrieve the associated partner from any res_model+id
+            It is a hack that will try to discover if the mentioned record is
+            clearly associated with a partner record.
+        """
+        obj_model = self.pool.get(res_model)
+        if obj_model._name == 'res.partner':
+            return res_id
+        elif 'partner_id' in obj_model._columns and obj_model._columns['partner_id']._obj == 'res.partner':
+            bro = obj_model.browse(cri, uidi, res_id, context=contexts)
+            return bro.partner_id.id
+        return False
+
+    if context is None:
+        context = {}
+    vals['parent_id'] = context.get('parent_id', False) or vals.get('parent_id', False)
+    # take partner from uid
+    if vals.get('res_id', False) and vals.get('res_model', False) and not vals.get('partner_id', False):
+        vals['partner_id'] = get_partner_id(cr, uid, vals['res_model'], vals['res_id'], context)
+    return super(document_file, self).create(cr, uid, vals, context)
+
+
+def monkey_write(self, cr, uid, ids, vals, context=None):
+    if context is None:
+        context = {}
+    return super(document_file, self).write(cr, uid, ids, vals, context)
+
+
+document_file.create = monkey_create
+document_file.write = monkey_write
+
+
+# noinspection PyUnusedLocal
 class IrAttachmentInherit(osv.osv):
     _inherit = 'ir.attachment'
+
+    def _file_write(self, cr, uid, location, qqfile):
+        fname = hashlib.sha1(qqfile.read()).hexdigest()
+        # scatter files across 1024 dirs
+        # we use '/' in the db (even on windows)
+        fname = fname[:3] + '/' + fname
+        full_path = self._full_path(cr, uid, location, fname)
+        file_size = 0
+        try:
+            qqfile.seek(0, 0)
+            dirname = os.path.dirname(full_path)
+            if not os.path.isdir(dirname):
+                os.makedirs(dirname)
+            qqfile.save(full_path)
+            file_size = os.path.getsize(full_path)
+        except IOError:
+            _logger.error("_file_write writing %s", full_path)
+        return fname, file_size
+
+    def _data_get(self, cr, uid, ids, name, arg, context=None):
+        if context is None:
+            context = {}
+        result = {}
+        location = self.pool.get('ir.config_parameter').get_param(cr, uid, 'ir_attachment.location')
+        bin_size = context.get('bin_size')
+        for attach in self.browse(cr, uid, ids, context=context):
+            if location and attach.store_fname:
+                result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size)
+            else:
+                result[attach.id] = attach.db_datas
+        return result
+
+    def _file_read(self, cr, uid, location, fname, bin_size=False):
+        full_path = self._full_path(cr, uid, location, fname)
+        r = ''
+        try:
+            if bin_size:
+                r = os.path.getsize(full_path)
+            else:
+                r = file(full_path, 'rb')
+        except IOError:
+            _logger.error("_read_file reading %s", full_path)
+        return r
+
+    # noinspection PySuperArguments
+    def _data_set(self, cr, uid, id, name, qqfile, arg, context=None):
+        # We dont handle setting data to null
+        if not qqfile:
+            return True
+        if context is None:
+            context = {}
+        location = self.pool.get('ir.config_parameter').get_param(cr, uid, 'ir_attachment.location')
+        file_size = 0
+        if location:
+            attach = self.browse(cr, uid, id, context=context)
+            if attach.store_fname:
+                self._file_delete(cr, uid, location, attach.store_fname)
+            file_name, file_size = self._file_write(cr, uid, location, qqfile)
+            super(Model, self).write(cr, uid, [id], {'store_fname': file_name, 'file_size': file_size}, context=context)
+        else:
+            super(Model, self).write(cr, uid, [id], {'db_datas': qqfile.read(), 'file_size': file_size}, context=context)
+        return True
 
     def _check_group_unlink_privilege(self, cr, uid, ids, context=None):
         if not context:
             context = {}
+        if isinstance(ids, (int, long)):
+            ids = [ids]
         for attachment in self.browse(cr, uid, ids, context):
             context['ctx'] = {
                 'res_model': attachment.res_model,
                 'res_id': attachment.res_id,
             }
-            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('perm_write', context=context):
+            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('perm_write',
+                                                                                           context=context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Unlink some of the attachments.'))
 
     def _check_group_write_privilege(self, cr, uid, ids, context=None):
         if not context:
             context = {}
+        if isinstance(ids, (int, long)):
+            ids = [ids]
         for attachment in self.browse(cr, uid, ids, context):
             context['ctx'] = {
                 'res_model': attachment.res_model,
                 'res_id': attachment.res_id,
             }
-            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('perm_write', context=context):
+            if attachment.parent_id and not attachment.parent_id.check_directory_privilege('perm_write',
+                                                                                           context=context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Write some of the attachments.'))
 
     def _check_group_create_privilege(self, cr, uid, vals, context=None):
         if not context:
             context = {}
         directory_obj = self.pool.get('document.directory')
-        parent_id = vals['parent_id'] if 'parent_id' in vals else (context['parent_id'] if 'parent_id' in context else None)
+        parent_id = vals['parent_id'] if 'parent_id' in vals else (
+            context['parent_id'] if 'parent_id' in context else None)
         if parent_id:
             directory = directory_obj.browse(cr, uid, parent_id, context=context)
             context['ctx'] = {
@@ -59,12 +166,21 @@ class IrAttachmentInherit(osv.osv):
         return attachment_id
 
     def unlink(self, cr, uid, ids, context=None):
+        if isinstance(ids, (int, long)):
+            ids = [ids]
         self._check_group_unlink_privilege(cr, uid, ids, context)
-        return super(IrAttachmentInherit, self).unlink(cr, uid, ids, context)
+        self.log_info(cr, uid, ids, _('unlink this file'), context=context)
+        junk_dir_id = self.pool['ir.model.data'].get_object_reference(cr, uid, 'up_document', 'doc_direct_100001')[1]
+        for attachment in self.browse(cr, uid, ids, context):
+            return super(IrAttachmentInherit, self).write(cr, uid, attachment.id, {'is_deleted': True,
+                                                                                   'parent_id': junk_dir_id,
+                                                                                   'name': fields.datetime.now() + attachment.name},
+                                                          context=context)
 
     def write(self, cr, uid, ids, vals, context=None):
         self._check_group_write_privilege(cr, uid, ids, context)
-        self.log_info(cr, uid, ids, _('update this file'), context=context)
+        if not ('is_deleted' in vals and vals['is_deleted'] is True):
+            self.log_info(cr, uid, ids, _('update this file'), context=context)
         return super(IrAttachmentInherit, self).write(cr, uid, ids, vals, context)
 
     def log_info(self, cr, uid, ids, message, context):
@@ -73,6 +189,7 @@ class IrAttachmentInherit(osv.osv):
                 'message': message,
                 'attachment_id': attachment_id,
             }, context=context)
+        return True
 
     # noinspection PyUnusedLocal
     def _get_file_size(self, cr, uid, ids, field_name, arg, context):
@@ -89,15 +206,18 @@ class IrAttachmentInherit(osv.osv):
         return result
 
     _columns = {
-        'file_size_human': fields.function(_get_file_size, type='float', digits=[10, 3], method=True, string='File Size Human (MB)'),
+        'file_size_human': fields.function(_get_file_size, type='float', digits=[10, 3], method=True,
+                                           string='File Size Human (MB)'),
         'is_downloadable': fields.function(_is_download_able, type='integer', string='Is Downloadable'),
         'application_ids': fields.one2many('ir.attachment.application', 'attachment_id', 'Applications'),
         'log_ids': fields.one2many('ir.attachment.log', 'attachment_id', 'Logs'),
+        'is_deleted': fields.boolean('Is Deleted'),
+        'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="file", nodrop=True),
     }
 
-    _sql_constraints = [
-        ('filename_unique', 'unique (name,parent_id,res_model,res_id)', 'The file name in directory must be unique !'),
-    ]
+    # _sql_constraints = [
+    # ('filename_unique', 'unique (name,parent_id,res_model,res_id)', 'The file name in directory must be unique !'),
+    # ]
 
     def on_change_name(self, cr, uid, ids, context=None):
         attachment = self.browse(cr, uid, ids, context)[0]
@@ -113,7 +233,7 @@ class IrAttachmentInherit(osv.osv):
             3: can be download
         }
         """
-        #Superuser can download anyway
+        # Superuser can download anyway
         if self.user_has_groups(cr, uid, 'base.group_document_user', context=context) or uid == 1:
             return 3
         # #init values
@@ -142,7 +262,8 @@ class IrAttachmentInherit(osv.osv):
                         continue
                     is_need_approval = group_id.calc_privilege('is_need_approval', context=context)
                     # can be download status:
-                    if (is_download_able and not is_need_approval) or (is_download_able and is_need_approval and is_pass_approval):
+                    if (is_download_able and not is_need_approval) or \
+                            (is_download_able and is_need_approval and is_pass_approval):
                         return 3
                     # can't be download but can apply
                     if is_download_able and is_need_approval and not is_pass_approval:
@@ -153,7 +274,8 @@ class IrAttachmentInherit(osv.osv):
     def is_pass_approval(self, cr, uid, attachment_id, context):
         application_obj = self.pool.get('ir.attachment.application')
         application_ids = application_obj.search(cr, uid,
-                                                 [('attachment_id', '=', attachment_id[0]), ('apply_user_id', '=', uid), ('state', '=', 'approve'),
+                                                 [('attachment_id', '=', attachment_id[0]), ('apply_user_id', '=', uid),
+                                                  ('state', '=', 'approve'),
                                                   ('expire_date', '>=', fields.datetime.now())],
                                                  context=context)
         if application_ids:
@@ -165,7 +287,8 @@ class IrAttachmentInherit(osv.osv):
         application_obj = self.pool.get('ir.attachment.application')
         for attachment in self.browse(cr, uid, ids, context):
             application_ids = application_obj.search(cr, uid,
-                                                     [('attachment_id', '=', attachment.id), ('apply_user_id', '=', uid),
+                                                     [('attachment_id', '=', attachment.id),
+                                                      ('apply_user_id', '=', uid),
                                                       ('state', '=', None)],
                                                      context=context)
             if not application_ids:
@@ -178,8 +301,18 @@ class IrAttachmentInherit(osv.osv):
                 model = 'ir.attachment'
                 res_id = attachment.id
                 group_id = 'up_document.group_attachment_download_manager'
-                self.pool.get('sms.sms').send_big_ant_to_group(cr, 1, from_rec, subject, content, model, res_id, group_id, context=None)
+                self.pool.get('sms.sms').send_big_ant_to_group(cr, 1, from_rec, subject, content, model, res_id,
+                                                               group_id, context=None)
         return True
+
+    def get_directory_documents(self, cr, uid, directory_id, res_id, res_model, context):
+        domain = [('parent_id', '=', directory_id), ('is_deleted', '=', False)]
+        if res_id:
+            domain += [('res_id', '=', res_id)]
+        if res_model:
+            domain += [('res_model', '=', res_model)]
+        ids = self.search(cr, uid, domain, context=context)
+        return self.read(cr, uid, ids, ['name'], context=context)
 
 
 class IrAttachmentDownloadWizard(osv.osv_memory):
@@ -216,9 +349,10 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
     _columns = {
         'name': fields.char('File Name', readonly=True),
         # 'format': fields.selection([('csv', 'CSV File'),
-        #                             ('po', 'PO File'),
-        #                             ('tgz', 'TGZ Archive')], 'File Format', required=True),
-        'attachment_ids': fields.many2many('ir.attachment', 'rel_attachment_download_wizard', 'wizard_id', 'attachment_id', string='Attachments'),
+        # ('po', 'PO File'),
+        # ('tgz', 'TGZ Archive')], 'File Format', required=True),
+        'attachment_ids': fields.many2many('ir.attachment', 'rel_attachment_download_wizard', 'wizard_id',
+                                           'attachment_id', string='Attachments'),
         'data': fields.binary('File', readonly=True),
         'state': fields.selection([('choose', 'choose'),  # choose language
                                    ('get', 'get')])  # get the file
@@ -247,7 +381,8 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         self.write(cr, uid, ids, {'state': 'get',
                                   'data': out,
                                   'name': filename}, context=context)
-        self.pool.get('ir.attachment').log_info(cr, uid, record_ids, _('have been zipped and download'), context=context)
+        self.pool.get('ir.attachment').log_info(cr, uid, record_ids, _('have been zipped and download'),
+                                                context=context)
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'ir.attachment.download.wizard',
@@ -298,7 +433,8 @@ class IrAttachmentApplication(osv.osv):
         self.write(cr, uid, ids, {
             'approve_user_id': uid,
             'approve_date': fields.datetime.now(),
-            'expire_date': (datetime.datetime.now() + datetime.timedelta(days=7)).strftime(tools.DEFAULT_SERVER_DATETIME_FORMAT),
+            'expire_date': (datetime.datetime.now() + datetime.timedelta(days=7)).strftime(
+                tools.DEFAULT_SERVER_DATETIME_FORMAT),
             'state': 'approve',
         }, context=context)
         return True
@@ -307,7 +443,8 @@ class IrAttachmentApplication(osv.osv):
         self.write(cr, uid, ids, {
             'approve_user_id': uid,
             'approve_date': fields.datetime.now(),
-            'expire_date': (datetime.datetime.now() + datetime.timedelta(days=7)).strftime(tools.DEFAULT_SERVER_DATETIME_FORMAT),
+            'expire_date': (datetime.datetime.now() + datetime.timedelta(days=7)).strftime(
+                tools.DEFAULT_SERVER_DATETIME_FORMAT),
             'state': 'disapprove',
         }, context=context)
         return True

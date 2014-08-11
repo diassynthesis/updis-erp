@@ -1,0 +1,70 @@
+<template>
+    <div t-name="DocumentProcess" class="progress">
+        <div class="progress-bar" role="progressbar" t-attf-aria-valuenow="#{progress}" aria-valuemin="0"
+             aria-valuemax="100"
+             t-attf-style="width: #{progress}%;">
+            上传中<t t-esc="progress"/>%
+        </div>
+    </div>
+
+    <div t-name="DocumentElement" class="oe-line document-line">
+        <div class="document-select">
+            <input type="checkbox" name="radiogroup"/>
+        </div>
+        <div class="name">
+            <a t-if="widget.parent.directory.is_downloadable and !widget.parent.directory.is_need_approval" t-attf-href="#{widget.document.url}">
+                <t t-esc="widget.document.name"/>
+            </a>
+            <span t-if="!widget.parent.directory.is_downloadable or widget.parent.directory.is_need_approval">
+                <t t-esc="widget.document.name"/>
+            </span>
+        </div>
+        <div class="button-holder">
+            <t t-if="widget.parent.directory.is_writable">
+                <button class="button-detail" title="Detail"/>
+                <button class="button-delete" title="Delete"/>
+            </t>
+        </div>
+    </div>
+
+    <div t-name="DirectoryElement" class="tree-directory-container">
+        <div class="oe-line directory-line">
+            <div class="arrow"></div>
+            <div class="name">
+                <t t-esc="widget.directory.name"/>
+            </div>
+            <div class="button-holder">
+                <t t-if="widget.directory.is_writable">
+                    <button class="button-upload" title="Upload"/>
+                </t>
+                <button class="button-refresh" title="Refresh"/>
+                <input type="file" name="qqfile" multiple="" class="file-upload"/>
+            </div>
+            <div class="oe-upload-holder">
+            </div>
+            <div class="tips">
+                <t t-if="widget.directory.is_downloadable and widget.directory.is_need_approval">
+                    该文件夹下文件需要下载审批
+                </t>
+            </div>
+        </div>
+        <div class="tree-child-holder">
+            <div class="oe-directory-holder"></div>
+            <div class="oe-document-holder"></div>
+        </div>
+    </div>
+
+    <div t-name="DirView">
+        <div class="oe-document-tree"/>
+    </div>
+
+    <div t-name="BigFieldBinaryFile"  t-extend="FieldBinaryFile">
+        <t t-jquery="input.field_binary" t-operation="after">
+            <div style="display:none">
+                <input type="file" name="qqfile"  class="file-upload"/>
+            </div>
+            <div class="oe-upload-holder"/>
+        </t>
+
+    </div>
+</template>

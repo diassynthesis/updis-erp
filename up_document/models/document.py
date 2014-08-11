@@ -28,8 +28,10 @@ class DocumentDirectoryAccess(osv.osv):
         'code': '',
     }
 
-    def calc_privilege(self, cr, uid, access_id, method, context):
-        access = self.browse(cr, uid, access_id[0], context)
+    def calc_privilege(self, cr, uid, ids, method, context):
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        access = self.browse(cr, 1, ids[0], context)
         # If method need eval
         if method in ['perm_write', 'is_downloadable']:
             if access[method] is False:
@@ -144,17 +146,22 @@ class DocumentDirectoryInherit(osv.osv):
             ret['value'].update(vals)
         return ret
 
-    def check_directory_privilege(self, cr, uid, directory_id, method, context=None):
+    def check_directory_privilege(self, cr, uid, ids, method, context=None):
+        if isinstance(ids, (int, long)):
+            ids = [ids]
         # if user is document admin
         if self.user_has_groups(cr, uid, 'base.group_document_user', context=context) or uid == 1:
-            return True
-        #init values
+            if method == 'is_need_approval':
+                return False
+            else:
+                return True
+        # init values
         if context is None:
             context = {}
-        user = self.pool.get('res.users').browse(cr, uid, uid)
+        user = self.pool.get('res.users').browse(cr, 1, uid)
         user_group = [u.id for u in user.groups_id]
         # each directory
-        for directory in self.browse(cr, uid, directory_id, context):
+        for directory in self.browse(cr, uid, ids, context):
             for group in directory.group_ids:
                 if group.group_id.id in user_group:
                     if group.calc_privilege(method, context=context):
@@ -167,8 +174,8 @@ class DocumentDirectoryInherit(osv.osv):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Unlink some of the directories.'))
 
     def _check_group_create_privilege(self, cr, uid, vals, context=None):
-        parent_id = vals['parent_id']
-        if parent_id:
+        if 'parent_id' in vals and vals['parent_id']:
+            parent_id = vals['parent_id']
             directory = self.browse(cr, uid, parent_id, context=context)
             if not directory.check_directory_privilege('perm_create_unlink', context=context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Create the directory.'))
@@ -189,3 +196,30 @@ class DocumentDirectoryInherit(osv.osv):
     def write(self, cr, uid, ids, vals, context=None):
         self._check_group_write_privilege(cr, uid, ids, context)
         return super(DocumentDirectoryInherit, self).write(cr, uid, ids, vals, context)
+
+    def get_directory_info(self, cr, uid, directory_id, context=None):
+        directory = self.browse(cr, uid, directory_id, context)
+        result = {
+            'id': directory.id,
+            'name': directory.name,
+            'is_writable': directory.check_directory_privilege('perm_write', context=context),
+            'is_downloadable': directory.check_directory_privilege('is_downloadable', context=context),
+            'is_need_approval': directory.check_directory_privilege('is_need_approval', context=context),
+        }
+        return result
+
+    def get_directory_child_info(self, cr, uid, id, context=None):
+        ids = self.search(cr, uid, [('parent_id', '=', id)], context=context)
+        directorys = self.browse(cr, uid, ids, context)
+        result = []
+        for directory in directorys:
+            result += [
+                {
+                    'id': directory.id,
+                    'name': directory.name,
+                    'is_writable': directory.check_directory_privilege('perm_write', context=context),
+                    'is_downloadable': directory.check_directory_privilege('is_downloadable', context=context),
+                    'is_need_approval': directory.check_directory_privilege('is_need_approval', context=context),
+                }
+            ]
+        return result

@@ -1,0 +1,111 @@
+.openerp .oe-document-tree {
+    font-size: 14px;
+    padding-left: 20px;
+}
+
+.openerp .oe-document-tree .tree-directory-container {
+}
+
+.openerp .oe-document-tree .tree-directory-container .oe-line {
+    margin: 3px 0 3px 0;
+}
+
+.openerp .oe-document-tree .tree-directory-container .oe-line > div {
+    display: inline-block;
+}
+
+.openerp .oe-document-tree .tree-directory-container .tree-child-holder {
+    margin-left: 22px;
+    display: none;
+}
+
+.openerp .oe-document-tree .tree-directory-container .name {
+    padding-left: 20px;
+    height: 18px;
+    background: transparent 0 50% no-repeat;
+}
+
+.openerp .oe-document-tree .tree-directory-container .button-holder {
+    padding-left: 10px;
+    visibility: collapse;
+}
+
+.openerp .oe-document-tree .tree-directory-container .button-holder > button {
+    width: 20px;
+    height: 16px;
+    cursor: hand;
+    border-style: none;
+    background: transparent 50% 50% no-repeat;
+}
+
+.openerp .oe-document-tree .tree-directory-container .directory-line {
+    background: transparent url('/web/static/src/img/expand.gif') 0 50% no-repeat;
+    cursor: pointer;
+}
+
+.openerp .oe-document-tree .tree-directory-container .directory-line .tips {
+    color: grey;
+    margin-right: 200px;
+    float: right;
+}
+
+.openerp .oe-document-tree .oe_open > .directory-line {
+    background-image: url('/web/static/src/img/collapse.gif');
+}
+
+.openerp .oe-document-tree .oe_open > .tree-child-holder {
+    margin-left: 22px;
+    display: block;
+}
+
+.openerp .oe-document-tree .tree-directory-container .oe-upload-holder {
+    /*display: none;*/
+    width: 200px;
+    height: 16px;
+}
+
+.openerp .oe-document-tree .tree-directory-container .directory-line .name {
+    background-image: url('/web/static/src/img/icons/terp-folder-yellow.png');
+}
+
+.openerp .oe-document-tree .tree-directory-container .directory-line .arrow {
+    width: 18px;
+    height: 18px;
+}
+
+.openerp .oe-document-tree .tree-directory-container .document-line .name {
+    background-image: url('/web/static/src/img/icons/gtk-file.png');
+}
+
+.openerp .oe-document-tree .tree-directory-container .document-line .document-select {
+    visibility: collapse;
+}
+
+.openerp .oe-document-tree .tree-directory-container .button-holder .button-upload {
+
+    background-image: url('/web/static/src/img/icons/gtk-goto-top.png');
+}
+
+.openerp .oe-document-tree .tree-directory-container .button-holder .button-refresh {
+    background-image: url('/web/static/src/img/icons/gtk-refresh.png');
+}
+
+.openerp .oe-document-tree .tree-directory-container .button-holder .button-detail {
+    background-image: url('/web/static/src/img/icons/gtk-edit.png');
+}
+
+.openerp .oe-document-tree .tree-directory-container .button-holder .button-apply {
+    background-image: url('/web/static/src/img/icons/STOCK_INDEX.png');
+}
+
+.openerp .oe-document-tree .tree-directory-container .button-holder .button-delete {
+    background-image: url('/web/static/src/img/icons/terp-dialog-close.png');
+}
+
+.openerp .oe-document-tree .tree-directory-container .button-holder .button-rename {
+    background-image: url('/web/static/src/img/icons/STOCK_UNDERLINE.png');
+}
+
+.openerp .oe-document-tree .tree-directory-container .button-holder .file-upload {
+    display: none !important;
+}

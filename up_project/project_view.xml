@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
     <data>
+        <record id="view_dir_temp" model="ir.ui.view">
+            <field name="name">directory.temp</field>
+            <field name="model">document.directory</field>
+            <field name="arch" type="xml">
+                <dir version="7.0" string="Wizard Form">
+                    <h1>1</h1>
+                </dir>
+            </field>
+        </record>
         <record id="action_project_related_document" model="ir.actions.act_window">
             <field name="name">项目相关文件</field>
             <field name="res_model">document.directory</field>
-            <field name="view_type">tree</field>
-            <field name="view_mode">tree</field>
-            <field name="view_id" ref="up_document.view_document_directory_public_struct_tree"/>
-            <field name="target">current</field>
-            <field name="domain" eval="[('parent_id', '=', False),('id', 'child_of', ref('up_project.dir_up_project'))]"/>
-            <field name="context">{'search_index_model': ('res_model', '=', 'project.project'),'search_index_id': ('res_id', '=',
-                active_id),'default_res_model': 'project.project','default_res_id':active_id,'eval_context': True}
-            </field>
+            <field name="view_type">form</field>
+            <field name="view_mode">dir</field>
+            <field name="view_id" ref="up_project.view_dir_temp"/>
+            <field name="target">new</field>
+            <field name="domain" eval="[('parent_id', '=', ref('up_project.dir_up_project'))]"/>
+            <field name="context">{'res_model': 'project.project','res_id':active_id}</field>
         </record>
         <record id="project_project_wizard_form" model="ir.ui.view">
             <field name="name">project.project.wizard.form</field>

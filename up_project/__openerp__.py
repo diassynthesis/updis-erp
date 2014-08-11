@@ -8,7 +8,7 @@
 UPDIS Project Module.""",
     'author': 'cysnake4713',
     'website': 'http://openerp.com',
-    'depends': ['base', 'project', 'oecn_base_fonts', 'report_webkit',],
+    'depends': ['base', 'project', 'oecn_base_fonts', 'report_webkit'],
     'init_xml': [
 
     ],

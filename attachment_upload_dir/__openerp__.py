@@ -13,9 +13,10 @@ Document Upload Plugin Directory Support
     'data': [
     ],
     'qweb': [
-        'static/src/xml/*.xml',
     ],
     'js': [
+    ],
+    'css': [
     ],
     'auto_install': False,
     'installable': True,
