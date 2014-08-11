@@ -2,7 +2,7 @@
 <openerp>
     <data>
         <record id="button_show_filing_update_list" model="ir.actions.act_window">
-            <field name="name">项目待归档文件</field>
+            <field name="name">项目待归档文件上传完毕后请关闭本窗口</field>
             <field name="res_model">document.directory</field>
             <field name="view_type">form</field>
             <field name="view_mode">dir</field>
@@ -160,7 +160,7 @@
                                                    attrs="{'invisible':[('type_id','in',[%(project_filed_type_0004)d,%(project_filed_type_0007)d])]}"/>
                                             <field name="page_count"
                                                    attrs="{'invisible':[('type_id','in',[%(project_filed_type_0007)d])]}"/>
-                                            <field name="document_number" attrs="{'readonly':[('type_id','not in',[%(project_filed_type_0006)d])]}"/>
+                                            <field name="document_number" attrs="{'readonly':[('type_id','not in',[%(project_filed_type_0005)d])]}"/>
                                             <field name="comment"/>
                                         </tree>
                                     </field>

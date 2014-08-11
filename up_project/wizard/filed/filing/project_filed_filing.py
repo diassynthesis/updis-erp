@@ -47,7 +47,7 @@ class ProjectFiledFiling(osv.Model):
         'tag_ids': fields.many2many('project.project.filed.tag', 'rel_project_filing_tag', 'filing_id', 'tag_id', string='Tags', required=True,
                                     states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
         # 概况
-        'description': fields.text('Description', states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
+        'description': fields.text('Description', states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}, required=True),
         # 借鉴主要案例
         'note': fields.text('Note', states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
         'record_ids': fields.one2many('project.project.filed.record', 'filing_id', 'Document Records',
