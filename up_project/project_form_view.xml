@@ -175,7 +175,7 @@
                             <page name="attachments" string="Attachments" attrs="{'invisible':[('state','=','project_active')]}">
                                 <button name="%(action_project_related_document)d" class="oe_link"
                                         string="点击查看项目文件"
-                                        type="action"/>
+                                        type="action" context="{'ctx':{'res_id':project_id,'res_model':'project.project'}}"/>
 
                             </page>
                             <page name="project_log" string="Project Logs">
