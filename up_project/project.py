@@ -477,12 +477,12 @@ class updis_project(osv.osv):
         domain = ['|', ('director_reviewer_id', '=', uid)] + domain
         project_members_obj = self.pool.get("project.members")
         members_id = project_members_obj.search(cr, uid,
-                                                ['|', '|', '|', '|', '|', ('validation_user_ids', '=', uid),
-                                                 ('audit_user_ids', '=', uid),
-                                                 ('profession_manager_user_ids', '=', uid),
-                                                 ('design_user_ids', '=', uid),
-                                                 ('proofread_user_ids', '=', uid),
-                                                 ('drawing_user_ids', '=', uid), ], context=context)
+                                                ['|', '|', '|', '|', '|', ('validation_user_ids.user_id', '=', uid),
+                                                 ('audit_user_ids.user_id', '=', uid),
+                                                 ('profession_manager_user_ids.user_id', '=', uid),
+                                                 ('design_user_ids.user_id', '=', uid),
+                                                 ('proofread_user_ids.user_id', '=', uid),
+                                                 ('drawing_user_ids.user_id', '=', uid), ], context=context)
         project_ids = project_members_obj.read(cr, uid, members_id, ["project_id"], context=context)
         result_ids = set(p['project_id'][0] for p in project_ids)
         domain = ['|', ('id', 'in', list(result_ids))] + domain
