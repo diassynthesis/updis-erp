@@ -1,9 +1,11 @@
+# coding=utf-8
 from functools import partial
 from up_tools.bigantlib import BigAntClient
 
 from openerp import SUPERUSER_ID
 
 from openerp.osv import osv, fields
+from up_tools.rtxlib import RtxClient
 
 
 class user_device(osv.osv):
@@ -18,6 +20,7 @@ class user_device(osv.osv):
 class res_users(osv.osv):
     _inherit = "res.users"
     _bigAntClient = BigAntClient()
+    _rtx_client = RtxClient()
     _columns = {
         'sign_image': fields.binary("Sign Image",
                                     help="This field holds the image used as siganture for this contact"),
@@ -44,6 +47,37 @@ class res_users(osv.osv):
                               'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone',
                               'devices', ]
 
+    def write_rtx_user(self, cr, uid, ids, vals, context=None):
+        client = self._rtx_client.get_client()
+        for user in self.browse(cr, uid, ids, context):
+            params = {'userName': user.login,
+                      # 'userPwd':1,
+                      # 'DeptName': u'临时',
+                      'ChsName': user.name,
+                      'IGender': 0,
+                      'Cell': user.work_phone,
+                      'Email': user.work_email,
+                      'Phone': user.mobile_phone,
+                      # 'Position':'',
+                      'AuthTYpe': 0,
+                      'key': self._rtx_client.rtx_key}
+            client.EditUser(**params)
+            if user.is_active is False:
+                try:
+                    self._rtx_client.get_client().DeleteUser(userName=user.login, key=self._rtx_client.rtx_key)
+                except Exception:
+                    pass
+
+
+    def unlink(self, cr, uid, ids, context=None):
+        client = self._rtx_client.get_client()
+        for user in self.browse(cr, uid, ids, context):
+            try:
+                client.DeleteUser(userName=user.login, key=self._rtx_client.rtx_key)
+            except Exception:
+                pass
+        super(res_users, self).unlink(cr, uid, ids, context)
+
     def write(self, cr, uid, ids, values, context=None):
         if not hasattr(ids, '__iter__'):
             ids = [ids]
@@ -58,8 +92,8 @@ class res_users(osv.osv):
                         del values['company_id']
                 uid = 1  # safe fields only, so we write as super-user to bypass access rights
         else:
-            #others can update user info, like hr manager
-            #TODO: need add hr manager validate
+            # others can update user info, like hr manager
+            # TODO: need add hr manager validate
             for key in values.keys():
                 if not (key in self.OTHER_WRITEABLE_FIELDS or key.startswith('context_')):
                     break
@@ -78,9 +112,27 @@ class res_users(osv.osv):
                 if id in self._uid_cache[db]:
                     del self._uid_cache[db][id]
         self.context_get.clear_cache(self)
+        self.write_rtx_user(cr, 1, ids, values, context)
         return res
 
+    def add_rtx_user(self, cr, uid, vals, context=None):
+        params = {'userName': vals.get('login', ''),
+                  # 'userPwd':1,
+                  'DeptName': u'临时',
+                  'ChsName': vals.get('name', ''),
+                  'IGender': 1,
+                  'Cell': vals.get('work_phone', ''),
+                  'Email': vals.get('work_email', ''),
+                  'Phone': vals.get('mobile_phone', ''),
+                  # 'Position':'',
+                  'AuthTYpe': 0,
+                  'key': self._rtx_client.rtx_key}
+        self._rtx_client.get_client().AddUser(**params)
+        # self._rtx_client.client.AddUser(userName='1111111', userPwd='111', DeptName='', ChsName='', IGender=1, Cell='', Email='', Phone='',
+        # Position='', AuthTYpe=0, key='tianvService2014')
+
     def create(self, cr, uid, vals, context=None):
+        self.add_rtx_user(cr, uid, vals, context)
         if self.user_has_groups(cr, uid, 'updis.group_res_user_manager'):
             return super(res_users, self).create(cr, 1, vals, context)
         else:
@@ -121,12 +173,13 @@ class res_users(osv.osv):
     def change_password(self, cr, uid, old_passwd, new_passwd, context=None):
         result = super(res_users, self).change_password(cr, uid, old_passwd, new_passwd, context=context)
         user = self.browse(cr, 1, uid, context)
-        if user.big_ant_login_name and self.pool.get('ir.config_parameter').get_param(cr, 1, 'bigant.password_sync') == 'True':
+        if self.pool.get('ir.config_parameter').get_param(cr, 1, 'bigant.password_sync') == 'True':
             params = {
-                'loginName': user.big_ant_login_name,
+                'userName': user.login,
                 'password': new_passwd,
+                'key': self._rtx_client.rtx_key,
             }
-            self._bigAntClient.Employee___asmx.SetPassword2.post(**params)
+            self._rtx_client.get_client().SetUserPwd(**params)
         return result
 
 
@@ -137,10 +190,10 @@ class ChangePasswordUser(osv.TransientModel):
     def change_password_button(self, cr, uid, ids, context=None):
         for user in self.browse(cr, uid, ids, context=context):
             self.pool.get('res.users').write(cr, uid, user.user_id.id, {'password': user.new_passwd})
-            res_user = self.pool.get('res.users').browse(cr, 1, user.user_id.id, context)
-            if res_user.big_ant_login_name and self.pool.get('ir.config_parameter').get_param(cr, 1, 'bigant.password_sync') == 'True':
+            if self.pool.get('ir.config_parameter').get_param(cr, 1, 'bigant.password_sync') == 'True':
                 params = {
-                    'loginName': res_user.big_ant_login_name,
+                    'userName': user.login,
                     'password': user.new_passwd,
+                    'key': self._rtx_client.rtx_key,
                 }
-                self._bigAntClient.Employee___asmx.SetPassword2.post(**params)
+                self._rtx_client.get_client().SetUserPwd(**params)
