@@ -11,7 +11,7 @@ class RtxClient(object):
         self.rtx_key = config.get('rtx_key', '')
         self.session_id = '{F9A239EB-1728-4608-A4D3-7B17BAEB9F18}'
 
-    def client(self):
+    def get_client(self):
         return Client(config.get('rtx_address', ''), timeout=5)
 
 

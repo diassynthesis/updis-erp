@@ -49,7 +49,7 @@ class sms(osv.Model):
                 params['Receivers'] = sms.to
                 params['title'] = sms.subject
                 params['msg'] = sms.content
-                self._rtx_client.client.SendNotify(**params)
+                self._rtx_client.get_client().SendNotify(**params)
 
             except Exception, e:
                 logging.getLogger('sms.sms').error("sending RTX failed!")
