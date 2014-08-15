@@ -43,13 +43,18 @@ class sms(osv.Model):
     def process_rtx_message(self, cr, uid, context=None):
         sms_ids = self.search(cr, uid, [('state', '=', 'draft'), ('type', '=', 'big_ant')], context=context)
         # params = {'sender': self._rtx_user, 'SenderPwd': self._rtx_password, 'SessionId': self._session_id, 'key': self._rtx_key}
-        params = {'key': self._rtx_client.rtx_key, 'time': 10000}
+        params = {'key': self._rtx_client.rtx_key, 'time': 60000}
         for sms in self.browse(cr, uid, sms_ids, context):
             try:
                 params['Receivers'] = sms.to
                 params['title'] = sms.subject
                 params['msg'] = sms.content
-                self._rtx_client.get_client().SendNotify(**params)
+                result = self._rtx_client.get_client().SendNotify(**params)
+                self.write(cr, uid, [sms.id], {
+                    'state': 'sent',
+                    'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
+                    'sms_server_id': str(result),
+                })
 
             except Exception, e:
                 logging.getLogger('sms.sms').error("sending RTX failed!")

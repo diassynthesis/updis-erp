@@ -12,7 +12,7 @@ class RtxClient(object):
         self.session_id = '{F9A239EB-1728-4608-A4D3-7B17BAEB9F18}'
 
     def get_client(self):
-        return Client(config.get('rtx_address', ''), timeout=5)
+        return Client(config.get('rtx_address', ''), timeout=5).service
 
 
 if __name__ == '__main__':
