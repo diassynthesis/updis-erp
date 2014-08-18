@@ -22,7 +22,7 @@ class res_users(osv.osv):
     _inherit = "res.users"
     _bigAntClient = BigAntClient()
     _rtx_client = RtxClient()
-    _base_dep = u'规划设计一所'
+    _base_dep = u'全院'
     _columns = {
         'sign_image': fields.binary("Sign Image",
                                     help="This field holds the image used as siganture for this contact"),
@@ -196,7 +196,7 @@ class res_users(osv.osv):
         if self.pool.get('ir.config_parameter').get_param(cr, 1, 'bigant.password_sync') == 'True' and self._is_rtx_user_exist(user.login):
             params = {
                 'userName': user.login,
-                'password': new_passwd,
+                'pwd': new_passwd,
                 'key': self._rtx_client.rtx_key,
             }
             self._rtx_client.get_client().SetUserPwd(**params)
@@ -215,7 +215,7 @@ class ChangePasswordUser(osv.TransientModel):
                     self._rtx_client.get_client().IsUserExist(userName=user.user_id.login, key=self._rtx_client.rtx_key):
                 params = {
                     'userName': user.user_id.login,
-                    'password': user.new_passwd,
+                    'pwd': user.new_passwd,
                     'key': self._rtx_client.rtx_key,
                 }
                 self._rtx_client.get_client().SetUserPwd(**params)
