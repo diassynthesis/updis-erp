@@ -61,7 +61,7 @@ class ProjectFiledSettings(osv.TransientModel):
     _inherit = 'res.config.settings'
     _columns = {
         'filing_record_template': fields.many2many('project.project.filed.record', 'rel_project_filed_setting_filing_record_wizard', 'company_id',
-                                                   'record_id', string='Filing Record Template'),
+                                                   'record_id', domain=[('is_template', '=', True)], string='Filing Record Template'),
     }
 
     def get_default_filing_record_template(self, cr, uid, fields, context=None):
