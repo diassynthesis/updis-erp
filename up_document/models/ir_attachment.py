@@ -55,7 +55,15 @@ class IrAttachmentInherit(osv.osv):
     _inherit = 'ir.attachment'
 
     def _file_write(self, cr, uid, location, qqfile):
-        fname = hashlib.sha1(qqfile.read()).hexdigest()
+        sha1 = hashlib.sha1()
+        while True:
+            # read 16MB
+            block = qqfile.read(16 * 1024 * 1024)
+            if block:
+                sha1.update(block)
+            else:
+                break
+        fname = sha1.hexdigest()
         # scatter files across 1024 dirs
         # we use '/' in the db (even on windows)
         fname = fname[:3] + '/' + fname
