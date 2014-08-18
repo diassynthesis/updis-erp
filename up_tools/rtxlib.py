@@ -20,7 +20,7 @@ if __name__ == '__main__':
     url = 'http://113.108.103.8:8089/RTX_Service.asmx?wsdl'
     client = Client(url, timeout=1)
     params = {
-        'userName': 'caiyang',
+        'userName': 'matt',
         # 'userPwd': '1',
         'DeptName': u'规划设计一所',
         # 'ChsName': '',
@@ -34,10 +34,10 @@ if __name__ == '__main__':
     }
     # a = client.service.AddUser(**params)
     # a = client.service.EditUser(**params)
-    a = client.service.DeleteUser(userName='caiyang', key='tianvService2014')
-    # a = client.service.IsUserExist(userName='caiyang', key='tianvService2014')
-    # a = client.service.SetUserPwd(userName='kendy', pwd='1', key='tianvService2014')
-    # a = client.service.Login(userName='kendy', pwd='1', key='tianvService2014')
+    # a = client.service.DeleteUser(userName='caiyang', key='tianvService2014')
+    # a = client.service.IsUserExist(userName='matt', key='tianvService2014')
+    # a = client.service.SetUserPwd(userName='matt', pwd='1', key='tianvService2014')
+    a = client.service.Login(userName='matt', pwd='1', key='tianvService2014')
     # a = client.service.SendIM(sender='kendy', SenderPwd='1', Receivers='kendy', msg='test', SessionId='{F9A239EB-1728-4608-A4D3-7B17BAEB9F18}',
     # key='tianvService2014')
 

@@ -148,8 +148,8 @@ class res_users(osv.osv):
                 if id in self._uid_cache[db]:
                     del self._uid_cache[db][id]
         self.context_get.clear_cache(self)
-
-        self.write_rtx_user(cr, 1, ids, values, context)
+        if not (len(values) == 1 and 'password' in values):
+            self.write_rtx_user(cr, 1, ids, values, context)
         return res
 
     def create(self, cr, uid, vals, context=None):
