@@ -96,7 +96,7 @@
                         <group>
                             <label for="filing_record_template" string="Filing Records Template"/>
                             <newline/>
-                            <field name="filing_record_template" nolabel="1">
+                            <field name="filing_record_template" nolabel="1" context="{'default_is_template':True}">
                                 <tree editable="bottom">
                                     <field name="type_id"/>
                                     <field name="name"/>

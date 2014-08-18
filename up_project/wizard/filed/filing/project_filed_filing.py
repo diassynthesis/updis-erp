@@ -6,15 +6,13 @@ from openerp.osv.osv import except_osv, openerp
 from openerp.tools.translate import _
 
 
-
-
 class ProjectFiledFiling(osv.Model):
     _name = 'project.project.filed.filing'
 
     _order = 'create_date desc'
 
     FILING_STATE = [('apply_filing', 'Apply Filing'), ('manager_approve', 'Manager Approving'), ('approve_filing', 'Approve Filing'),
-                ('end_filing', 'Filing Complete')]
+                    ('end_filing', 'Filing Complete')]
     # noinspection PyUnusedLocal
     def _get_name(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, u'项目文件归档表')
@@ -227,6 +225,11 @@ class ProjectFiledFilingRecord(osv.Model):
         'filing_id': fields.many2one('project.project.filed.filing', 'Related Filing Form', ondelete='cascade'),
         'comment': fields.char('Comment', size=256),
         'document_number': fields.char('Document Number', size=64),
+        'is_template': fields.boolean('Is Template'),
+    }
+
+    _defaults = {
+        'is_template': False,
     }
 
 
@@ -280,6 +283,7 @@ class ProjectProjectInherit(osv.Model):
                 new_datas = []
                 for template_id in template_ids:
                     data = self.pool['project.project.filed.record'].copy_data(cr, uid, template_id, context=context)
+                    data['is_template'] = False
                     new_datas += [(0, 0, data), ]
                 filing_id = filing_obj.create(cr, uid, {'project_id': ids[0], 'record_ids': new_datas, 'project_name': project.name}, context=context)
                 # Write Status Code
