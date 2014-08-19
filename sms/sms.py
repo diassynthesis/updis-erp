@@ -6,6 +6,7 @@ from up_tools.bigantlib import BigAntClient
 from urllib import urlencode
 
 from openerp.osv import osv, fields
+from up_tools.rtxlib import RtxClient
 
 
 class sms(osv.Model):
@@ -13,6 +14,9 @@ class sms(osv.Model):
     _name = "sms.sms"
     _order = "id desc"
     _bigAntClient = BigAntClient()
+
+    _rtx_client = RtxClient()
+
     _columns = {
         'subject': fields.char('Subject', size=256),
         'content': fields.text("Content", size=2000),
@@ -24,19 +28,41 @@ class sms(osv.Model):
         'sms_server_id': fields.char("SMS ID From Gateway", size=2000),
         'state': fields.selection([('draft', 'Draft'), ('error', 'Error'), ('sent', 'Sent')], 'State', required=True,
                                   size=64),
-        'type': fields.selection([('sms', 'SMS'), ('big_ant', 'Big Ant')], string="Message Type"),
+        'type': fields.selection([('sms', 'SMS'), ('big_ant', 'RTX')], string="Message Type"),
     }
     _defaults = {
         'state': 'draft',
         'type': 'sms',
     }
 
-
     def process_send_message_in_queue(self, cr, uid, context=None):
         self.process_sms_queue(cr, 1, context=context)
-        self.process_big_ant_queue(cr, 1, context=context)
+        self.process_rtx_message(cr, 1, context)
         logging.getLogger('sms.sms').warning("SENDING SMS Message!")
 
+    def process_rtx_message(self, cr, uid, context=None):
+        sms_ids = self.search(cr, uid, [('state', '=', 'draft'), ('type', '=', 'big_ant')], context=context)
+        # params = {'sender': self._rtx_user, 'SenderPwd': self._rtx_password, 'SessionId': self._session_id, 'key': self._rtx_key}
+        params = {'key': self._rtx_client.rtx_key, 'time': 60000}
+        for sms in self.browse(cr, uid, sms_ids, context):
+            try:
+                params['Receivers'] = sms.to
+                params['title'] = sms.subject
+                params['msg'] = sms.content
+                result = self._rtx_client.get_client().SendNotify(**params)
+                self.write(cr, uid, [sms.id], {
+                    'state': 'sent',
+                    'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
+                    'sms_server_id': str(result),
+                })
+
+            except Exception, e:
+                logging.getLogger('sms.sms').error("sending RTX failed!")
+                self.write(cr, uid, [sms.id], {
+                    'state': 'error',
+                    'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
+                    'sms_server_id': str(e),
+                })
 
     def process_big_ant_queue(self, cr, uid, context=None):
         params = {
@@ -185,7 +211,7 @@ class sms(osv.Model):
 
     def send_big_ant_to_users(self, cr, uid, users, from_rec, subject, content, model, res_id, context=None):
         to = ';'.join(
-            [user.big_ant_login_name for user in users if user.big_ant_login_name])
+            [user.login for user in users if user.login])
         if to:
             sid = self.create(cr, uid,
                               {'to': to, 'subject': subject, 'content': content, 'model': model, 'res_id': res_id,
@@ -196,7 +222,7 @@ class sms(osv.Model):
         (module, xml_id) = group_xml_id.split('.')
         group = self.pool.get('ir.model.data').get_object(cr, 1, module, xml_id, context=context)
         if group:
-            to = ';'.join([user.big_ant_login_name for user in group.users if user.big_ant_login_name])
+            to = ';'.join([user.login for user in group.users if user.login])
             if to:
                 self.create(cr, uid, {'from': from_rec, 'to': to, 'subject': subject, 'content': content,
                                       'model': model, 'res_id': res_id, 'type': 'big_ant'},
@@ -211,7 +237,7 @@ class sms(osv.Model):
         if models:
             groups_pool = self.pool.get("project.config.sms")
             group = groups_pool.browse(cr, 1, models[0].res_id, context=context)
-            to = ';'.join([user.big_ant_login_name for user in group.users if user.big_ant_login_name])
+            to = ';'.join([user.login for user in group.users if user.login])
 
             if to:
                 sms = self.pool.get('sms.sms')

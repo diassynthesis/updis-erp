@@ -81,6 +81,7 @@ class hr_employee_updis(osv.osv):
                                    string="Practice"),
         'home_phone': fields.related('user_id', 'home_phone', type="char",
                                      string="Home Phone"),
+        'gender_rel': fields.related('user_id', 'gender', type="selection", selection=[(u'男', u'男'), (u'女', u'女')], string='Gender'),
 
         'image': fields.related('user_id', 'image', type='binary', string='Employee Image'),
         'image_medium': fields.related('user_id', 'image_medium', type='binary', string='Employee Image Medium'),

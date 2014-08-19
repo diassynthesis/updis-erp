@@ -48,7 +48,7 @@
                 <xpath expr="//group[@string='Contact Information']" position="before">
                     <group string="Public Personal Info">
                         <field name="folk"/>
-                        <field name="gender"/>
+                        <field name="gender_rel"/>
                         <field name="birthday"/>
                         <field name="country_id" options='{"no_open": True}'/>
                         <field name="native_place"/>
