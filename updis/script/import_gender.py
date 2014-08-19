@@ -6,8 +6,8 @@ import xmlrpclib
 username = 'admin'  #the user
 pwd = 'updis_admin_2013'  #the password of the user
 dbname = 'develop'  #the database
-# OPENERP_URL = '10.100.100.171:8069'
-OPENERP_URL = 'localhost:8069'
+OPENERP_URL = '10.100.100.14:8069'
+# OPENERP_URL = 'localhost:8069'
 
 # Get the uid
 sock_common = xmlrpclib.ServerProxy('http://' + OPENERP_URL + '/xmlrpc/common')
