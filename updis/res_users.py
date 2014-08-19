@@ -38,6 +38,7 @@ class res_users(osv.osv):
         'devices': fields.many2many("updis.device", "res_users_device_rel", "res_users_id", "device_id",
                                     "User Device Relative"),
         'big_ant_login_name': fields.char('Big Ant Login Name', size=128),
+        'gender': fields.selection([(u'男', u'男'), (u'女', u'女')], 'Gender'),
     }
 
     SELF_WRITEABLE_FIELDS = ['password', 'signature', 'action_id', 'company_id', 'email', 'name', 'image',
@@ -63,7 +64,7 @@ class res_users(osv.osv):
                           # 'userPwd':1,
                           'DeptName': self._base_dep,
                           'ChsName': user.name or '',
-                          'IGender': 0,
+                          'IGender': 0 if vals.get('gender', '') == u'男' else 1,
                           'Cell': user.work_phone or '',
                           'Email': user.work_email or '',
                           'Phone': user.mobile_phone or '',
@@ -80,6 +81,7 @@ class res_users(osv.osv):
                         'work_phone': user.work_phone or '',
                         'work_email': user.work_email or '',
                         'mobile_phone': user.mobile_phone or '',
+                        'gender': user.gender,
                     }
                     self.add_rtx_user(cr, uid, values, context)
 
@@ -89,7 +91,7 @@ class res_users(osv.osv):
                       # 'userPwd':1,
                       'DeptName': self._base_dep,
                       'ChsName': vals.get('name', ''),
-                      'IGender': 1,
+                      'IGender': 0 if vals.get('gender', '') == u'男' else 1,
                       'Cell': vals.get('work_phone', ''),
                       'Email': vals.get('work_email', ''),
                       'Phone': vals.get('mobile_phone', ''),
