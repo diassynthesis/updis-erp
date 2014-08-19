@@ -65,9 +65,9 @@ class res_users(osv.osv):
                           'DeptName': self._base_dep,
                           'ChsName': user.name or '',
                           'IGender': 0 if vals.get('gender', '') == u'男' else 1,
-                          'Cell': user.work_phone or '',
+                          'Cell': user.mobile_phone or '',
                           # 'Email': user.work_email or '',
-                          'Phone': user.mobile_phone or '',
+                          'Phone': user.work_phone or '',
                           # 'Position': '',
                           'AuthTYpe': 0,
                           'key': self._rtx_client.rtx_key}
@@ -92,9 +92,9 @@ class res_users(osv.osv):
                       'DeptName': self._base_dep,
                       'ChsName': vals.get('name', ''),
                       'IGender': 0 if vals.get('gender', '') == u'男' else 1,
-                      'Cell': vals.get('work_phone', ''),
+                      'Cell': vals.get('mobile_phone', ''),
                       # 'Email': vals.get('work_email', ''),
-                      'Phone': vals.get('mobile_phone', ''),
+                      'Phone': vals.get('work_phone', ''),
                       # 'Position':'',
                       'AuthTYpe': 0,
                       'key': self._rtx_client.rtx_key}
