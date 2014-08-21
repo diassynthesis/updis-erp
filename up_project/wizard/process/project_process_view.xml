@@ -73,7 +73,7 @@
                             class="oe_highlight"
                             string="项目归档"
                             confirm="确定项目进入归档状态?进入归档状态的项目不可回退！"
-                            attrs="{'invisible':['|',('state','not in',['project_stop','project_pause','project_processing']),('is_user_is_project_manager','=',False)]}"
+                            attrs="{'invisible':['|',('state','not in',['project_stop','project_pause','project_processing']),('is_project_member','=',False)]}"
                             groups="project.group_project_user"/>
                 </xpath>
             </field>
