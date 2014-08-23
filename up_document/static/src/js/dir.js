@@ -93,6 +93,9 @@ openerp.up_document = function (instance) {
         },
         refresh_parent: function () {
             this.parent.refresh_files();
+        },
+        is_selected: function () {
+            return this.$el.find("div.document-select > input[name=radiogroup]:first")[0].checked;
         }
     });
 
@@ -146,7 +149,7 @@ openerp.up_document = function (instance) {
             self.bind_data_upload();
             self.$el.find("div.directory-select > input:checkbox:first").change(function (e) {
                 self.$el.find("input[name=radiogroup]").attr('checked', this.checked);
-                if(this.checked == false) {
+                if (this.checked == false) {
                     self.parent.set_not_total_selected();
                 }
             });
@@ -266,6 +269,19 @@ openerp.up_document = function (instance) {
         set_not_total_selected: function () {
             this.$el.find("div.directory-select > input:checkbox:first").attr('checked', false);
             this.parent.set_not_total_selected();
+        },
+        get_child_select_files: function () {
+            var self = this;
+            var file_ids = [];
+            var direct_file_ids = [];
+
+            _.each(self.child_files, function (file) {
+                if (file.is_selected()) {
+                    direct_file_ids = _.union(direct_file_ids, file.document.id);
+                }
+            });
+            file_ids = _.union(file_ids, direct_file_ids);
+            return file_ids;
         }
     });
 
@@ -276,6 +292,9 @@ openerp.up_document = function (instance) {
         view_type: "dir",
         searchable: false,
         widgetManager: new WidgetManager(),
+        events: {
+            "click button.download": "download_file"
+        },
 
         init: function (parent, dataset, view_id, options) {
             this._super(parent);
@@ -310,6 +329,32 @@ openerp.up_document = function (instance) {
             });
         },
 
+        download_file: function (e) {
+            var self = this;
+            var file_ids = self.get_need_process_files();
+            var context = self.dataset.context;
+            context.active_ids = file_ids;
+            self.do_action({
+                type: 'ir.actions.act_window',
+                src_model: 'ir.attachment',
+                res_model: 'ir.attachment.download.wizard',
+                views: [
+                    [false, 'form']
+                ],
+                target: 'new',
+                context: context
+            });
+
+        },
+        get_need_process_files: function () {
+            var self = this;
+            var file_ids = [];
+            _.each(self.child_directories, function (directory) {
+                file_ids = _.union(directory.get_child_select_files(), file_ids);
+            });
+            return file_ids;
+        },
+
         dir_get_data: function () {
             var model = this.dataset.model,
                 domain = this.dataset.domain,
@@ -340,6 +385,7 @@ openerp.up_document = function (instance) {
             }
             this._super();
         },
+
         set_not_total_selected: function () {
         }
     });

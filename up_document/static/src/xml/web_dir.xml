@@ -58,6 +58,9 @@
     </div>
 
     <div t-name="DirView">
+        <div class="oe-document-buttons">
+            <button class="download oe-button">下载</button>
+        </div>
         <div class="oe-document-tree"/>
     </div>
 
