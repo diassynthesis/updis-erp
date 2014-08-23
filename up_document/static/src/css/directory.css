@@ -78,8 +78,13 @@
 }
 
 .openerp .oe-document-tree .tree-directory-container .document-line .document-select {
-    visibility: collapse;
+    /*visibility: collapse;*/
 }
+
+.openerp .oe-document-tree .tree-directory-container .directory-line .directory-select {
+    /*visibility: collapse;*/
+}
+
 
 .openerp .oe-document-tree .tree-directory-container .button-holder .button-upload {
 

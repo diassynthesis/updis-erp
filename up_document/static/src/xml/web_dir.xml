@@ -30,6 +30,9 @@
     <div t-name="DirectoryElement" class="tree-directory-container">
         <div class="oe-line directory-line">
             <div class="arrow"></div>
+            <div class="directory-select">
+                <input type="checkbox" name="radiogroup"/>
+            </div>
             <div class="name">
                 <t t-esc="widget.directory.name"/>
             </div>
@@ -58,10 +61,10 @@
         <div class="oe-document-tree"/>
     </div>
 
-    <div t-name="BigFieldBinaryFile"  t-extend="FieldBinaryFile">
+    <div t-name="BigFieldBinaryFile" t-extend="FieldBinaryFile">
         <t t-jquery="input.field_binary" t-operation="after">
             <div style="display:none">
-                <input type="file" name="qqfile"  class="file-upload"/>
+                <input type="file" name="qqfile" class="file-upload"/>
             </div>
             <div class="oe-upload-holder"/>
         </t>

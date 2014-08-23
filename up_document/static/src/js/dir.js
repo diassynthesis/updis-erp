@@ -138,6 +138,31 @@ openerp.up_document = function (instance) {
                 self.$el.find("input.file-upload:first").click();
                 e.preventDefault();
             });
+            self.bind_data_upload();
+            self.$el.find("div.directory-select > input:checkbox:first").change(function (e) {
+                self.$el.find("input[name=radiogroup]").attr('checked', this.checked);
+            });
+        },
+        bind_data_events: function () {
+            var self = this;
+            self.$el.find("div.arrow").click(self.create_children_elements(self));
+            self.$el.find("div.directory-line").dblclick(self.create_children_elements(self));
+            self.$el.find("button.button-refresh:first").click(function () {
+                self.refresh_directories();
+                self.refresh_files();
+            });
+        },
+        create_children_elements: function (self) {
+            if (!self.$el.hasClass("oe_opened")) {
+                self.create_child_directories();
+                self.create_child_documents();
+                self.$el.addClass("oe_opened");
+                //sync checkbox status
+                self.$el.find("input[name=radiogroup]").attr('checked', self.$el.children("div.directory-line").find(".directory-select > input:checkbox").checked);
+            }
+        },
+        bind_data_upload: function () {
+            var self = this;
             var data = {
                 parent_id: self.directory.id,
                 session_id: openerp.instances.instance0.session.session_id
@@ -194,27 +219,6 @@ openerp.up_document = function (instance) {
                     var progress_template = Qweb.render('DocumentProcess', {'progress': total_progress});
                     self.$el.find('div.oe-upload-holder:first').html(progress_template);
                 }
-            });
-        },
-        bind_data_events: function () {
-            var self = this;
-            self.$el.find("div.arrow").click(function () {
-                if (!self.$el.hasClass("oe_opened")) {
-                    self.create_child_directories();
-                    self.create_child_documents();
-                    self.$el.addClass("oe_opened");
-                }
-            });
-            self.$el.find("div.directory-line").dblclick(function () {
-                if (!self.$el.hasClass("oe_opened")) {
-                    self.create_child_directories();
-                    self.create_child_documents();
-                    self.$el.addClass("oe_opened");
-                }
-            });
-            self.$el.find("button.button-refresh:first").click(function () {
-                self.refresh_directories();
-                self.refresh_files();
             });
         },
         create_child_directories: function () {
