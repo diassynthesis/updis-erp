@@ -58,12 +58,17 @@ openerp.up_document = function (instance) {
                     $(this).find("div.button-holder").css("visibility", "collapse");
                 }
             );
+            self.$el.find("div.document-select > input[name=radiogroup]").change(function (e) {
+                if (this.checked == false) {
+                    self.parent.set_not_total_selected();
+                }
+            });
         },
         bind_data_events: function () {
             var self = this;
             self.$el.find('button.button-delete:first').click(function () {
                 if (confirm('确认删除么？')) {
-                    self.delete();
+                    self.delete_file();
                 }
             });
             self.$el.find('button.button-detail:first').click(function () {
@@ -80,7 +85,7 @@ openerp.up_document = function (instance) {
                 return false;
             });
         },
-        delete: function () {
+        delete_file: function () {
             var self = this;
             self.widgetManager.delete_document(self.document.id, self.dataset.context).done(function () {
                 self.refresh_parent();
@@ -141,6 +146,9 @@ openerp.up_document = function (instance) {
             self.bind_data_upload();
             self.$el.find("div.directory-select > input:checkbox:first").change(function (e) {
                 self.$el.find("input[name=radiogroup]").attr('checked', this.checked);
+                if(this.checked == false) {
+                    self.parent.set_not_total_selected();
+                }
             });
         },
         bind_data_events: function () {
@@ -254,6 +262,10 @@ openerp.up_document = function (instance) {
                 dir.destroy();
             });
             this.create_child_directories();
+        },
+        set_not_total_selected: function () {
+            this.$el.find("div.directory-select > input:checkbox:first").attr('checked', false);
+            this.parent.set_not_total_selected();
         }
     });
 
@@ -270,6 +282,7 @@ openerp.up_document = function (instance) {
             this.set_default_options(options);
             this.dataset = dataset;
             this.view_id = view_id;
+            this.child_directories = [];
 //            this.mode = "bar";          // line, bar, area, pie, radar
 //            this.orientation = false;    // true: horizontal, false: vertical
 //            this.stacked = true;
@@ -314,7 +327,9 @@ openerp.up_document = function (instance) {
             var self = this;
             _.each(ids, function (id) {
                 self.widgetManager.get_directory(id, self.dataset.context).done(function (result) {
-                    new instance.up_document.DirectoryWidget(self, result).appendTo(self.$el.find('div.oe-document-tree'));
+                    var dir = new instance.up_document.DirectoryWidget(self, result);
+                    self.child_directories = self.child_directories.concat(dir);
+                    dir.appendTo(self.$el.find('div.oe-document-tree'));
                 });
             });
 
@@ -324,6 +339,8 @@ openerp.up_document = function (instance) {
                 this.dir.destroy();
             }
             this._super();
+        },
+        set_not_total_selected: function () {
         }
     });
 
