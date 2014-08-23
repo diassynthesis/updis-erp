@@ -88,11 +88,8 @@ openerp.up_document = function (instance) {
         delete_file: function () {
             var self = this;
             self.widgetManager.delete_document(self.document.id, self.dataset.context).done(function () {
-                self.refresh_parent();
+                self.parent.delete_document(self);
             });
-        },
-        refresh_parent: function () {
-            this.parent.refresh_files();
         },
         is_selected: function () {
             return this.$el.find("div.document-select > input[name=radiogroup]:first")[0].checked;
@@ -102,6 +99,10 @@ openerp.up_document = function (instance) {
     instance.up_document.DirectoryWidget = instance.web.Widget.extend({
         template: 'DirectoryElement',
         widgetManager: new WidgetManager(),
+        events: {
+            "click div.arrow": "create_children_elements",
+            "dbclick div.directory-line": "create_children_elements"
+        },
 
         init: function (parent, directory) {
             this._super(parent, directory);
@@ -156,16 +157,14 @@ openerp.up_document = function (instance) {
         },
         bind_data_events: function () {
             var self = this;
-            self.$el.find("div.arrow").click(self.create_children_elements(self));
-            self.$el.find("div.directory-line").dblclick(self.create_children_elements(self));
             self.$el.find("button.button-refresh:first").click(function () {
-                self.$el.find("div.directory-select > input:checkbox").attr('checked', false);
-                self.parent.set_not_total_selected();
+                self.set_not_total_selected();
                 self.refresh_directories();
                 self.refresh_files();
             });
         },
-        create_children_elements: function (self) {
+        create_children_elements: function () {
+            var self = this;
             if (!self.$el.hasClass("oe_opened")) {
                 self.create_child_directories();
                 self.create_child_documents();
@@ -173,6 +172,15 @@ openerp.up_document = function (instance) {
                 //sync checkbox status
                 self.$el.find("input[name=radiogroup]").attr('checked', self.$el.children("div.directory-line").find(".directory-select > input:checkbox").checked);
             }
+        },
+        delete_document: function (document) {
+            var self = this;
+            _.each(self.child_files, function (file, i) {
+                if (file == document) {
+                    self.child_files.splice(i, 1);
+                    file.destroy();
+                }
+            });
         },
         bind_data_upload: function () {
             var self = this;
@@ -260,6 +268,7 @@ openerp.up_document = function (instance) {
             _.each(this.child_files, function (file) {
                 file.destroy();
             });
+            this.set_not_total_selected();
             this.create_child_documents();
         },
         refresh_directories: function () {
