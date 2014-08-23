@@ -159,6 +159,8 @@ openerp.up_document = function (instance) {
             self.$el.find("div.arrow").click(self.create_children_elements(self));
             self.$el.find("div.directory-line").dblclick(self.create_children_elements(self));
             self.$el.find("button.button-refresh:first").click(function () {
+                self.$el.find("div.directory-select > input:checkbox").attr('checked', false);
+                self.parent.set_not_total_selected();
                 self.refresh_directories();
                 self.refresh_files();
             });
