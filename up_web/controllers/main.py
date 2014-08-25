@@ -20,6 +20,7 @@ html_template = """<!DOCTYPE html>
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="renderer" content="webkit"/>
         <title>UpdisERP</title>
         <link rel="shortcut icon" href="/up_web/static/src/img/favicon.ico" type="image/x-icon"/>
         <link rel="stylesheet" href="/web/static/src/css/full.css" />
