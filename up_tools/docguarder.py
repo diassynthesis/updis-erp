@@ -9,12 +9,13 @@ def change_password(username, password, connection=None):
     connect_params = connection
     if not connect_params:
         connect_params = {
-            'server_ip': config.get('guarder_ip', ''),
+            'dsn': config.get('guarder_dsn', ''),
             'username': config.get('guarder_sa', ''),
             'password': config.get('guarder_password', ''),
         }
     new_password = hashlib.md5(password).hexdigest()
-    cnxn = pyodbc.connect('DRIVER={SQL Server};SERVER=%(server_ip)s;DATABASE=Docguarder;UID=%(username)s;PWD=%(password)s' % connect_params)
+    con_string = 'DSN=%(dsn)s;UID=%(username)s;PWD=%(password)s;DATABASE=Docguarder;' % connect_params
+    cnxn = pyodbc.connect(con_string)
     cursor = cnxn.cursor()
     # update password
     cursor.execute("UPDATE dbo.hs_user set col_pword='%(new_password)s' where col_loginname='%(username)s'" % vars())
@@ -24,7 +25,7 @@ def change_password(username, password, connection=None):
 
 if __name__ == '__main__':
     connect = {
-        'server_ip': '10.100.100.110',
+        'dsn': 'sqlserverdatasource',
         'username': 'sa',
         'password': '123.com',
     }
