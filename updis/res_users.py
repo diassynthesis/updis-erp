@@ -7,6 +7,7 @@ from openerp import SUPERUSER_ID
 from openerp.osv import osv, fields
 from up_tools.rtxlib import RtxClient
 from openerp.tools.translate import _
+from up_tools import docguarder
 
 
 class user_device(osv.osv):
@@ -37,7 +38,7 @@ class res_users(osv.osv):
         'home_phone': fields.char('Home Phone', size=32, readonly=False),
         'devices': fields.many2many("updis.device", "res_users_device_rel", "res_users_id", "device_id",
                                     "User Device Relative"),
-        'big_ant_login_name': fields.char('Big Ant Login Name', size=128),
+        'big_ant_login_name': fields.char('Docguarder User Name', size=128),
         'gender': fields.selection([(u'男', u'男'), (u'女', u'女')], 'Gender'),
     }
 
@@ -202,6 +203,8 @@ class res_users(osv.osv):
                 'key': self._rtx_client.rtx_key,
             }
             self._rtx_client.get_client().SetUserPwd(**params)
+        if self.pool.get('ir.config_parameter').get_param(cr, 1, 'docguarder.password_sync') == 'True':
+                docguarder.change_password(user.big_ant_login_name, new_passwd)
         return result
 
 
@@ -221,3 +224,5 @@ class ChangePasswordUser(osv.TransientModel):
                     'key': self._rtx_client.rtx_key,
                 }
                 self._rtx_client.get_client().SetUserPwd(**params)
+            if self.pool.get('ir.config_parameter').get_param(cr, 1, 'docguarder.password_sync') == 'True':
+                docguarder.change_password(user.user_id.big_ant_login_name, user.new_passwd)
