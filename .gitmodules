@@ -1,3 +1,6 @@
 [submodule "up_recuitment"]
 	path = up_recuitment
 	url = https://github.com/cysnake4713/up_recuitment.git
+[submodule "up_internship"]
+	path = up_internship
+	url = https://github.com/TommyU/up_internship.git
