@@ -43,12 +43,12 @@ class res_users(osv.osv):
 
     SELF_WRITEABLE_FIELDS = ['password', 'signature', 'action_id', 'company_id', 'email', 'name', 'image',
                              'image_medium', 'image_small', 'lang', 'tz', 'address_id', 'work_email', 'work_phone',
-                             'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone', ]
+                             'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone']
 
     OTHER_WRITEABLE_FIELDS = ['address_id', 'work_email', 'work_phone', 'image', 'image_medium', 'image_small',
                               'has_image',
                               'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone',
-                              'devices', ]
+                              'devices', 'gender']
 
     def _is_need_rtx_sync(self, cr, uid, context):
         return self.pool.get('ir.config_parameter').get_param(cr, 1, 'bigant.password_sync') == 'True'
