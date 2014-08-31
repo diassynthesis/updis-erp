@@ -101,7 +101,7 @@ openerp.up_document = function (instance) {
         widgetManager: new WidgetManager(),
         events: {
             "click div.arrow": "create_children_elements",
-            "dbclick div.directory-line": "create_children_elements"
+            "dblclick div.directory-line": "create_children_elements"
         },
 
         init: function (parent, directory) {
@@ -159,18 +159,21 @@ openerp.up_document = function (instance) {
             var self = this;
             self.$el.find("button.button-refresh:first").click(function () {
                 self.set_not_total_selected();
-                self.refresh_directories();
-                self.refresh_files();
+                $.when(self.refresh_directories(), self.refresh_files()).done(function () {
+                    self.draw();
+                });
             });
         },
         create_children_elements: function () {
             var self = this;
             if (!self.$el.hasClass("oe_opened")) {
-                self.create_child_directories();
-                self.create_child_documents();
-                self.$el.addClass("oe_opened");
-                //sync checkbox status
-                self.$el.find("input[name=radiogroup]").attr('checked', self.$el.children("div.directory-line").find(".directory-select > input:checkbox").checked);
+                $.when(self.create_child_directories(), self.create_child_documents()).done(function () {
+                    self.draw();
+                    self.$el.addClass("oe_opened");
+                    //sync checkbox status
+                    self.$el.find("input[name=radiogroup]").attr('checked',
+                        self.$el.children("div.directory-line").find(".directory-select > input:checkbox")[0].checked);
+                });
             }
         },
         delete_document: function (document) {
@@ -220,7 +223,9 @@ openerp.up_document = function (instance) {
                     if (total_progress == 100) {
                         instance.web.unblockUI();
                         if (self.$el.hasClass("oe_opened")) {
-                            self.refresh_files();
+                            self.refresh_files().done(function () {
+                                self.draw();
+                            });
                         }
                         self.$el.find('div.oe-upload-holder:first').html('');
                         instance.webclient.notification.notify(
@@ -244,11 +249,10 @@ openerp.up_document = function (instance) {
         },
         create_child_directories: function () {
             var self = this;
-            self.widgetManager.get_directory_child(self.directory.id, self.dataset.context).done(function (result) {
+            return self.widgetManager.get_directory_child(self.directory.id, self.dataset.context).done(function (result) {
                 _.each(result, function (directory) {
                     var dir = new instance.up_document.DirectoryWidget(self, directory);
                     self.child_directories = self.child_directories.concat(dir);
-                    dir.appendTo(self.$el.children('div.tree-child-holder').children('div.oe-directory-holder'));
                 });
             });
         },
@@ -256,26 +260,38 @@ openerp.up_document = function (instance) {
             var self = this;
             var res_id = self.dataset.context.res_id;
             var res_model = self.dataset.context.res_model;
-            self.widgetManager.get_directory_documents(self.directory.id, res_id, res_model, self.dataset.context).done(function (result) {
+            return self.widgetManager.get_directory_documents(self.directory.id, res_id, res_model, self.dataset.context).done(function (result) {
                 _.each(result, function (document) {
                     var file = new instance.up_document.DocumentWidget(self, document);
                     self.child_files = self.child_files.concat(file);
-                    file.appendTo(self.$el.children('div.tree-child-holder').children('div.oe-document-holder'));
                 });
             });
+        },
+        draw: function () {
+            var self = this;
+            self.$el.children('div.tree-child-holder').children('div.oe-directory-holder').html("");
+            self.$el.children('div.tree-child-holder').children('div.oe-document-holder').html("");
+            _.each(self.child_directories, function (dir) {
+                dir.appendTo(self.$el.children('div.tree-child-holder').children('div.oe-directory-holder'));
+            });
+            _.each(self.child_files, function (file) {
+                file.appendTo(self.$el.children('div.tree-child-holder').children('div.oe-document-holder'));
+            });
+        },
+        refresh_directories: function () {
+            _.each(this.child_directories, function (dir) {
+                dir.destroy();
+            });
+            this.child_directories = [];
+            return this.create_child_directories();
         },
         refresh_files: function () {
             _.each(this.child_files, function (file) {
                 file.destroy();
             });
             this.set_not_total_selected();
-            this.create_child_documents();
-        },
-        refresh_directories: function () {
-            _.each(this.child_directories, function (dir) {
-                dir.destroy();
-            });
-            this.create_child_directories();
+            this.child_files = [];
+            return this.create_child_documents();
         },
         set_not_total_selected: function () {
             this.$el.find("div.directory-select > input:checkbox:first").attr('checked', false);
@@ -293,6 +309,17 @@ openerp.up_document = function (instance) {
             });
             file_ids = _.union(file_ids, direct_file_ids);
             return file_ids;
+        },
+        destroy: function () {
+            _.each(self.child_directories, function (dir) {
+                dir.destory();
+            });
+            _.each(self.child_files, function (file) {
+                file.destory();
+            });
+            this.child_directories = [];
+            this.child_files = [];
+            this._super();
         }
     });
 

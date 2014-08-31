@@ -72,6 +72,9 @@
     width: 18px;
     height: 18px;
 }
+.openerp .oe-document-tree .tree-directory-container .document-line {
+    margin-left: 22px;
+}
 
 .openerp .oe-document-tree .tree-directory-container .document-line .name {
     background-image: url('/web/static/src/img/icons/gtk-file.png');
