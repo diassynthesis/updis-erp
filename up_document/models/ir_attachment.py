@@ -2,6 +2,7 @@
 import datetime
 import hashlib
 import os
+import random
 from openerp import tools
 from osv.orm import Model
 
@@ -9,12 +10,13 @@ __author__ = 'cysnake4713'
 
 import base64
 import cStringIO
-from zipfile import ZipFile
+import zipfile
 
 from openerp.osv import osv
 from openerp.osv import fields
 from openerp.tools.translate import _, _logger
 from openerp.addons.document.document import document_file
+from openerp.tools import config
 
 
 def monkey_create(self, cr, uid, vals, context=None):
@@ -375,19 +377,17 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
             context = {}
         record_ids = context and context.get('active_ids', False) or False
         attachments = self.pool.get('ir.attachment').browse(cr, uid, record_ids, context)
-        buf = cStringIO.StringIO()
-        with ZipFile(buf, 'w') as zip_obj:
-            for attachment in attachments:
-                if attachment.datas is not False:
-                    file_name = attachment.name
-                    file_data = attachment.datas
-                    zip_obj.writestr(file_name.encode('gbk'), base64.decodestring(file_data))
-        # tools.trans_export(lang, mods, buf, this.format, cr)
+        location = config.get('zip_temp_file', '$HOME')
+        temp_file_name = hashlib.md5(str(datetime.datetime.now()) + str(random.random())).hexdigest() + '.zip'
+        zip_obj = zipfile.ZipFile(location + temp_file_name, 'w', zipfile.ZIP_STORED)
+        for attachment in attachments:
+            if attachment.datas is not False:
+                file_name = attachment.name
+                file_data = attachment.datas
+                zip_obj.write(file_data.name, file_name)
         filename = u"附件.zip"
-        out = base64.encodestring(buf.getvalue())
-        buf.close()
         self.write(cr, uid, ids, {'state': 'get',
-                                  'data': out,
+                                  'data': zip_obj,
                                   'name': filename}, context=context)
         self.pool.get('ir.attachment').log_info(cr, uid, record_ids, _('have been zipped and download'),
                                                 context=context)
