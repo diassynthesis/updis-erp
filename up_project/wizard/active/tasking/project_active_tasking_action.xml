@@ -151,7 +151,7 @@ pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, big_a
             <field name="code">
 from_rec = object.name
 subject = u"项目进度提示"
-content = u"项目[%s]已经启动,您是本项目的:主管总师, 请及时处理和跟进项目进度" % (object.name)
+content = u"设计部门:%s,项目[%s]已经启动,您是本项目的:主管总师, 请及时处理和跟进项目进度" % (object.chenjiebumen_id.name,object.name)
 ir_obj = pool.get('ir.config_parameter')
 http_address_id = ir_obj.search(cr,1,[('key','=','web.base.static.url')],context=context)
 http_address = ir_obj.browse(cr,1,http_address_id[0],context=context).value
@@ -163,7 +163,7 @@ zhuguanzongshi_id = [z.id for z in  object.zhuguanzongshi_id]
 users = pool.get('res.users').browse(cr,1,zhuguanzongshi_id,context=context)
 pool.get('sms.sms').send_sms_to_users( cr, 1, users, from_rec, content, model, res_id, context=None)
 pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, big_ant_content, model, res_id, context=None)
-content = u"项目[%s]已经启动,您是本项目的:项目负责人, 请及时处理和跟进项目进度" % (object.name)
+content = u"设计部门:%s,项目[%s]已经启动,您是本项目的:项目负责人, 请及时处理和跟进项目进度" % (object.chenjiebumen_id.name,object.name)
 big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 设计部门:%s 已经启动,您是本项目的:项目负责人, 请及时处理和跟进项目进度 """ % (http_address,object.name,object.chenjiebumen_id.name)
 user_id = pool.get('project.project').read(cr,1,object.project_id.id,['user_id'],context=context)
 users = pool.get('res.users').browse(cr,1,user_id['user_id'],context=context)
