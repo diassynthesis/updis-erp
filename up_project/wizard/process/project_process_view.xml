@@ -19,36 +19,11 @@
                                 <field name="profession" class="oe_no_button"
                                        widget="selection"
                                        options='{"no_open": True}'/>
-                                <field name="validation_user_ids">
-                                    <tree>
-                                        <field name="name"/>
-                                    </tree>
-                                </field>
-                                <field name="audit_user_ids">
-                                    <tree>
-                                        <field name="name"/>
-                                    </tree>
-                                </field>
-                                <field name="profession_manager_user_ids">
-                                    <tree>
-                                        <field name="name"/>
-                                    </tree>
-                                </field>
-                                <field name="design_user_ids">
-                                    <tree>
-                                        <field name="name"/>
-                                    </tree>
-                                </field>
-                                <field name="proofread_user_ids">
-                                    <tree>
-                                        <field name="name"/>
-                                    </tree>
-                                </field>
-                                <field name="drawing_user_ids">
-                                    <tree>
-                                        <field name="name"/>
-                                    </tree>
-                                </field>
+                                <field name="audit_user_ids" widget="many2many_tags"/>
+                                <field name="profession_manager_user_ids" widget="many2many_tags"/>
+                                <field name="design_user_ids" widget="many2many_tags"/>
+                                <field name="proofread_user_ids" widget="many2many_tags"/>
+                                <field name="drawing_user_ids" widget="many2many_tags"/>
                             </tree>
                         </field>
                     </page>
