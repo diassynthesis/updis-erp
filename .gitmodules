@@ -4,3 +4,6 @@
 [submodule "up_internship"]
 	path = up_internship
 	url = https://github.com/TommyU/up_internship.git
+[submodule "workflow_china"]
+	path = workflow_china
+	url = https://github.com/TommyU/workflow_china.git
