@@ -35,7 +35,7 @@
         'static/src/xml/*.xml',
     ],
     'data' : [
-        'security/ir.model.access.csv',      
+        'security/ir.model.access.csv',
         'workflow_view.xml'
               ],
     'installable': True,
