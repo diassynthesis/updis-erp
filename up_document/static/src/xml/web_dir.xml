@@ -71,6 +71,9 @@
             </div>
             <div class="oe-upload-holder"/>
         </t>
+    </div>
 
+    <div t-name="TempFile">
+        <a class="download_url">下载文件</a>
     </div>
 </template>

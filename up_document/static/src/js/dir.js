@@ -166,15 +166,23 @@ openerp.up_document = function (instance) {
         },
         create_children_elements: function () {
             var self = this;
-            if (!self.$el.hasClass("oe_opened")) {
+            if (!self.is_opened()) {
                 $.when(self.create_child_directories(), self.create_child_documents()).done(function () {
                     self.draw();
-                    self.$el.addClass("oe_opened");
+                    self.is_opened(true);
                     //sync checkbox status
                     self.$el.find("input[name=radiogroup]").attr('checked',
                         self.$el.children("div.directory-line").find(".directory-select > input:checkbox")[0].checked);
                 });
             }
+        },
+        is_opened: function (value) {
+            if (value == true) {
+                this.$el.addClass("oe_opened");
+            } else if (value == false) {
+                this.$el.removeClass("oe_opened");
+            }
+            return this.$el.hasClass("oe_opened")
         },
         delete_document: function (document) {
             var self = this;
@@ -222,7 +230,7 @@ openerp.up_document = function (instance) {
                     }
                     if (total_progress == 100) {
                         instance.web.unblockUI();
-                        if (self.$el.hasClass("oe_opened")) {
+                        if (self.is_opened()) {
                             self.refresh_files().done(function () {
                                 self.draw();
                             });
@@ -300,15 +308,23 @@ openerp.up_document = function (instance) {
         get_child_select_files: function () {
             var self = this;
             var file_ids = [];
-            var direct_file_ids = [];
+            var directory_ids = [];
 
             _.each(self.child_files, function (file) {
                 if (file.is_selected()) {
-                    direct_file_ids = _.union(direct_file_ids, file.document.id);
+                    file_ids = _.union(file_ids, file.document.id);
                 }
             });
-            file_ids = _.union(file_ids, direct_file_ids);
-            return file_ids;
+            _.each(self.child_directories, function (directory) {
+                if (directory.is_selected()) {
+                    directory_ids = _.union(directory_ids, directory.directory.id);
+                } else if (directory.is_opened()) {
+                    var result = directory.get_child_select_files();
+                    file_ids = _.union(file_ids, result[0]);
+                    directory_ids = _.union(directory_ids, result[1]);
+                }
+            });
+            return [file_ids, directory_ids];
         },
         destroy: function () {
             _.each(self.child_directories, function (dir) {
@@ -320,6 +336,9 @@ openerp.up_document = function (instance) {
             this.child_directories = [];
             this.child_files = [];
             this._super();
+        },
+        is_selected: function () {
+            return this.$el.find("div.directory-select > input[name=radiogroup]:first")[0].checked;
         }
     });
 
@@ -366,31 +385,43 @@ openerp.up_document = function (instance) {
                 self.dir_render_all(result);
             });
         },
-
         download_file: function (e) {
             var self = this;
-            var file_ids = self.get_need_process_files();
+            var ids = self.get_need_process_files();
             var context = self.dataset.context;
-            context.active_ids = file_ids;
-            self.do_action({
-                type: 'ir.actions.act_window',
-                src_model: 'ir.attachment',
-                res_model: 'ir.attachment.download.wizard',
-                views: [
-                    [false, 'form']
-                ],
-                target: 'new',
-                context: context
-            });
-
+            new instance.web.Model('ir.attachment').call('search', [
+                [
+                    ['parent_id', 'child_of', ids[1]]
+                ]
+            ])
+                .done(function (result) {
+                    context.active_ids = _.union(result, ids[0]);
+                    self.do_action({
+                        type: 'ir.actions.act_window',
+                        src_model: 'ir.attachment',
+                        res_model: 'ir.attachment.download.wizard',
+                        views: [
+                            [false, 'form']
+                        ],
+                        target: 'new',
+                        context: context
+                    });
+                });
         },
         get_need_process_files: function () {
             var self = this;
             var file_ids = [];
+            var directory_ids = [];
             _.each(self.child_directories, function (directory) {
-                file_ids = _.union(directory.get_child_select_files(), file_ids);
+                if (directory.is_selected()) {
+                    directory_ids = _.union(directory_ids, directory.directory.id);
+                } else if (directory.is_opened()) {
+                    var result = directory.get_child_select_files();
+                    file_ids = _.union(file_ids, result[0]);
+                    directory_ids = _.union(directory_ids, result[1]);
+                }
             });
-            return file_ids;
+            return [file_ids, directory_ids];
         },
 
         dir_get_data: function () {
@@ -529,5 +560,31 @@ openerp.up_document = function (instance) {
         }
     });
 
+    instance.web.form.TempFile = instance.web.form.AbstractField.extend(instance.web.form.ReinitializeFieldMixin, {
+        template: 'TempFile',
+        events: {
+            'click a.download_url': 'download',
+        },
+        download: function (ev) {
+            var value = this.get('value');
+            if (!value) {
+                this.do_warn(_t("Save As..."), _t("The field is empty, there's nothing to save !"));
+                ev.stopPropagation();
+            } else {
+                instance.web.blockUI();
+                var c = instance.webclient.crashmanager;
+                this.session.get_file({
+                    url: '/web/binary/download_temp_file',
+                    data: {filename: value},
+                    complete: instance.web.unblockUI,
+                    error: c.rpc_error.bind(c)
+                });
+                ev.stopPropagation();
+                return false;
+            }
+        },
+    });
+
     instance.web.form.widgets.add('bigbinary', 'instance.web.form.BigBinary');
+    instance.web.form.widgets.add('tempfile', 'instance.web.form.TempFile');
 };
