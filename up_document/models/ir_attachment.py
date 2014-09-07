@@ -375,14 +375,16 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         location = config.get('zip_temp_file', '$HOME')
         temp_file_name = hashlib.md5(str(datetime.datetime.now()) + str(random.random())).hexdigest() + '.zip'
         zip_obj = zipfile.ZipFile(location + '/' + temp_file_name, 'w', zipfile.ZIP_STORED)
+        i = 0
         for attachment in attachments:
             if attachment.datas is not False:
                 file_name = attachment.name
                 file_data = attachment.datas
+                i += 1
                 if isinstance(file_data, str):
-                    zip_obj.writestr(file_name, file_data)
+                    zip_obj.writestr(str(i) + '.' + file_name, file_data)
                 else:
-                    zip_obj.write(file_data.name, file_name)
+                    zip_obj.write(file_data.name, str(i) + '.' + file_name)
 
         filename = u"附件.zip"
         self.write(cr, uid, ids, {'state': 'get',
