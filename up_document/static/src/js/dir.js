@@ -389,11 +389,19 @@ openerp.up_document = function (instance) {
             var self = this;
             var ids = self.get_need_process_files();
             var context = self.dataset.context;
-            new instance.web.Model('ir.attachment').call('search', [
-                [
-                    ['parent_id', 'child_of', ids[1]]
-                ]
-            ])
+            var res_id = self.dataset.context.res_id;
+            var res_model = self.dataset.context.res_model;
+            var domain = [
+                ['parent_id', 'child_of', ids[1]]
+            ];
+            if (res_id != undefined && res_model != undefined) {
+                domain = _.union([
+                    ['res_id', '=', res_id],
+                    ['res_model', '=', res_model]
+                ], domain)
+            }
+
+            new instance.web.Model('ir.attachment').call('search', [domain])
                 .done(function (result) {
                     context.active_ids = _.union(result, ids[0]);
                     self.do_action({

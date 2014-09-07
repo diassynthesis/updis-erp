@@ -41,7 +41,7 @@
                         <label style="color:red;"
                                string="If some of the attachments is too large it may cost lot of time, please Download it seperatily."/>
                         <field name="attachment_ids" nolabel="1" readonly="1">
-                            <tree colors="red:file_size_human > 5">
+                            <tree colors="red:file_size_human > 500">
                                 <field name="name"/>
                                 <field name="file_size_human"/>
                             </tree>
