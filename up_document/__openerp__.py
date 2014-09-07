@@ -20,6 +20,7 @@ Independent Super File Version control System
         'views/document_wizard_view.xml',
         'views/document_view.xml',
         'views/document_menu_view.xml',
+        'data/cron.xml',
     ],
     'js': [
         'static/src/js/document.js',

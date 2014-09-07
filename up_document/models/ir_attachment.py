@@ -4,6 +4,7 @@ import hashlib
 import os
 import random
 from openerp import tools
+import shutil
 from osv.orm import Model
 
 __author__ = 'cysnake4713'
@@ -323,6 +324,12 @@ class IrAttachmentInherit(osv.osv):
             domain += [('res_model', '=', res_model)]
         ids = self.search(cr, uid, domain, context=context)
         return self.read(cr, uid, ids, ['name'], context=context)
+
+    def delete_temp_attachments(self, cr, uid, context=None):
+        location = config.get('zip_temp_file', '')
+        if location:
+            shutil.rmtree(location)
+            os.mkdir(location)
 
 
 class IrAttachmentDownloadWizard(osv.osv_memory):
