@@ -41,7 +41,7 @@
                         <label style="color:red;"
                                string="If some of the attachments is too large it may cost lot of time, please Download it seperatily."/>
                         <field name="attachment_ids" nolabel="1" readonly="1">
-                            <tree colors="red:file_size_human > 5">
+                            <tree colors="red:file_size_human > 500">
                                 <field name="name"/>
                                 <field name="file_size_human"/>
                             </tree>
@@ -49,7 +49,7 @@
                     </group>
                     <div states="get">
                         <h2>Export Complete</h2>
-                        <p>Here is the exported file: <field name="data" readonly="1" filename="name"/></p>
+                        <p>Here is the exported file: <field name="data" readonly="1" widget="tempfile"/></p>
                         <p>This file was generated using the universal <strong>zip</strong> file encoding, please be sure to view and edit
                            using supported software.</p>
                     </div>

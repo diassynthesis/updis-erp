@@ -1,5 +1,7 @@
+# coding=utf-8
 import base64
 import xmlrpclib
+from openerp.tools import config
 import simplejson
 from xmlrpclib import Fault
 from openerp.osv import osv
@@ -190,3 +192,11 @@ class BinaryExtend(Binary):
                                "size": 0,
                                "error": e.message}]}
         return req.make_response(simplejson.dumps(args))
+
+    @openerpweb.httprequest
+    def download_temp_file(self, req, filename, token):
+        location = config.get('zip_temp_file', '$HOME')
+        file_out = file(location + '/' + filename, 'r')
+        return req.make_response(file_out, headers=[('Content-Type', 'application/octet-stream'),
+                                                    ('Content-Disposition', content_disposition(u'附件.zip', req))],
+                                 cookies={'fileToken': token})

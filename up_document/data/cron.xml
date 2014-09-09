@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.cron" id="auto_delete_temp_attach">
+            <field name="name">Auto Delete Temp Attachment</field>
+            <field name="active">True</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model">ir.attachment</field>
+            <field name="function">delete_temp_attachments</field>
+            <field name="args">()</field>
+        </record>
+    </data>
+</openerp>

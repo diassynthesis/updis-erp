@@ -58,12 +58,17 @@ openerp.up_document = function (instance) {
                     $(this).find("div.button-holder").css("visibility", "collapse");
                 }
             );
+            self.$el.find("div.document-select > input[name=radiogroup]").change(function (e) {
+                if (this.checked == false) {
+                    self.parent.set_not_total_selected();
+                }
+            });
         },
         bind_data_events: function () {
             var self = this;
             self.$el.find('button.button-delete:first').click(function () {
                 if (confirm('确认删除么？')) {
-                    self.delete();
+                    self.delete_file();
                 }
             });
             self.$el.find('button.button-detail:first').click(function () {
@@ -80,20 +85,24 @@ openerp.up_document = function (instance) {
                 return false;
             });
         },
-        delete: function () {
+        delete_file: function () {
             var self = this;
             self.widgetManager.delete_document(self.document.id, self.dataset.context).done(function () {
-                self.refresh_parent();
+                self.parent.delete_document(self);
             });
         },
-        refresh_parent: function () {
-            this.parent.refresh_files();
+        is_selected: function () {
+            return this.$el.find("div.document-select > input[name=radiogroup]:first")[0].checked;
         }
     });
 
     instance.up_document.DirectoryWidget = instance.web.Widget.extend({
         template: 'DirectoryElement',
         widgetManager: new WidgetManager(),
+        events: {
+            "click div.arrow": "create_children_elements",
+            "dblclick div.directory-line": "create_children_elements"
+        },
 
         init: function (parent, directory) {
             this._super(parent, directory);
@@ -138,6 +147,54 @@ openerp.up_document = function (instance) {
                 self.$el.find("input.file-upload:first").click();
                 e.preventDefault();
             });
+            self.bind_data_upload();
+            self.$el.find("div.directory-select > input:checkbox:first").change(function (e) {
+                self.$el.find("input[name=radiogroup]").attr('checked', this.checked);
+                if (this.checked == false) {
+                    self.parent.set_not_total_selected();
+                }
+            });
+        },
+        bind_data_events: function () {
+            var self = this;
+            self.$el.find("button.button-refresh:first").click(function () {
+                self.set_not_total_selected();
+                $.when(self.refresh_directories(), self.refresh_files()).done(function () {
+                    self.draw();
+                });
+            });
+        },
+        create_children_elements: function () {
+            var self = this;
+            if (!self.is_opened()) {
+                $.when(self.create_child_directories(), self.create_child_documents()).done(function () {
+                    self.draw();
+                    self.is_opened(true);
+                    //sync checkbox status
+                    self.$el.find("input[name=radiogroup]").attr('checked',
+                        self.$el.children("div.directory-line").find(".directory-select > input:checkbox")[0].checked);
+                });
+            }
+        },
+        is_opened: function (value) {
+            if (value == true) {
+                this.$el.addClass("oe_opened");
+            } else if (value == false) {
+                this.$el.removeClass("oe_opened");
+            }
+            return this.$el.hasClass("oe_opened")
+        },
+        delete_document: function (document) {
+            var self = this;
+            _.each(self.child_files, function (file, i) {
+                if (file == document) {
+                    self.child_files.splice(i, 1);
+                    file.destroy();
+                }
+            });
+        },
+        bind_data_upload: function () {
+            var self = this;
             var data = {
                 parent_id: self.directory.id,
                 session_id: openerp.instances.instance0.session.session_id
@@ -173,8 +230,10 @@ openerp.up_document = function (instance) {
                     }
                     if (total_progress == 100) {
                         instance.web.unblockUI();
-                        if (self.$el.hasClass("oe_opened")) {
-                            self.refresh_files();
+                        if (self.is_opened()) {
+                            self.refresh_files().done(function () {
+                                self.draw();
+                            });
                         }
                         self.$el.find('div.oe-upload-holder:first').html('');
                         instance.webclient.notification.notify(
@@ -196,34 +255,12 @@ openerp.up_document = function (instance) {
                 }
             });
         },
-        bind_data_events: function () {
-            var self = this;
-            self.$el.find("div.arrow").click(function () {
-                if (!self.$el.hasClass("oe_opened")) {
-                    self.create_child_directories();
-                    self.create_child_documents();
-                    self.$el.addClass("oe_opened");
-                }
-            });
-            self.$el.find("div.directory-line").dblclick(function () {
-                if (!self.$el.hasClass("oe_opened")) {
-                    self.create_child_directories();
-                    self.create_child_documents();
-                    self.$el.addClass("oe_opened");
-                }
-            });
-            self.$el.find("button.button-refresh:first").click(function () {
-                self.refresh_directories();
-                self.refresh_files();
-            });
-        },
         create_child_directories: function () {
             var self = this;
-            self.widgetManager.get_directory_child(self.directory.id, self.dataset.context).done(function (result) {
+            return self.widgetManager.get_directory_child(self.directory.id, self.dataset.context).done(function (result) {
                 _.each(result, function (directory) {
                     var dir = new instance.up_document.DirectoryWidget(self, directory);
                     self.child_directories = self.child_directories.concat(dir);
-                    dir.appendTo(self.$el.children('div.tree-child-holder').children('div.oe-directory-holder'));
                 });
             });
         },
@@ -231,25 +268,77 @@ openerp.up_document = function (instance) {
             var self = this;
             var res_id = self.dataset.context.res_id;
             var res_model = self.dataset.context.res_model;
-            self.widgetManager.get_directory_documents(self.directory.id, res_id, res_model, self.dataset.context).done(function (result) {
+            return self.widgetManager.get_directory_documents(self.directory.id, res_id, res_model, self.dataset.context).done(function (result) {
                 _.each(result, function (document) {
                     var file = new instance.up_document.DocumentWidget(self, document);
                     self.child_files = self.child_files.concat(file);
-                    file.appendTo(self.$el.children('div.tree-child-holder').children('div.oe-document-holder'));
                 });
             });
         },
-        refresh_files: function () {
-            _.each(this.child_files, function (file) {
-                file.destroy();
+        draw: function () {
+            var self = this;
+            self.$el.children('div.tree-child-holder').children('div.oe-directory-holder').html("");
+            self.$el.children('div.tree-child-holder').children('div.oe-document-holder').html("");
+            _.each(self.child_directories, function (dir) {
+                dir.appendTo(self.$el.children('div.tree-child-holder').children('div.oe-directory-holder'));
             });
-            this.create_child_documents();
+            _.each(self.child_files, function (file) {
+                file.appendTo(self.$el.children('div.tree-child-holder').children('div.oe-document-holder'));
+            });
         },
         refresh_directories: function () {
             _.each(this.child_directories, function (dir) {
                 dir.destroy();
             });
-            this.create_child_directories();
+            this.child_directories = [];
+            return this.create_child_directories();
+        },
+        refresh_files: function () {
+            _.each(this.child_files, function (file) {
+                file.destroy();
+            });
+            this.set_not_total_selected();
+            this.child_files = [];
+            return this.create_child_documents();
+        },
+        set_not_total_selected: function () {
+            this.$el.find("div.directory-select > input:checkbox:first").attr('checked', false);
+            this.parent.set_not_total_selected();
+        },
+        get_child_select_files: function () {
+            var self = this;
+            var file_ids = [];
+            var directory_ids = [];
+
+            _.each(self.child_files, function (file) {
+                if (file.is_selected()) {
+                    file_ids = _.union(file_ids, file.document.id);
+                }
+            });
+            _.each(self.child_directories, function (directory) {
+                if (directory.is_selected()) {
+                    directory_ids = _.union(directory_ids, directory.directory.id);
+                } else if (directory.is_opened()) {
+                    var result = directory.get_child_select_files();
+                    file_ids = _.union(file_ids, result[0]);
+                    directory_ids = _.union(directory_ids, result[1]);
+                }
+            });
+            return [file_ids, directory_ids];
+        },
+        destroy: function () {
+            _.each(self.child_directories, function (dir) {
+                dir.destory();
+            });
+            _.each(self.child_files, function (file) {
+                file.destory();
+            });
+            this.child_directories = [];
+            this.child_files = [];
+            this._super();
+        },
+        is_selected: function () {
+            return this.$el.find("div.directory-select > input[name=radiogroup]:first")[0].checked;
         }
     });
 
@@ -260,12 +349,16 @@ openerp.up_document = function (instance) {
         view_type: "dir",
         searchable: false,
         widgetManager: new WidgetManager(),
+        events: {
+            "click button.download": "download_file"
+        },
 
         init: function (parent, dataset, view_id, options) {
             this._super(parent);
             this.set_default_options(options);
             this.dataset = dataset;
             this.view_id = view_id;
+            this.child_directories = [];
 //            this.mode = "bar";          // line, bar, area, pie, radar
 //            this.orientation = false;    // true: horizontal, false: vertical
 //            this.stacked = true;
@@ -292,6 +385,52 @@ openerp.up_document = function (instance) {
                 self.dir_render_all(result);
             });
         },
+        download_file: function (e) {
+            var self = this;
+            var ids = self.get_need_process_files();
+            var context = self.dataset.context;
+            var res_id = self.dataset.context.res_id;
+            var res_model = self.dataset.context.res_model;
+            var domain = [
+                ['parent_id', 'child_of', ids[1]]
+            ];
+            if (res_id != undefined && res_model != undefined) {
+                domain = _.union([
+                    ['res_id', '=', res_id],
+                    ['res_model', '=', res_model]
+                ], domain)
+            }
+
+            new instance.web.Model('ir.attachment').call('search', [domain])
+                .done(function (result) {
+                    context.active_ids = _.union(result, ids[0]);
+                    self.do_action({
+                        type: 'ir.actions.act_window',
+                        src_model: 'ir.attachment',
+                        res_model: 'ir.attachment.download.wizard',
+                        views: [
+                            [false, 'form']
+                        ],
+                        target: 'new',
+                        context: context
+                    });
+                });
+        },
+        get_need_process_files: function () {
+            var self = this;
+            var file_ids = [];
+            var directory_ids = [];
+            _.each(self.child_directories, function (directory) {
+                if (directory.is_selected()) {
+                    directory_ids = _.union(directory_ids, directory.directory.id);
+                } else if (directory.is_opened()) {
+                    var result = directory.get_child_select_files();
+                    file_ids = _.union(file_ids, result[0]);
+                    directory_ids = _.union(directory_ids, result[1]);
+                }
+            });
+            return [file_ids, directory_ids];
+        },
 
         dir_get_data: function () {
             var model = this.dataset.model,
@@ -310,7 +449,9 @@ openerp.up_document = function (instance) {
             var self = this;
             _.each(ids, function (id) {
                 self.widgetManager.get_directory(id, self.dataset.context).done(function (result) {
-                    new instance.up_document.DirectoryWidget(self, result).appendTo(self.$el.find('div.oe-document-tree'));
+                    var dir = new instance.up_document.DirectoryWidget(self, result);
+                    self.child_directories = self.child_directories.concat(dir);
+                    dir.appendTo(self.$el.find('div.oe-document-tree'));
                 });
             });
 
@@ -320,6 +461,9 @@ openerp.up_document = function (instance) {
                 this.dir.destroy();
             }
             this._super();
+        },
+
+        set_not_total_selected: function () {
         }
     });
 
@@ -424,5 +568,31 @@ openerp.up_document = function (instance) {
         }
     });
 
+    instance.web.form.TempFile = instance.web.form.AbstractField.extend(instance.web.form.ReinitializeFieldMixin, {
+        template: 'TempFile',
+        events: {
+            'click a.download_url': 'download',
+        },
+        download: function (ev) {
+            var value = this.get('value');
+            if (!value) {
+                this.do_warn(_t("Save As..."), _t("The field is empty, there's nothing to save !"));
+                ev.stopPropagation();
+            } else {
+                instance.web.blockUI();
+                var c = instance.webclient.crashmanager;
+                this.session.get_file({
+                    url: '/web/binary/download_temp_file',
+                    data: {filename: value},
+                    complete: instance.web.unblockUI,
+                    error: c.rpc_error.bind(c)
+                });
+                ev.stopPropagation();
+                return false;
+            }
+        },
+    });
+
     instance.web.form.widgets.add('bigbinary', 'instance.web.form.BigBinary');
+    instance.web.form.widgets.add('tempfile', 'instance.web.form.TempFile');
 };

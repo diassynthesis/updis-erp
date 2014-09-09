@@ -2,19 +2,22 @@
 import datetime
 import hashlib
 import os
+import random
 from openerp import tools
+import shutil
 from osv.orm import Model
 
 __author__ = 'cysnake4713'
 
 import base64
 import cStringIO
-from zipfile import ZipFile
+import zipfile
 
 from openerp.osv import osv
 from openerp.osv import fields
 from openerp.tools.translate import _, _logger
 from openerp.addons.document.document import document_file
+from openerp.tools import config
 
 
 def monkey_create(self, cr, uid, vals, context=None):
@@ -322,6 +325,12 @@ class IrAttachmentInherit(osv.osv):
         ids = self.search(cr, uid, domain, context=context)
         return self.read(cr, uid, ids, ['name'], context=context)
 
+    def delete_temp_attachments(self, cr, uid, context=None):
+        location = config.get('zip_temp_file', '')
+        if location:
+            shutil.rmtree(location)
+            os.mkdir(location)
+
 
 class IrAttachmentDownloadWizard(osv.osv_memory):
     _name = "ir.attachment.download.wizard"
@@ -341,27 +350,22 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         total_size = reduce(lambda x, y: y.file_size + x, attachments, 0)
         # total_size = reduce(self.test, attachments)
         for attach in attachments:
-            if attach.file_size > 10 * 1024 * 1024:
-                raise osv.except_osv(_('Warning!'), _('Some of the selected file is large than 10MB!'))
+            if attach.file_size > 500 * 1024 * 1024:
+                raise osv.except_osv(_('Warning!'), _('Some of the selected file is large than 500MB!'))
             if attach.check_downloadable() != 3:
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to download some of the attachments'))
         # TODO: need some much useful limit
-        if total_size > 50 * 1024 * 1024:
-            raise osv.except_osv(_('Warning!'), _('Too Large the file will be generate!'))
-        if len(record_ids) > 20:
-            raise osv.except_osv(_('Warning!'), _('Too Many Attachments you choose!'))
+        if total_size > 1000 * 1024 * 1024:
+            raise osv.except_osv(_('Warning!'), _('Generate File is large than 1GB!'))
         if 'attachment_ids' in field_list:
             res['attachment_ids'] = [a.id for a in attachments]
         return res
 
     _columns = {
         'name': fields.char('File Name', readonly=True),
-        # 'format': fields.selection([('csv', 'CSV File'),
-        # ('po', 'PO File'),
-        # ('tgz', 'TGZ Archive')], 'File Format', required=True),
         'attachment_ids': fields.many2many('ir.attachment', 'rel_attachment_download_wizard', 'wizard_id',
                                            'attachment_id', string='Attachments'),
-        'data': fields.binary('File', readonly=True),
+        'data': fields.char('File', readonly=True),
         'state': fields.selection([('choose', 'choose'),  # choose language
                                    ('get', 'get')])  # get the file
     }
@@ -375,20 +379,25 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
             context = {}
         record_ids = context and context.get('active_ids', False) or False
         attachments = self.pool.get('ir.attachment').browse(cr, uid, record_ids, context)
-        buf = cStringIO.StringIO()
-        with ZipFile(buf, 'w') as zip_obj:
-            for attachment in attachments:
-                if attachment.datas is not False:
-                    file_name = attachment.name
-                    file_data = attachment.datas
-                    zip_obj.writestr(file_name.encode('gbk'), base64.decodestring(file_data))
-        # tools.trans_export(lang, mods, buf, this.format, cr)
+        location = config.get('zip_temp_file', '$HOME')
+        temp_file_name = hashlib.md5(str(datetime.datetime.now()) + str(random.random())).hexdigest() + '.zip'
+        zip_obj = zipfile.ZipFile(location + '/' + temp_file_name, 'w', zipfile.ZIP_STORED)
+        i = 0
+        for attachment in attachments:
+            if attachment.datas is not False:
+                file_name = attachment.name
+                file_data = attachment.datas
+                i += 1
+                if isinstance(file_data, str):
+                    zip_obj.writestr(str(i) + '.' + file_name, file_data)
+                else:
+                    zip_obj.write(file_data.name, str(i) + '.' + file_name)
+
         filename = u"附件.zip"
-        out = base64.encodestring(buf.getvalue())
-        buf.close()
         self.write(cr, uid, ids, {'state': 'get',
-                                  'data': out,
+                                  'data': temp_file_name,
                                   'name': filename}, context=context)
+        zip_obj.close()
         self.pool.get('ir.attachment').log_info(cr, uid, record_ids, _('have been zipped and download'),
                                                 context=context)
         return {
