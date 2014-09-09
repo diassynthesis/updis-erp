@@ -9,8 +9,6 @@ from osv.orm import Model
 
 __author__ = 'cysnake4713'
 
-import base64
-import cStringIO
 import zipfile
 
 from openerp.osv import osv
@@ -247,7 +245,7 @@ class IrAttachmentInherit(osv.osv):
         # Superuser can download anyway
         if self.user_has_groups(cr, uid, 'base.group_document_user', context=context) or uid == 1:
             return 3
-        # #init values
+            # #init values
         if context is None:
             context = {}
         attachment = self.browse(cr, uid, attachment_id[0], context)
@@ -276,7 +274,7 @@ class IrAttachmentInherit(osv.osv):
                     if (is_download_able and not is_need_approval) or \
                             (is_download_able and is_need_approval and is_pass_approval):
                         return 3
-                    # can't be download but can apply
+                        # can't be download but can apply
                     if is_download_able and is_need_approval and not is_pass_approval:
                         result += [1]
                         # can't download do nothing
@@ -351,12 +349,12 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         # total_size = reduce(self.test, attachments)
         for attach in attachments:
             if attach.file_size > 500 * 1024 * 1024:
-                raise osv.except_osv(_('Warning!'), _('Some of the selected file is large than 500MB!'))
+                raise osv.except_osv(_('Warning!'), _('Some of the selected file is large than 500MB! Download alone!'))
             if attach.check_downloadable() != 3:
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to download some of the attachments'))
-        # TODO: need some much useful limit
-        if total_size > 1000 * 1024 * 1024:
-            raise osv.except_osv(_('Warning!'), _('Generate File is large than 1GB!'))
+            # TODO: need some much useful limit
+        if total_size > 2048 * 1024 * 1024:
+            raise osv.except_osv(_('Warning!'), _('Generate File is large than 2GB!'))
         if 'attachment_ids' in field_list:
             res['attachment_ids'] = [a.id for a in attachments]
         return res
@@ -366,7 +364,7 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         'attachment_ids': fields.many2many('ir.attachment', 'rel_attachment_download_wizard', 'wizard_id',
                                            'attachment_id', string='Attachments'),
         'data': fields.char('File', readonly=True),
-        'state': fields.selection([('choose', 'choose'),  # choose language
+        'state': fields.selection([('choose', 'choose'), # choose language
                                    ('get', 'get')])  # get the file
     }
 
@@ -377,38 +375,40 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
     def button_download_files(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
-        record_ids = context and context.get('active_ids', False) or False
-        attachments = self.pool.get('ir.attachment').browse(cr, uid, record_ids, context)
-        location = config.get('zip_temp_file', '$HOME')
-        temp_file_name = hashlib.md5(str(datetime.datetime.now()) + str(random.random())).hexdigest() + '.zip'
-        zip_obj = zipfile.ZipFile(location + '/' + temp_file_name, 'w', zipfile.ZIP_STORED)
-        i = 0
-        for attachment in attachments:
-            if attachment.datas is not False:
-                file_name = attachment.name
-                file_data = attachment.datas
-                i += 1
-                if isinstance(file_data, str):
-                    zip_obj.writestr(str(i) + '.' + file_name, file_data)
-                else:
-                    zip_obj.write(file_data.name, str(i) + '.' + file_name)
+        record_ids = context.get('active_ids', False)
+        if record_ids:
+            record_ids = record_ids if isinstance(record_ids, list) else [record_ids]
+            attachments = self.pool.get('ir.attachment').browse(cr, uid, record_ids, context)
+            location = config.get('zip_temp_file', '$HOME')
+            temp_file_name = hashlib.md5(str(datetime.datetime.now()) + str(random.random())).hexdigest() + '.zip'
+            zip_obj = zipfile.ZipFile(location + '/' + temp_file_name, 'w', zipfile.ZIP_STORED)
+            i = 0
+            for attachment in attachments:
+                if attachment.datas is not False:
+                    file_name = attachment.name
+                    file_data = attachment.datas
+                    i += 1
+                    if isinstance(file_data, str):
+                        zip_obj.writestr(str(i) + '.' + file_name.encode('GBK'), file_data)
+                    else:
+                        zip_obj.write(file_data.name, str(i) + '.' + file_name.encode('GBK'))
 
-        filename = u"附件.zip"
-        self.write(cr, uid, ids, {'state': 'get',
-                                  'data': temp_file_name,
-                                  'name': filename}, context=context)
-        zip_obj.close()
-        self.pool.get('ir.attachment').log_info(cr, uid, record_ids, _('have been zipped and download'),
-                                                context=context)
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'ir.attachment.download.wizard',
-            'view_mode': 'form',
-            'view_type': 'form',
-            'res_id': ids[0],
-            'views': [(False, 'form')],
-            'target': 'new',
-        }
+            filename = u"附件.zip"
+            self.write(cr, uid, ids, {'state': 'get',
+                                      'data': temp_file_name,
+                                      'name': filename}, context=context)
+            zip_obj.close()
+            self.pool.get('ir.attachment').log_info(cr, uid, record_ids, _('have been zipped and download'),
+                                                    context=context)
+            return {
+                'type': 'ir.actions.act_window',
+                'res_model': 'ir.attachment.download.wizard',
+                'view_mode': 'form',
+                'view_type': 'form',
+                'res_id': ids[0],
+                'views': [(False, 'form')],
+                'target': 'new',
+            }
 
 
 class IrAttachmentApplication(osv.osv):
