@@ -499,7 +499,6 @@ class updis_contract_contract(osv.osv):
             'context': context,
         }
 
-
     def tender_contract_action(self, cr, uid, context=None):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
         #context['search_default_is-tender-contract'] = 1
