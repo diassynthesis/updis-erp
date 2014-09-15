@@ -83,6 +83,9 @@
             <field name="model">project.project.active.tasking.operator</field>
             <field name="arch" type="xml">
                 <form version="7.0" string="Tasking Operator Form">
+                    <div class="oe_tips" colspan="1">
+                        <p>请在审批前于院网“在谈项目”中搜索是否有已下达的重复项目存在!</p>
+                    </div>
                     <group>
                         <field name="xiangmubianhao" required="1"/>
                     </group>
@@ -97,6 +100,7 @@
                         <button name="operator_review_accept" class="oe_highlight" string="提交总师室审批"
                                 confirm="确定提交到总师室审批?"
                                 type="object" groups="up_project.group_up_project_jingyingshi"/>
+                        或
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
