@@ -218,7 +218,7 @@ class IrAttachmentInherit(osv.osv):
         'file_size_human': fields.function(_get_file_size, type='float', digits=[10, 3], method=True,
                                            string='File Size Human (MB)'),
         'is_downloadable': fields.function(_is_download_able, type='integer', string='Is Downloadable'),
-        'application_ids': fields.one2many('ir.attachment.application', 'attachment_id', 'Applications'),
+        'application_ids': fields.many2many('ir.attachment.application', 'apply_ir_attachment_rel', 'attachment_id', 'apply_id', 'Applications'),
         'log_ids': fields.one2many('ir.attachment.log', 'attachment_id', 'Logs'),
         'is_deleted': fields.boolean('Is Deleted'),
         'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="file", nodrop=True),
@@ -352,7 +352,7 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
                 raise osv.except_osv(_('Warning!'), _('Some of the selected file is large than 500MB! Download alone!'))
             if attach.check_downloadable() != 3:
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to download some of the attachments'))
-            # TODO: need some much useful limit
+                # TODO: need some much useful limit
         if total_size > 2048 * 1024 * 1024:
             raise osv.except_osv(_('Warning!'), _('Generate File is large than 2GB!'))
         if 'attachment_ids' in field_list:
@@ -364,7 +364,7 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         'attachment_ids': fields.many2many('ir.attachment', 'rel_attachment_download_wizard', 'wizard_id',
                                            'attachment_id', string='Attachments'),
         'data': fields.char('File', readonly=True),
-        'state': fields.selection([('choose', 'choose'), # choose language
+        'state': fields.selection([('choose', 'choose'),  # choose language
                                    ('get', 'get')])  # get the file
     }
 
@@ -413,7 +413,8 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
 
 class IrAttachmentApplication(osv.osv):
     _name = 'ir.attachment.application'
-    _rec_name = 'attachment_id'
+    _inherit = ['mail.thread', 'ir.needaction_mixin']
+    _rec_name = 'apply_user_id'
     _order = 'apply_date desc'
 
     # noinspection PyUnusedLocal
@@ -421,50 +422,92 @@ class IrAttachmentApplication(osv.osv):
         result = dict.fromkeys(ids, False)
         for attachment in self.browse(cr, uid, ids, context=context):
             if attachment.expire_date and datetime.datetime.strptime(attachment.expire_date,
-                                                                     tools.DEFAULT_SERVER_DATETIME_FORMAT) < datetime.datetime.now():
+                                                                     tools.DEFAULT_SERVER_DATE_FORMAT) < datetime.datetime.now():
                 result[attachment.id] = True
         return result
 
-    # noinspection PyUnusedLocal
-    def _is_download_able(self, cr, uid, ids, field_name, arg, context):
-        result = dict.fromkeys(ids, False)
-        for application in self.browse(cr, uid, ids, context=context):
-            result[application.id] = application.attachment_id.check_downloadable()
-        return result
-
     _columns = {
-        'attachment_id': fields.many2one('ir.attachment', 'Attachment', required=True, ondelete='cascade'),
+        'state': fields.selection(
+            selection=[('apply', 'Apply'), ('director_process', 'Director Process'), ('manager_process', 'Manager Process'), ('approve', 'Approve'),
+                       ('disapprove', 'Disapprove')], string='State', track_visibility='onchange'),
+        # TODO:make this readonly in views
+        'attachment_ids': fields.many2many('ir.attachment', 'apply_ir_attachment_rel', 'apply_id', 'attachment_id', 'Apply Attachments'),
+
         'apply_user_id': fields.many2one('res.users', 'Apply User'),
         'apply_date': fields.datetime('Apply Date'),
+
+        'director_user_id': fields.many2one('res.users', 'Director Approve User'),
+        'director_approve_date': fields.datetime('Director Approve Date'),
+
         'approve_user_id': fields.many2one('res.users', 'Approver User'),
         'approve_date': fields.datetime('Approve Date'),
-        'expire_date': fields.datetime('Expire Date'),
+
+        'expire_date': fields.date('Expire Date', required=True),
         'is_expired': fields.function(_is_expired, type='boolean', string='Is expired'),
-        'state': fields.selection(selection=[('approve', 'Approve'), ('disapprove', 'Disapprove')], string='State'),
-        'attachment_name': fields.related('attachment_id', 'name', type='char', string='Attachment Name'),
-        'attachment_datas': fields.related('attachment_id', 'datas', type='binary', string='Datas'),
-        'is_downloadable': fields.function(_is_download_able, type='integer', string='Is Downloadable'),
     }
+
+    def apply(self, cr, uid, ids, context):
+        self.write(cr, uid, ids, {
+            'apply_user_id': uid,
+            'apply_date': fields.datetime.now(),
+            'state': 'director_process',
+        }, context=context)
+        return True
+
+    def _is_same_department(self, cr, uid, ids, context):
+        # Is project director?
+        application = self.browse(cr, uid, ids[0], context)
+        hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
+        apply_hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', application.apply_user_id.id)], context=context)
+        if hr_id and apply_hr_id and self.user_has_groups(cr, uid, "up_project.group_up_project_suozhang", context=context):
+            hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
+            apply_record = self.pool.get('hr.employee').browse(cr, 1, apply_hr_id[0], context=context)
+            user_department_id = hr_record.department_id.id if hr_record.department_id else "-1"
+            apply_department_id = apply_record.department_id.id if hr_record.department_id else "-2"
+            if user_department_id == apply_department_id:
+                return True
+        return False
+
+    def director_approve(self, cr, uid, ids, context):
+        if not self._is_same_department(cr, uid, ids, context):
+            raise osv.except_osv(_(u'没有权限'), _(u'必须是申请人所在部门所长才能审批'))
+        self.write(cr, uid, ids, {
+            'director_user_id': uid,
+            'director_approve_date': fields.datetime.now(),
+            'state': 'manager_process',
+        }, context=context)
+        return True
+
+    def director_disapprove(self, cr, uid, ids, context):
+        if not self._is_same_department(cr, uid, ids, context):
+            raise osv.except_osv(_(u'没有权限'), _(u'必须是申请人所在部门所长才能审批'))
+        self.write(cr, uid, ids, {
+            'director_user_id': None,
+            'director_approve_date': None,
+            'state': 'disapprove',
+        }, context=context)
+        return True
 
     def approve(self, cr, uid, ids, context):
         self.write(cr, uid, ids, {
             'approve_user_id': uid,
             'approve_date': fields.datetime.now(),
-            'expire_date': (datetime.datetime.now() + datetime.timedelta(days=7)).strftime(
-                tools.DEFAULT_SERVER_DATETIME_FORMAT),
             'state': 'approve',
         }, context=context)
         return True
 
     def disapprove(self, cr, uid, ids, context):
         self.write(cr, uid, ids, {
-            'approve_user_id': uid,
-            'approve_date': fields.datetime.now(),
-            'expire_date': (datetime.datetime.now() + datetime.timedelta(days=7)).strftime(
-                tools.DEFAULT_SERVER_DATETIME_FORMAT),
+            'approve_user_id': None,
+            'approve_date': None,
             'state': 'disapprove',
         }, context=context)
         return True
+
+    _defaults = {
+        'state': 'apply',
+        'expire_date': lambda *a: (datetime.date.today() + datetime.timedelta(days=7)).strftime(tools.DEFAULT_SERVER_DATE_FORMAT),
+    }
 
 
 class IrAttachmentLog(osv.osv):
