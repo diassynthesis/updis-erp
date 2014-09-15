@@ -213,10 +213,10 @@ openerp.up_document = function (instance) {
                 formData: data,
                 add: function (e, data) {
                     var uploadFile = data.files[0];
-                    if (uploadFile.size > 1000 * 1024 * 1024) { // 2mb
+                    if (uploadFile.size > 2048 * 1024 * 1024) { // 2mb
                         instance.webclient.notification.warn(
                             _t("文件过大!"),
-                            _t("上传文件超过1GB！请分卷压缩后上传。"));
+                            _t("上传文件超过2GB！请分卷压缩后上传。"));
                     } else {
                         instance.web.blockUI();
                         data.submit();
@@ -521,10 +521,10 @@ openerp.up_document = function (instance) {
                 formData: data,
                 add: function (e, data) {
                     var uploadFile = data.files[0];
-                    if (uploadFile.size > 1000 * 1024 * 1024) { // 2mb
+                    if (uploadFile.size > 2048 * 1024 * 1024) { // 2mb
                         instance.webclient.notification.warn(
                             _t("文件过大!"),
-                            _t("上传文件超过1GB！请分卷压缩后上传。"));
+                            _t("上传文件超过2GB！请分卷压缩后上传。"));
                     } else {
                         instance.web.blockUI();
                         data.submit();
