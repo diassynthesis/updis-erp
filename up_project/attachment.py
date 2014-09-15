@@ -30,6 +30,7 @@ FILING_DIR_MAP = {
     'dir_up_project_going_data_cadastral': 'dir_up_project_filed_data_cadastral',
     'dir_up_project_going_data_outsource': 'dir_up_project_filed_data_outsource',
     'dir_up_project_going_processing_else': 'dir_up_project_filed_processing_else',
+    'dir_up_project_going_data_else': 'dir_up_project_filed_data_else',
 }
 
 
