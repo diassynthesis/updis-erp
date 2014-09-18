@@ -376,6 +376,8 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         if context is None:
             context = {}
         record_ids = context and context.get('active_ids', False) or False
+        if 'temp_active_ids' in context:
+            record_ids = context['temp_active_ids'][0][2]
         if not record_ids:
             return res
         attachment_obj = self.pool.get('ir.attachment')
@@ -411,6 +413,8 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         if context is None:
             context = {}
         record_ids = context.get('active_ids', False)
+        if 'temp_active_ids' in context:
+            record_ids = context['temp_active_ids'][0][2]
         if record_ids:
             record_ids = record_ids if isinstance(record_ids, list) else [record_ids]
             attachments = self.pool.get('ir.attachment').browse(cr, uid, record_ids, context)

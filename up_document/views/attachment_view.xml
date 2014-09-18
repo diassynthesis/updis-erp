@@ -135,6 +135,13 @@
                 </tree>
             </field>
         </record>
+        <record id="action_download_apply_attachments_wiz" model="ir.actions.act_window">
+            <field name="name">下载</field>
+            <field name="res_model">ir.attachment.download.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
         <record model="ir.ui.view" id="view_attachment_download_form">
             <field name="name">ir.attachment.application.form</field>
             <field name="model">ir.attachment.application</field>
@@ -152,6 +159,8 @@
                                 groups="up_document.group_attachment_download_manager"/>
                         <button name="disapprove" type="object" string="Disapprove" states="manager_process"
                                 groups="up_document.group_attachment_download_manager"/>
+                        <button string="批量下载" name="%(action_download_apply_attachments_wiz)d" type="action" context="{'temp_active_ids':attachment_ids}"
+                                states="approve"/>
                         <field name="state" widget="statusbar" readonly="1" statusbar_visible="apply,director_process,manager_process,approve"/>
                     </header>
                     <sheet>
