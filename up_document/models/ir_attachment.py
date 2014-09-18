@@ -207,17 +207,9 @@ class IrAttachmentInherit(osv.osv):
             result[attachment.id] = attachment.file_size / (1024.0 * 1024.0)
         return result
 
-    # noinspection PyUnusedLocal
-    def _is_download_able(self, cr, uid, ids, field_name, arg, context):
-        result = dict.fromkeys(ids, False)
-        for attachment in self.browse(cr, uid, ids, context=context):
-            result[attachment.id] = attachment.check_downloadable()
-        return result
-
     _columns = {
         'file_size_human': fields.function(_get_file_size, type='float', digits=[10, 3], method=True,
                                            string='File Size Human (MB)'),
-        'is_downloadable': fields.function(_is_download_able, type='integer', string='Is Downloadable'),
         'application_ids': fields.many2many('ir.attachment.application', 'apply_ir_attachment_rel', 'attachment_id', 'apply_id', 'Applications'),
         'log_ids': fields.one2many('ir.attachment.log', 'attachment_id', 'Logs'),
         'is_deleted': fields.boolean('Is Deleted'),
@@ -283,9 +275,9 @@ class IrAttachmentInherit(osv.osv):
     def is_pass_approval(self, cr, uid, attachment_id, context):
         application_obj = self.pool.get('ir.attachment.application')
         application_ids = application_obj.search(cr, uid,
-                                                 [('attachment_id', '=', attachment_id[0]), ('apply_user_id', '=', uid),
+                                                 [('attachment_ids', '=', attachment_id[0]), ('apply_user_id', '=', uid),
                                                   ('state', '=', 'approve'),
-                                                  ('expire_date', '>=', fields.datetime.now())],
+                                                  ('expire_date', '>=', fields.date.today())],
                                                  context=context)
         if application_ids:
             return True
@@ -424,6 +416,13 @@ class IrAttachmentApplication(osv.osv):
             if attachment.expire_date and datetime.datetime.strptime(attachment.expire_date,
                                                                      tools.DEFAULT_SERVER_DATE_FORMAT) < datetime.datetime.now():
                 result[attachment.id] = True
+        return result
+
+    # noinspection PyUnusedLocal
+    def _is_download_able(self, cr, uid, ids, field_name, arg, context):
+        result = dict.fromkeys(ids, False)
+        for application in self.browse(cr, uid, ids, context=context):
+            result[application.id] = application.attachment_id.check_downloadable()
         return result
 
     _columns = {
