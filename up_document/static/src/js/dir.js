@@ -391,30 +391,27 @@ openerp.up_document = function (instance) {
             var context = self.dataset.context;
             var res_id = self.dataset.context.res_id;
             var res_model = self.dataset.context.res_model;
-            var domain = [
-                ['parent_id', 'child_of', ids[1]]
-            ];
+            var domain = [];
             if (res_id != undefined && res_model != undefined) {
-                domain = _.union([
+                domain = [
                     ['res_id', '=', res_id],
                     ['res_model', '=', res_model]
-                ], domain)
+                ];
             }
 
-            new instance.web.Model('ir.attachment').call('search', [domain])
-                .done(function (result) {
-                    context.active_ids = _.union(result, ids[0]);
-                    self.do_action({
-                        type: 'ir.actions.act_window',
-                        src_model: 'ir.attachment',
-                        res_model: 'ir.attachment.download.wizard',
-                        views: [
-                            [false, 'form']
-                        ],
-                        target: 'new',
-                        context: context
-                    });
+            new instance.web.Model('ir.attachment').call('get_download_file', [ids[0], ids[1], domain]).done(function (result) {
+                context.active_ids = result;
+                self.do_action({
+                    type: 'ir.actions.act_window',
+                    src_model: 'ir.attachment',
+                    res_model: 'ir.attachment.download.wizard',
+                    views: [
+                        [false, 'form']
+                    ],
+                    target: 'new',
+                    context: context
                 });
+            });
         },
         get_need_process_files: function () {
             var self = this;

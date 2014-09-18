@@ -306,6 +306,20 @@ class IrAttachmentInherit(osv.osv):
                                                                group_id, context=None)
         return True
 
+    def get_download_file(self, cr, uid, files, directory_ids, domain, context=None):
+        all_directory_ids = self.pool['document.directory'].search(cr, uid, [('parent_id', 'child_of', directory_ids)], context)
+        except_directory_ids = []
+        for directory in self.pool['document.directory'].browse(cr, uid, all_directory_ids, context):
+            if directory.check_directory_privilege('is_need_approval', context=context):
+                except_directory_ids += [directory.id]
+        download_files = self.search(cr, uid, [('parent_id', 'in', all_directory_ids), ('parent_id', 'not in', except_directory_ids)] + domain, context)
+
+        for tfile in self.browse(cr, uid, files, context):
+            if tfile.check_downloadable() == 3:
+                download_files += [tfile.id]
+        return download_files
+
+
     def get_directory_documents(self, cr, uid, directory_id, res_id, res_model, context):
         domain = [('parent_id', '=', directory_id), ('is_deleted', '=', False)]
         if res_id:
