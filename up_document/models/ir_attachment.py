@@ -306,20 +306,47 @@ class IrAttachmentInherit(osv.osv):
                                                                group_id, context=None)
         return True
 
-    def get_download_file(self, cr, uid, files, directory_ids, domain, context=None):
-        all_directory_ids = self.pool['document.directory'].search(cr, uid, [('parent_id', 'child_of', directory_ids)], context)
+    def get_download_file(self, cr, uid, files, directory_ids, res_id, res_model, context=None):
+        domain = [['res_id', '=', res_id], ['res_model', '=', res_model]]
+        context = context if context else {}
+        if res_id: context.update({'res_id': res_id})
+        if res_model: context.update({'res_model': res_model})
+        context = context.update({'ctx': domain}) if context else {'ctx': domain}
+        all_directory_ids = self.pool['document.directory'].search(cr, uid, [('parent_id', 'child_of', directory_ids)], context=context)
         except_directory_ids = set([])
-        for directory in self.pool['document.directory'].browse(cr, uid, all_directory_ids, context):
+        for directory in self.pool['document.directory'].browse(cr, uid, all_directory_ids, context=context):
             if directory.check_directory_privilege('is_need_approval', context=context):
                 except_directory_ids.add(directory.id)
             if not directory.check_directory_privilege('is_downloadable', context=context):
                 except_directory_ids.add(directory.id)
-        download_files = self.search(cr, uid, [('parent_id', 'in', all_directory_ids), ('parent_id', 'not in', list(except_directory_ids))] + domain, context)
+        download_files = self.search(cr, uid, [('parent_id', 'in', all_directory_ids), ('parent_id', 'not in', list(except_directory_ids))] + domain,
+                                     context=context)
 
         for tfile in self.browse(cr, uid, files, context):
             if tfile.check_downloadable() == 3:
                 download_files += [tfile.id]
         return download_files
+
+    def get_download_apply_file(self, cr, uid, files, directory_ids, res_id, res_model, context=None):
+        domain = [['res_id', '=', res_id], ['res_model', '=', res_model]]
+        context = context if context else {}
+        if res_id: context.update({'res_id': res_id})
+        if res_model: context.update({'res_model': res_model})
+        all_directory_ids = self.pool['document.directory'].search(cr, uid, [('parent_id', 'child_of', directory_ids)], context=context)
+        need_apply_ids = []
+        except_directory_ids = []
+        for directory in self.pool['document.directory'].browse(cr, uid, all_directory_ids, context=context):
+            if directory.check_directory_privilege('is_need_approval', context=context):
+                need_apply_ids += [directory.id]
+            if not directory.check_directory_privilege('is_downloadable', context=context):
+                except_directory_ids += [directory.id]
+        apply_files = self.search(cr, uid, [('parent_id', 'in', need_apply_ids), ('parent_id', 'not in', except_directory_ids)] + domain,
+                                  context=context)
+
+        for tfile in self.browse(cr, uid, files, context):
+            if tfile.check_downloadable() == 1:
+                apply_files += [tfile.id]
+        return list(set(apply_files))
 
 
     def get_directory_documents(self, cr, uid, directory_id, res_id, res_model, context):
@@ -424,6 +451,13 @@ class IrAttachmentApplication(osv.osv):
     _inherit = ['mail.thread', 'ir.needaction_mixin']
     _rec_name = 'apply_user_id'
     _order = 'apply_date desc'
+
+    def default_get(self, cr, uid, field_list, context=None):
+        res = super(IrAttachmentApplication, self).default_get(cr, uid, field_list, context=context)
+        attachment_ids = context.get('attachment_ids', {}) if context else {}
+        if attachment_ids:
+            res['attachment_ids'] = attachment_ids
+        return res
 
     # noinspection PyUnusedLocal
     def _is_expired(self, cr, uid, ids, name, arg, context=None):
