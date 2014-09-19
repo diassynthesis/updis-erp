@@ -197,22 +197,44 @@ class DocumentDirectoryInherit(osv.osv):
         self._check_group_write_privilege(cr, uid, ids, context)
         return super(DocumentDirectoryInherit, self).write(cr, uid, ids, vals, context)
 
-    def get_directory_info(self, cr, uid, directory_id, context=None):
+    def get_directory_info(self, cr, uid, directory_id, res_id=None, res_model=None, context=None):
+        if not context: context = {}
+        context['ctx'] = {
+            'res_id': res_id,
+            'res_model': res_model,
+        }
+
         directory = self.browse(cr, uid, directory_id, context)
+        domain = [('parent_id', 'child_of', directory_id)]
+        if res_id and res_model:
+            domain += [('res_id', '=', res_id), ('res_model', '=', res_model)]
+        attachments = self.pool['ir.attachment'].search(cr, uid, domain, context=context)
+
         result = {
             'id': directory.id,
             'name': directory.name,
             'is_writable': directory.check_directory_privilege('perm_write', context=context),
             'is_downloadable': directory.check_directory_privilege('is_downloadable', context=context),
             'is_need_approval': directory.check_directory_privilege('is_need_approval', context=context),
+            'file_total': len(attachments),
         }
         return result
 
-    def get_directory_child_info(self, cr, uid, id, context=None):
+    def get_directory_child_info(self, cr, uid, id, res_id, res_model, context=None):
+        if not context: context = {}
+        context['ctx'] = {
+            'res_id': res_id,
+            'res_model': res_model,
+        }
+
         ids = self.search(cr, uid, [('parent_id', '=', id)], context=context)
         directorys = self.browse(cr, uid, ids, context)
         result = []
+        domain = []
+        if res_id and res_model:
+            domain = [('res_id', '=', res_id), ('res_model', '=', res_model)]
         for directory in directorys:
+            attachments = self.pool['ir.attachment'].search(cr, uid, [('parent_id', 'child_of', directory.id)] + domain, context=context)
             result += [
                 {
                     'id': directory.id,
@@ -220,6 +242,7 @@ class DocumentDirectoryInherit(osv.osv):
                     'is_writable': directory.check_directory_privilege('perm_write', context=context),
                     'is_downloadable': directory.check_directory_privilege('is_downloadable', context=context),
                     'is_need_approval': directory.check_directory_privilege('is_need_approval', context=context),
+                    'file_total': len(attachments),
                 }
             ]
         return result

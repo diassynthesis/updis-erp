@@ -12,21 +12,21 @@ openerp.up_document = function (instance) {
 
     var WidgetManager = instance.web.Class.extend({
 
-        get_directory: function (id, context) {
+        get_directory: function (id, res_id, res_model, context) {
             var obj = new instance.web.Model('document.directory');
-            return obj.call('get_directory_info', [id, context])
+            return obj.call('get_directory_info', [id, res_id, res_model, context])
         },
-        get_directory_child: function (id, context) {
+        get_directory_child: function (id, res_id, res_model, context) {
             var obj = new instance.web.Model('document.directory');
-            return obj.call('get_directory_child_info', [id, context])
+            return obj.call('get_directory_child_info', [id, res_id, res_model, context])
         },
         get_directory_documents: function (directory_id, res_id, res_model, context) {
             var obj = new instance.web.Model('ir.attachment');
             return obj.call('get_directory_documents', [directory_id, res_id, res_model, context])
         },
-        delete_document: function (document_ids, context) {
+        delete_document: function (document_ids, res_id, res_model, context) {
             var obj = new instance.web.Model('ir.attachment');
-            return obj.call('unlink', [document_ids, context])
+            return obj.call('unlink_attachment', [document_ids, res_id, res_model, context])
         }
 
 
@@ -87,7 +87,7 @@ openerp.up_document = function (instance) {
         },
         delete_file: function () {
             var self = this;
-            self.widgetManager.delete_document(self.document.id, self.dataset.context).done(function () {
+            self.widgetManager.delete_document(self.document.id, self.dataset.context.res_id, self.dataset.context.res_model, self.dataset.context).done(function () {
                 self.parent.delete_document(self);
             });
         },
@@ -257,7 +257,7 @@ openerp.up_document = function (instance) {
         },
         create_child_directories: function () {
             var self = this;
-            return self.widgetManager.get_directory_child(self.directory.id, self.dataset.context).done(function (result) {
+            return self.widgetManager.get_directory_child(self.directory.id, self.dataset.context.res_id, self.dataset.context.res_model, self.dataset.context).done(function (result) {
                 _.each(result, function (directory) {
                     var dir = new instance.up_document.DirectoryWidget(self, directory);
                     self.child_directories = self.child_directories.concat(dir);
@@ -448,7 +448,7 @@ openerp.up_document = function (instance) {
         dir_render_all: function (ids) {
             var self = this;
             _.each(ids, function (id) {
-                self.widgetManager.get_directory(id, self.dataset.context).done(function (result) {
+                self.widgetManager.get_directory(id, self.dataset.context.res_id, self.dataset.context.res_model, self.dataset.context).done(function (result) {
                     var dir = new instance.up_document.DirectoryWidget(self, result);
                     self.child_directories = self.child_directories.concat(dir);
                     dir.appendTo(self.$el.find('div.oe-document-tree'));

@@ -46,9 +46,10 @@
             <div class="oe-upload-holder">
             </div>
             <div class="tips">
-                <t t-if="widget.directory.is_downloadable and widget.directory.is_need_approval">
-                    该文件夹下文件需要下载审批
-                </t>
+                <t t-esc="widget.directory.file_total"/>个文件
+            </div>
+            <div class="tips" t-if="widget.directory.is_downloadable and widget.directory.is_need_approval">
+                需要下载审批
             </div>
         </div>
         <div class="tree-child-holder">

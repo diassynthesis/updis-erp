@@ -41,11 +41,12 @@
 .openerp .oe-document-tree .tree-directory-container .directory-line {
     background: transparent url('/web/static/src/img/expand.gif') 0 50% no-repeat;
     cursor: pointer;
+    border-bottom: solid 1px #808080;
 }
 
 .openerp .oe-document-tree .tree-directory-container .directory-line .tips {
     color: grey;
-    margin-right: 200px;
+    margin-right: 80px;
     float: right;
 }
 

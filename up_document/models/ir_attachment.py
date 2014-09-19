@@ -329,6 +329,14 @@ class IrAttachmentInherit(osv.osv):
             shutil.rmtree(location)
             os.mkdir(location)
 
+    def unlink_attachment(self, cr, uid, ids, res_id, res_model, context=None):
+        if not context: context = {}
+        context['ctx'] = {
+            'res_id': res_id,
+            'res_model': res_model,
+        }
+        self.unlink(cr, uid, ids, context=context)
+
 
 class IrAttachmentDownloadWizard(osv.osv_memory):
     _name = "ir.attachment.download.wizard"
@@ -352,7 +360,7 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
                 raise osv.except_osv(_('Warning!'), _('Some of the selected file is large than 500MB! Download alone!'))
             if attach.check_downloadable() != 3:
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to download some of the attachments'))
-            # TODO: need some much useful limit
+                # TODO: need some much useful limit
         if total_size > 2048 * 1024 * 1024:
             raise osv.except_osv(_('Warning!'), _('Generate File is large than 2GB!'))
         if 'attachment_ids' in field_list:
@@ -364,7 +372,7 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         'attachment_ids': fields.many2many('ir.attachment', 'rel_attachment_download_wizard', 'wizard_id',
                                            'attachment_id', string='Attachments'),
         'data': fields.char('File', readonly=True),
-        'state': fields.selection([('choose', 'choose'), # choose language
+        'state': fields.selection([('choose', 'choose'),  # choose language
                                    ('get', 'get')])  # get the file
     }
 
