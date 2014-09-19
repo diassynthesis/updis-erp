@@ -61,7 +61,7 @@ class sms(osv.Model):
                 self.write(cr, uid, [sms.id], {
                     'state': 'error',
                     'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
-                    'sms_server_id': str(e),
+                    'sms_server_id': e,
                 })
 
     def process_big_ant_queue(self, cr, uid, context=None):
