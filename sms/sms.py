@@ -183,7 +183,9 @@ class sms(osv.Model):
                                       'model': model, 'res_id': res_id},
                             context=context)
 
-    def send_sms_to_users(self, cr, uid, users, from_rec, content, model, res_id, context=None):
+    def send_sms_to_users(self, cr, uid, from_rec, content, model, res_id, user_ids, context=None):
+        if not isinstance(user_ids, list): user_ids = [user_ids]
+        users = self.pool['res.users'].browse(cr, uid, user_ids, context)
         to = ','.join(
             [rid.mobile_phone.strip() for rid in users if rid.mobile_phone and rid.mobile_phone.strip()])
         if to:
@@ -209,7 +211,9 @@ class sms(osv.Model):
                                  context=context)
 
 
-    def send_big_ant_to_users(self, cr, uid, users, from_rec, subject, content, model, res_id, context=None):
+    def send_big_ant_to_users(self, cr, uid, from_rec, subject, content, model, res_id, user_ids, context=None):
+        if not isinstance(user_ids, list): user_ids = [user_ids]
+        users = self.pool['res.users'].browse(cr, uid, list(user_ids), context)
         to = ';'.join(
             [user.login for user in users if user.login])
         if to:

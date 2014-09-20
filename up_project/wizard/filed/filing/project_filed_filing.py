@@ -86,9 +86,9 @@ class ProjectFiledFiling(osv.Model):
         content_sms = u'项目[%s]需要您处理【项目归档-负责人审批】请求,请及时处理项目和跟进项目进度。' % filing.project_id.name
         content_ant = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您处理【项目归档-负责人审批】请求,请及时处理项目和跟进项目进度 """ % (
             http_address, filing.project_id.name)
-        sms_obj.send_sms_to_users(cr, uid, users=filing.project_user, from_rec=filing.name, content=content_sms, model=self._name, res_id=filing.id,
+        sms_obj.send_sms_to_users(cr, uid, user_ids=filing.project_user.id, from_rec=filing.name, content=content_sms, model=self._name, res_id=filing.id,
                                   context=context)
-        sms_obj.send_big_ant_to_users(cr, uid, users=filing.project_user, from_rec=filing.name, subject=u'项目归档申请等待处理', content=content_ant,
+        sms_obj.send_big_ant_to_users(cr, uid, user_ids=filing.project_user.id, from_rec=filing.name, subject=u'项目归档申请等待处理', content=content_ant,
                                       model=self._name, res_id=filing.id, context=context)
         filing.project_id.write({'status_code': 30104})
         return self.write(cr, uid, ids, {'state': 'manager_approve'}, context)

@@ -61,9 +61,8 @@ content = u"项目[%s]需要您的审批,请及时处理项目和跟进项目进
 model = 'project.project.active.tasking'
 res_id = object.id
 to = object.director_reviewer_id.id
-users = pool.get('res.users').browse(cr,1,[to],context=context)
-pool.get('sms.sms').send_sms_to_users( cr, 1, users, from_rec, content, model, res_id, context=None)
-pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, big_ant_content, model, res_id, context=None)
+pool.get('sms.sms').send_sms_to_users( cr, 1,  from_rec, content, model, res_id, to, context=None)
+pool.get('sms.sms').send_big_ant_to_users( cr, 1, from_rec,subject, big_ant_content, model, res_id, to, context=None)
             </field>
         </record>
 
@@ -136,9 +135,8 @@ hr = pool.get('hr.employee')
 hr_ids = hr.search(cr,1,[('department_id','=',object.chenjiebumen_id.id),('job_id.name','=',u'所长')],context=context)
 hr_values = hr.browse(cr,1,hr_ids,context=context)
 to = [employee.user_id.id for employee in hr_values if employee.user_id]
-users = pool.get('res.users').browse(cr,1,to,context=context)
-pool.get('sms.sms').send_sms_to_users( cr, 1, users, from_rec, content, model, res_id, context=None)
-pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, big_ant_content, model, res_id, context=None)
+pool.get('sms.sms').send_sms_to_users( cr, 1, from_rec, content, model, res_id, to, context=None)
+pool.get('sms.sms').send_big_ant_to_users( cr, 1, from_rec,subject, big_ant_content, model, res_id, to, context=None)
             </field>
         </record>
 
@@ -161,14 +159,13 @@ model = 'project.project.active.tasking'
 res_id = object.id
 zhuguanzongshi_id = [z.id for z in  object.zhuguanzongshi_id]
 users = pool.get('res.users').browse(cr,1,zhuguanzongshi_id,context=context)
-pool.get('sms.sms').send_sms_to_users( cr, 1, users, from_rec, content, model, res_id, context=None)
-pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, big_ant_content, model, res_id, context=None)
+pool.get('sms.sms').send_sms_to_users( cr, 1, from_rec, content, model, res_id, zhuguanzongshi_id, context=None)
+pool.get('sms.sms').send_big_ant_to_users( cr, 1, from_rec,subject, big_ant_content, model, res_id, zhuguanzongshi_id, context=None)
 content = u"设计部门:%s,项目[%s]已经启动,您是本项目的:项目负责人, 请及时处理和跟进项目进度" % (object.chenjiebumen_id.name,object.name)
 big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 设计部门:%s 已经启动,您是本项目的:项目负责人, 请及时处理和跟进项目进度 """ % (http_address,object.name,object.chenjiebumen_id.name)
 user_id = pool.get('project.project').read(cr,1,object.project_id.id,['user_id'],context=context)
-users = pool.get('res.users').browse(cr,1,user_id['user_id'],context=context)
-pool.get('sms.sms').send_sms_to_users( cr, 1, users, from_rec, content, model, res_id, context=None)
-pool.get('sms.sms').send_big_ant_to_users( cr, 1, users, from_rec,subject, big_ant_content, model, res_id, context=None)
+pool.get('sms.sms').send_sms_to_users( cr, 1,  from_rec, content, model, res_id, user_id['user_id'], context=None)
+pool.get('sms.sms').send_big_ant_to_users( cr, 1, from_rec,subject, big_ant_content, model, res_id, user_id['user_id'],context=None)
             </field>
         </record>
 
