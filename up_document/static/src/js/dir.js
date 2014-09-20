@@ -350,7 +350,8 @@ openerp.up_document = function (instance) {
         searchable: false,
         widgetManager: new WidgetManager(),
         events: {
-            "click button.download": "download_file"
+            "click button.download": "download_file",
+            "click button.download-apply": 'download_apply_file',
         },
 
         init: function (parent, dataset, view_id, options) {
@@ -385,36 +386,51 @@ openerp.up_document = function (instance) {
                 self.dir_render_all(result);
             });
         },
-        download_file: function (e) {
+        download_apply_file: function () {
             var self = this;
             var ids = self.get_need_process_files();
             var context = self.dataset.context;
             var res_id = self.dataset.context.res_id;
             var res_model = self.dataset.context.res_model;
-            var domain = [
-                ['parent_id', 'child_of', ids[1]]
-            ];
-            if (res_id != undefined && res_model != undefined) {
-                domain = _.union([
-                    ['res_id', '=', res_id],
-                    ['res_model', '=', res_model]
-                ], domain)
-            }
 
-            new instance.web.Model('ir.attachment').call('search', [domain])
-                .done(function (result) {
-                    context.active_ids = _.union(result, ids[0]);
+            new instance.web.Model('ir.attachment').call('get_download_apply_file', [ids[0], ids[1], res_id, res_model, context]).done(function (result) {
+                if (result.length == 0) {
+                    alert("没有选择可审评的文件");
+                } else {
+                    context.attachment_ids = result;
                     self.do_action({
                         type: 'ir.actions.act_window',
                         src_model: 'ir.attachment',
-                        res_model: 'ir.attachment.download.wizard',
+                        res_model: 'ir.attachment.application',
                         views: [
                             [false, 'form']
                         ],
                         target: 'new',
                         context: context
                     });
+                }
+            });
+        },
+        download_file: function (e) {
+            var self = this;
+            var ids = self.get_need_process_files();
+            var context = self.dataset.context;
+            var res_id = self.dataset.context.res_id;
+            var res_model = self.dataset.context.res_model;
+
+            new instance.web.Model('ir.attachment').call('get_download_file', [ids[0], ids[1], res_id, res_model, context]).done(function (result) {
+                context.active_ids = result;
+                self.do_action({
+                    type: 'ir.actions.act_window',
+                    src_model: 'ir.attachment',
+                    res_model: 'ir.attachment.download.wizard',
+                    views: [
+                        [false, 'form']
+                    ],
+                    target: 'new',
+                    context: context
                 });
+            });
         },
         get_need_process_files: function () {
             var self = this;

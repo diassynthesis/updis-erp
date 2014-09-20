@@ -207,18 +207,10 @@ class IrAttachmentInherit(osv.osv):
             result[attachment.id] = attachment.file_size / (1024.0 * 1024.0)
         return result
 
-    # noinspection PyUnusedLocal
-    def _is_download_able(self, cr, uid, ids, field_name, arg, context):
-        result = dict.fromkeys(ids, False)
-        for attachment in self.browse(cr, uid, ids, context=context):
-            result[attachment.id] = attachment.check_downloadable()
-        return result
-
     _columns = {
         'file_size_human': fields.function(_get_file_size, type='float', digits=[10, 3], method=True,
                                            string='File Size Human (MB)'),
-        'is_downloadable': fields.function(_is_download_able, type='integer', string='Is Downloadable'),
-        'application_ids': fields.one2many('ir.attachment.application', 'attachment_id', 'Applications'),
+        'application_ids': fields.many2many('ir.attachment.application', 'apply_ir_attachment_rel', 'attachment_id', 'apply_id', 'Applications'),
         'log_ids': fields.one2many('ir.attachment.log', 'attachment_id', 'Logs'),
         'is_deleted': fields.boolean('Is Deleted'),
         'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="file", nodrop=True),
@@ -283,9 +275,9 @@ class IrAttachmentInherit(osv.osv):
     def is_pass_approval(self, cr, uid, attachment_id, context):
         application_obj = self.pool.get('ir.attachment.application')
         application_ids = application_obj.search(cr, uid,
-                                                 [('attachment_id', '=', attachment_id[0]), ('apply_user_id', '=', uid),
+                                                 [('attachment_ids', '=', attachment_id[0]), ('apply_user_id', '=', uid),
                                                   ('state', '=', 'approve'),
-                                                  ('expire_date', '>=', fields.datetime.now())],
+                                                  ('expire_date', '>=', fields.date.today())],
                                                  context=context)
         if application_ids:
             return True
@@ -313,6 +305,49 @@ class IrAttachmentInherit(osv.osv):
                 self.pool.get('sms.sms').send_big_ant_to_group(cr, 1, from_rec, subject, content, model, res_id,
                                                                group_id, context=None)
         return True
+
+    def get_download_file(self, cr, uid, files, directory_ids, res_id, res_model, context=None):
+        domain = [['res_id', '=', res_id], ['res_model', '=', res_model]]
+        context = context if context else {}
+        if res_id: context.update({'res_id': res_id})
+        if res_model: context.update({'res_model': res_model})
+        context = context.update({'ctx': domain}) if context else {'ctx': domain}
+        all_directory_ids = self.pool['document.directory'].search(cr, uid, [('parent_id', 'child_of', directory_ids)], context=context)
+        except_directory_ids = set([])
+        for directory in self.pool['document.directory'].browse(cr, uid, all_directory_ids, context=context):
+            if directory.check_directory_privilege('is_need_approval', context=context):
+                except_directory_ids.add(directory.id)
+            if not directory.check_directory_privilege('is_downloadable', context=context):
+                except_directory_ids.add(directory.id)
+        download_files = self.search(cr, uid, [('parent_id', 'in', all_directory_ids), ('parent_id', 'not in', list(except_directory_ids))] + domain,
+                                     context=context)
+
+        for tfile in self.browse(cr, uid, files, context):
+            if tfile.check_downloadable() == 3:
+                download_files += [tfile.id]
+        return download_files
+
+    def get_download_apply_file(self, cr, uid, files, directory_ids, res_id, res_model, context=None):
+        domain = [['res_id', '=', res_id], ['res_model', '=', res_model]]
+        context = context if context else {}
+        if res_id: context.update({'res_id': res_id})
+        if res_model: context.update({'res_model': res_model})
+        all_directory_ids = self.pool['document.directory'].search(cr, uid, [('parent_id', 'child_of', directory_ids)], context=context)
+        need_apply_ids = []
+        except_directory_ids = []
+        for directory in self.pool['document.directory'].browse(cr, uid, all_directory_ids, context=context):
+            if directory.check_directory_privilege('is_need_approval', context=context):
+                need_apply_ids += [directory.id]
+            if not directory.check_directory_privilege('is_downloadable', context=context):
+                except_directory_ids += [directory.id]
+        apply_files = self.search(cr, uid, [('parent_id', 'in', need_apply_ids), ('parent_id', 'not in', except_directory_ids)] + domain,
+                                  context=context)
+
+        for tfile in self.browse(cr, uid, files, context):
+            if tfile.check_downloadable() == 1:
+                apply_files += [tfile.id]
+        return list(set(apply_files))
+
 
     def get_directory_documents(self, cr, uid, directory_id, res_id, res_model, context):
         domain = [('parent_id', '=', directory_id), ('is_deleted', '=', False)]
@@ -349,6 +384,8 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         if context is None:
             context = {}
         record_ids = context and context.get('active_ids', False) or False
+        if 'temp_active_ids' in context:
+            record_ids = context['temp_active_ids'][0][2]
         if not record_ids:
             return res
         attachment_obj = self.pool.get('ir.attachment')
@@ -384,6 +421,8 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
         if context is None:
             context = {}
         record_ids = context.get('active_ids', False)
+        if 'temp_active_ids' in context:
+            record_ids = context['temp_active_ids'][0][2]
         if record_ids:
             record_ids = record_ids if isinstance(record_ids, list) else [record_ids]
             attachments = self.pool.get('ir.attachment').browse(cr, uid, record_ids, context)
@@ -421,15 +460,23 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
 
 class IrAttachmentApplication(osv.osv):
     _name = 'ir.attachment.application'
-    _rec_name = 'attachment_id'
+    _inherit = ['mail.thread', 'ir.needaction_mixin']
+    _rec_name = 'apply_user_id'
     _order = 'apply_date desc'
+
+    def default_get(self, cr, uid, field_list, context=None):
+        res = super(IrAttachmentApplication, self).default_get(cr, uid, field_list, context=context)
+        attachment_ids = context.get('attachment_ids', {}) if context else {}
+        if attachment_ids:
+            res['attachment_ids'] = attachment_ids
+        return res
 
     # noinspection PyUnusedLocal
     def _is_expired(self, cr, uid, ids, name, arg, context=None):
         result = dict.fromkeys(ids, False)
         for attachment in self.browse(cr, uid, ids, context=context):
             if attachment.expire_date and datetime.datetime.strptime(attachment.expire_date,
-                                                                     tools.DEFAULT_SERVER_DATETIME_FORMAT) < datetime.datetime.now():
+                                                                     tools.DEFAULT_SERVER_DATE_FORMAT) < datetime.datetime.now():
                 result[attachment.id] = True
         return result
 
@@ -441,38 +488,87 @@ class IrAttachmentApplication(osv.osv):
         return result
 
     _columns = {
-        'attachment_id': fields.many2one('ir.attachment', 'Attachment', required=True, ondelete='cascade'),
+        'state': fields.selection(
+            selection=[('apply', 'Apply'), ('director_process', 'Director Process'), ('manager_process', 'Manager Process'), ('approve', 'Approve'),
+                       ('disapprove', 'Disapprove')], string='State', track_visibility='onchange'),
+        # TODO:make this readonly in views
+        'attachment_ids': fields.many2many('ir.attachment', 'apply_ir_attachment_rel', 'apply_id', 'attachment_id', 'Apply Attachments'),
+
         'apply_user_id': fields.many2one('res.users', 'Apply User'),
         'apply_date': fields.datetime('Apply Date'),
+
+        'director_user_id': fields.many2one('res.users', 'Director Approve User'),
+        'director_approve_date': fields.datetime('Director Approve Date'),
+
         'approve_user_id': fields.many2one('res.users', 'Approver User'),
         'approve_date': fields.datetime('Approve Date'),
-        'expire_date': fields.datetime('Expire Date'),
+
+        'expire_date': fields.date('Expire Date', required=True),
         'is_expired': fields.function(_is_expired, type='boolean', string='Is expired'),
-        'state': fields.selection(selection=[('approve', 'Approve'), ('disapprove', 'Disapprove')], string='State'),
-        'attachment_name': fields.related('attachment_id', 'name', type='char', string='Attachment Name'),
-        'attachment_datas': fields.related('attachment_id', 'datas', type='binary', string='Datas'),
-        'is_downloadable': fields.function(_is_download_able, type='integer', string='Is Downloadable'),
     }
+
+    def apply(self, cr, uid, ids, context):
+        self.write(cr, uid, ids, {
+            'apply_user_id': uid,
+            'apply_date': fields.datetime.now(),
+            'state': 'director_process',
+        }, context=context)
+        return True
+
+    def _is_same_department(self, cr, uid, ids, context):
+        # Is project director?
+        application = self.browse(cr, uid, ids[0], context)
+        hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
+        apply_hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', application.apply_user_id.id)], context=context)
+        if hr_id and apply_hr_id and self.user_has_groups(cr, uid, "up_project.group_up_project_suozhang", context=context):
+            hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
+            apply_record = self.pool.get('hr.employee').browse(cr, 1, apply_hr_id[0], context=context)
+            user_department_id = hr_record.department_id.id if hr_record.department_id else "-1"
+            apply_department_id = apply_record.department_id.id if hr_record.department_id else "-2"
+            if user_department_id == apply_department_id:
+                return True
+        return False
+
+    def director_approve(self, cr, uid, ids, context):
+        if not self._is_same_department(cr, uid, ids, context):
+            raise osv.except_osv(_(u'没有权限'), _(u'必须是申请人所在部门所长才能审批'))
+        self.write(cr, uid, ids, {
+            'director_user_id': uid,
+            'director_approve_date': fields.datetime.now(),
+            'state': 'manager_process',
+        }, context=context)
+        return True
+
+    def director_disapprove(self, cr, uid, ids, context):
+        if not self._is_same_department(cr, uid, ids, context):
+            raise osv.except_osv(_(u'没有权限'), _(u'必须是申请人所在部门所长才能审批'))
+        self.write(cr, uid, ids, {
+            'director_user_id': None,
+            'director_approve_date': None,
+            'state': 'disapprove',
+        }, context=context)
+        return True
 
     def approve(self, cr, uid, ids, context):
         self.write(cr, uid, ids, {
             'approve_user_id': uid,
             'approve_date': fields.datetime.now(),
-            'expire_date': (datetime.datetime.now() + datetime.timedelta(days=7)).strftime(
-                tools.DEFAULT_SERVER_DATETIME_FORMAT),
             'state': 'approve',
         }, context=context)
         return True
 
     def disapprove(self, cr, uid, ids, context):
         self.write(cr, uid, ids, {
-            'approve_user_id': uid,
-            'approve_date': fields.datetime.now(),
-            'expire_date': (datetime.datetime.now() + datetime.timedelta(days=7)).strftime(
-                tools.DEFAULT_SERVER_DATETIME_FORMAT),
+            'approve_user_id': None,
+            'approve_date': None,
             'state': 'disapprove',
         }, context=context)
         return True
+
+    _defaults = {
+        'state': 'apply',
+        'expire_date': lambda *a: (datetime.date.today() + datetime.timedelta(days=7)).strftime(tools.DEFAULT_SERVER_DATE_FORMAT),
+    }
 
 
 class IrAttachmentLog(osv.osv):
