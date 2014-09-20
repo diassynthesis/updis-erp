@@ -51,6 +51,15 @@ class res_users(osv.osv):
                               'mobile_phone', 'work_location', 'interest', 'practice', 'person_resume', 'home_phone',
                               'devices', 'gender']
 
+    def get_department_suzhang_ids(self, cr, uid, ids, context=None):
+        employee_ids = self.pool['hr.employee'].search(cr, uid, [('user_id', 'in', ids)], context=context)
+        department_ids = [e.department_id.id for e in self.pool['hr.employee'].browse(cr, uid, employee_ids, context) if e.department_id]
+        department_user_ids = self.pool['hr.employee'].search(cr, uid, [('department_id', 'in', department_ids)], context=context)
+        department_user_ids = [e.user_id.id for e in self.pool['hr.employee'].browse(cr, uid, department_user_ids, context) if e.user_id]
+        suzhang_group = self.pool.get('ir.model.data').get_object(cr, 1, 'up_project', 'group_up_project_suozhang', context=context)
+        suzhang_user_ids = [u.id for u in suzhang_group.users]
+        return list(set(department_user_ids) & set(suzhang_user_ids))
+
     def _is_need_rtx_sync(self, cr, uid, context):
         return self.pool.get('ir.config_parameter').get_param(cr, 1, 'bigant.password_sync') == 'True'
 
@@ -204,7 +213,7 @@ class res_users(osv.osv):
             }
             self._rtx_client.get_client().SetUserPwd(**params)
         if self.pool.get('ir.config_parameter').get_param(cr, 1, 'docguarder.password_sync') == 'True':
-                docguarder.change_password(user.big_ant_login_name, new_passwd)
+            docguarder.change_password(user.big_ant_login_name, new_passwd)
         return result
 
 

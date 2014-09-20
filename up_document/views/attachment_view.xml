@@ -146,7 +146,7 @@
             <field name="name">ir.attachment.application.form</field>
             <field name="model">ir.attachment.application</field>
             <field name="arch" type="xml">
-                <form string="Attachment Download Management" version="7.0">
+                <form string="Attachment Download Management" version="7.0" create="false">
                     <header>
                         <button name="apply" type="object" string="发起申请" class="oe_highlight" states="apply"/>
 
