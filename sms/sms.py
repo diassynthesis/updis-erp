@@ -28,7 +28,7 @@ class sms(osv.Model):
         'sms_server_id': fields.char("SMS ID From Gateway", size=2000),
         'state': fields.selection([('draft', 'Draft'), ('error', 'Error'), ('sent', 'Sent')], 'State', required=True,
                                   size=64),
-        'type': fields.selection([('sms', 'SMS'), ('big_ant', 'RTX')], string="Message Type"),
+        'type': fields.selection([('sms', 'SMS'), ('big_ant', 'Big Ant')], string="Message Type"),
     }
     _defaults = {
         'state': 'draft',
@@ -37,7 +37,7 @@ class sms(osv.Model):
 
     def process_send_message_in_queue(self, cr, uid, context=None):
         self.process_sms_queue(cr, 1, context=context)
-        self.process_rtx_message(cr, 1, context)
+        self.process_big_ant_queue(cr, 1, context)
         logging.getLogger('sms.sms').warning("SENDING SMS Message!")
 
     def process_rtx_message(self, cr, uid, context=None):
@@ -215,7 +215,7 @@ class sms(osv.Model):
         if not isinstance(user_ids, list): user_ids = [user_ids]
         users = self.pool['res.users'].browse(cr, uid, list(user_ids), context)
         to = ';'.join(
-            [user.login for user in users if user.login])
+            [user.big_ant_login_name for user in users if user.big_ant_login_name])
         if to:
             sid = self.create(cr, uid,
                               {'to': to, 'subject': subject, 'content': content, 'model': model, 'res_id': res_id,
@@ -226,7 +226,7 @@ class sms(osv.Model):
         (module, xml_id) = group_xml_id.split('.')
         group = self.pool.get('ir.model.data').get_object(cr, 1, module, xml_id, context=context)
         if group:
-            to = ';'.join([user.login for user in group.users if user.login])
+            to = ';'.join([user.big_ant_login_name for user in group.users if user.big_ant_login_name])
             if to:
                 self.create(cr, uid, {'from': from_rec, 'to': to, 'subject': subject, 'content': content,
                                       'model': model, 'res_id': res_id, 'type': 'big_ant'},
@@ -241,7 +241,7 @@ class sms(osv.Model):
         if models:
             groups_pool = self.pool.get("project.config.sms")
             group = groups_pool.browse(cr, 1, models[0].res_id, context=context)
-            to = ';'.join([user.login for user in group.users if user.login])
+            to = ';'.join([user.big_ant_login_name for user in group.users if user.big_ant_login_name])
 
             if to:
                 sms = self.pool.get('sms.sms')

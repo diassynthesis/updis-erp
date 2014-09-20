@@ -5,8 +5,6 @@ from up_tools.bigantlib import BigAntClient
 from openerp import SUPERUSER_ID
 
 from openerp.osv import osv, fields
-from up_tools.rtxlib import RtxClient
-from openerp.tools.translate import _
 from up_tools import docguarder
 
 
@@ -22,8 +20,6 @@ class user_device(osv.osv):
 class res_users(osv.osv):
     _inherit = "res.users"
     _bigAntClient = BigAntClient()
-    _rtx_client = RtxClient()
-    _base_dep = u'全院'
     _columns = {
         'sign_image': fields.binary("Sign Image",
                                     help="This field holds the image used as siganture for this contact"),
@@ -38,7 +34,7 @@ class res_users(osv.osv):
         'home_phone': fields.char('Home Phone', size=32, readonly=False),
         'devices': fields.many2many("updis.device", "res_users_device_rel", "res_users_id", "device_id",
                                     "User Device Relative"),
-        'big_ant_login_name': fields.char('Docguarder User Name', size=128),
+        'big_ant_login_name': fields.char('Docguarder & Big Ant User Name', size=128),
         'gender': fields.selection([(u'男', u'男'), (u'女', u'女')], 'Gender'),
     }
 
@@ -59,72 +55,6 @@ class res_users(osv.osv):
         suzhang_group = self.pool.get('ir.model.data').get_object(cr, 1, 'up_project', 'group_up_project_suozhang', context=context)
         suzhang_user_ids = [u.id for u in suzhang_group.users]
         return list(set(department_user_ids) & set(suzhang_user_ids))
-
-    def _is_need_rtx_sync(self, cr, uid, context):
-        return self.pool.get('ir.config_parameter').get_param(cr, 1, 'bigant.password_sync') == 'True'
-
-    def _is_rtx_user_exist(self, name):
-        return self._rtx_client.get_client().IsUserExist(userName=name, key=self._rtx_client.rtx_key)
-
-    def write_rtx_user(self, cr, uid, ids, vals, context=None):
-        if self._is_need_rtx_sync(cr, uid, context):
-            client = self._rtx_client.get_client()
-            for user in self.browse(cr, uid, ids, context):
-                params = {'userName': user.login,
-                          # 'userPwd':1,
-                          'DeptName': self._base_dep,
-                          'ChsName': user.name or '',
-                          'IGender': 1 if vals.get('gender', '') == u'女' else 0,
-                          'Cell': user.mobile_phone or '',
-                          # 'Email': user.work_email or '',
-                          'Phone': user.work_phone or '',
-                          # 'Position': '',
-                          'AuthTYpe': 0,
-                          'key': self._rtx_client.rtx_key}
-                client.EditUser(**params)
-                if user.active is False:
-                    self.unlink_rtx_user(cr, uid, ids, context)
-                elif not self._is_rtx_user_exist(user.login):
-                    values = {
-                        'login': user.login or '',
-                        'name': user.name or '',
-                        'work_phone': user.work_phone or '',
-                        # 'work_email': user.work_email or '',
-                        'mobile_phone': user.mobile_phone or '',
-                        'gender': user.gender,
-                    }
-                    self.add_rtx_user(cr, uid, values, context)
-
-    def add_rtx_user(self, cr, uid, vals, context=None):
-        if self._is_need_rtx_sync(cr, uid, context):
-            params = {'userName': vals.get('login', ''),
-                      # 'userPwd':1,
-                      'DeptName': self._base_dep,
-                      'ChsName': vals.get('name', ''),
-                      'IGender': 1 if vals.get('gender', '') == u'女' else 0,
-                      'Cell': vals.get('mobile_phone', ''),
-                      # 'Email': vals.get('work_email', ''),
-                      'Phone': vals.get('work_phone', ''),
-                      # 'Position':'',
-                      'AuthTYpe': 0,
-                      'key': self._rtx_client.rtx_key}
-            if self._is_rtx_user_exist(vals.get('login')):
-                raise osv.except_osv(_('Warning!'), _('当前登录名已经在RTX中使用.'))
-            else:
-                self._rtx_client.get_client().AddUser(**params)
-
-    def unlink_rtx_user(self, cr, uid, ids, context):
-        if self._is_need_rtx_sync(cr, uid, context):
-            client = self._rtx_client.get_client()
-            for user in self.browse(cr, uid, ids, context):
-                try:
-                    client.DeleteUser(userName=user.login, key=self._rtx_client.rtx_key)
-                except Exception:
-                    pass
-
-    def unlink(self, cr, uid, ids, context=None):
-        self.unlink_rtx_user(cr, uid, ids, context)
-        return super(res_users, self).unlink(cr, uid, ids, context)
 
     def write(self, cr, uid, ids, values, context=None):
         if not hasattr(ids, '__iter__'):
@@ -160,17 +90,15 @@ class res_users(osv.osv):
                 if id in self._uid_cache[db]:
                     del self._uid_cache[db][id]
         self.context_get.clear_cache(self)
-        if not (len(values) == 1 and 'password' in values):
-            self.write_rtx_user(cr, 1, ids, values, context)
         return res
 
     def create(self, cr, uid, vals, context=None):
-        self.add_rtx_user(cr, uid, vals, context)
         if self.user_has_groups(cr, uid, 'updis.group_res_user_manager'):
             return super(res_users, self).create(cr, 1, vals, context)
         else:
             return super(res_users, self).create(cr, uid, vals, context)
 
+    # noinspection PyUnusedLocal
     def on_change_login(self, cr, uid, ids, login, big_ant_name, context=None):
         ret = {'value': {}}
         if not big_ant_name:
@@ -180,6 +108,7 @@ class res_users(osv.osv):
             ret['value'].update(vals)
         return ret
 
+    # noinspection PyUnusedLocal
     def _get_group(self, cr, uid, context=None):
         dataobj = self.pool.get('ir.model.data')
         result = []
@@ -205,13 +134,12 @@ class res_users(osv.osv):
     def change_password(self, cr, uid, old_passwd, new_passwd, context=None):
         result = super(res_users, self).change_password(cr, uid, old_passwd, new_passwd, context=context)
         user = self.browse(cr, 1, uid, context)
-        if self.pool.get('ir.config_parameter').get_param(cr, 1, 'bigant.password_sync') == 'True' and self._is_rtx_user_exist(user.login):
+        if user.big_ant_login_name and self.pool.get('ir.config_parameter').get_param(cr, 1, 'bigant.password_sync') == 'True':
             params = {
-                'userName': user.login,
-                'pwd': new_passwd,
-                'key': self._rtx_client.rtx_key,
+                'loginName': user.big_ant_login_name,
+                'password': new_passwd,
             }
-            self._rtx_client.get_client().SetUserPwd(**params)
+            self._bigAntClient.Employee___asmx.SetPassword2.post(**params)
         if self.pool.get('ir.config_parameter').get_param(cr, 1, 'docguarder.password_sync') == 'True':
             docguarder.change_password(user.big_ant_login_name, new_passwd)
         return result
@@ -220,18 +148,16 @@ class res_users(osv.osv):
 class ChangePasswordUser(osv.TransientModel):
     _inherit = 'change.password.user'
     _bigAntClient = BigAntClient()
-    _rtx_client = RtxClient()
 
     def change_password_button(self, cr, uid, ids, context=None):
         for user in self.browse(cr, uid, ids, context=context):
             self.pool.get('res.users').write(cr, uid, user.user_id.id, {'password': user.new_passwd})
-            if self.pool.get('ir.config_parameter').get_param(cr, 1, 'bigant.password_sync') == 'True' and \
-                    self._rtx_client.get_client().IsUserExist(userName=user.user_id.login, key=self._rtx_client.rtx_key):
+            res_user = self.pool.get('res.users').browse(cr, 1, user.user_id.id, context)
+            if res_user.big_ant_login_name and self.pool.get('ir.config_parameter').get_param(cr, 1, 'bigant.password_sync') == 'True':
                 params = {
-                    'userName': user.user_id.login,
-                    'pwd': user.new_passwd,
-                    'key': self._rtx_client.rtx_key,
+                    'loginName': res_user.big_ant_login_name,
+                    'password': user.new_passwd,
                 }
-                self._rtx_client.get_client().SetUserPwd(**params)
+                self._bigAntClient.Employee___asmx.SetPassword2.post(**params)
             if self.pool.get('ir.config_parameter').get_param(cr, 1, 'docguarder.password_sync') == 'True':
                 docguarder.change_password(user.user_id.big_ant_login_name, user.new_passwd)
