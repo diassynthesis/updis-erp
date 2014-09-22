@@ -66,7 +66,7 @@ class sms(osv.Model):
 
     def process_big_ant_queue(self, cr, uid, context=None):
         params = {
-            'bigantServer': '10.100.100.200',
+            'bigantServer': '10.100.100.110',
             'port': '6660',
             'sendLoginName': 'xinxi',
             'passwordType': 0,
