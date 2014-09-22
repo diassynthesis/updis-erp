@@ -159,12 +159,12 @@
                                 groups="up_document.group_attachment_download_manager"/>
                         <button name="disapprove" type="object" string="Disapprove" states="manager_process"
                                 groups="up_document.group_attachment_download_manager"/>
-                        <button string="批量下载" name="%(action_download_apply_attachments_wiz)d" type="action" context="{'temp_active_ids':attachment_ids}"
-                                states="approve"/>
                         <field name="state" widget="statusbar" readonly="1" statusbar_visible="apply,director_process,manager_process,approve"/>
                     </header>
                     <sheet>
                         <group colspan="2" col="1">
+                            <button string="批量下载" name="%(action_download_apply_attachments_wiz)d" type="action" context="{'temp_active_ids':attachment_ids}"
+                                states="approve"/>
                             <field name="attachment_ids" readonly="1"/>
                         </group>
                         <group colspan="2" col="4">
