@@ -26,7 +26,7 @@ class ProjectFiledFiling(osv.Model):
         'project_name': fields.char('Project Name', 256),
         'project_serial_number': fields.related('project_id', 'xiangmubianhao', type='char', readonly=True, string='Project Serial Number'),
         'project_scale': fields.related('project_id', 'guimo', type='char', string='Project Scale', readonly=True),
-        'project_user': fields.related('project_id', 'user_id', type="many2many", relation='res.users', string='Project Manager', readonly=True),
+        'project_user': fields.many2many('res.users', 'rel_pj_filing_users', 'filing_id', 'user_id', string='Project Manager'),
         'project_category_id': fields.related('project_id', 'categories_id', type='many2one', relation='project.upcategory',
                                               string='Project Category', readonly=True),
         'project_country_id': fields.related('project_id', 'country_id', type='many2one', relation='res.country', string='Project Country',
@@ -84,11 +84,12 @@ class ProjectFiledFiling(osv.Model):
         http_address = self.pool['ir.config_parameter'].get_param(cr, uid, 'web.base.static.url', default='', context=context)
         http_address += "/#id=%s&amp;view_type=form&amp;model=project.project" % filing.project_id.id
         content_sms = u'项目[%s]需要您处理【项目归档-负责人审批】请求,请及时处理项目和跟进项目进度。' % filing.project_id.name
-        content_ant = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您处理【项目归档-负责人审批】请求,请及时处理项目和跟进项目进度 """ % (
+        content_ant = u"""项目 <a target='_blank' href='%s'> [%s] </a> 需要您处理【项目归档-负责人审批】请求,请及时处理项目和跟进项目进度 """ % (
             http_address, filing.project_id.name)
-        sms_obj.send_sms_to_users(cr, uid, user_ids=filing.project_user.id, from_rec=filing.name, content=content_sms, model=self._name, res_id=filing.id,
+        sms_obj.send_sms_to_users(cr, uid, user_ids=[u.id for u in filing.project_user], from_rec=filing.name, content=content_sms, model=self._name,
+                                  res_id=filing.id,
                                   context=context)
-        sms_obj.send_big_ant_to_users(cr, uid, user_ids=filing.project_user.id, from_rec=filing.name, subject=u'项目归档申请等待处理', content=content_ant,
+        sms_obj.send_big_ant_to_users(cr, uid, user_ids=[u.id for u in filing.project_user], from_rec=filing.name, subject=u'项目归档申请等待处理', content=content_ant,
                                       model=self._name, res_id=filing.id, context=context)
         filing.project_id.write({'status_code': 30104})
         return self.write(cr, uid, ids, {'state': 'manager_approve'}, context)
@@ -102,9 +103,9 @@ class ProjectFiledFiling(osv.Model):
         content_ant = u"""项目 <a target='_blank' href='%s'> [%s] </a> 需要您处理【项目归档-图档室审批】请求,请及时处理项目和跟进项目进度 """ % (
             http_address, filing.project_id.name)
         sms_obj.send_sms_to_group(cr, uid, from_rec=filing.name, content=content_sms, model=self._name, res_id=filing.id,
-                                  group_xml_id='up_project.group_up_project_filed_manager', context=context)
+                                  group_xml_ids='up_project.group_up_project_filed_manager', context=context)
         sms_obj.send_big_ant_to_group(cr, uid, from_rec=filing.name, subject=u'项目归档申请等待处理', content=content_ant, model=self._name, res_id=filing.id,
-                                      group_xml_id='up_project.group_up_project_filed_manager', context=context)
+                                      group_xml_ids='up_project.group_up_project_filed_manager', context=context)
         filing.project_id.write({'status_code': 30103})
         return self.write(cr, uid, ids, {'state': 'approve_filing', 'manager_approver_id': uid, 'manager_approver_date': fields.datetime.now()},
                           context)
@@ -272,6 +273,7 @@ class ProjectProjectInherit(osv.Model):
         filing_obj = self.pool.get('project.project.filed.filing')
         project = self.browse(cr, uid, ids[0], context=context)
         filing_id = None
+        user_ids = self.read(cr, uid, ids[0], ['user_id'], context=context)['user_id']
         filing_ids = filing_obj.search(cr, uid, [('project_id', '=', ids[0])], order='create_date desc', context=context)
         # if have filing record then show the last filing form
         if filing_ids:
@@ -285,7 +287,8 @@ class ProjectProjectInherit(osv.Model):
                     data = self.pool['project.project.filed.record'].copy_data(cr, uid, template_id, context=context)
                     data['is_template'] = False
                     new_datas += [(0, 0, data), ]
-                filing_id = filing_obj.create(cr, uid, {'project_id': ids[0], 'record_ids': new_datas, 'project_name': project.name}, context=context)
+                filing_id = filing_obj.create(cr, uid, {'project_id': ids[0], 'record_ids': new_datas, 'project_name': project.name,
+                                                        'project_user': [(6, 0, user_ids)]}, context=context)
                 # Write Status Code
                 project.write({'status_code': 30101})
             # else if project is in project filed state
@@ -311,6 +314,7 @@ class ProjectProjectInherit(osv.Model):
     def button_multi_filing_form(self, cr, uid, ids, context):
         filing_obj = self.pool.get('project.project.filed.filing')
         project = self.browse(cr, uid, ids[0], context=context)
+        user_ids = self.read(cr, uid, ids[0], ['user_id'], context=context)['user_id']
         filing_ids = filing_obj.search(cr, uid, [('project_id', '=', ids[0]), ('state', 'not in', ['end_filing'])], order='create_date desc',
                                        context=context)
         # if is allow multi filing
@@ -330,6 +334,7 @@ class ProjectProjectInherit(osv.Model):
                 'paper_file_approver_date': None,
                 'manager_approver_id': False,
                 'manager_approver_date': False,
+                'project_user': [(6, 0, user_ids)],
             }, context=context)
             project.write({'status_code': 30101})
             return True
