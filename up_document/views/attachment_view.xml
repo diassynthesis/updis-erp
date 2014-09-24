@@ -124,7 +124,7 @@
             <field name="name">ir.attachment.application.tree</field>
             <field name="model">ir.attachment.application</field>
             <field name="priority" eval="10"/>
-            <field name="groups_id" eval="[(6, 0, [ref('up_project.group_up_project_suozhang'),ref('up_document.group_attachment_download_manager')])]"/>
+            <field name="groups_id" eval="[(6, 0, [ref('up_project.group_up_project_zhurengong'),ref('up_project.group_up_project_suozhang'),ref('up_document.group_attachment_download_manager')])]"/>
             <field name="arch" type="xml">
                 <tree string="Attachment Download Management" version="7.0"
                       colors="green:state == 'approve';grey:state == 'disapprove'">
@@ -150,10 +150,10 @@
                     <header>
                         <button name="apply" type="object" string="发起申请" class="oe_highlight" states="apply"/>
 
-                        <button name="director_approve" type="object" string="所长审批通过" class="oe_highlight"
-                                groups="up_project.group_up_project_suozhang" states="director_process"/>
+                        <button name="director_approve" type="object" string="审批通过" class="oe_highlight"
+                                groups="up_project.group_up_project_suozhang,up_project.group_up_project_zhurengong" states="director_process"/>
                         <button name="director_disapprove" type="object" string="不通过" class="oe_highlight"
-                                groups="up_project.group_up_project_suozhang" states="director_process"/>
+                                groups="up_project.group_up_project_suozhang,up_project.group_up_project_zhurengong" states="director_process"/>
 
                         <button name="approve" type="object" string="Approve" class="oe_highlight" states="manager_process"
                                 groups="up_document.group_attachment_download_manager"/>

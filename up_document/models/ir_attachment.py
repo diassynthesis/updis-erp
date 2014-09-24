@@ -517,12 +517,15 @@ class IrAttachmentApplication(osv.osv):
         sms_msg = u"有用户发起文件下载审批， 请登陆系统处理"
         http_address = self.pool['ir.config_parameter'].get_param(cr, 1, 'web.base.static.url', context=context)
         big_ant_msg = (u"文件下载审批请求",
-                       u"您有需要处理的文件下载<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>审批请求</a>，请处理" % (http_address, ids[0]))
+                       u"您有需要处理的文件下载<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>审批请求</a>，请处理" % (
+                           http_address, ids[0]))
         model = 'ir.attachment.application'
         res_id = ids[0]
         suzhang_ids = self.pool['res.users'].get_department_suzhang_ids(cr, uid, [uid], context=context)
-        self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, suzhang_ids, context=None)
-        self.pool.get('sms.sms').send_big_ant_to_users(cr, uid, model, big_ant_msg[0], big_ant_msg[1], model, res_id, suzhang_ids, context=None)
+        zhurengong_ids = self.pool['res.users'].get_department_zhurengong_ids(cr, uid, [uid], context=context)
+        self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, suzhang_ids + zhurengong_ids, context=None)
+        self.pool.get('sms.sms').send_big_ant_to_users(cr, uid, model, big_ant_msg[0], big_ant_msg[1], model, res_id, suzhang_ids + zhurengong_ids,
+                                                       context)
         return True
 
     def _is_same_department(self, cr, uid, ids, context):
@@ -530,7 +533,8 @@ class IrAttachmentApplication(osv.osv):
         application = self.browse(cr, uid, ids[0], context)
         hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
         apply_hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', application.apply_user_id.id)], context=context)
-        if hr_id and apply_hr_id and self.user_has_groups(cr, uid, "up_project.group_up_project_suozhang", context=context):
+        if hr_id and apply_hr_id and self.user_has_groups(cr, uid, "up_project.group_up_project_suozhang,up_project.group_up_project_zhurengong",
+                                                          context=context):
             hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
             apply_record = self.pool.get('hr.employee').browse(cr, 1, apply_hr_id[0], context=context)
             user_department_id = hr_record.department_id.id if hr_record.department_id else "-1"
@@ -541,7 +545,7 @@ class IrAttachmentApplication(osv.osv):
 
     def director_approve(self, cr, uid, ids, context):
         if not self._is_same_department(cr, uid, ids, context):
-            raise osv.except_osv(_(u'没有权限'), _(u'必须是申请人所在部门所长才能审批'))
+            raise osv.except_osv(_(u'没有权限'), _(u'必须是申请人所在部门所长或主任工才能审批'))
         self.write(cr, uid, ids, {
             'director_user_id': uid,
             'director_approve_date': fields.datetime.now(),
@@ -550,12 +554,13 @@ class IrAttachmentApplication(osv.osv):
         sms_msg = u"有用户发起文件下载审批， 请登陆系统处理"
         http_address = self.pool['ir.config_parameter'].get_param(cr, 1, 'web.base.static.url', context=context)
         big_ant_msg = (u"文件下载审批请求",
-                       u"您有需要处理的文件下载<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>审批请求</a>，请处理" % (http_address, ids[0]))
+                       u"您有需要处理的文件下载<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>审批请求</a>，请处理" % (
+                       http_address, ids[0]))
         model = 'ir.attachment.application'
         res_id = ids[0]
         group_id = 'up_document.group_attachment_download_manager'
-        self.pool['sms.sms'].send_sms_to_group(cr, uid, model, sms_msg, model, res_id, group_id, context=None)
-        self.pool.get('sms.sms').send_big_ant_to_group(cr, 1, model, big_ant_msg[0], big_ant_msg[1], model, res_id, group_id, context=None)
+        self.pool['sms.sms'].send_sms_to_group(cr, uid, model, sms_msg, model, res_id, group_id, context)
+        self.pool.get('sms.sms').send_big_ant_to_group(cr, 1, model, big_ant_msg[0], big_ant_msg[1], model, res_id, group_id, context)
         return True
 
     def director_disapprove(self, cr, uid, ids, context):
@@ -570,12 +575,13 @@ class IrAttachmentApplication(osv.osv):
         sms_msg = u"文件下载申请被拒绝，请登陆查看"
         http_address = self.pool['ir.config_parameter'].get_param(cr, 1, 'web.base.static.url', context=context)
         big_ant_msg = (u"文件下载申请被拒绝",
-                       u"您有文件<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>下载申请</a>被拒绝，请登陆处理" % (http_address, ids[0]))
+                       u"您有文件<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>下载申请</a>被拒绝，请登陆处理" % (
+                       http_address, ids[0]))
         model = 'ir.attachment.application'
         res_id = ids[0]
         user = self.browse(cr, uid, ids[0], context).apply_user_id
-        self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, user.id, context=None)
-        self.pool.get('sms.sms').send_big_ant_to_users(cr, uid, model, big_ant_msg[0], big_ant_msg[1], model, res_id, user.id, context=None)
+        self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, user.id, context)
+        self.pool.get('sms.sms').send_big_ant_to_users(cr, uid, model, big_ant_msg[0], big_ant_msg[1], model, res_id, user.id, context)
         return True
 
     def approve(self, cr, uid, ids, context):
@@ -587,12 +593,13 @@ class IrAttachmentApplication(osv.osv):
         sms_msg = u"文件下载申请已通过，请登陆查看"
         http_address = self.pool['ir.config_parameter'].get_param(cr, 1, 'web.base.static.url', context=context)
         big_ant_msg = (u"文件下载申请通过",
-                       u"您有文件<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>下载申请</a>通过，请登陆处理" % (http_address, ids[0]))
+                       u"您有文件<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>下载申请</a>通过，请登陆处理" % (
+                       http_address, ids[0]))
         model = 'ir.attachment.application'
         res_id = ids[0]
         user = self.browse(cr, uid, ids[0], context).apply_user_id
-        self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, user.id, context=None)
-        self.pool.get('sms.sms').send_big_ant_to_users(cr, uid, model, big_ant_msg[0], big_ant_msg[1], model, res_id, user.id, context=None)
+        self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, user.id, context)
+        self.pool.get('sms.sms').send_big_ant_to_users(cr, uid, model, big_ant_msg[0], big_ant_msg[1], model, res_id, user.id, context)
         return True
 
     def disapprove(self, cr, uid, ids, context):
@@ -604,12 +611,13 @@ class IrAttachmentApplication(osv.osv):
         sms_msg = u"文件下载申请被拒绝，请登陆查看"
         http_address = self.pool['ir.config_parameter'].get_param(cr, 1, 'web.base.static.url', context=context)
         big_ant_msg = (u"文件下载申请被拒绝",
-                       u"您有文件<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>下载申请</a>被拒绝，请登陆处理" % (http_address, ids[0]))
+                       u"您有文件<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>下载申请</a>被拒绝，请登陆处理" % (
+                       http_address, ids[0]))
         model = 'ir.attachment.application'
         res_id = ids[0]
         user = self.browse(cr, uid, ids[0], context).apply_user_id
-        self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, user.id, context=None)
-        self.pool.get('sms.sms').send_big_ant_to_users(cr, uid, model, big_ant_msg[0], big_ant_msg[1], model, res_id, user.id, context=None)
+        self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, user.id, context)
+        self.pool.get('sms.sms').send_big_ant_to_users(cr, uid, model, big_ant_msg[0], big_ant_msg[1], model, res_id, user.id, context)
         return True
 
     _defaults = {

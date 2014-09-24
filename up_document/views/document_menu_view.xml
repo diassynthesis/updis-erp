@@ -73,7 +73,7 @@
                   parent="menu_attachment_download_root" action="action_attachment_download_my"/>
         <menuitem name="Attachment Download Application Manage" id="menu_attachment_download_manage" sequence="20"
                   parent="menu_attachment_download_root" action="action_attachment_download_manage"
-                  groups="up_document.group_attachment_download_manager,up_project.group_up_project_suozhang"/>
+                  groups="up_document.group_attachment_download_manager,up_project.group_up_project_suozhang,up_project.group_up_project_zhurengong"/>
 
         <menuitem
                 action="action_all_document_directory_tree"

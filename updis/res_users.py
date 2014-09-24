@@ -56,6 +56,15 @@ class res_users(osv.osv):
         suzhang_user_ids = [u.id for u in suzhang_group.users]
         return list(set(department_user_ids) & set(suzhang_user_ids))
 
+    def get_department_zhurengong_ids(self, cr, uid, ids, context=None):
+        employee_ids = self.pool['hr.employee'].search(cr, uid, [('user_id', 'in', ids)], context=context)
+        department_ids = [e.department_id.id for e in self.pool['hr.employee'].browse(cr, uid, employee_ids, context) if e.department_id]
+        department_user_ids = self.pool['hr.employee'].search(cr, uid, [('department_id', 'in', department_ids)], context=context)
+        department_user_ids = [e.user_id.id for e in self.pool['hr.employee'].browse(cr, uid, department_user_ids, context) if e.user_id]
+        suzhang_group = self.pool.get('ir.model.data').get_object(cr, 1, 'up_project', 'group_up_project_zhurengong', context=context)
+        suzhang_user_ids = [u.id for u in suzhang_group.users]
+        return list(set(department_user_ids) & set(suzhang_user_ids))
+
     def write(self, cr, uid, ids, values, context=None):
         if not hasattr(ids, '__iter__'):
             ids = [ids]
