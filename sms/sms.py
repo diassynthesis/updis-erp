@@ -171,17 +171,18 @@ class sms(osv.Model):
                     'sms_server_id': str(e),
                 })
 
-    def send_sms_to_group(self, cr, uid, from_rec, content, model, res_id, group_xml_id, context=None):
-        (module, xml_id) = group_xml_id.split('.')
-        group = self.pool.get('ir.model.data').get_object(cr, 1, module, xml_id, context=context)
-        if group:
-            to = ','.join(
-                [rid.mobile_phone.strip() for rid in group.users if rid.mobile_phone and rid.mobile_phone.strip()])
+    def send_sms_to_group(self, cr, uid, from_rec, content, model, res_id, group_xml_ids, context=None):
+        for group_xml_id in group_xml_ids.split(','):
+            (module, xml_id) = group_xml_id.split('.')
+            group = self.pool.get('ir.model.data').get_object(cr, 1, module, xml_id, context=context)
+            if group:
+                to = ','.join(
+                    [rid.mobile_phone.strip() for rid in group.users if rid.mobile_phone and rid.mobile_phone.strip()])
 
-            if to:
-                self.create(cr, uid, {'from': from_rec, 'to': to, 'content': content,
-                                      'model': model, 'res_id': res_id},
-                            context=context)
+                if to:
+                    self.create(cr, uid, {'from': from_rec, 'to': to, 'content': content,
+                                          'model': model, 'res_id': res_id},
+                                context=context)
 
     def send_sms_to_users(self, cr, uid, from_rec, content, model, res_id, user_ids, context=None):
         if not isinstance(user_ids, list): user_ids = [user_ids]
@@ -222,15 +223,16 @@ class sms(osv.Model):
                                'type': 'big_ant'},
                               context=context)
 
-    def send_big_ant_to_group(self, cr, uid, from_rec, subject, content, model, res_id, group_xml_id, context=None):
-        (module, xml_id) = group_xml_id.split('.')
-        group = self.pool.get('ir.model.data').get_object(cr, 1, module, xml_id, context=context)
-        if group:
-            to = ';'.join([user.big_ant_login_name for user in group.users if user.big_ant_login_name])
-            if to:
-                self.create(cr, uid, {'from': from_rec, 'to': to, 'subject': subject, 'content': content,
-                                      'model': model, 'res_id': res_id, 'type': 'big_ant'},
-                            context=context)
+    def send_big_ant_to_group(self, cr, uid, from_rec, subject, content, model, res_id, group_xml_ids, context=None):
+        for group_xml_id in group_xml_ids.split(','):
+            (module, xml_id) = group_xml_id.split('.')
+            group = self.pool.get('ir.model.data').get_object(cr, 1, module, xml_id, context=context)
+            if group:
+                to = ';'.join([user.big_ant_login_name for user in group.users if user.big_ant_login_name])
+                if to:
+                    self.create(cr, uid, {'from': from_rec, 'to': to, 'subject': subject, 'content': content,
+                                          'model': model, 'res_id': res_id, 'type': 'big_ant'},
+                                context=context)
 
     def send_big_ant_to_config_group(self, cr, uid, config_group_id, from_rec, subject, content, model, res_id,
                                      context=None):

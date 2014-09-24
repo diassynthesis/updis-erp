@@ -99,7 +99,7 @@ class ProjectFiledFiling(osv.Model):
         http_address = self.pool['ir.config_parameter'].get_param(cr, uid, 'web.base.static.url', default='', context=context)
         http_address += "/#id=%s&amp;view_type=form&amp;model=project.project" % filing.project_id.id
         content_sms = u'项目[%s]需要您处理【项目归档-图档室审批】请求,请及时处理项目和跟进项目进度。' % filing.project_id.name
-        content_ant = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您处理【项目归档-图档室审批】请求,请及时处理项目和跟进项目进度 """ % (
+        content_ant = u"""项目 <a target='_blank' href='%s'> [%s] </a> 需要您处理【项目归档-图档室审批】请求,请及时处理项目和跟进项目进度 """ % (
             http_address, filing.project_id.name)
         sms_obj.send_sms_to_group(cr, uid, from_rec=filing.name, content=content_sms, model=self._name, res_id=filing.id,
                                   group_xml_id='up_project.group_up_project_filed_manager', context=context)

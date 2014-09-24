@@ -302,8 +302,9 @@ class IrAttachmentInherit(osv.osv):
                 model = 'ir.attachment'
                 res_id = attachment.id
                 group_id = 'up_document.group_attachment_download_manager'
+                self.pool.get('sms.sms').send_sms_to_group(cr, 1, from_rec, subject, model, res_id, group_id, context)
                 self.pool.get('sms.sms').send_big_ant_to_group(cr, 1, from_rec, subject, content, model, res_id,
-                                                               group_id, context=None)
+                                                               group_id, context)
         return True
 
     def get_download_file(self, cr, uid, files, directory_ids, res_id, res_model, context=None):
