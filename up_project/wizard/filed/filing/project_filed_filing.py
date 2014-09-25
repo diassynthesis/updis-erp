@@ -256,18 +256,37 @@ class ProjectProjectInherit(osv.Model):
 
     # noinspection PyUnusedLocal
     def _filed_field_calc(self, cr, uid, ids, field_name, args, context=None):
-        result = dict.fromkeys(ids, {'is_multi_filing_allowed': False, 'filed_times': False})
+        result = dict.fromkeys(ids, {
+            'is_multi_filing_allowed': False,
+            'filed_times': False,
+            'filed_project_end_date': None,
+            'filed_import_paper_builder': None,
+            'filed_import_total_paper': None,
+            'filed_import_tag_ids': None,
+            'filed_description': None,
+            'filed_show_images': None,
+        })
         filing_obj = self.pool.get('project.project.filed.filing')
         for id in ids:
             project = self.browse(cr, uid, id, context=context)
             filing_ids = filing_obj.search(cr, uid, [('project_id', '=', id), ('state', 'not in', ['end_filing'])], order='create_date desc',
                                            context=context)
-            filed_times = len(filing_obj.search(cr, uid, [('project_id', '=', id), ('state', 'in', ['end_filing'])], order='create_date desc',
-                                                context=context))
+            filed_records = filing_obj.search(cr, uid, [('project_id', '=', id), ('state', 'in', ['end_filing'])], order='create_date desc',
+                                              context=context)
+            filed_times = len(filed_records)
             # if is allow multi filing
             if project.state == 'project_finish' and not filing_ids and filing_obj.search(cr, uid, [('project_id', '=', id)], context=context):
                 result[id]['is_multi_filing_allowed'] = True
             result[id]['filed_times'] = filed_times
+            # if have filing record,show detail in project page
+            if filed_records:
+                filing_form = filing_obj.browse(cr, uid, filed_records[0], context)
+                result[id]['filed_project_end_date'] = filing_form.project_end_date
+                result[id]['filed_import_paper_builder'] = filing_form.import_paper_builder
+                result[id]['filed_import_total_paper'] = filing_form.import_total_paper
+                result[id]['filed_import_tag_ids'] = [t.id for t in filing_form.tag_ids]
+                result[id]['filed_description'] = filing_form.description
+                result[id]['filed_show_images'] = [a.id for a in filing_form.show_images]
         return result
 
     _columns = {
@@ -275,6 +294,20 @@ class ProjectProjectInherit(osv.Model):
         'filed_filing_state': fields.function(_get_filing_state, type='selection', selection=ProjectFiledFiling.FILING_STATE, string='Filing State'),
         'is_multi_filing_allowed': fields.function(_filed_field_calc, type='boolean', string='Is Multi Filing Allowed', multi='filed'),
         'filed_times': fields.function(_filed_field_calc, type='integer', string='Is Multi Filing Allowed', multi='filed'),
+        # 归档日期
+        'filed_project_end_date': fields.function(_filed_field_calc, type='date', string='Project End Date', multi='filed', readonly=True),
+        # 立卷人
+        'filed_import_paper_builder': fields.function(_filed_field_calc, type='char', string='Filed Paper Builder', multi='filed', readonly=True),
+        # 张数合计
+        'filed_import_total_paper': fields.function(_filed_field_calc, type='char', string='Filed Total Paper', multi='filed', readonly=True),
+        # 关键词
+        'filed_import_tag_ids': fields.function(_filed_field_calc, type='many2many', relation='project.project.filed.tag', string='Filed Tags',
+                                                multi='filed', readonly=True),
+        # 概况
+        'filed_description': fields.function(_filed_field_calc, type='char', string='Filed Description', multi='filed', readonly=True),
+        # 推荐图纸
+        'filed_show_images': fields.function(_filed_field_calc, type='many2many', relation='ir.attachment', string='File Show Images', multi='filed',
+                                             readonly=True)
     }
 
     def button_filed_filing_form(self, cr, uid, ids, context):
