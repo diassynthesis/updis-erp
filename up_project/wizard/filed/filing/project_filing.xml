@@ -82,6 +82,7 @@
                             <field name="is_project_member"/>
                             <field name="is_user_is_project_manager"/>
                             <field name="project_id" readonly="1"/>
+                            <field name="is_import"/>
                         </group>
                         <div class="sheet-title">
                             <h1>项目文件归档表</h1>
@@ -144,6 +145,11 @@
                                 <group colspan="2" col="4">
                                     <field name="manager_approver_id" readonly="1"/>
                                     <field name="manager_approver_date" readonly="1"/>
+                                </group>
+                                <group colspan="2" col="4" attrs="{'invisible':[('is_import','=',False)]}" string="导入记录">
+                                    <field name="import_paper_builder"/>
+                                    <field name="import_graph_type"/>
+                                    <field name="import_total_paper"/>
                                 </group>
                             </page>
                             <page string="第二步:纸质文件归档填写">

@@ -69,13 +69,20 @@ class ProjectFiledFiling(osv.Model):
         'manager_approver_date': fields.datetime('Manager Approve Datetime'),
         'paper_file_approver_id': fields.many2one('res.users', 'Paper File Approver'),
         'paper_file_approver_date': fields.datetime('Paper File Approve Datetime'),
-
+        # 立卷人
+        'import_paper_builder': fields.char('Import Papar Builder', size=128),
+        # 图别
+        'import_graph_type': fields.char('Import Graph Type', size=128),
+        # 张数合计
+        'import_total_paper': fields.char('Import Total Paper', size=128),
+        'is_import': fields.boolean('Is Import'),
     }
 
     _defaults = {
         'state': 'apply_filing',
         'project_end_date': lambda *args: fields.date.today(),
         'version': 1,
+        'is_import': False,
     }
 
     def button_apply_filing(self, cr, uid, ids, context):
@@ -89,7 +96,8 @@ class ProjectFiledFiling(osv.Model):
         sms_obj.send_sms_to_users(cr, uid, user_ids=[u.id for u in filing.project_user], from_rec=filing.name, content=content_sms, model=self._name,
                                   res_id=filing.id,
                                   context=context)
-        sms_obj.send_big_ant_to_users(cr, uid, user_ids=[u.id for u in filing.project_user], from_rec=filing.name, subject=u'项目归档申请等待处理', content=content_ant,
+        sms_obj.send_big_ant_to_users(cr, uid, user_ids=[u.id for u in filing.project_user], from_rec=filing.name, subject=u'项目归档申请等待处理',
+                                      content=content_ant,
                                       model=self._name, res_id=filing.id, context=context)
         filing.project_id.write({'status_code': 30104})
         return self.write(cr, uid, ids, {'state': 'manager_approve'}, context)
@@ -335,6 +343,10 @@ class ProjectProjectInherit(osv.Model):
                 'manager_approver_id': False,
                 'manager_approver_date': False,
                 'project_user': [(6, 0, user_ids)],
+                'is_import': False,
+                'import_paper_builder': None,
+                'import_graph_type': None,
+                'import_total_paper': None,
             }, context=context)
             project.write({'status_code': 30101})
             return True
