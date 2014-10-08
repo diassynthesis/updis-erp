@@ -600,6 +600,14 @@ class updis_project(osv.osv):
         self._workflow_signal(cr, uid, ids, signal)
         return True
 
+    def add_log(self, cr, uid, ids, log_user=None, log_info=None, context=None):
+        for project_id in ids:
+            self.write(cr, uid, project_id,
+                       {'project_logs': [(0, 0, {'project_id': project_id,
+                                                 'log_user': log_user,
+                                                 'log_info': log_info})]}, context=context)
+        return True
+
 
 class project_profession(osv.Model):
     """Profession"""

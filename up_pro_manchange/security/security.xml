@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="manager_change_chief" model="res.groups">
+            <field name="name">主管总师</field>
+            <field name="category_id" ref="base.module_category_up_pro_manchange"/>
+        </record>
+        <record id="manager_change_yuanzhang" model="res.groups">
+            <field name="name">主管院长</field>
+            <field name="category_id" ref="base.module_category_up_pro_manchange"/>
+        </record>
+    </data>
+</openerp>

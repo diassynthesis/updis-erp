@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_manager_change_form" model="ir.ui.view">
+            <field name="name">project.project.manager.change.form</field>
+            <field name="model">project.project.manager.change</field>
+            <field name="arch" type="xml">
+                <form string="项目负责人变更" version="7.0">
+                    <header>
+                        <button name="apply" type="object" string="提出申请" states="draft"/>
+
+                        <button name="director_apply" type="object" string="审批通过" states="director" groups="up_project.group_up_project_suozhang"/>
+                        <button name="director_reject" type="object" string="打回申请" states="director" groups="up_project.group_up_project_suozhang"/>
+
+                        <button name="chief_apply" type="object" string="审批通过" states="chief" groups="up_pro_manchange.manager_change_chief"/>
+                        <button name="chief_reject" type="object" string="打回申请" states="chief" groups="up_pro_manchange.manager_change_chief"/>
+
+                        <button name="yuanzhang_apply" type="object" string="审批通过" states="yuanzhang"
+                                groups="up_pro_manchange.manager_change_yuanzhang"/>
+                        <button name="yuanzhang_reject" type="object" string="打回申请" states="yuanzhang"
+                                groups="up_pro_manchange.manager_change_yuanzhang"/>
+
+                        <button name="cancel" type="object" string="取消"/>
+
+                        <field name="state" widget="statusbar" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="project_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <group string="原先负责人">
+                                <field name="origin_manager" readonly="1"/>
+                                <field name="origin_chief" readonly="1"/>
+                            </group>
+                            <group string="变更为">
+                                <field name="target_manager" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="target_chief" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            </group>
+                            <group string="审批记录" colspan="2" col="4">
+                                <field name="apply_id" readonly="1"/>
+                                <field name="apply_date" readonly="1"/>
+                                <field name="director_id" readonly="1"/>
+                                <field name="director_date" readonly="1"/>
+                                <field name="chief_id" readonly="1"/>
+                                <field name="chief_date" readonly="1"/>
+                                <field name="yuanzhang_id" readonly="1"/>
+                                <field name="yuanzhang_date" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</openerp>

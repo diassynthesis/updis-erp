@@ -523,7 +523,7 @@ class IrAttachmentApplication(osv.osv):
         res_id = ids[0]
         suzhang_ids = self.pool['res.users'].get_department_suzhang_ids(cr, uid, [uid], context=context)
         zhurengong_ids = self.pool['res.users'].get_department_zhurengong_ids(cr, uid, [uid], context=context)
-        self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, suzhang_ids + zhurengong_ids, context=None)
+        self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, suzhang_ids + zhurengong_ids, context)
         self.pool.get('sms.sms').send_big_ant_to_users(cr, uid, model, big_ant_msg[0], big_ant_msg[1], model, res_id, suzhang_ids + zhurengong_ids,
                                                        context)
         return True
