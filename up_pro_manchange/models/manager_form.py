@@ -41,8 +41,8 @@ class ManagerForm(osv.Model):
         # Is project director?
         application = self.browse(cr, uid, ids[0], context)
         hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', uid)], context=context)
-        apply_hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', application.apply_user_id.id)], context=context)
-        if hr_id and apply_hr_id and self.user_has_groups(cr, uid, "up_project.group_up_project_suozhang,up_project.group_up_project_zhurengong",
+        apply_hr_id = self.pool.get('hr.employee').search(cr, uid, [("user_id", '=', application.apply_id.id)], context=context)
+        if hr_id and apply_hr_id and self.user_has_groups(cr, uid, "up_project.group_up_project_suozhang",
                                                           context=context):
             hr_record = self.pool.get('hr.employee').browse(cr, 1, hr_id[0], context=context)
             apply_record = self.pool.get('hr.employee').browse(cr, 1, apply_hr_id[0], context=context)
@@ -89,13 +89,22 @@ class ManagerForm(osv.Model):
             self.pool['sms.sms'].send_sms_to_users(cr, uid, vals['model'], sms_msg, vals['model'], vals['id'], user_ids, context)
             self.pool.get('sms.sms').send_big_ant_to_users(cr, uid, vals['model'], big_ant_msg[0], big_ant_msg[1], vals['model'], vals['id'],
                                                            user_ids, context)
-        return True
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': vals['model'],
+            'view_mode': 'form',
+            'view_type': 'form',
+            'res_id': ids[0],
+            'views': [(False, 'form')],
+            'target': 'new',
+            'context': context,
+        }
 
     def _apply_state(self, cr, uid, ids, vals, context):
-        self._update_state(cr, uid, ids, vals, True, context)
+        return self._update_state(cr, uid, ids, vals, True, context)
 
     def _reject_state(self, cr, uid, ids, vals, context):
-        self._update_state(cr, uid, ids, vals, False, context)
+        return self._update_state(cr, uid, ids, vals, False, context)
 
     def apply(self, cr, uid, ids, context):
         change_file = self.browse(cr, uid, ids[0], context)
@@ -108,7 +117,7 @@ class ManagerForm(osv.Model):
             'id': ids[0],
             'target': 'suzhang',
         }
-        self._apply_state(cr, uid, ids, values, context)
+        return self._apply_state(cr, uid, ids, values, context)
 
     def director_apply(self, cr, uid, ids, context):
         if not self._is_same_department(cr, uid, ids, context):
@@ -124,7 +133,7 @@ class ManagerForm(osv.Model):
             'target': 'group',
             'group_ids': 'up_pro_manchange.manager_change_chief',
         }
-        self._apply_state(cr, uid, ids, values, context)
+        return self._apply_state(cr, uid, ids, values, context)
 
     def director_reject(self, cr, uid, ids, context):
         if not self._is_same_department(cr, uid, ids, context):
@@ -133,41 +142,41 @@ class ManagerForm(osv.Model):
         values = {
             'user_field': 'apply_id',
             'date_field': 'apply_date',
-            'state': 'apply',
+            'state': 'draft',
             'sms': u"项目:%s -> 负责人变更申请被打回,请登陆系统处理" % change_file.project_id.name,
             'model': 'project.project.manager.change',
             'id': ids[0],
             'target': 'user',
             'user_ids': [change_file.apply_id.id],
         }
-        self._reject_state(cr, uid, ids, values, context)
+        return self._reject_state(cr, uid, ids, values, context)
 
     def chief_apply(self, cr, uid, ids, context):
         change_file = self.browse(cr, uid, ids[0], context)
         values = {
             'user_field': 'chief_id',
             'date_field': 'chief_date',
-            'state': 'chief',
+            'state': 'yuanzhang',
             'sms': u"项目:%s -> 负责人变更申请,请登陆系统处理" % change_file.project_id.name,
             'model': 'project.project.manager.change',
             'id': ids[0],
             'target': 'group',
             'group_ids': 'up_pro_manchange.manager_change_yuanzhang',
         }
-        self._apply_state(cr, uid, ids, values, context)
+        return self._apply_state(cr, uid, ids, values, context)
 
     def chief_reject(self, cr, uid, ids, context):
         change_file = self.browse(cr, uid, ids[0], context)
         values = {
             'user_field': 'director_id',
             'date_field': 'director_date',
-            'state': 'suzhang',
+            'state': 'director',
             'sms': u"项目:%s -> 负责人变更申请被打回,请登陆系统处理" % change_file.project_id.name,
             'model': 'project.project.manager.change',
             'id': ids[0],
             'target': 'suozhang',
         }
-        self._reject_state(cr, uid, ids, values, context)
+        return self._reject_state(cr, uid, ids, values, context)
 
     def yuanzhang_apply(self, cr, uid, ids, context):
         change_file = self.browse(cr, uid, ids[0], context)
@@ -184,18 +193,18 @@ class ManagerForm(osv.Model):
             'model': 'project.project.manager.change',
             'id': ids[0],
             'target': 'user',
-            'user_ids': notify_user_ids,
+            'user_ids': list(set(notify_user_ids)),
         }
-        self._apply_state(cr, uid, ids, values, context)
+        result = self._apply_state(cr, uid, ids, values, context)
         change_file = self.browse(cr, uid, ids[0], context)
         log_info = u"""项目负责人变更：
 主管总师： %s -> %s,
 项目负责人： %s -> %s,
-发起人：%s 所长审批：%s, 总师审批:%s, 院长审批:%s,""" % (
-            change_file.origin_chief.name,
-            change_file.target_chief.name,
-            change_file.origin_manager.name,
-            change_file.target_manager.name,
+发起人:(%s)  所长审批:(%s)  总师审批:(%s)  院长审批:(%s)""" % (
+            ','.join([u.name for u in change_file.origin_chief]),
+            ','.join([u.name for u in change_file.target_chief]),
+            ','.join([u.name for u in change_file.origin_manager]),
+            ','.join([u.name for u in change_file.target_manager]),
             change_file.apply_id.name,
             change_file.director_id.name,
             change_file.chief_id.name,
@@ -204,6 +213,7 @@ class ManagerForm(osv.Model):
         change_file.project_id.add_log(log_info=log_info, context=context)
         change_file.project_id.write({'user_id': [(6, 0, [u.id for u in change_file.target_manager])],
                                       'zhuguanzongshi_id': [(6, 0, [u.id for u in change_file.target_chief])]}, context=context)
+        return result
 
     def yuanzhang_reject(self, cr, uid, ids, context):
         change_file = self.browse(cr, uid, ids[0], context)
@@ -217,7 +227,7 @@ class ManagerForm(osv.Model):
             'target': 'group',
             'group_ids': 'up_pro_manchange.manager_change_chief',
         }
-        self._reject_state(cr, uid, ids, values, context)
+        return self._reject_state(cr, uid, ids, values, context)
 
     def cancel(self, cr, uid, ids, context):
         values = {
@@ -226,4 +236,47 @@ class ManagerForm(osv.Model):
             'id': ids[0],
             'target': '',
         }
-        self._apply_state(cr, uid, ids, values, context)
+        return self._apply_state(cr, uid, ids, values, context)
+
+
+class ProjectInherit(osv.Model):
+    _inherit = 'project.project'
+    _columns = {
+    }
+
+    _defaults = {
+    }
+
+    def button_change_project_manager(self, cr, uid, ids, context=None):
+        project = self.browse(cr, uid, ids[0], context)
+        change_ids = self.pool['project.project.manager.change'].search(cr, uid,
+                                                                        [('project_id', '=', ids[0]), ('state', 'not in', ['complete', 'cancel'])],
+                                                                        limit=1,
+                                                                        context=context)
+        if change_ids:
+            res_id = change_ids[0]
+        else:
+            user_ids = self.read(cr, uid, ids[0], ['user_id'], context=context)['user_id']
+            res_id = self.pool['project.project.manager.change'].create(cr, uid, {
+                'origin_manager': [(6, 0, user_ids)],
+                'origin_chief': [(6, 0, [u.id for u in project.zhuguanzongshi_id])],
+                'target_manager': [(6, 0, user_ids)],
+                'target_chief': [(6, 0, [u.id for u in project.zhuguanzongshi_id])],
+                'project_id': project.id,
+            }, context=context)
+        # update chief list
+        record = self.pool.get('ir.model.data').search(cr, 1, [('model', '=', 'project.active.tasking.config'),
+                                                               ('name', '=', 'project_active_tasking_config_record')], context=context)
+        record_id = self.pool.get('ir.model.data').read(cr, 1, record[0], ['res_id'], context=context)
+        target = self.pool.get('project.active.tasking.config').browse(cr, 1, record_id['res_id'], context)
+        context['chief_engineer_domain'] = [z.id for z in target.chief_engineer_config]
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'project.project.manager.change',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'res_id': res_id,
+            'views': [(False, 'form')],
+            'target': 'new',
+            'context': context,
+        }

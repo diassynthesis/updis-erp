@@ -8,12 +8,13 @@
 """,
     'author': 'cysnake4713',
     'website': 'http://openerp.com',
-    'depends': ['base', 'project', 'oecn_base_fonts', 'report_webkit'],
+    'depends': ['base', 'up_project', 'oecn_base_fonts', 'report_webkit'],
     'init_xml': [
 
     ],
     'update_xml': [
         'security/security.xml',
+        'security/ir.model.access.csv',
         'views/manager_change_view.xml',
     ],
     'css': [
