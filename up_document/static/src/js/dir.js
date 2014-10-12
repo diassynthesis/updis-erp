@@ -228,7 +228,7 @@ openerp.up_document = function (instance) {
                             _t("上传错误!"),
                             _t(data.result.files[0].error));
                     }
-                    if (total_progress == 100) {
+                    if (total_progress == 90) {
                         instance.web.unblockUI();
                         if (self.is_opened()) {
                             self.refresh_files().done(function () {
@@ -249,7 +249,7 @@ openerp.up_document = function (instance) {
                     self.$el.find('div.oe-upload-holder:first').html('');
                 },
                 progressall: function (e, data) {
-                    total_progress = parseInt(data.loaded / data.total * 100, 10);
+                    total_progress = parseInt(data.loaded / data.total * 90, 10);
                     var progress_template = Qweb.render('DocumentProcess', {'progress': total_progress});
                     self.$el.find('div.oe-upload-holder:first').html(progress_template);
                 }
