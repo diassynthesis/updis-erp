@@ -4,3 +4,6 @@
 [submodule "up_internship"]
 	path = up_internship
 	url = https://github.com/TommyU/up_internship.git
+[submodule "wkf_group_ext"]
+	path = wkf_group_ext
+	url = https://github.com/TommyU/wkf_group_ext
