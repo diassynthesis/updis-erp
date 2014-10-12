@@ -101,7 +101,16 @@ openerp.up_document = function (instance) {
         widgetManager: new WidgetManager(),
         events: {
             "click div.arrow": "create_children_elements",
-            "dblclick div.directory-line": "create_children_elements"
+            "dblclick div.directory-line": "create_children_elements",
+            "dragover div.directory-line": function(){
+                this.$el.children("div.directory-line:first").addClass('dragenter');
+            },
+            "dragleave div.directory-line": function(){
+                this.$el.children("div.directory-line:first").removeClass('dragenter');
+            },
+            "drop div.directory-line": function(){
+                this.$el.children("div.directory-line:first").removeClass('dragenter');
+            },
         },
 
         init: function (parent, directory) {
@@ -211,6 +220,7 @@ openerp.up_document = function (instance) {
                 url: '/web/clupload/multi_upload',
                 sequentialUploads: true,
                 formData: data,
+                dropZone: this.$el.find("div.directory-line:first"),
                 add: function (e, data) {
                     var uploadFile = data.files[0];
                     if (uploadFile.size > 2048 * 1024 * 1024) { // 2mb
