@@ -334,8 +334,7 @@ class ProjectProjectInherit(osv.Model):
                 project.write({'status_code': 30101})
             # else if project is in project filed state
             elif project.state == 'project_finish':
-                raise exceptions.Warning(
-                    _("This project is import from old system, don't have filing record!"))
+                raise exceptions.Warning(u'本项目没有归档表单！')
         # if user is project member
         if not self.is_project_member(cr, uid, project.id, context):
             context['editable'] = False
