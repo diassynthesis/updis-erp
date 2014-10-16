@@ -168,9 +168,17 @@ openerp.up_document = function (instance) {
             var self = this;
             self.$el.find("button.button-refresh:first").click(function () {
                 self.set_not_total_selected();
-                $.when(self.refresh_directories(), self.refresh_files()).done(function () {
+                $.when(self.refresh_directories(), self.refresh_files(), self.refresh_self()).done(function () {
                     self.draw();
                 });
+            });
+        },
+        refresh_self: function () {
+            var self = this;
+            self.widgetManager.get_directory(self.directory.id, self.dataset.context.res_id, self.dataset.context.res_model, self.dataset.context).done(function (result) {
+                self.directory = result;
+                //refresh self filed number
+                self.$el.find('div.tips:first').html(self.directory.file_total + '个文件');
             });
         },
         create_children_elements: function () {
@@ -201,6 +209,7 @@ openerp.up_document = function (instance) {
                     file.destroy();
                 }
             });
+            self.refresh_self();
         },
         bind_data_upload: function () {
             var self = this;
@@ -243,6 +252,7 @@ openerp.up_document = function (instance) {
                         if (self.is_opened()) {
                             self.refresh_files().done(function () {
                                 self.draw();
+                                self.refresh_self();
                             });
                         }
                         self.$el.find('div.oe-upload-holder:first').html('');
