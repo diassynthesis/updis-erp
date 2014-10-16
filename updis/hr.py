@@ -1,10 +1,18 @@
-#-*- encoding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 import datetime
 from operator import itemgetter
 import random
 import math
 from openerp import SUPERUSER_ID
 from openerp.osv import fields, osv
+
+
+def monkey_create(self, cr, uid, data, context=None):
+    employee_id = super(osv.Model, self).create(cr, uid, data, context=context)
+    return employee_id
+
+from openerp.addons.hr import hr
+hr.hr_employee.create = monkey_create
 
 
 class hr_employee_updis(osv.osv):

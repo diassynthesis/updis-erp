@@ -40,7 +40,9 @@ class project_active_tasking_reject(osv.osv_memory):
         tasking.write({
             'reject_logs': [(0, 0, {'comment': self_record.comment, 'state': tasking.state})],
         })
-
+        message = u'<span>打回申请:</span>'
+        message += u'<div>%s</div>' % self_record.comment
+        tasking.message_post(body=message, type='email', context=context)
         if tasking.state == "suozhangshenpi":
             return tasking.draft_reject()
         if tasking.state == "zhidingbumen":

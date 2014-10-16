@@ -1,5 +1,6 @@
 # -*- encoding:utf-8 -*-
 import datetime
+from openerp import SUPERUSER_ID
 from openerp.osv import fields
 from openerp.osv import osv
 from up_tools import tools
@@ -11,9 +12,15 @@ class project_active_tasking(osv.osv):
     _log_access = True
     _name = "project.project.active.tasking"
     _inherits = {'project.project': "project_id"}
+    _inherit = ['mail.thread', 'ir.needaction_mixin']
+
     _form_name = u'产品要求评审及任务下达记录'
 
     _rec_name = 'form_name'
+
+    _track = {
+        'state': {},
+    }
 
     def workflow_signal(self, cr, uid, ids, signal):
         return self._workflow_signal(cr, uid, ids, signal)
@@ -152,7 +159,7 @@ class project_active_tasking(osv.osv):
         'form_name': fields.char(size=128, string="Form Name"),
         "project_id": fields.many2one('project.project', string='Related Project', ondelete="cascade",
                                       required=True),
-        "state": fields.selection(SELECTION, "State", help='When project is created, the state is \'open\''),
+        "state": fields.selection(SELECTION, "State", help='When project is created, the state is \'open\'', track_visibility='onchange'),
 
         "partner_address": fields.related('partner_id', "street", type="char", string='Custom Address'),
 
@@ -309,6 +316,10 @@ class project_active_tasking(osv.osv):
     def director_review_accept(self, cr, uid, ids, context=None):
         self._sign_form(cr, uid, ids, 'director_reviewer_apply_id', 'director_reviewer_apply_time', context=context)
         log_info = u'所长审批通过,提交请求到经营室'
+        groups = self.pool.get('ir.model.data').get_object(cr, uid, 'up_project', 'group_up_project_jingyingshi', context=None)
+        if groups:
+            user_ids = [u.id for u in groups.users]
+            self.message_subscribe_users(cr, uid, ids, user_ids=user_ids, context=context)
         return self._send_workflow_signal(cr, uid, ids, log_info, 'suozhangshenpi_submit')
 
     def draft_reject(self, cr, uid, ids, context=None):
@@ -320,6 +331,10 @@ class project_active_tasking(osv.osv):
 
     def operator_review_accept(self, cr, uid, ids, context=None):
         self._sign_form(cr, uid, ids, 'jinyinshi_submitter_id', 'jinyinshi_submitter_datetime', context=context)
+        groups = self.pool.get('ir.model.data').get_object(cr, uid, 'up_project', 'group_up_project_zongshishi', context=None)
+        if groups:
+            user_ids = [u.id for u in groups.users]
+            self.message_subscribe_users(cr, uid, ids, user_ids=user_ids, context=context)
         log_info = u'经营室审批通过,提交申请到总师室'
         return self._send_workflow_signal(cr, uid, ids, log_info, 'jingyinshi_submit')
 
@@ -409,8 +424,27 @@ class project_active_tasking(osv.osv):
         if 'else_attachments' in vals:
             val = ((6, 0, [attach[1] for attach in vals['else_attachments']],),)
             vals['else_attachments'] = val
-
         return super(project_active_tasking, self).write(cr, uid, ids, vals, context=context)
+
+    def _message_get_auto_subscribe_fields(self, cr, uid, updated_fields,
+                                           auto_follow_fields=['zhuguanzongshi_id', 'director_reviewer_id', 'user_id'],
+                                           context=None):
+        """ Returns the list of relational fields linking to res.users that should
+            trigger an auto subscribe. The default list checks for the fields
+            - called 'user_id'
+            - linking to res.users
+            - with track_visibility set
+            In OpenERP V7, this is sufficent for all major addon such as opportunity,
+            project, issue, recruitment, sale.
+            Override this method if a custom behavior is needed about fields
+            that automatically subscribe users.
+        """
+        user_field_lst = []
+        for name, column_info in self._all_columns.items():
+            if name in auto_follow_fields and name in updated_fields \
+                    and column_info.column._obj == 'res.users':
+                user_field_lst.append(name)
+        return user_field_lst
 
     def reject_commit_phone(self, cr, uid, id, comment, context=None):
         if context is None:
