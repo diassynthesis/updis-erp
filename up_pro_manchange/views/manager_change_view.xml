@@ -61,7 +61,7 @@
             <field name="inherit_id" ref="up_project.edit_project_inherit"/>
             <field name="arch" type="xml">
                 <field name="member_ids" position="before">
-                    <button name="button_change_project_manager" type="object" string="项目负责人变更" class="oe_button"
+                    <button name="button_change_project_manager" type="object" string="项目负责人或主管总师变更" class="oe_button"
                                 attrs="{'invisible':[('is_user_is_project_manager','=',False),('is_user_in_engineer_group','=',False)]}"/>
                 </field>
             </field>
