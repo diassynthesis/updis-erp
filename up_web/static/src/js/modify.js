@@ -165,7 +165,7 @@ openerp.up_web = function (instance) {
             if (!this.get("effective_readonly")) {
                 self._updating_editor = false;
                 this.$textarea = this.$el.find('textarea');
-                var width = ((this.node.attrs || {}).editor_width || '100%');
+                var width = ((this.node.attrs || {}).editor_width || 'calc(100% - 4px)');
                 var height = ((this.node.attrs || {}).editor_height || 250);
                 this.$textarea.cleditor({
                     width: width, // width not including margins, borders or padding

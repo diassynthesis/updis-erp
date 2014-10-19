@@ -3,6 +3,7 @@ import datetime
 from operator import itemgetter
 from openerp import SUPERUSER_ID
 from openerp.osv import osv, fields
+from openerp.osv.orm import browse_record, browse_null
 from up_tools import tools
 
 
@@ -339,7 +340,7 @@ class updis_project(osv.osv):
         'user_id': fields.many2many('res.users', 'project_user_id_res_user', 'project_user_id', 'res_user_id',
                                     string='Project Manager',
                                     domain=['|', ("active", "=", True), ("active", "=", False)], track_visibility='onchange'),
-        'director_reviewer_id': fields.many2one('res.users', string=u'Review Director'),
+        'director_reviewer_id': fields.many2one('res.users', string=u'Review Director', track_visibility='onchange'),
         'related_user_id': fields.many2one('res.users', string="Related Users ID"),
         'status_code': fields.integer(string='Status Code'),
         "shifoutoubiao": fields.boolean("Is Tender"),
@@ -606,107 +607,102 @@ class updis_project(osv.osv):
         self._workflow_signal(cr, uid, ids, signal)
         return True
 
-    def message_get_suggested_recipients(self, cr, uid, ids, context=None):
-        """ Returns suggested recipients for ids. Those are a list of
-            tuple (partner_id, partner_name, reason), to be managed by Chatter. """
-        result = dict.fromkeys(ids, list())
-        if self._all_columns.get('user_id'):
-            for obj in self.browse(cr, SUPERUSER_ID, ids, context=context):  # SUPERUSER because of a read on res.users that would crash otherwise
-                if not obj.user_id or not [u.partner_id for u in obj.user_id]:
-                    continue
-                for partner_id in [u.partner_id for u in obj.user_id]:
-                    self._message_add_suggested_recipient(cr, uid, result, obj, partner=partner_id,
-                                                          reason=self._all_columns['user_id'].column.string, context=context)
-        # if self._all_columns.get('zhuguanzongshi_id'):
-        #     for obj in self.browse(cr, SUPERUSER_ID, ids, context=context):  # SUPERUSER because of a read on res.users that would crash otherwise
-        #         if not obj.zhuguanzongshi_id or not [u.partner_id for u in obj.zhuguanzongshi_id]:
-        #             continue
-        #         for zhuguanzongshi_id in [u.partner_id for u in obj.zhuguanzongshi_id]:
-        #             self._message_add_suggested_recipient(cr, uid, result, obj, partner=zhuguanzongshi_id,
-        #                                                   reason=self._all_columns['zhuguanzongshi_id'].column.string, context=context)
+    def message_auto_subscribe(self, cr, uid, ids, updated_fields, context=None, values=None):
+        """ Handle auto subscription. Two methods for auto subscription exist:
 
-        return result
+         - tracked res.users relational fields, such as user_id fields. Those fields
+           must be relation fields toward a res.users record, and must have the
+           track_visilibity attribute set.
+         - using subtypes parent relationship: check if the current model being
+           modified has an header record (such as a project for tasks) whose followers
+           can be added as followers of the current records. Example of structure
+           with project and task:
 
-    def _message_get_auto_subscribe_fields(self, cr, uid, updated_fields, auto_follow_fields=['user_id', 'zhuguanzongshi_id'], context=None):
-        user_field_lst = []
-        for name, column_info in self._all_columns.items():
-            if name in auto_follow_fields and name in updated_fields and column_info.column._obj == 'res.users':
-                user_field_lst.append(name)
-        return user_field_lst
+          - st_project_1.parent_id = st_task_1
+          - st_project_1.res_model = 'project.project'
+          - st_project_1.relation_field = 'project_id'
+          - st_task_1.model = 'project.task'
 
-    def message_auto_subscribe(self, cr, uid, ids, updated_fields, context=None):
-        """
-            1. fetch project subtype related to task (parent_id.res_model = 'project.task')
-            2. for each project subtype: subscribe the follower to the task
+        :param list updated_fields: list of updated fields to track
+        :param dict values: updated values; if None, the first record will be browsed
+                            to get the values. Added after releasing 7.0, therefore
+                            not merged with updated_fields argumment.
         """
         subtype_obj = self.pool.get('mail.message.subtype')
         follower_obj = self.pool.get('mail.followers')
+        new_followers = dict()
 
-        # fetch auto_follow_fields
+        # fetch auto_follow_fields: res.users relation fields whose changes are tracked for subscription
         user_field_lst = self._message_get_auto_subscribe_fields(cr, uid, updated_fields, context=context)
 
-        # fetch related record subtypes
-        related_subtype_ids = subtype_obj.search(cr, uid, ['|', ('res_model', '=', False), ('parent_id.res_model', '=', self._name)], context=context)
-        subtypes = subtype_obj.browse(cr, uid, related_subtype_ids, context=context)
-        default_subtypes = [subtype for subtype in subtypes if subtype.res_model == False]
-        related_subtypes = [subtype for subtype in subtypes if subtype.res_model != False]
-        relation_fields = set([subtype.relation_field for subtype in subtypes if subtype.relation_field != False])
-        if (not related_subtypes or not any(relation in updated_fields for relation in relation_fields)) and not user_field_lst:
+        # fetch header subtypes
+        header_subtype_ids = subtype_obj.search(cr, uid, ['|', ('res_model', '=', False), ('parent_id.res_model', '=', self._name)], context=context)
+        subtypes = subtype_obj.browse(cr, uid, header_subtype_ids, context=context)
+
+        # if no change in tracked field or no change in tracked relational field: quit
+        relation_fields = set([subtype.relation_field for subtype in subtypes if subtype.relation_field is not False])
+        if not any(relation in updated_fields for relation in relation_fields) and not user_field_lst:
             return True
 
-        for record in self.browse(cr, uid, ids, context=context):
-            new_followers = dict()
-            parent_res_id = False
-            parent_model = False
-            for subtype in related_subtypes:
-                if not subtype.relation_field or not subtype.parent_id:
-                    continue
-                if not subtype.relation_field in self._columns or not getattr(record, subtype.relation_field, False):
-                    continue
-                parent_res_id = getattr(record, subtype.relation_field).id
-                parent_model = subtype.res_model
-                follower_ids = follower_obj.search(cr, SUPERUSER_ID, [
-                    ('res_model', '=', parent_model),
-                    ('res_id', '=', parent_res_id),
-                    ('subtype_ids', 'in', [subtype.id])
-                ], context=context)
-                for follower in follower_obj.browse(cr, SUPERUSER_ID, follower_ids, context=context):
-                    new_followers.setdefault(follower.partner_id.id, set()).add(subtype.parent_id.id)
+        # legacy behavior: if values is not given, compute the values by browsing
+        # @TDENOTE: remove me in 8.0
+        if values is None:
+            record = self.browse(cr, uid, ids[0], context=context)
+            for updated_field in updated_fields:
+                field_value = getattr(record, updated_field)
+                if isinstance(field_value, browse_record):
+                    field_value = field_value.id
+                elif isinstance(field_value, browse_null):
+                    field_value = False
+                values[updated_field] = field_value
 
-            if parent_res_id and parent_model:
-                for subtype in default_subtypes:
-                    follower_ids = follower_obj.search(cr, SUPERUSER_ID, [
-                        ('res_model', '=', parent_model),
-                        ('res_id', '=', parent_res_id),
-                        ('subtype_ids', 'in', [subtype.id])
-                    ], context=context)
-                    for follower in follower_obj.browse(cr, SUPERUSER_ID, follower_ids, context=context):
-                        new_followers.setdefault(follower.partner_id.id, set()).add(subtype.id)
+        # find followers of headers, update structure for new followers
+        headers = set()
+        for subtype in subtypes:
+            if subtype.relation_field and values.get(subtype.relation_field):
+                headers.add((subtype.res_model, values.get(subtype.relation_field)))
+        if headers:
+            header_domain = ['|'] * (len(headers) - 1)
+            for header in headers:
+                header_domain += ['&', ('res_model', '=', header[0]), ('res_id', '=', header[1])]
+            header_follower_ids = follower_obj.search(
+                cr, SUPERUSER_ID,
+                header_domain,
+                context=context
+            )
+            for header_follower in follower_obj.browse(cr, SUPERUSER_ID, header_follower_ids, context=context):
+                for subtype in header_follower.subtype_ids:
+                    if subtype.parent_id and subtype.parent_id.res_model == self._name:
+                        new_followers.setdefault(header_follower.partner_id.id, set()).add(subtype.parent_id.id)
+                    elif subtype.res_model is False:
+                        new_followers.setdefault(header_follower.partner_id.id, set()).add(subtype.id)
 
-            # add followers coming from res.users relational fields that are tracked
-            user_ids = []
-            for name in user_field_lst:
-                if getattr(record, name):
-                    user_ids += [user.id for user in getattr(record, name)]
+        # add followers coming from res.users relational fields that are tracked
+        user_ids = [values[name] for name in user_field_lst if values.get(name)]
+        if user_ids and isinstance(user_ids[0], list):
+            user_ids = user_ids[0][0][2]
+        user_pids = [user.partner_id.id for user in self.pool.get('res.users').browse(cr, SUPERUSER_ID, user_ids, context=context)]
+        for partner_id in user_pids:
+            new_followers.setdefault(partner_id, None)
 
-            user_id_partner_ids = [user.partner_id.id for user in self.pool.get('res.users').browse(cr, SUPERUSER_ID, user_ids, context=context)]
-            for partner_id in user_id_partner_ids:
-                new_followers.setdefault(partner_id, None)
+        for pid, subtypes in new_followers.items():
+            subtypes = list(subtypes) if subtypes is not None else None
+            self.message_subscribe(cr, uid, ids, [pid], subtypes, context=context)
 
-            for pid, subtypes in new_followers.items():
-                subtypes = list(subtypes) if subtypes is not None else None
-                self.message_subscribe(cr, uid, [record.id], [pid], subtypes, context=context)
-
-            # find first email message, set it as unread for auto_subscribe fields for them to have a notification
-            if user_id_partner_ids:
-                msg_ids = self.pool.get('mail.message').search(cr, uid, [
+        # find first email message, set it as unread for auto_subscribe fields for them to have a notification
+        if user_pids:
+            for record_id in ids:
+                message_obj = self.pool.get('mail.message')
+                msg_ids = message_obj.search(cr, SUPERUSER_ID, [
                     ('model', '=', self._name),
-                    ('res_id', '=', record.id),
+                    ('res_id', '=', record_id),
                     ('type', '=', 'email')], limit=1, context=context)
-                if not msg_ids and record.message_ids:
-                    msg_ids = [record.message_ids[-1].id]
+                if not msg_ids:
+                    msg_ids = message_obj.search(cr, SUPERUSER_ID, [
+                        ('model', '=', self._name),
+                        ('res_id', '=', record_id)], limit=1, context=context)
                 if msg_ids:
-                    self.pool.get('mail.notification')._notify(cr, uid, msg_ids[0], partners_to_notify=user_id_partner_ids, context=context)
+                    self.pool.get('mail.notification')._notify(cr, uid, msg_ids[0], partners_to_notify=user_pids, context=context)
 
         return True
 

@@ -1,9 +1,11 @@
-attachment_size_limit
+Binary:
+	saveas
+	saveas_ajax
+	upload_attachment
+	update_attachment
+	download_temp_file
 ---------------------------------------------------------------
 oecn_base_fonts
----------------------------------------------------------------
-/base/ir/ir_values
-    method:get_actions
 ---------------------------------------------------------------
 /web/controllers/main.py#Binary.upload_attachment
 /web/controllers/main.py#html_template

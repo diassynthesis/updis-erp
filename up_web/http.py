@@ -41,7 +41,6 @@ def monkey_dispatch(self, environ, start_response):
 
             if hasattr(response, 'set_cookie'):
                 from tools import config
-
                 response.set_cookie('sid', session.sid, domain=config.get('domain', None))
 
     return response(environ, start_response)

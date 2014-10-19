@@ -10,7 +10,6 @@ def set_cookie_and_redirect(req, redirect_url):
     redirect = werkzeug.utils.redirect(redirect_url, 303)
     redirect.autocorrect_location_header = False
     cookie_val = urllib2.quote(simplejson.dumps(req.session_id))
-
     redirect.set_cookie('instance0|session_id', cookie_val, domain=config.get('domain', None))
     return redirect
 

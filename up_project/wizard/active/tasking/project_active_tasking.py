@@ -426,26 +426,6 @@ class project_active_tasking(osv.osv):
             vals['else_attachments'] = val
         return super(project_active_tasking, self).write(cr, uid, ids, vals, context=context)
 
-    def _message_get_auto_subscribe_fields(self, cr, uid, updated_fields,
-                                           auto_follow_fields=['zhuguanzongshi_id', 'director_reviewer_id', 'user_id'],
-                                           context=None):
-        """ Returns the list of relational fields linking to res.users that should
-            trigger an auto subscribe. The default list checks for the fields
-            - called 'user_id'
-            - linking to res.users
-            - with track_visibility set
-            In OpenERP V7, this is sufficent for all major addon such as opportunity,
-            project, issue, recruitment, sale.
-            Override this method if a custom behavior is needed about fields
-            that automatically subscribe users.
-        """
-        user_field_lst = []
-        for name, column_info in self._all_columns.items():
-            if name in auto_follow_fields and name in updated_fields \
-                    and column_info.column._obj == 'res.users':
-                user_field_lst.append(name)
-        return user_field_lst
-
     def reject_commit_phone(self, cr, uid, id, comment, context=None):
         if context is None:
             context = {}
