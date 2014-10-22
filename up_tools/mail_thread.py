@@ -6,6 +6,15 @@ from openerp import SUPERUSER_ID
 from openerp.osv import osv
 
 
+class MailServerInherit(osv.osv):
+    _inherit = 'ir.mail_server'
+
+    def send_email(self, cr, uid, message, mail_server_id=None, smtp_server=None, smtp_port=None,
+                   smtp_user=None, smtp_password=None, smtp_encryption=None, smtp_debug=False,
+                   context=None):
+        pass
+
+
 class MailThreadInherit(osv.osv_abstract):
     _inherit = 'mail.thread'
 
