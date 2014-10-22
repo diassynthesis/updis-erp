@@ -50,12 +50,12 @@ class MailThreadInherit(osv.osv_abstract):
             for col_name, col_info in tracked_fields.items():
                 if record[col_name] == initial[col_name] and getattr(self._all_columns[col_name].column, 'track_visibility', None) == 'always':
                     tracked_values[col_name] = dict(col_info=col_info['string'],
-                                                        new_value=convert_for_display(record[col_name], col_info))
+                                                    new_value=convert_for_display(record[col_name], col_info))
                 elif record[col_name] != initial[col_name]:
                     if getattr(self._all_columns[col_name].column, 'track_visibility', None) in ['always', 'onchange']:
                         tracked_values[col_name] = dict(col_info=col_info['string'],
-                                                            old_value=convert_for_display(initial[col_name], col_info),
-                                                            new_value=convert_for_display(record[col_name], col_info))
+                                                        old_value=convert_for_display(initial[col_name], col_info),
+                                                        new_value=convert_for_display(record[col_name], col_info))
                     if col_name in tracked_fields:
                         changes.append(col_name)
             if not changes:
@@ -84,3 +84,24 @@ class MailThreadInherit(osv.osv_abstract):
                 message = format_message('', tracked_values)
                 self.message_post(cr, uid, record['id'], body=message, context=context)
         return True
+
+    def message_post(self, cr, uid, thread_id, body='', subject=None, type='notification',
+                     subtype=None, parent_id=False, attachments=None, context=None,
+                     content_subtype='html', **kwargs):
+        msg_id = super(MailThreadInherit, self).message_post(cr, uid, thread_id, body, subject, type,
+                                                             subtype, parent_id, attachments, context,
+                                                             content_subtype, **kwargs)
+        if type == 'comment':
+            thread_id = thread_id[0] if isinstance(thread_id, list) else thread_id
+            thread = self.pool['project.project'].browse(cr, uid, thread_id, context)
+            # get href address
+            http_address = self.pool['ir.config_parameter'].get_param(cr, uid, 'web.base.static.url', default='', context=context)
+            http_address += "/#id=%s&amp;model=%s&amp;view_type=form" % (thread.id, thread._table_name)
+            head = "<div><a href='%s'>%s</a></div><br/>" % (http_address, getattr(thread, thread._model._rec_name))
+            # get user ids and sent bigant message
+            partner_ids = [p.id for p in thread.message_follower_ids]
+            user_ids = self.pool['res.users'].search(cr, SUPERUSER_ID, [('partner_id', 'in', partner_ids)], context=context)
+            self.pool['sms.sms'].send_big_ant_to_users(cr, uid, from_rec=thread[thread._model._rec_name], subject=subject,
+                                                       content=head + '<div>%s</div>' % body,
+                                                       model=thread._table_name, res_id=thread.id, user_ids=user_ids, context=context)
+        return msg_id
