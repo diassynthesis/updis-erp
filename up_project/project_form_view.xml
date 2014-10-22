@@ -186,6 +186,21 @@
                                     </div>
                                 </div>
                             </page>
+                            <page string="Project Members" attrs="{'invisible':[('state','=','project_active')]}">
+                                <field name="member_ids"
+                                       attrs="{'readonly':['|',('is_user_is_project_manager','=',False),('state','!=','project_processing')]}">
+                                    <tree editable="bottom">
+                                        <field name="profession" class="oe_no_button"
+                                               widget="selection"
+                                               options='{"no_open": True}'/>
+                                        <field name="audit_user_ids" widget="many2many_tags"/>
+                                        <field name="profession_manager_user_ids" widget="many2many_tags"/>
+                                        <field name="design_user_ids" widget="many2many_tags"/>
+                                        <field name="proofread_user_ids" widget="many2many_tags"/>
+                                        <field name="drawing_user_ids" widget="many2many_tags"/>
+                                    </tree>
+                                </field>
+                            </page>
                             <page name="attachments" string="Attachments" attrs="{'invisible':[('state','=','project_active')]}">
                                 <button name="%(action_project_related_document)d" class="oe_link"
                                         string="点击查看项目文件"

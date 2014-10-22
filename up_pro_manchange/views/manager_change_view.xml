@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_manager_change_form" model="ir.ui.view">
+            <field name="name">project.project.manager.change.form</field>
+            <field name="model">project.project.manager.change</field>
+            <field name="arch" type="xml">
+                <form string="项目负责人变更" version="7.0">
+                    <header>
+                        <button name="apply" type="object" string="提出申请" states="draft" class="oe_highlight"/>
+
+                        <button name="director_apply" type="object" string="审批通过" states="director" groups="up_project.group_up_project_suozhang"
+                                class="oe_highlight"/>
+                        <button name="director_reject" type="object" string="打回申请" states="director" groups="up_project.group_up_project_suozhang"/>
+
+                        <button name="chief_apply" type="object" string="审批通过" states="chief" groups="up_pro_manchange.manager_change_chief"
+                                class="oe_highlight"/>
+                        <button name="chief_reject" type="object" string="打回申请" states="chief" groups="up_pro_manchange.manager_change_chief"/>
+
+                        <button name="yuanzhang_apply" type="object" string="审批通过" states="yuanzhang" class="oe_highlight"
+                                groups="up_pro_manchange.manager_change_yuanzhang"/>
+                        <button name="yuanzhang_reject" type="object" string="打回申请" states="yuanzhang"
+                                groups="up_pro_manchange.manager_change_yuanzhang"/>
+
+                        <button name="cancel" type="object" string="取消" states="draft,director,chief,yuanzhang" />
+
+                        <field name="state" widget="statusbar" readonly="1" statusbar_visible="draft,director,chief,yuanzhang,complete"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="project_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <group string="原先负责人">
+                                <field name="origin_manager" readonly="1" widget="many2many_tags"/>
+                                <field name="origin_chief" readonly="1" widget="many2many_tags"/>
+                            </group>
+                            <group string="变更为">
+                                <field name="target_manager" attrs="{'readonly':[('state','!=','draft')]}" widget="many2many_tags"/>
+                                <field name="target_chief" attrs="{'readonly':[('state','!=','draft')]}" widget="many2many_tags"
+                                       domain="[('id','in',context.get('chief_engineer_domain',[]))]"/>
+                            </group>
+                            <group string="审批记录" colspan="2" col="4">
+                                <field name="apply_id" readonly="1"/>
+                                <field name="apply_date" readonly="1"/>
+                                <field name="director_id" readonly="1"/>
+                                <field name="director_date" readonly="1"/>
+                                <field name="chief_id" readonly="1"/>
+                                <field name="chief_date" readonly="1"/>
+                                <field name="yuanzhang_id" readonly="1"/>
+                                <field name="yuanzhang_date" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_project_project_manager_change_form" model="ir.ui.view">
+            <field name="name">project.project.form.manager.change</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="up_project.edit_project_inherit"/>
+            <field name="arch" type="xml">
+                <field name="member_ids" position="before">
+                    <button name="button_change_project_manager" type="object" string="项目负责人或主管总师变更" class="oe_button"
+                                attrs="{'invisible':[('is_user_is_project_manager','=',False),('is_user_in_engineer_group','=',False)]}"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

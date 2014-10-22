@@ -704,6 +704,12 @@ class updis_project(osv.osv):
                 if msg_ids:
                     self.pool.get('mail.notification')._notify(cr, uid, msg_ids[0], partners_to_notify=user_pids, context=context)
 
+    def add_log(self, cr, uid, ids, log_user=None, log_info=None, context=None):
+        for project_id in ids:
+            self.write(cr, uid, project_id,
+                       {'project_logs': [(0, 0, {'project_id': project_id,
+                                                 'log_user': log_user,
+                                                 'log_info': log_info})]}, context=context)
         return True
 
 
