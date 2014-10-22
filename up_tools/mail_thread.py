@@ -93,7 +93,7 @@ class MailThreadInherit(osv.osv_abstract):
                                                              content_subtype, **kwargs)
         if type == 'comment':
             thread_id = thread_id[0] if isinstance(thread_id, list) else thread_id
-            thread = self.pool['project.project'].browse(cr, uid, thread_id, context)
+            thread = self.browse(cr, uid, thread_id, context)
             # get href address
             http_address = self.pool['ir.config_parameter'].get_param(cr, uid, 'web.base.static.url', default='', context=context)
             http_address += "/#id=%s&amp;model=%s&amp;view_type=form" % (thread.id, thread._table_name)
