@@ -181,7 +181,7 @@ class project_active_tasking(osv.osv):
         "ziyuan": fields.selection([(u'人力资源满足', u'人力资源满足'), (u'人力资源不足', u'人力资源不足')], u'人力资源', ),
         "shebei": fields.selection([(u'设备满足', u'设备满足'), (u'设备不满足', u'设备不满足')], u"设备", ),  # 本院是否有能力满足规定要求
         "gongqi": fields.selection([(u'工期可接受', u'工期可接受'), (u'工期太紧', u'工期太紧')], u"工期", ),  # 本院是否有能力满足规定要求
-        "shejifei": fields.selection([(u'设计费合理', u'设计费合理'), (u'设计费太低', u'设计费太低')], u'设计费', ),  #本院是否有能力满足规定要求
+        "shejifei": fields.selection([(u'设计费合理', u'设计费合理'), (u'设计费太低', u'设计费太低')], u'设计费', ),  # 本院是否有能力满足规定要求
 
 
         "duofanghetong": fields.boolean(u"多方合同"),
@@ -205,7 +205,7 @@ class project_active_tasking(osv.osv):
                                                  string=u'Review Image'),
         'director_approve_time': fields.datetime(string="Director Approve Time"),
 
-        ##Operator Room
+        # #Operator Room
 
         "pingshenfangshi": fields.selection([(u'会议', u'会议'), (u'会签', u'会签'), (u'审批', u'审批')], u"评审方式"),
         "yinfacuoshi": fields.selection([(u'可以接受', u'可以接受'), (u'不接受', u'不接受'), (u'加班', u'加班'),
@@ -316,10 +316,6 @@ class project_active_tasking(osv.osv):
     def director_review_accept(self, cr, uid, ids, context=None):
         self._sign_form(cr, uid, ids, 'director_reviewer_apply_id', 'director_reviewer_apply_time', context=context)
         log_info = u'所长审批通过,提交请求到经营室'
-        groups = self.pool.get('ir.model.data').get_object(cr, uid, 'up_project', 'group_up_project_jingyingshi', context=None)
-        if groups:
-            user_ids = [u.id for u in groups.users]
-            self.message_subscribe_users(cr, uid, ids, user_ids=user_ids, context=context)
         return self._send_workflow_signal(cr, uid, ids, log_info, 'suozhangshenpi_submit')
 
     def draft_reject(self, cr, uid, ids, context=None):
@@ -331,12 +327,11 @@ class project_active_tasking(osv.osv):
 
     def operator_review_accept(self, cr, uid, ids, context=None):
         self._sign_form(cr, uid, ids, 'jinyinshi_submitter_id', 'jinyinshi_submitter_datetime', context=context)
-        groups = self.pool.get('ir.model.data').get_object(cr, uid, 'up_project', 'group_up_project_zongshishi', context=None)
-        if groups:
-            user_ids = [u.id for u in groups.users]
-            self.message_subscribe_users(cr, uid, ids, user_ids=user_ids, context=context)
         log_info = u'经营室审批通过,提交申请到总师室'
-        return self._send_workflow_signal(cr, uid, ids, log_info, 'jingyinshi_submit')
+        result = self._send_workflow_signal(cr, uid, ids, log_info, 'jingyinshi_submit')
+        user_ids = self.read(cr, uid, ids[0], ['user_id'], context=context)['user_id']
+        self.message_unsubscribe_users(cr, 1, ids, user_ids, context=context)
+        return result
 
     def operator_reject(self, cr, uid, ids, context=None):
         self._sign_form(cr, uid, ids, 'director_reviewer_apply_id', 'director_reviewer_apply_time', is_clean=True,
@@ -382,8 +377,8 @@ class project_active_tasking(osv.osv):
 
 
     def workflow_director_submit(self, cr, uid, ids, context=None):
-        tasking = self.browse(cr, 1, ids[0], context=context)
-        self.write(cr, 1, ids,
+        tasking = self.browse(cr, uid, ids[0], context=context)
+        self.write(cr, uid, ids,
                    {'state': 'suozhangshenpi', 'status_code': 10102,
                     'related_user_id': tasking.director_reviewer_id.id},
                    context=context)
@@ -391,28 +386,28 @@ class project_active_tasking(osv.osv):
 
 
     def workflow_operator_room(self, cr, uid, ids, context=None):
-        tasking = self.browse(cr, 1, ids[0], context=context)
-        self.write(cr, 1, ids,
+        tasking = self.browse(cr, uid, ids[0], context=context)
+        self.write(cr, uid, ids,
                    {'chenjiebumen_id': tasking.jianyishejibumen_id.id, 'state': 'zhidingbumen', 'status_code': 10103, },
                    context=context)
         return True
 
     def workflow_engineer_room(self, cr, uid, ids, context=None):
-        tasking = self.browse(cr, 1, ids[0], context=context)
-        self.write(cr, 1, ids, {'tender_category': tasking.toubiaoleibie,
-                                'user_id': [(6, 0, [j.id for j in tasking.jianyixiangmufuzeren_id])],
-                                'state': 'zhidingfuzeren',
-                                'status_code': 10104},
+        tasking = self.browse(cr, uid, ids[0], context=context)
+        self.write(cr, uid, ids, {'tender_category': tasking.toubiaoleibie,
+                                  'user_id': [(6, 0, [j.id for j in tasking.jianyixiangmufuzeren_id])],
+                                  'state': 'zhidingfuzeren',
+                                  'status_code': 10104},
                    context=context)
         return True
 
     def workflow_manager_room(self, cr, uid, ids, context=None):
-        tasking = self.browse(cr, 1, ids[0], context=context)
+        tasking = self.browse(cr, uid, ids[0], context=context)
         if not tasking.is_import:
-            self.write(cr, 1, ids, {'state': 'end', 'status_code': 10106, 'begin_date': datetime.date.today()},
+            self.write(cr, uid, ids, {'state': 'end', 'status_code': 10106, 'begin_date': datetime.date.today()},
                        context=context)
         else:
-            self.write(cr, 1, ids, {'state': 'end', 'status_code': 10106, },
+            self.write(cr, uid, ids, {'state': 'end', 'status_code': 10106, },
                        context=context)
 
         return True
@@ -453,7 +448,8 @@ class project_project_inherit(osv.osv):
                                           ondelete="cascade"),
         'active_tasking_is_wait_user_process': fields.related('active_tasking', 'is_wait_user_process', type='boolean',
                                                               string="Active Tasking Is Waiting User"),
-        'active_tasking_state': fields.related('active_tasking', 'state', type='selection', selection=project_active_tasking.SELECTION, string='Tasking State'),
+        'active_tasking_state': fields.related('active_tasking', 'state', type='selection', selection=project_active_tasking.SELECTION,
+                                               string='Tasking State'),
     }
 
     def act_active_tasking(self, cr, uid, ids, context=None):

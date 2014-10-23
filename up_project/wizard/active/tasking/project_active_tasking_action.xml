@@ -52,17 +52,13 @@
             <field name="code">
 from_rec = object.name
 subject = u"项目进度提示"
-ir_obj = pool.get('ir.config_parameter')
-http_address_id = ir_obj.search(cr,1,[('key','=','web.base.static.url')],context=context)
-http_address = ir_obj.browse(cr,1,http_address_id[0],context=context).value
-http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.project" % object.project_id.id
-big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您的审批,请及时处理项目和跟进项目进度 """ % (http_address,object.name)
 content = u"项目[%s]需要您的审批,请及时处理项目和跟进项目进度" % (object.name)
 model = 'project.project.active.tasking'
 res_id = object.id
 to = object.director_reviewer_id.id
 pool.get('sms.sms').send_sms_to_users( cr, 1,  from_rec, content, model, res_id, to, context=None)
-pool.get('sms.sms').send_big_ant_to_users( cr, 1, from_rec,subject, big_ant_content, model, res_id, to, context=None)
+context['mail_create_nosubscribe'] = True
+object.message_post(body=content,subject=subject,subtype='mail.mt_comment',type='comment',context=context,user_ids=[to])
             </field>
         </record>
 
@@ -76,16 +72,12 @@ pool.get('sms.sms').send_big_ant_to_users( cr, 1, from_rec,subject, big_ant_cont
 from_rec = object.name
 subject = u"项目进度提示"
 content = u"项目[%s]需要您的审批,请及时处理项目和跟进项目进度" % (object.name)
-ir_obj = pool.get('ir.config_parameter')
-http_address_id = ir_obj.search(cr,1,[('key','=','web.base.static.url')],context=context)
-http_address = ir_obj.browse(cr,1,http_address_id[0],context=context).value
-http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.project" % object.project_id.id
-big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您的审批,请及时处理项目和跟进项目进度 """ % (http_address,object.name)
 model = 'project.project.active.tasking'
 res_id = object.id
 group_id = 'up_project.group_up_project_jingyingshi'
 pool.get('sms.sms').send_sms_to_group(cr,uid,from_rec,content,model,res_id,group_id,context)
-pool.get('sms.sms').send_big_ant_to_group(cr,uid,from_rec,subject,big_ant_content,model,res_id,group_id,context)
+context['mail_create_nosubscribe'] = True
+object.message_post(body=content,subject=subject,subtype='mail.mt_comment',type='comment',context=context,group_xml_ids=group_id)
             </field>
         </record>
 
@@ -99,17 +91,13 @@ pool.get('sms.sms').send_big_ant_to_group(cr,uid,from_rec,subject,big_ant_conten
 from_rec = object.name
 subject = u"项目进度提示"
 content = u"项目[%s]需要您的审批,请及时处理项目和跟进项目进度" % (object.name)
-ir_obj = pool.get('ir.config_parameter')
-http_address_id = ir_obj.search(cr,1,[('key','=','web.base.static.url')],context=context)
-http_address = ir_obj.browse(cr,1,http_address_id[0],context=context).value
-http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.project" % object.project_id.id
-big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您的审批,请及时处理项目和跟进项目进度 """ % (http_address,object.name)
 model = 'project.project.active.tasking'
 res_id = object.id
 group_id = 'group_up_project_zongshishi'
 sms_config_id = 'project_config_sms_active_tasking_engineer'
-pool.get('sms.sms').send_sms_to_config_group(cr, uid, sms_config_id, from_rec, content, model, res_id, context=None)
-pool.get('sms.sms').send_big_ant_to_config_group(cr, uid, sms_config_id, from_rec, subject, big_ant_content, model, res_id, context=None)
+pool.get('sms.sms').send_sms_to_config_group(cr, uid, sms_config_id, from_rec, content, model, res_id, context=context)
+context['mail_create_nosubscribe'] = True
+object.message_post(body=content,subject=subject,subtype='mail.mt_comment',type='comment',context=context,config_group_id=sms_config_id)
             </field>
         </record>
 
@@ -123,11 +111,6 @@ pool.get('sms.sms').send_big_ant_to_config_group(cr, uid, sms_config_id, from_re
 from_rec = object.name
 subject = u"项目进度提示"
 content = u"项目[%s]需要您的审批启动,请及时处理项目和跟进项目进度" % (object.name)
-ir_obj = pool.get('ir.config_parameter')
-http_address_id = ir_obj.search(cr,1,[('key','=','web.base.static.url')],context=context)
-http_address = ir_obj.browse(cr,1,http_address_id[0],context=context).value
-http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.project" % object.project_id.id
-big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 需要您的审批,请及时处理项目和跟进项目进度 """ % (http_address,object.name)
 model = 'project.project.active.tasking'
 res_id = object.id
 project = pool.get('project.project.active.tasking')
@@ -136,7 +119,8 @@ hr_ids = hr.search(cr,1,[('department_id','=',object.chenjiebumen_id.id),('job_i
 hr_values = hr.browse(cr,1,hr_ids,context=context)
 to = [employee.user_id.id for employee in hr_values if employee.user_id]
 pool.get('sms.sms').send_sms_to_users( cr, 1, from_rec, content, model, res_id, to, context=None)
-pool.get('sms.sms').send_big_ant_to_users( cr, 1, from_rec,subject, big_ant_content, model, res_id, to, context=None)
+context['mail_create_nosubscribe'] = True
+object.message_post(body=content,subject=subject,subtype='mail.mt_comment',type='comment',context=context,user_ids=to)
             </field>
         </record>
 
@@ -150,22 +134,18 @@ pool.get('sms.sms').send_big_ant_to_users( cr, 1, from_rec,subject, big_ant_cont
 from_rec = object.name
 subject = u"项目进度提示"
 content = u"设计部门:%s,项目[%s]已经启动,您是本项目的:主管总师, 请及时处理和跟进项目进度" % (object.chenjiebumen_id.name,object.name)
-ir_obj = pool.get('ir.config_parameter')
-http_address_id = ir_obj.search(cr,1,[('key','=','web.base.static.url')],context=context)
-http_address = ir_obj.browse(cr,1,http_address_id[0],context=context).value
-http_address = http_address + "/#id=%s&amp;view_type=form&amp;model=project.project" % object.project_id.id
-big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 设计部门:%s 已经启动,您是本项目的:主管总师, 请及时处理和跟进项目进度 """ % (http_address,object.name,object.chenjiebumen_id.name)
 model = 'project.project.active.tasking'
 res_id = object.id
 zhuguanzongshi_id = [z.id for z in  object.zhuguanzongshi_id]
 users = pool.get('res.users').browse(cr,1,zhuguanzongshi_id,context=context)
 pool.get('sms.sms').send_sms_to_users( cr, 1, from_rec, content, model, res_id, zhuguanzongshi_id, context=None)
-pool.get('sms.sms').send_big_ant_to_users( cr, 1, from_rec,subject, big_ant_content, model, res_id, zhuguanzongshi_id, context=None)
+context['mail_create_nosubscribe'] = True
+object.message_post(body=content,subject=subject,subtype='mail.mt_comment',type='comment',context=context,user_ids=zhuguanzongshi_id)
+
 content = u"设计部门:%s,项目[%s]已经启动,您是本项目的:项目负责人, 请及时处理和跟进项目进度" % (object.chenjiebumen_id.name,object.name)
-big_ant_content = u"""项目 <![CDATA[<a target='_blank' href='%s'> [%s] </a> ]]> 设计部门:%s 已经启动,您是本项目的:项目负责人, 请及时处理和跟进项目进度 """ % (http_address,object.name,object.chenjiebumen_id.name)
 user_id = pool.get('project.project').read(cr,1,object.project_id.id,['user_id'],context=context)
 pool.get('sms.sms').send_sms_to_users( cr, 1,  from_rec, content, model, res_id, user_id['user_id'], context=None)
-pool.get('sms.sms').send_big_ant_to_users( cr, 1, from_rec,subject, big_ant_content, model, res_id, user_id['user_id'],context=None)
+object.message_post(body=content,subject=subject,subtype='mail.mt_comment',type='comment',context=context,user_ids=user_id['user_id'])
             </field>
         </record>
 

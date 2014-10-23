@@ -340,7 +340,7 @@ class updis_project(osv.osv):
         'user_id': fields.many2many('res.users', 'project_user_id_res_user', 'project_user_id', 'res_user_id',
                                     string='Project Manager',
                                     domain=['|', ("active", "=", True), ("active", "=", False)], track_visibility='onchange'),
-        'director_reviewer_id': fields.many2one('res.users', string=u'Review Director', track_visibility='onchange'),
+        'director_reviewer_id': fields.many2one('res.users', string=u'Review Director'),
         'related_user_id': fields.many2one('res.users', string="Related Users ID"),
         'status_code': fields.integer(string='Status Code'),
         "shifoutoubiao": fields.boolean("Is Tender"),
@@ -408,7 +408,7 @@ class updis_project(osv.osv):
              ('CC200511210004', u'县级市'), ('CC200511210005', u'其它'), ('plan_city', u'计划单列市')], string="City Type"),
         "zhuguanzongshi_id": fields.many2many("res.users", "project_zhuangguan_res_user", "project_id", "res_user_id",
                                               string=u"主管总师",
-                                              domain=['|', ("active", "=", True), ("active", "=", False)], track_visibility='onchange'),
+                                              domain=['|', ("active", "=", True), ("active", "=", False)]),
         'import_is_hidden': fields.char(size=8, string="Import Is Hidden"),
         'import_sum_up_flag': fields.char(size=8, string="Import Sum Up Flag"),
         'import_flag': fields.char(size=8, string="Import Flag"),
@@ -470,6 +470,7 @@ class updis_project(osv.osv):
             suozhangshenpi = self.pool.get(form_name)
             # by pass
             suozhangshenpi_id = suozhangshenpi.create(cr, 1, {'project_id': ids[0]}, context=context)
+            self.pool['project.project.active.tasking'].message_unsubscribe_users(cr, 1, [suozhangshenpi_id], [1], context=context)
             self.write(cr, 1, ids, {project_form_field: suozhangshenpi_id})
             return suozhangshenpi_id
 
