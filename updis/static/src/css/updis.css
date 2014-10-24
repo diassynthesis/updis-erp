@@ -78,3 +78,7 @@
 .openerp .oe_tips {
     color: red;
 }
+
+.openerp .announcement_bar {
+    display: none !important;
+}
