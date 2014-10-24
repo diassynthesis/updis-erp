@@ -438,6 +438,9 @@ class project_active_tasking(osv.osv):
         if tasking.state == "suozhangqianzi":
             return tasking.manager_reject()
 
+    def _message_get_auto_subscribe_fields(self, cr, uid, updated_fields, auto_follow_fields=['user_id'], context=None):
+        return []
+
 
 class project_project_inherit(osv.osv):
     _inherit = 'project.project'
