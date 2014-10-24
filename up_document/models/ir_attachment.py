@@ -462,7 +462,7 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
 class IrAttachmentApplication(osv.osv):
     _name = 'ir.attachment.application'
     _inherit = ['mail.thread', 'ir.needaction_mixin']
-    _rec_name = 'apply_user_id'
+    _rec_name = 'name'
     _order = 'apply_date desc'
 
     def default_get(self, cr, uid, field_list, context=None):
@@ -489,6 +489,7 @@ class IrAttachmentApplication(osv.osv):
         return result
 
     _columns = {
+        'name': fields.char('Document Download Application Name', size=64),
         'state': fields.selection(
             selection=[('apply', 'Apply'), ('director_process', 'Director Process'), ('manager_process', 'Manager Process'), ('approve', 'Approve'),
                        ('disapprove', 'Disapprove')], string='State', track_visibility='onchange'),
@@ -514,18 +515,16 @@ class IrAttachmentApplication(osv.osv):
             'apply_date': fields.datetime.now(),
             'state': 'director_process',
         }, context=context)
-        sms_msg = u"有用户发起文件下载审批， 请登陆系统处理"
-        http_address = self.pool['ir.config_parameter'].get_param(cr, 1, 'web.base.static.url', context=context)
-        big_ant_msg = (u"文件下载审批请求",
-                       u"您有需要处理的文件下载<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>审批请求</a>，请处理" % (
-                           http_address, ids[0]))
+        sms_msg = u"有用户发起文件下载审批， 请及时处理"
+        subject = u'文件下载审批请求'
         model = 'ir.attachment.application'
         res_id = ids[0]
         suzhang_ids = self.pool['res.users'].get_department_suzhang_ids(cr, uid, [uid], context=context)
         zhurengong_ids = self.pool['res.users'].get_department_zhurengong_ids(cr, uid, [uid], context=context)
         self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, suzhang_ids + zhurengong_ids, context)
-        self.pool.get('sms.sms').send_big_ant_to_users(cr, uid, model, big_ant_msg[0], big_ant_msg[1], model, res_id, suzhang_ids + zhurengong_ids,
-                                                       context)
+        context['mail_create_nosubscribe'] = True
+        self.message_post(cr, uid, ids, body=sms_msg, subject=subject, subtype='mail.mt_comment', type='comment', context=context,
+                          user_ids=suzhang_ids + zhurengong_ids)
         return True
 
     def _is_same_department(self, cr, uid, ids, context):
@@ -551,16 +550,15 @@ class IrAttachmentApplication(osv.osv):
             'director_approve_date': fields.datetime.now(),
             'state': 'manager_process',
         }, context=context)
-        sms_msg = u"有用户发起文件下载审批， 请登陆系统处理"
-        http_address = self.pool['ir.config_parameter'].get_param(cr, 1, 'web.base.static.url', context=context)
-        big_ant_msg = (u"文件下载审批请求",
-                       u"您有需要处理的文件下载<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>审批请求</a>，请处理" % (
-                       http_address, ids[0]))
+        sms_msg = u"有用户发起文件下载审批， 请及时处理"
+        subject = u'文件下载审批请求'
         model = 'ir.attachment.application'
         res_id = ids[0]
         group_id = 'up_document.group_attachment_download_manager'
         self.pool['sms.sms'].send_sms_to_group(cr, uid, model, sms_msg, model, res_id, group_id, context)
-        self.pool.get('sms.sms').send_big_ant_to_group(cr, 1, model, big_ant_msg[0], big_ant_msg[1], model, res_id, group_id, context)
+        context['mail_create_nosubscribe'] = True
+        self.message_post(cr, uid, ids, body=sms_msg, subject=subject, subtype='mail.mt_comment', type='comment', context=context,
+                          group_xml_ids=group_id)
         return True
 
     def director_disapprove(self, cr, uid, ids, context):
@@ -573,15 +571,14 @@ class IrAttachmentApplication(osv.osv):
         }, context=context)
 
         sms_msg = u"文件下载申请被拒绝，请登陆查看"
-        http_address = self.pool['ir.config_parameter'].get_param(cr, 1, 'web.base.static.url', context=context)
-        big_ant_msg = (u"文件下载申请被拒绝",
-                       u"您有文件<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>下载申请</a>被拒绝，请登陆处理" % (
-                       http_address, ids[0]))
+        subject = u'文件下载申请被拒绝'
         model = 'ir.attachment.application'
         res_id = ids[0]
         user = self.browse(cr, uid, ids[0], context).apply_user_id
         self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, user.id, context)
-        self.pool.get('sms.sms').send_big_ant_to_users(cr, uid, model, big_ant_msg[0], big_ant_msg[1], model, res_id, user.id, context)
+        context['mail_create_nosubscribe'] = True
+        self.message_post(cr, uid, ids, body=sms_msg, subject=subject, subtype='mail.mt_comment', type='comment', context=context,
+                          user_ids=[user.id])
         return True
 
     def approve(self, cr, uid, ids, context):
@@ -591,15 +588,14 @@ class IrAttachmentApplication(osv.osv):
             'state': 'approve',
         }, context=context)
         sms_msg = u"文件下载申请已通过，请登陆查看"
-        http_address = self.pool['ir.config_parameter'].get_param(cr, 1, 'web.base.static.url', context=context)
-        big_ant_msg = (u"文件下载申请通过",
-                       u"您有文件<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>下载申请</a>通过，请登陆处理" % (
-                       http_address, ids[0]))
+        subject = u'文件下载申请通过'
         model = 'ir.attachment.application'
         res_id = ids[0]
         user = self.browse(cr, uid, ids[0], context).apply_user_id
         self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, user.id, context)
-        self.pool.get('sms.sms').send_big_ant_to_users(cr, uid, model, big_ant_msg[0], big_ant_msg[1], model, res_id, user.id, context)
+        context['mail_create_nosubscribe'] = True
+        self.message_post(cr, uid, ids, body=sms_msg, subject=subject, subtype='mail.mt_comment', type='comment', context=context,
+                          user_ids=[user.id])
         return True
 
     def disapprove(self, cr, uid, ids, context):
@@ -609,21 +605,24 @@ class IrAttachmentApplication(osv.osv):
             'state': 'disapprove',
         }, context=context)
         sms_msg = u"文件下载申请被拒绝，请登陆查看"
-        http_address = self.pool['ir.config_parameter'].get_param(cr, 1, 'web.base.static.url', context=context)
-        big_ant_msg = (u"文件下载申请被拒绝",
-                       u"您有文件<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>下载申请</a>被拒绝，请登陆处理" % (
-                       http_address, ids[0]))
+        subject = u'文件下载申请被拒绝'
         model = 'ir.attachment.application'
         res_id = ids[0]
         user = self.browse(cr, uid, ids[0], context).apply_user_id
         self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, user.id, context)
-        self.pool.get('sms.sms').send_big_ant_to_users(cr, uid, model, big_ant_msg[0], big_ant_msg[1], model, res_id, user.id, context)
+        context['mail_create_nosubscribe'] = True
+        self.message_post(cr, uid, ids, body=sms_msg, subject=subject, subtype='mail.mt_comment', type='comment', context=context,
+                          user_ids=[user.id])
         return True
 
     _defaults = {
+        'name': u'文档下载审批',
         'state': 'apply',
         'expire_date': lambda *a: (datetime.date.today() + datetime.timedelta(days=7)).strftime(tools.DEFAULT_SERVER_DATE_FORMAT),
     }
+
+    def _message_get_auto_subscribe_fields(self, cr, uid, updated_fields, auto_follow_fields=['user_id'], context=None):
+        return []
 
 
 class IrAttachmentLog(osv.osv):
