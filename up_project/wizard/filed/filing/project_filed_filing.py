@@ -8,11 +8,17 @@ from openerp.tools.translate import _
 
 class ProjectFiledFiling(osv.Model):
     _name = 'project.project.filed.filing'
+    _inherit = ['mail.thread', 'ir.needaction_mixin']
 
     _order = 'create_date desc'
 
     FILING_STATE = [('apply_filing', 'Apply Filing'), ('manager_approve', 'Manager Approving'), ('approve_filing', 'Approve Filing'),
                     ('end_filing', 'Filing Complete')]
+
+    _track = {
+        'state': {},
+    }
+
     # noinspection PyUnusedLocal
     def _get_name(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, u'项目文件归档表')
@@ -21,7 +27,7 @@ class ProjectFiledFiling(osv.Model):
     _columns = {
         'name': fields.function(_get_name, type='char', string='Name'),
         'state': fields.selection(
-            selection=FILING_STATE, string='State'),
+            selection=FILING_STATE, string='State', track_visibility='onchange'),
         'project_id': fields.many2one('project.project', 'Project', required=True),
         'project_name': fields.char('Project Name', 256),
         'project_serial_number': fields.related('project_id', 'xiangmubianhao', type='char', readonly=True, string='Project Serial Number'),
@@ -88,38 +94,41 @@ class ProjectFiledFiling(osv.Model):
     def button_apply_filing(self, cr, uid, ids, context):
         filing = self.browse(cr, uid, ids[0], context)
         sms_obj = self.pool['sms.sms']
-        http_address = self.pool['ir.config_parameter'].get_param(cr, uid, 'web.base.static.url', default='', context=context)
-        http_address += "/#id=%s&amp;view_type=form&amp;model=project.project" % filing.project_id.id
-        content_sms = u'项目[%s]需要您处理【项目归档-负责人审批】请求,请及时处理项目和跟进项目进度。' % filing.project_id.name
-        content_ant = u"""项目 <a target='_blank' href='%s'> [%s] </a> 需要您处理【项目归档-负责人审批】请求,请及时处理项目和跟进项目进度 """ % (
-            http_address, filing.project_id.name)
+        content_sms = u'项目[%s]需要您处理,请及时处理项目和跟进项目进度。' % filing.project_id.name
         sms_obj.send_sms_to_users(cr, uid, user_ids=[u.id for u in filing.project_user], from_rec=filing.name, content=content_sms, model=self._name,
                                   res_id=filing.id,
                                   context=context)
-        sms_obj.send_big_ant_to_users(cr, uid, user_ids=[u.id for u in filing.project_user], from_rec=filing.name, subject=u'项目归档申请等待处理',
-                                      content=content_ant,
-                                      model=self._name, res_id=filing.id, context=context)
+        context['mail_create_nosubscribe'] = True
+        self.message_post(cr, uid, ids, body=content_sms, subject=u'项目归档审批通知', subtype='mail.mt_comment', type='comment', context=context,
+                          user_ids=[u.id for u in filing.project_user])
         filing.project_id.write({'status_code': 30104})
         return self.write(cr, uid, ids, {'state': 'manager_approve'}, context)
 
     def button_manager_approve(self, cr, uid, ids, context):
         filing = self.browse(cr, uid, ids[0], context)
         sms_obj = self.pool['sms.sms']
-        http_address = self.pool['ir.config_parameter'].get_param(cr, uid, 'web.base.static.url', default='', context=context)
-        http_address += "/#id=%s&amp;view_type=form&amp;model=project.project" % filing.project_id.id
-        content_sms = u'项目[%s]需要您处理【项目归档-图档室审批】请求,请及时处理项目和跟进项目进度。' % filing.project_id.name
-        content_ant = u"""项目 <a target='_blank' href='%s'> [%s] </a> 需要您处理【项目归档-图档室审批】请求,请及时处理项目和跟进项目进度 """ % (
-            http_address, filing.project_id.name)
+        content_sms = u'项目[%s]需要您处理,请及时处理项目和跟进项目进度。' % filing.project_id.name
         sms_obj.send_sms_to_group(cr, uid, from_rec=filing.name, content=content_sms, model=self._name, res_id=filing.id,
-                                  group_xml_ids='up_project.group_up_project_filed_manager', context=context)
-        sms_obj.send_big_ant_to_group(cr, uid, from_rec=filing.name, subject=u'项目归档申请等待处理', content=content_ant, model=self._name, res_id=filing.id,
-                                      group_xml_ids='up_project.group_up_project_filed_manager', context=context)
+                                  group_xml_ids='up_project.group_up_project_filed_elec_manager',
+                                  context=context)
+        context['mail_create_nosubscribe'] = True
+        self.message_post(cr, uid, ids, body=content_sms, subject=u'项目归档审批通知', subtype='mail.mt_comment', type='comment', context=context,
+                          group_xml_ids='up_project.group_up_project_filed_elec_manager')
         filing.project_id.write({'status_code': 30103})
         return self.write(cr, uid, ids, {'state': 'approve_filing', 'manager_approver_id': uid, 'manager_approver_date': fields.datetime.now()},
                           context)
 
     def button_manager_disapprove(self, cr, uid, ids, context):
-        self.browse(cr, uid, ids[0], context).project_id.write({'status_code': 30101})
+        filing = self.browse(cr, uid, ids[0], context)
+        filing.project_id.write({'status_code': 30101})
+        sms_obj = self.pool['sms.sms']
+        content_sms = u'项目[%s]需要您处理,请及时处理项目和跟进项目进度。' % filing.project_id.name
+        sms_obj.send_sms_to_users(cr, uid, from_rec=filing.name, content=content_sms, model=self._name, res_id=filing.id,
+                                  user_ids=[filing.create_uid.id],
+                                  context=context)
+        context['mail_create_nosubscribe'] = True
+        self.message_post(cr, uid, ids, body=content_sms, subject=u'项目归档审批通知', subtype='mail.mt_comment', type='comment', context=context,
+                          user_ids=[filing.create_uid.id])
         return self.write(cr, uid, ids, {'state': 'apply_filing', 'manager_approver_id': False, 'manager_approver_date': False},
                           context)
 
@@ -132,17 +141,44 @@ class ProjectFiledFiling(osv.Model):
         attachment_obj = self.pool['ir.attachment']
         attachment_obj.filing_project_attachments(cr, 1, [a.id for a in filing.attachment_ids], context)
         filing.project_id.write({'status_code': 30102})
+        # send filing success message
+        sms_obj = self.pool['sms.sms']
+        content_sms = u'项目[%s]归档审批通过。' % filing.project_id.name
+        sms_obj.send_sms_to_users(cr, uid, user_ids=[u.id for u in filing.project_user], from_rec=filing.name, content=content_sms, model=self._name,
+                                  res_id=filing.id, context=context)
+        context['mail_create_nosubscribe'] = True
+        self.message_post(cr, uid, ids, body=content_sms, subject=u'项目归档审批通知', subtype='mail.mt_comment', type='comment', context=context,
+                          user_ids=[u.id for u in filing.project_user])
         return self.write(cr, uid, ids, {'state': 'end_filing', 'paper_file_approver_id': uid, 'paper_file_approver_date': fields.datetime.now()},
                           context)
 
     def button_disapprove_filing(self, cr, uid, ids, context):
-        self.browse(cr, uid, ids[0], context).project_id.write({'status_code': 30104})
+        filing = self.browse(cr, uid, ids[0], context)
+        filing.project_id.write({'status_code': 30104})
+        sms_obj = self.pool['sms.sms']
+        content_sms = u'项目[%s]需要您处理,请及时处理项目和跟进项目进度。' % filing.project_id.name
+        sms_obj.send_sms_to_users(cr, uid, from_rec=filing.name, content=content_sms, model=self._name, res_id=filing.id,
+                                  user_ids=[u.id for u in filing.project_user],
+                                  context=context)
+        context['mail_create_nosubscribe'] = True
+        self.message_post(cr, uid, ids, body=content_sms, subject=u'项目归档审批通知', subtype='mail.mt_comment', type='comment', context=context,
+                          user_ids=[u.id for u in filing.project_user])
         return self.write(cr, uid, ids,
                           {'state': 'manager_approve', 'paper_file_approver_id': None, 'paper_file_approver_date': None, 'manager_approver_id': False,
                            'manager_approver_date': False}, context)
 
     def button_elec_approve(self, cr, uid, ids, context):
         self.write(cr, uid, ids, {'elec_file_approver_id': uid, 'elec_file_approver_date': fields.datetime.now()}, context=context)
+        filing = self.browse(cr, uid, ids[0], context)
+        # send filing success message
+        sms_obj = self.pool['sms.sms']
+        content_sms = u'项目[%s]电子审批通过,请及时处理项目和跟进项目进度。' % filing.project_id.name
+        sms_obj.send_sms_to_group(cr, uid, group_xml_ids='up_project.group_up_project_filed_manager', from_rec=filing.name, content=content_sms,
+                                  model=self._name,
+                                  res_id=filing.id, context=context)
+        context['mail_create_nosubscribe'] = True
+        self.message_post(cr, uid, ids, body=content_sms, subject=u'项目归档审批通知', subtype='mail.mt_comment', type='comment', context=context,
+                          group_xml_ids='up_project.group_up_project_filed_manager')
         return True
 
     def button_show_filing_update_list(self, cr, uid, ids, context):
@@ -181,6 +217,9 @@ class ProjectFiledFiling(osv.Model):
         if 'show_images' in vals:
             super(ProjectFiledFiling, self).write(cr, user, ids, {'show_images': [(5,)]}, context)
         return super(ProjectFiledFiling, self).write(cr, user, ids, vals, context)
+
+    def _message_get_auto_subscribe_fields(self, cr, uid, updated_fields, auto_follow_fields=['user_id'], context=None):
+        return []
 
 
 class ProjectFiledFilingTag(osv.Model):
@@ -381,6 +420,7 @@ class ProjectProjectInherit(osv.Model):
                 'import_total_paper': None,
             }, context=context)
             project.write({'status_code': 30101})
+            filing_obj.message_unsubscribe_users(cr, uid, [new_filing_id], [uid], context=context)
             return True
 
     # noinspection PyUnusedLocal
