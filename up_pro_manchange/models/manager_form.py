@@ -6,7 +6,10 @@ from openerp.osv import osv, fields
 
 class ManagerForm(osv.Model):
     _name = 'project.project.manager.change'
+    _inherit = ['mail.thread', 'ir.needaction_mixin']
+
     _columns = {
+        'name': fields.char('Project Manager & Chief Change',size=64),
         'origin_manager': fields.many2many('res.users', 'origin_manager_change_res_user_rel', 'file_id', 'user_id', 'Origin Manager'),
         'origin_chief': fields.many2many('res.users', 'origin_chief_change_res_user_rel', 'file_id', 'user_id', 'Origin Chief'),
 
@@ -35,6 +38,7 @@ class ManagerForm(osv.Model):
 
     _defaults = {
         'state': 'draft',
+        'name': u'项目负责人和主管总师变更',
     }
 
     def _is_same_department(self, cr, uid, ids, context):
@@ -68,27 +72,24 @@ class ManagerForm(osv.Model):
             write_values.update({'state': vals['state']})
         self.write(cr, uid, ids, write_values, context=context)
         sms_msg = vals.get('sms', '')
-        http_address = self.pool['ir.config_parameter'].get_param(cr, 1, 'web.base.static.url', context=context)
-        big_ant_msg = (
-            sms_msg,
-            u"请点击这里处理:<a target='_blank' href='%s/#id=%s&model=%s&view_type=form'>审批请求</a>。" % (http_address, vals['id'], vals['model'])
-        )
-        if vals['target'] == 'suzhang':
+        subject = u'项目负责人和主管总师变更申请'
+        context['mail_create_nosubscribe'] = True
+        if vals['target'] == 'suozhang':
             suzhang_ids = self.pool['res.users'].get_department_suzhang_ids(cr, uid, [uid], context=context)
             # zhurengong_ids = self.pool['res.users'].get_department_zhurengong_ids(cr, uid, [uid], context=context)
             self.pool['sms.sms'].send_sms_to_users(cr, uid, vals['model'], sms_msg, vals['model'], vals['id'], suzhang_ids, context)
-            self.pool.get('sms.sms').send_big_ant_to_users(cr, uid, vals['model'], big_ant_msg[0], big_ant_msg[1], vals['model'], vals['id'],
-                                                           suzhang_ids, context)
+            self.message_post(cr, uid, ids, body=sms_msg, subject=subject, subtype='mail.mt_comment', type='comment', context=context,
+                              user_ids=suzhang_ids)
         if vals['target'] == 'group':
             group_id = vals['group_ids']
             self.pool['sms.sms'].send_sms_to_group(cr, uid, vals['model'], sms_msg, vals['model'], vals['id'], group_id, context)
-            self.pool.get('sms.sms').send_big_ant_to_group(cr, 1, vals['model'], big_ant_msg[0], big_ant_msg[1], vals['model'], vals['id'], group_id,
-                                                           context)
+            self.message_post(cr, uid, ids, body=sms_msg, subject=subject, subtype='mail.mt_comment', type='comment', context=context,
+                              group_xml_ids=group_id)
         if vals['target'] == 'user':
             user_ids = vals['user_ids']
             self.pool['sms.sms'].send_sms_to_users(cr, uid, vals['model'], sms_msg, vals['model'], vals['id'], user_ids, context)
-            self.pool.get('sms.sms').send_big_ant_to_users(cr, uid, vals['model'], big_ant_msg[0], big_ant_msg[1], vals['model'], vals['id'],
-                                                           user_ids, context)
+            self.message_post(cr, uid, ids, body=sms_msg, subject=subject, subtype='mail.mt_comment', type='comment', context=context,
+                              user_ids=user_ids)
         return {
             'type': 'ir.actions.act_window',
             'res_model': vals['model'],
@@ -115,7 +116,7 @@ class ManagerForm(osv.Model):
             'sms': u"项目:%s -> 负责人变更申请,请登陆系统处理" % change_file.project_id.name,
             'model': 'project.project.manager.change',
             'id': ids[0],
-            'target': 'suzhang',
+            'target': 'suozhang',
         }
         return self._apply_state(cr, uid, ids, values, context)
 
@@ -211,6 +212,7 @@ class ManagerForm(osv.Model):
             change_file.yuanzhang_id.name,
         )
         change_file.project_id.add_log(log_info=log_info, context=context)
+        change_file.project_id.message_post(subject=u'项目负责人和主管总师变更', body=log_info, type='notification', context=context)
         change_file.project_id.write({'user_id': [(6, 0, [u.id for u in change_file.target_manager])],
                                       'zhuguanzongshi_id': [(6, 0, [u.id for u in change_file.target_chief])]}, context=context)
         return result
