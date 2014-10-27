@@ -77,19 +77,16 @@ class ManagerForm(osv.Model):
         if vals['target'] == 'suozhang':
             suzhang_ids = self.pool['res.users'].get_department_suzhang_ids(cr, uid, [uid], context=context)
             # zhurengong_ids = self.pool['res.users'].get_department_zhurengong_ids(cr, uid, [uid], context=context)
-            self.pool['sms.sms'].send_sms_to_users(cr, uid, vals['model'], sms_msg, vals['model'], vals['id'], suzhang_ids, context)
             self.message_post(cr, uid, ids, body=sms_msg, subject=subject, subtype='mail.mt_comment', type='comment', context=context,
-                              user_ids=suzhang_ids)
+                              user_ids=suzhang_ids, is_send_sms=True)
         if vals['target'] == 'group':
             group_id = vals['group_ids']
-            self.pool['sms.sms'].send_sms_to_group(cr, uid, vals['model'], sms_msg, vals['model'], vals['id'], group_id, context)
             self.message_post(cr, uid, ids, body=sms_msg, subject=subject, subtype='mail.mt_comment', type='comment', context=context,
-                              group_xml_ids=group_id)
+                              group_xml_ids=group_id, is_send_sms=True)
         if vals['target'] == 'user':
             user_ids = vals['user_ids']
-            self.pool['sms.sms'].send_sms_to_users(cr, uid, vals['model'], sms_msg, vals['model'], vals['id'], user_ids, context)
             self.message_post(cr, uid, ids, body=sms_msg, subject=subject, subtype='mail.mt_comment', type='comment', context=context,
-                              user_ids=user_ids)
+                              user_ids=user_ids, is_send_sms=True)
         return {
             'type': 'ir.actions.act_window',
             'res_model': vals['model'],

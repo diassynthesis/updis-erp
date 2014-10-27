@@ -103,8 +103,11 @@ def monkey_message_auto_subscribe(self, cr, uid, ids, updated_fields, context=No
             if msg_ids:
                 self.pool.get('mail.notification')._notify(cr, uid, msg_ids[0], partners_to_notify=user_pids, context=context)
 
+
 from openerp.addons.mail.mail_thread import mail_thread
+
 mail_thread.message_auto_subscribe = monkey_message_auto_subscribe
+
 
 class MailServerInherit(osv.osv):
     _inherit = 'ir.mail_server'
@@ -225,8 +228,9 @@ class MailThreadInherit(osv.osv_abstract):
         msg_id = super(MailThreadInherit, self).message_post(cr, uid, thread_id, body, subject, type,
                                                              subtype, parent_id, attachments, context,
                                                              content_subtype, partner_ids=partner_ids)
+        is_send_ant = kwargs.pop('is_send_ant', True)
         # Send big ant message
-        if type == 'comment':
+        if type == 'comment' and is_send_ant:
             thread_id = thread_id[0] if isinstance(thread_id, list) else thread_id
             thread = self.browse(cr, uid, thread_id, context)
             # get href address
@@ -234,11 +238,19 @@ class MailThreadInherit(osv.osv_abstract):
             http_address += "/#id=%s&model=%s&view_type=form" % (thread.id, thread._table_name)
             head = "<div><a href='%s'>%s</a></div><br/>" % (http_address, getattr(thread, thread._model._rec_name))
             # get user ids and sent bigant message
-            partner_ids += [p.id for p in thread.message_follower_ids]
-            user_ids = self.pool['res.users'].search(cr, SUPERUSER_ID, [('partner_id', 'in', partner_ids)], context=context)
+            big_partner_ids = [p.id for p in thread.message_follower_ids] + partner_ids
+            user_ids = self.pool['res.users'].search(cr, SUPERUSER_ID, [('partner_id', 'in', big_partner_ids)], context=context)
             self.pool['sms.sms'].send_big_ant_to_users(cr, uid, from_rec=thread[thread._model._rec_name], subject=subject,
                                                        content=head + '<div>%s</div>' % body,
                                                        model=thread._table_name, res_id=thread.id, user_ids=user_ids, context=context)
+        is_send_sms = kwargs.pop('is_send_sms', False)
+        sms_body = kwargs.pop('sms_body', '')
+        if is_send_sms:
+            user_ids = self.pool['res.users'].search(cr, SUPERUSER_ID, [('partner_id', 'in', partner_ids)], context=context)
+            sms_body = sms_body if sms_body else body
+            self.pool['sms.sms'].send_sms_to_users(cr, uid, from_rec=thread[thread._model._rec_name],
+                                                   content=sms_body,
+                                                   model=thread._table_name, res_id=thread.id, user_ids=user_ids, context=context)
         return msg_id
 
     def message_subscribe_groups(self, cr, uid, ids, group_xml_ids=None, subtype_ids=None, context=None):

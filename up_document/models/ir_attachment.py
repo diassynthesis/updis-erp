@@ -517,14 +517,11 @@ class IrAttachmentApplication(osv.osv):
         }, context=context)
         sms_msg = u"有用户发起文件下载审批， 请及时处理"
         subject = u'文件下载审批请求'
-        model = 'ir.attachment.application'
-        res_id = ids[0]
         suzhang_ids = self.pool['res.users'].get_department_suzhang_ids(cr, uid, [uid], context=context)
         zhurengong_ids = self.pool['res.users'].get_department_zhurengong_ids(cr, uid, [uid], context=context)
-        self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, suzhang_ids + zhurengong_ids, context)
         context['mail_create_nosubscribe'] = True
         self.message_post(cr, uid, ids, body=sms_msg, subject=subject, subtype='mail.mt_comment', type='comment', context=context,
-                          user_ids=suzhang_ids + zhurengong_ids)
+                          user_ids=suzhang_ids + zhurengong_ids, is_send_sms=True)
         return True
 
     def _is_same_department(self, cr, uid, ids, context):
@@ -552,13 +549,10 @@ class IrAttachmentApplication(osv.osv):
         }, context=context)
         sms_msg = u"有用户发起文件下载审批， 请及时处理"
         subject = u'文件下载审批请求'
-        model = 'ir.attachment.application'
-        res_id = ids[0]
         group_id = 'up_document.group_attachment_download_manager'
-        self.pool['sms.sms'].send_sms_to_group(cr, uid, model, sms_msg, model, res_id, group_id, context)
         context['mail_create_nosubscribe'] = True
         self.message_post(cr, uid, ids, body=sms_msg, subject=subject, subtype='mail.mt_comment', type='comment', context=context,
-                          group_xml_ids=group_id)
+                          group_xml_ids=group_id, is_send_sms=True)
         return True
 
     def director_disapprove(self, cr, uid, ids, context):
@@ -572,13 +566,10 @@ class IrAttachmentApplication(osv.osv):
 
         sms_msg = u"文件下载申请被拒绝，请登陆查看"
         subject = u'文件下载申请被拒绝'
-        model = 'ir.attachment.application'
-        res_id = ids[0]
         user = self.browse(cr, uid, ids[0], context).apply_user_id
-        self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, user.id, context)
         context['mail_create_nosubscribe'] = True
         self.message_post(cr, uid, ids, body=sms_msg, subject=subject, subtype='mail.mt_comment', type='comment', context=context,
-                          user_ids=[user.id])
+                          user_ids=[user.id], is_send_sms=True)
         return True
 
     def approve(self, cr, uid, ids, context):
@@ -589,13 +580,10 @@ class IrAttachmentApplication(osv.osv):
         }, context=context)
         sms_msg = u"文件下载申请已通过，请登陆查看"
         subject = u'文件下载申请通过'
-        model = 'ir.attachment.application'
-        res_id = ids[0]
         user = self.browse(cr, uid, ids[0], context).apply_user_id
-        self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, user.id, context)
         context['mail_create_nosubscribe'] = True
         self.message_post(cr, uid, ids, body=sms_msg, subject=subject, subtype='mail.mt_comment', type='comment', context=context,
-                          user_ids=[user.id])
+                          user_ids=[user.id], is_send_sms=True)
         return True
 
     def disapprove(self, cr, uid, ids, context):
@@ -606,13 +594,10 @@ class IrAttachmentApplication(osv.osv):
         }, context=context)
         sms_msg = u"文件下载申请被拒绝，请登陆查看"
         subject = u'文件下载申请被拒绝'
-        model = 'ir.attachment.application'
-        res_id = ids[0]
         user = self.browse(cr, uid, ids[0], context).apply_user_id
-        self.pool['sms.sms'].send_sms_to_users(cr, uid, model, sms_msg, model, res_id, user.id, context)
         context['mail_create_nosubscribe'] = True
         self.message_post(cr, uid, ids, body=sms_msg, subject=subject, subtype='mail.mt_comment', type='comment', context=context,
-                          user_ids=[user.id])
+                          user_ids=[user.id], is_send_sms=True)
         return True
 
     _defaults = {

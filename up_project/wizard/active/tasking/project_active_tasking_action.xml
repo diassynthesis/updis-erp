@@ -75,9 +75,8 @@ content = u"项目[%s]需要您的审批,请及时处理项目和跟进项目进
 model = 'project.project.active.tasking'
 res_id = object.id
 group_id = 'up_project.group_up_project_jingyingshi'
-pool.get('sms.sms').send_sms_to_group(cr,uid,from_rec,content,model,res_id,group_id,context)
 context['mail_create_nosubscribe'] = True
-object.message_post(body=content,subject=subject,subtype='mail.mt_comment',type='comment',context=context,group_xml_ids=group_id)
+object.message_post(body=content,subject=subject,subtype='mail.mt_comment',type='comment',context=context,group_xml_ids=group_id,is_send_sms=True)
             </field>
         </record>
 
@@ -93,11 +92,9 @@ subject = u"项目进度提示"
 content = u"项目[%s]需要您的审批,请及时处理项目和跟进项目进度" % (object.name)
 model = 'project.project.active.tasking'
 res_id = object.id
-group_id = 'group_up_project_zongshishi'
 sms_config_id = 'project_config_sms_active_tasking_engineer'
-pool.get('sms.sms').send_sms_to_config_group(cr, uid, sms_config_id, from_rec, content, model, res_id, context=context)
 context['mail_create_nosubscribe'] = True
-object.message_post(body=content,subject=subject,subtype='mail.mt_comment',type='comment',context=context,config_group_id=sms_config_id)
+object.message_post(body=content,subject=subject,subtype='mail.mt_comment',type='comment',context=context,config_group_id=sms_config_id,is_send_sms=True)
             </field>
         </record>
 
@@ -118,9 +115,8 @@ hr = pool.get('hr.employee')
 hr_ids = hr.search(cr,1,[('department_id','=',object.chenjiebumen_id.id),('job_id.name','=',u'所长')],context=context)
 hr_values = hr.browse(cr,1,hr_ids,context=context)
 to = [employee.user_id.id for employee in hr_values if employee.user_id]
-pool.get('sms.sms').send_sms_to_users( cr, 1, from_rec, content, model, res_id, to, context=None)
 context['mail_create_nosubscribe'] = True
-object.message_post(body=content,subject=subject,subtype='mail.mt_comment',type='comment',context=context,user_ids=to)
+object.message_post(body=content,subject=subject,subtype='mail.mt_comment',type='comment',context=context,user_ids=to,is_send_sms=True)
             </field>
         </record>
 
@@ -137,15 +133,12 @@ content = u"设计部门:%s,项目[%s]已经启动,您是本项目的:主管总�
 model = 'project.project.active.tasking'
 res_id = object.id
 zhuguanzongshi_id = [z.id for z in  object.zhuguanzongshi_id]
-users = pool.get('res.users').browse(cr,1,zhuguanzongshi_id,context=context)
-pool.get('sms.sms').send_sms_to_users( cr, 1, from_rec, content, model, res_id, zhuguanzongshi_id, context=None)
 context['mail_create_nosubscribe'] = True
-object.message_post(body=content,subject=subject,subtype='mail.mt_comment',type='comment',context=context,user_ids=zhuguanzongshi_id)
+object.message_post(body=content,subject=subject,subtype='mail.mt_comment',type='comment',context=context,user_ids=zhuguanzongshi_id,is_send_sms=True)
 
 content = u"设计部门:%s,项目[%s]已经启动,您是本项目的:项目负责人, 请及时处理和跟进项目进度" % (object.chenjiebumen_id.name,object.name)
 user_id = pool.get('project.project').read(cr,1,object.project_id.id,['user_id'],context=context)
-pool.get('sms.sms').send_sms_to_users( cr, 1,  from_rec, content, model, res_id, user_id['user_id'], context=None)
-object.message_post(body=content,subject=subject,subtype='mail.mt_comment',type='comment',context=context,user_ids=user_id['user_id'])
+object.message_post(body=content,subject=subject,subtype='mail.mt_comment',type='comment',context=context,user_ids=user_id['user_id'],is_send_sms=True)
             </field>
         </record>
 
