@@ -1,0 +1,219 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* up_pro_manchange
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-10-28 03:22+0000\n"
+"PO-Revision-Date: 2014-10-28 03:22+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: up_pro_manchange
+#: selection:project.project.manager.change,state:0
+msgid "院长审批"
+msgstr "院长审批"
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,chief_id:0
+msgid "Chief Approver"
+msgstr "主管总师审批人"
+
+#. module: up_pro_manchange
+#: model:res.groups,name:up_pro_manchange.manager_change_chief
+msgid "主管总师"
+msgstr "主管总师"
+
+#. module: up_pro_manchange
+#: view:project.project.manager.change:0
+msgid "提出申请"
+msgstr "提出申请"
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,apply_id:0
+msgid "Apply User"
+msgstr "申请人"
+
+#. module: up_pro_manchange
+#: view:project.project.manager.change:0
+msgid "原先负责人"
+msgstr "原先负责人"
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,state:0
+msgid "State"
+msgstr "状态"
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,message_follower_ids:0
+msgid "Followers"
+msgstr "Followers"
+
+#. module: up_pro_manchange
+#: view:project.project.manager.change:0
+msgid "项目负责人变更"
+msgstr "项目负责人变更"
+
+#. module: up_pro_manchange
+#: selection:project.project.manager.change,state:0
+msgid "所长审批"
+msgstr "所长审批"
+
+#. module: up_pro_manchange
+#: selection:project.project.manager.change,state:0
+msgid "主管总师审批"
+msgstr "主管总师审批"
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,target_manager:0
+msgid "Target Manager"
+msgstr "现负责人"
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,message_unread:0
+msgid "Unread Messages"
+msgstr "Unread Messages"
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,origin_chief:0
+msgid "Origin Chief"
+msgstr "原主管总师"
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,yuanzhang_date:0
+msgid "Yuanzhang Date"
+msgstr "院长审批通过日期"
+
+#. module: up_pro_manchange
+#: help:project.project.manager.change,message_unread:0
+msgid "If checked new messages require your attention."
+msgstr "If checked new messages require your attention."
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,target_chief:0
+msgid "Target Chief"
+msgstr "现主管总师"
+
+#. module: up_pro_manchange
+#: view:project.project.manager.change:0
+msgid "审批记录"
+msgstr "审批记录"
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,message_is_follower:0
+msgid "Is a Follower"
+msgstr "Is a Follower"
+
+#. module: up_pro_manchange
+#: view:project.project:0
+msgid "项目负责人或主管总师变更"
+msgstr "项目负责人或主管总师变更"
+
+#. module: up_pro_manchange
+#: view:project.project.manager.change:0
+#: selection:project.project.manager.change,state:0
+msgid "取消"
+msgstr "取消"
+
+#. module: up_pro_manchange
+#: selection:project.project.manager.change,state:0
+msgid "申请"
+msgstr "申请"
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,origin_manager:0
+msgid "Origin Manager"
+msgstr "原负责人"
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,director_id:0
+msgid "Director Approver"
+msgstr "所长审批人"
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,message_ids:0
+msgid "Messages"
+msgstr "Messages"
+
+#. module: up_pro_manchange
+#: view:project.project.manager.change:0
+msgid "审批通过"
+msgstr "审批通过"
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,message_summary:0
+msgid "Summary"
+msgstr "Summary"
+
+#. module: up_pro_manchange
+#: model:ir.model,name:up_pro_manchange.model_project_project
+#: field:project.project.manager.change,project_id:0
+msgid "Project"
+msgstr "项目"
+
+#. module: up_pro_manchange
+#: view:project.project.manager.change:0
+msgid "变更为"
+msgstr "变更为"
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,name:0
+msgid "Project Manager & Chief Change"
+msgstr "项目负责人和主管总师变更"
+
+#. module: up_pro_manchange
+#: model:ir.model,name:up_pro_manchange.model_project_project_manager_change
+msgid "project.project.manager.change"
+msgstr "负责人&主管总师变更"
+
+#. module: up_pro_manchange
+#: help:project.project.manager.change,message_ids:0
+msgid "Messages and communication history"
+msgstr "Messages and communication history"
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,yuanzhang_id:0
+msgid "Yuanzhang Approver"
+msgstr "院长审批人"
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,apply_date:0
+msgid "Apply Date"
+msgstr "申请时间"
+
+#. module: up_pro_manchange
+#: view:project.project.manager.change:0
+msgid "打回申请"
+msgstr "打回申请"
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,director_date:0
+msgid "Director Date"
+msgstr "所长审批时间"
+
+#. module: up_pro_manchange
+#: selection:project.project.manager.change,state:0
+msgid "完成"
+msgstr "完成"
+
+#. module: up_pro_manchange
+#: help:project.project.manager.change,message_summary:0
+msgid "Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views."
+msgstr "Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views."
+
+#. module: up_pro_manchange
+#: field:project.project.manager.change,chief_date:0
+msgid "Chief Date"
+msgstr "主管总师审批时间"
+
+#. module: up_pro_manchange
+#: model:res.groups,name:up_pro_manchange.manager_change_yuanzhang
+msgid "主管院长"
+msgstr "主管院长"
+
