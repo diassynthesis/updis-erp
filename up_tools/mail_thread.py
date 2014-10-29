@@ -236,11 +236,12 @@ class MailThreadInherit(osv.osv_abstract):
             # get href address
             http_address = self.pool['ir.config_parameter'].get_param(cr, uid, 'web.base.static.url', default='', context=context)
             http_address += "/#id=%s&model=%s&view_type=form" % (thread.id, thread._table_name)
-            head = "<div><a href='%s' target='_blank'>%s</a></div><br/>" % (http_address, getattr(thread, thread._model._rec_name))
+            name = getattr(thread, thread._model._rec_name) if hasattr(thread, thread._model._rec_name) else str(thread.id)
+            head = "<div><a href='%s' target='_blank'>%s</a></div><br/>" % (http_address, name)
             # get user ids and sent bigant message
             big_partner_ids = [p.id for p in thread.message_follower_ids] + partner_ids
             user_ids = self.pool['res.users'].search(cr, SUPERUSER_ID, [('partner_id', 'in', big_partner_ids)], context=context)
-            self.pool['sms.sms'].send_big_ant_to_users(cr, uid, from_rec=thread[thread._model._rec_name], subject=subject,
+            self.pool['sms.sms'].send_big_ant_to_users(cr, uid, from_rec=name, subject=subject,
                                                        content=head + '<div>%s</div>' % body,
                                                        model=thread._table_name, res_id=thread.id, user_ids=user_ids, context=context)
         is_send_sms = kwargs.pop('is_send_sms', False)
@@ -248,7 +249,7 @@ class MailThreadInherit(osv.osv_abstract):
         if is_send_sms:
             user_ids = self.pool['res.users'].search(cr, SUPERUSER_ID, [('partner_id', 'in', partner_ids)], context=context)
             sms_body = sms_body if sms_body else body
-            self.pool['sms.sms'].send_sms_to_users(cr, uid, from_rec=thread[thread._model._rec_name],
+            self.pool['sms.sms'].send_sms_to_users(cr, uid, from_rec=name,
                                                    content=sms_body,
                                                    model=thread._table_name, res_id=thread.id, user_ids=user_ids, context=context)
         return msg_id
