@@ -224,27 +224,30 @@ class MailThreadInherit(osv.osv_abstract):
                 group = groups_pool.browse(cr, 1, models[0].res_id, context=context)
                 user_ids += [user.id for user in group.users]
         partner_ids = [user.partner_id.id for user in self.pool.get('res.users').browse(cr, uid, user_ids, context=context)]
+        if 'partner_ids' in kwargs:
+            partner_ids += kwargs.pop('partner_ids', [])
 
         msg_id = super(MailThreadInherit, self).message_post(cr, uid, thread_id, body, subject, type,
                                                              subtype, parent_id, attachments, context,
-                                                             content_subtype, partner_ids=partner_ids)
+                                                             content_subtype, partner_ids=partner_ids, **kwargs)
         is_send_ant = kwargs.pop('is_send_ant', True)
         # Send big ant message
         if type == 'comment' and is_send_ant:
             thread_id = thread_id[0] if isinstance(thread_id, list) else thread_id
-            thread = self.browse(cr, uid, thread_id, context)
-            # get href address
-            http_address = self.pool['ir.config_parameter'].get_param(cr, uid, 'web.base.static.url', default='', context=context)
-            http_address += "/#id=%s&model=%s&view_type=form" % (thread.id, thread._table_name)
-            name = getattr(thread, thread._model._rec_name) if hasattr(thread, thread._model._rec_name) else '%s,%s' % (
-                thread._model._name, str(thread.id))
-            head = "<div><a href='%s' target='_blank'>%s</a></div><br/>" % (http_address, name)
-            # get user ids and sent bigant message
-            big_partner_ids = [p.id for p in thread.message_follower_ids] + partner_ids
-            user_ids = self.pool['res.users'].search(cr, SUPERUSER_ID, [('partner_id', 'in', big_partner_ids)], context=context)
-            self.pool['sms.sms'].send_big_ant_to_users(cr, uid, from_rec=name, subject=subject,
-                                                       content=head + '<div>%s</div>' % body,
-                                                       model=thread._table_name, res_id=thread.id, user_ids=user_ids, context=context)
+            if thread_id:
+                thread = self.browse(cr, uid, thread_id, context)
+                # get href address
+                http_address = self.pool['ir.config_parameter'].get_param(cr, uid, 'web.base.static.url', default='', context=context)
+                http_address += "/#id=%s&model=%s&view_type=form" % (thread.id, thread._table_name)
+                name = getattr(thread, thread._model._rec_name) if hasattr(thread, thread._model._rec_name) else '%s,%s' % (
+                    thread._model._name, str(thread.id))
+                head = "<div><a href='%s' target='_blank'>%s</a></div><br/>" % (http_address, name)
+                # get user ids and sent bigant message
+                big_partner_ids = [p.id for p in thread.message_follower_ids] + partner_ids
+                user_ids = self.pool['res.users'].search(cr, SUPERUSER_ID, [('partner_id', 'in', big_partner_ids)], context=context)
+                self.pool['sms.sms'].send_big_ant_to_users(cr, uid, from_rec=name, subject=subject,
+                                                           content=head + '<div>%s</div>' % body,
+                                                           model=thread._table_name, res_id=thread.id, user_ids=user_ids, context=context)
         is_send_sms = kwargs.pop('is_send_sms', False)
         sms_body = kwargs.pop('sms_body', '')
         if is_send_sms:
