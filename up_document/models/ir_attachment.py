@@ -609,6 +609,13 @@ class IrAttachmentApplication(osv.osv):
     def _message_get_auto_subscribe_fields(self, cr, uid, updated_fields, auto_follow_fields=['user_id'], context=None):
         return []
 
+    def create(self, cr, user, vals, context=None):
+        if context:
+            context.update({'mail_create_nolog': True})
+        else:
+            context = {'mail_create_nolog': True}
+        return super(IrAttachmentApplication, self).create(cr, user, vals, context)
+
 
 class IrAttachmentLog(osv.osv):
     _name = 'ir.attachment.log'

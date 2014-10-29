@@ -463,7 +463,7 @@ class updis_project(osv.osv):
 
     def init_form(self, cr, uid, ids, form_name, project_form_field, context=None):
         assert len(ids) == 1
-        project_id = self.browse(cr, uid, ids, context=None)
+        project_id = self.browse(cr, uid, ids, context=context)
         if project_id[0] and project_id[0][project_form_field]:
             return project_id[0][project_form_field].id
         else:
@@ -475,7 +475,11 @@ class updis_project(osv.osv):
             return suozhangshenpi_id
 
     def create(self, cr, uid, args, context=None):
-        ids = super(updis_project, self).create(cr, uid, args, context=None)
+        if context:
+            context.update({'mail_create_nolog': True})
+        else:
+            context = {'mail_create_nolog': True}
+        ids = super(updis_project, self).create(cr, uid, args, context=context)
         self._workflow_signal(cr, uid, [ids], 'start_to_active', context=context)
         return ids
 

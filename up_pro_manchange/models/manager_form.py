@@ -9,7 +9,7 @@ class ManagerForm(osv.Model):
     _inherit = ['mail.thread', 'ir.needaction_mixin']
 
     _columns = {
-        'name': fields.char('Project Manager & Chief Change',size=64),
+        'name': fields.char('Project Manager & Chief Change', size=64),
         'origin_manager': fields.many2many('res.users', 'origin_manager_change_res_user_rel', 'file_id', 'user_id', 'Origin Manager'),
         'origin_chief': fields.many2many('res.users', 'origin_chief_change_res_user_rel', 'file_id', 'user_id', 'Origin Chief'),
 
@@ -236,6 +236,13 @@ class ManagerForm(osv.Model):
             'target': '',
         }
         return self._apply_state(cr, uid, ids, values, context)
+
+    def create(self, cr, user, vals, context=None):
+        if context:
+            context.update({'mail_create_nolog': True})
+        else:
+            context = {'mail_create_nolog': True}
+        return super(ManagerForm, self).create(cr, user, vals, context)
 
 
 class ProjectInherit(osv.Model):

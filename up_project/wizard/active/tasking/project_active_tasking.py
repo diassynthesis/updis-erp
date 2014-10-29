@@ -219,7 +219,7 @@ class project_active_tasking(osv.osv):
                                                        string=u'Review Image'),
         "jinyinshi_submitter_datetime": fields.datetime(string=u"Operator Room Submit Date"),
 
-        #Engineer Room
+        # Engineer Room
         # 'is_tender_project': fields.related('project_id', 'shifoutoubiao', type='boolean', string=u'is Tender Project'),
 
         "category_name": fields.related("categories_id", 'name', type="char", string="Category Name"),
@@ -411,6 +411,13 @@ class project_active_tasking(osv.osv):
                        context=context)
 
         return True
+
+    def create(self, cr, uid, vals, context=None):
+        if context:
+            context.update({'mail_create_nolog': True})
+        else:
+            context = {'mail_create_nolog': True}
+        return super(project_active_tasking, self).create(cr, uid, vals, context=context)
 
     def write(self, cr, uid, ids, vals, context=None):
         if 'attachments' in vals:
