@@ -5,7 +5,7 @@ import os
 import random
 from openerp import tools
 import shutil
-from osv.orm import Model
+from openerp.osv.orm import Model
 
 __author__ = 'cysnake4713'
 
@@ -310,8 +310,10 @@ class IrAttachmentInherit(osv.osv):
     def get_download_file(self, cr, uid, files, directory_ids, res_id, res_model, context=None):
         domain = [['res_id', '=', res_id], ['res_model', '=', res_model]]
         context = context if context else {}
-        if res_id: context.update({'res_id': res_id})
-        if res_model: context.update({'res_model': res_model})
+        if res_id:
+            context.update({'res_id': res_id})
+        if res_model:
+            context.update({'res_model': res_model})
         context = context.update({'ctx': domain}) if context else {'ctx': domain}
         all_directory_ids = self.pool['document.directory'].search(cr, uid, [('parent_id', 'child_of', directory_ids)], context=context)
         except_directory_ids = set([])
@@ -515,7 +517,8 @@ class IrAttachmentApplication(osv.osv):
             'apply_date': fields.datetime.now(),
             'state': 'director_process',
         }, context=context)
-        sms_msg = u"有用户发起文件下载审批， 请及时处理"
+
+        sms_msg = u"[%s]发起文件下载审批， 请及时处理" % self.pool['res.users'].browse(cr, 1, uid, context=context).name
         subject = u'文件下载审批请求'
         suzhang_ids = self.pool['res.users'].get_department_suzhang_ids(cr, uid, [uid], context=context)
         zhurengong_ids = self.pool['res.users'].get_department_zhurengong_ids(cr, uid, [uid], context=context)
