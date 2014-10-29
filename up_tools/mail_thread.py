@@ -236,7 +236,7 @@ class MailThreadInherit(osv.osv_abstract):
             # get href address
             http_address = self.pool['ir.config_parameter'].get_param(cr, uid, 'web.base.static.url', default='', context=context)
             http_address += "/#id=%s&model=%s&view_type=form" % (thread.id, thread._table_name)
-            head = "<div><a href='%s'>%s</a></div><br/>" % (http_address, getattr(thread, thread._model._rec_name))
+            head = "<div><a href='%s' target='_blank'>%s</a></div><br/>" % (http_address, getattr(thread, thread._model._rec_name))
             # get user ids and sent bigant message
             big_partner_ids = [p.id for p in thread.message_follower_ids] + partner_ids
             user_ids = self.pool['res.users'].search(cr, SUPERUSER_ID, [('partner_id', 'in', big_partner_ids)], context=context)
