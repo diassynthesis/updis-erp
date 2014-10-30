@@ -5,21 +5,21 @@
             <field name="name">project.project.manager.change.form</field>
             <field name="model">project.project.manager.change</field>
             <field name="arch" type="xml">
-                <form string="项目负责人变更" version="7.0">
+                <form string="项目负责人变更" version="7.0" create="false" delete="false">
                     <header>
-                        <button name="apply" type="object" string="提出申请" states="draft" class="oe_highlight"/>
+                        <button name="apply" type="object" string="提出申请" states="draft" class="oe_highlight" confirm="确认发起负责人变更申请？"/>
 
                         <button name="director_apply" type="object" string="审批通过" states="director" groups="up_project.group_up_project_suozhang"
-                                class="oe_highlight"/>
-                        <button name="director_reject" type="object" string="打回申请" states="director" groups="up_project.group_up_project_suozhang"/>
+                                class="oe_highlight" log="1"/>
+                        <button name="director_reject" type="object" string="打回申请" states="director" groups="up_project.group_up_project_suozhang" log="1"/>
 
                         <button name="chief_apply" type="object" string="审批通过" states="chief" groups="up_pro_manchange.manager_change_chief"
-                                class="oe_highlight"/>
-                        <button name="chief_reject" type="object" string="打回申请" states="chief" groups="up_pro_manchange.manager_change_chief"/>
+                                class="oe_highlight" log="1"/>
+                        <button name="chief_reject" type="object" string="打回申请" states="chief" groups="up_pro_manchange.manager_change_chief" log="1"/>
 
-                        <button name="yuanzhang_apply" type="object" string="审批通过" states="yuanzhang" class="oe_highlight"
+                        <button name="yuanzhang_apply" type="object" string="审批通过" states="yuanzhang" class="oe_highlight" log="1"
                                 groups="up_pro_manchange.manager_change_yuanzhang"/>
-                        <button name="yuanzhang_reject" type="object" string="打回申请" states="yuanzhang"
+                        <button name="yuanzhang_reject" type="object" string="打回申请" states="yuanzhang" log="1"
                                 groups="up_pro_manchange.manager_change_yuanzhang"/>
 
                         <button name="cancel" type="object" string="取消" states="draft,director,chief,yuanzhang" />
