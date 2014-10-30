@@ -87,16 +87,7 @@ class ManagerForm(osv.Model):
             user_ids = vals['user_ids']
             self.message_post(cr, uid, ids, body=sms_msg, subject=subject, subtype='mail.mt_comment', type='comment', context=context,
                               user_ids=user_ids, is_send_sms=True)
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': vals['model'],
-            'view_mode': 'form',
-            'view_type': 'form',
-            'res_id': ids[0],
-            'views': [(False, 'form')],
-            'target': 'new',
-            'context': context,
-        }
+        return True
 
     def _apply_state(self, cr, uid, ids, vals, context):
         return self._update_state(cr, uid, ids, vals, True, context)
@@ -283,6 +274,6 @@ class ProjectInherit(osv.Model):
             'view_type': 'form',
             'res_id': res_id,
             'views': [(False, 'form')],
-            'target': 'new',
+            'target': 'current',
             'context': context,
         }
