@@ -64,15 +64,16 @@
                     <header>
                         <button name="button_apply_filing" type="object" string="Apply Filing" class="oe_highlight" confirm="确定归档？"
                                 attrs="{'invisible':['|',('state','not in',['apply_filing']),('is_project_member','=',False)]}"/>
-                        <button name="button_manager_approve" type="object" string="Manager Approve" class="oe_highlight"
+                        <button name="button_manager_approve" type="object" string="Manager Approve" class="oe_highlight" log="1"
                                 attrs="{'invisible':['|',('state','not in',['manager_approve']),('is_user_is_project_manager','=',False)]}"/>
-                        <button name="button_manager_disapprove" type="object" string="Manager Disapprove"
+                        <button name="button_manager_disapprove" type="object" string="Manager Disapprove" log="1"
                                 attrs="{'invisible':['|',('state','not in',['manager_approve']),('is_user_is_project_manager','=',False)]}"/>
                         <button name="button_approve_filing" type="object" string="Approve Filing" class="oe_highlight" states="approve_filing"
+                                log="1"
                                 groups="up_project.group_up_project_filed_manager"/>
-                        <button name="button_disapprove_filing" type="object" string="Dispprove Filing" states="approve_filing"
+                        <button name="button_disapprove_filing" type="object" string="Dispprove Filing" states="approve_filing" log="1"
                                 groups="up_project.group_up_project_filed_manager"/>
-                        <button name="button_elec_approve" type="object" string="Elec Files Approve"
+                        <button name="button_elec_approve" type="object" string="Elec Files Approve" log="1"
                                 attrs="{'invisible':['|',('state','not in',['approve_filing']),('elec_file_approver_id','!=',False)]}"
                                 groups="up_project.group_up_project_filed_elec_manager" class="oe_highlight"/>
                         <field name="state" widget="statusbar" readonly="1"/>
@@ -96,7 +97,8 @@
                                     <group>
                                         <field name="project_user" widget="many2many_tags" readonly="1"/>
                                         <field name="project_category_id"/>
-                                        <field name="project_second_category" widget="many2many_tags" domain="[('category_id.id','=',project_category_id)]"
+                                        <field name="project_second_category" widget="many2many_tags"
+                                               domain="[('category_id.id','=',project_category_id)]"
                                                help="项目二级分类的填写请参考文档 QW4.2.3-2技术文件和资料归档规定--二级分类.doc"/>
                                         <field name="end_stage"/>
                                     </group>
@@ -130,7 +132,7 @@
                                 <group colspan="2">
                                     <label for="description"/>
                                     <div class="oe_edit_only oe_tips" colspan="1">
-                                        <p>项目概况的说明要求言简意赅，以300字左右为宜，包括： </p>
+                                        <p>项目概况的说明要求言简意赅，以300字左右为宜，包括：</p>
                                         <p>项目来源(委托/招标/邀标); 项目开展周期;</p>
                                         <p>项目背景; 项目目的(主要说明甲方想解决的核心问题);</p>
                                         <p>核心项目成果; 项目技术特色</p>
@@ -182,7 +184,8 @@
                                         <p class="oe_tips">点击“上传待归档电子文件”按钮可以快速上传文件到项目文件夹，上传文件成功后点击"添加"按钮添加本次需要归档的文件</p>
                                         <p class="oe_tips">注：要求上传重要评审会议演示稿（总规类不少于2次，其它不少于1次）；建议上传策划书</p>
                                         <button name="%(button_show_filing_update_list)d" class="oe_left oe_highlight oe_edit_only"
-                                                string="上传待归档电子文件" states="apply_filing" type="action" context="{'ctx':{'res_id':project_id,'res_model':'project.project'},'res_id':project_id,'res_model':'project.project'}"/>
+                                                string="上传待归档电子文件" states="apply_filing" type="action"
+                                                context="{'ctx':{'res_id':project_id,'res_model':'project.project'},'res_id':project_id,'res_model':'project.project'}"/>
                                     </div>
                                     <label for="attachment_ids" string="Need Filing Elec Attachments"/>
                                     <field name="attachment_ids" nolabel="1"
