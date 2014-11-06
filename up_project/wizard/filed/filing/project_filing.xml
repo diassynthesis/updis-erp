@@ -92,6 +92,7 @@
                             <page string="第一步:项目基本信息填写">
                                 <group string="Project Info">
                                     <group colspan="2">
+                                        <field name="project_id" readonly="1"/>
                                         <field name="project_name"/>
                                     </group>
                                     <group>
@@ -209,5 +210,44 @@
                 </form>
             </field>
         </record>
+
+
+        <!--project.project.filed.filing-->
+        <record id="view_project_filed_filing_tree_config" model="ir.ui.view">
+            <field name="name">project.project.filed.filing.tree.config</field>
+            <field name="model">project.project.filed.filing</field>
+            <field name="arch" type="xml">
+                <tree string="Project Filing Histories" version="7.0"
+                      colors="red:state=='approve_filing';grey:state=='end_filing'">
+                    <field name="project_id"/>
+                    <field name="state"/>
+                    <field name="create_date"/>
+                    <field name="create_uid"/>
+                    <field name="write_date"/>
+                    <field name="write_uid"/>
+                    <field name="version"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="action_project_filing_list" model="ir.actions.act_window">
+            <field name="name">project.filing.list</field>
+            <field name="res_model">project.project.filed.filing</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+        </record>
+
+        <record id="act_view_project_filing_tree_config_view" model="ir.actions.act_window.view">
+            <field name="sequence">18</field>
+            <field name="view_id" ref="view_project_filed_filing_tree_config"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_project_filing_list"/>
+        </record>
+
+
+        <menuitem name="项目归档表一览" id="menuitem_project_filing_form" parent="base.menu_definitions"
+                  action="action_project_filing_list" groups="up_project.group_up_project_admin" sequence="120"/>
     </data>
 </openerp>
