@@ -279,18 +279,19 @@ class ProjectProjectInherit(osv.Model):
 
     # noinspection PyUnusedLocal
     def _filed_field_calc(self, cr, uid, ids, field_name, args, context=None):
-        result = dict.fromkeys(ids, {
-            'is_multi_filing_allowed': False,
-            'filed_times': False,
-            'filed_project_end_date': None,
-            'filed_import_paper_builder': None,
-            'filed_import_total_paper': None,
-            'filed_import_tag_ids': None,
-            'filed_description': None,
-            'filed_show_images': None,
-        })
+        result = dict.fromkeys(ids, None)
         filing_obj = self.pool.get('project.project.filed.filing')
         for id in ids:
+            result[id] = {
+                'is_multi_filing_allowed': False,
+                'filed_times': False,
+                'filed_project_end_date': None,
+                'filed_import_paper_builder': None,
+                'filed_import_total_paper': None,
+                'filed_import_tag_ids': None,
+                'filed_description': None,
+                'filed_show_images': None,
+            }
             project = self.browse(cr, uid, id, context=context)
             filing_ids = filing_obj.search(cr, uid, [('project_id', '=', id), ('state', 'not in', ['end_filing'])], order='create_date desc',
                                            context=context)
