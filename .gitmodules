@@ -7,3 +7,6 @@
 [submodule "wkf_group_ext"]
 	path = wkf_group_ext
 	url = https://github.com/TommyU/wkf_group_ext
+[submodule "wkf_msg"]
+	path = wkf_msg
+	url = https://github.com/TommyU/wkf_msg
