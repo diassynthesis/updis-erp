@@ -172,15 +172,15 @@
                             <field name="is_expired"/>
                         </group>
                         <group string="发起人">
-                            <field name="apply_user_id" readonly="1"/>
+                            <field name="apply_user_id" readonly="1" widget="signature"/>
                             <field name="apply_date" readonly="1"/>
                         </group>
                         <group string="所长">
-                            <field name="director_user_id" readonly="1"/>
+                            <field name="director_user_id" readonly="1" widget="signature"/>
                             <field name="director_approve_date" readonly="1"/>
                         </group>
                         <group string="文档管理员">
-                            <field name="approve_user_id" readonly="1"/>
+                            <field name="approve_user_id" readonly="1" widget="signature"/>
                             <field name="approve_date" readonly="1"/>
                         </group>
                     </sheet>

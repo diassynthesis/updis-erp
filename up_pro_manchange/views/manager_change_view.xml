@@ -41,13 +41,13 @@
                                        domain="[('id','in',context.get('chief_engineer_domain',[]))]"/>
                             </group>
                             <group string="审批记录" colspan="2" col="4">
-                                <field name="apply_id" readonly="1"/>
+                                <field name="apply_id" readonly="1"   widget="signature"/>
                                 <field name="apply_date" readonly="1"/>
-                                <field name="director_id" readonly="1"/>
+                                <field name="director_id" readonly="1"   widget="signature"/>
                                 <field name="director_date" readonly="1"/>
-                                <field name="chief_id" readonly="1"/>
+                                <field name="chief_id" readonly="1"   widget="signature"/>
                                 <field name="chief_date" readonly="1"/>
-                                <field name="yuanzhang_id" readonly="1"/>
+                                <field name="yuanzhang_id" readonly="1"   widget="signature"/>
                                 <field name="yuanzhang_date" readonly="1"/>
                             </group>
                         </group>
