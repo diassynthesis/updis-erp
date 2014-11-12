@@ -2,7 +2,7 @@
 
 <template>
     <t t-name="FieldSignature">
-        <span class="oe_form_field oe_form_field_image" t-att-style="widget.node.attrs.style">
+        <span class="oe_form_field oe_form_field_image oe_avatar no_shadow oe_left" t-att-style="widget.node.attrs.style">
         </span>
     </t>
 </template>
