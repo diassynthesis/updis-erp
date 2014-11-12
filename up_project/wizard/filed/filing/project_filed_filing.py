@@ -12,8 +12,8 @@ class ProjectFiledFiling(osv.Model):
 
     _order = 'create_date desc'
 
-    FILING_STATE = [('apply_filing', 'Apply Filing'), ('manager_approve', 'Manager Approving'), ('approve_filing', 'Approve Filing'),
-                    ('end_filing', 'Filing Complete')]
+    FILING_STATE = [('apply_filing', u'提出申请'), ('manager_approve', u'负责人审批'), ('approve_filing', u'档案室审批'),
+                    ('end_filing', u'归档完成')]
 
     _track = {
         'state': {},
