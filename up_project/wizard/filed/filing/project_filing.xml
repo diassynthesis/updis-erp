@@ -146,7 +146,7 @@
                                            context="{'parent_id':%(dir_up_project_going_brief_picture)d}"/>
                                 </group>
                                 <group colspan="2" col="4">
-                                    <field name="manager_approver_id" readonly="1"/>
+                                    <field name="manager_approver_id" readonly="1"  widget="signature"/>
                                     <field name="manager_approver_date" readonly="1"/>
                                 </group>
                                 <group colspan="2" col="4" attrs="{'invisible':[('is_import','=',False)]}" string="导入记录">
@@ -174,7 +174,7 @@
                                         </tree>
                                     </field>
                                     <group colspan="2" col="4">
-                                        <field name="paper_file_approver_id" readonly="1"/>
+                                        <field name="paper_file_approver_id" readonly="1"   widget="signature"/>
                                         <field name="paper_file_approver_date" readonly="1"/>
                                     </group>
                                 </group>
@@ -196,7 +196,7 @@
                                             type="object"/>
                                 </group>
                                 <group colspan="2" col="4">
-                                    <field name="elec_file_approver_id" readonly="1"/>
+                                    <field name="elec_file_approver_id" readonly="1"   widget="signature"/>
                                     <field name="elec_file_approver_date" readonly="1"/>
                                 </group>
                             </page>
