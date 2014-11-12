@@ -8,7 +8,7 @@
 UPDIS Implementation Guide.""",
     'author': 'Shrek Zhou',
     'website': 'http://openerp.com',
-    'depends': ['base', 'hr', 'account_voucher', 'updis_auth_crypt', 'knowledge'],
+    'depends': ['base', 'hr', 'account_voucher', 'updis_auth_crypt', 'knowledge', 'signature'],
     # 'depends': ['base',],
     'data': [
         'security/res_user_security.xml',

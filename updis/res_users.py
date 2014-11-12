@@ -21,8 +21,6 @@ class res_users(osv.osv):
     _inherit = "res.users"
     _bigAntClient = BigAntClient()
     _columns = {
-        'sign_image': fields.binary("Sign Image",
-                                    help="This field holds the image used as siganture for this contact"),
         'address_id': fields.many2one('res.partner', 'Working Address'),
         'work_email': fields.char('Work Email', size=240),
         'work_phone': fields.char('Work Phone', size=32, readonly=False),

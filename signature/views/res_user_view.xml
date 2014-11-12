@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="res_user_inherit" model="ir.ui.view">
+            <field name="name">res.users.form.inherit.signature</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <field name="image" position="after">
+                    <field name="sign_image" widget="image" class="oe_avatar oe_left" groups="base.group_no_one"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

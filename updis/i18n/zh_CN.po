@@ -342,11 +342,6 @@ msgid "ir.actions.server"
 msgstr "ir.actions.server"
 
 #. module: updis
-#: help:res.users,sign_image:0
-msgid "This field holds the image used as siganture for this contact"
-msgstr "This field holds the image used as siganture for this contact"
-
-#. module: updis
 #: field:hr.employee,have_vac_days:0
 msgid "Have Vacation Days"
 msgstr "已休假天数"
