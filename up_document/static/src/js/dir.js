@@ -254,6 +254,8 @@ openerp.up_document = function (instance) {
                                 self.draw();
                                 self.refresh_self();
                             });
+                        }else {
+                            self.refresh_self();
                         }
                         self.$el.find('div.oe-upload-holder:first').html('');
                         instance.webclient.notification.notify(
