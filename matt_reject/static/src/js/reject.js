@@ -1,7 +1,10 @@
 /**
  * Created by cysnake4713 on 14-11-13.
  */
-openerp._matt_reject = function (instance) {
+openerp.matt_reject = function (instance) {
+    var _t = instance.web._t,
+        QWeb = instance.web.qweb;
+
     instance.web.form.WidgetButton.include({
         execute_action: function () {
             var self = this;
