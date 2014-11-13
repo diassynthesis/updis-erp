@@ -132,17 +132,4 @@
             </ul>
         </span>
     </t>
-
-    <t t-name="WorkflowDialog">
-        <div>
-            <div><h3><t t-esc="confirm"/></h3></div>
-            <div class="approver_wrapper">
-                <div class="oe_form_field oe_form_field_text">
-                    <span class="lable">审批意见:</span><br/>
-                    <textarea class="field_text oe_textbox_pft_wkl"  name="description"
-                              style="margin-left:2px;margin-top:2px;width:98%;height: 102px; overflow: hidden; word-wrap: break-word; resize: vertical;"></textarea>
-                </div>
-            </div>
-        </div>
-    </t>
 </template>
