@@ -134,6 +134,10 @@ class ProjectFiledFiling(osv.Model):
         context['mail_create_nosubscribe'] = True
         self.message_post(cr, uid, ids, body=content_sms, subject=u'项目归档审批通知', subtype='mail.mt_comment', type='comment', context=context,
                           user_ids=[u.id for u in filing.project_user], is_send_sms=True)
+
+        self.message_post(cr, uid, ids, body=u'您提交的归档申请项目负责人已审批，请带齐归档资料到档案室归档', subject=u'项目归档审批通知', subtype='mail.mt_comment', type='comment',
+                          context=context, user_ids=[filing.create_uid.id])
+
         return self.write(cr, uid, ids, {'state': 'end_filing', 'paper_file_approver_id': uid, 'paper_file_approver_date': fields.datetime.now()},
                           context)
 
