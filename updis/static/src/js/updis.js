@@ -116,6 +116,8 @@ openerp.updis = function (instance) {
                                         new instance.web.Model(parent_dataset.model).call('message_post', parent_dataset.ids, values).done(function (message_id) {
                                             $(self2).dialog("close");
                                         });
+                                    } else {
+                                        $(self2).dialog("close");
                                     }
                                 });
                             }
