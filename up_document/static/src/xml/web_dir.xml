@@ -18,6 +18,9 @@
             <span t-if="!widget.parent.directory.is_downloadable or widget.parent.directory.is_need_approval">
                 <t t-esc="widget.document.name"/>
             </span>
+            <span>
+                (<t t-esc="widget.document.file_size"/>)
+            </span>
         </div>
         <div class="button-holder">
             <t t-if="widget.parent.directory.is_writable">

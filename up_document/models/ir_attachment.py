@@ -407,7 +407,12 @@ class IrAttachmentInherit(osv.osv):
         if res_model:
             domain += [('res_model', '=', res_model)]
         ids = self.search(cr, uid, domain, context=context)
-        return self.read(cr, uid, ids, ['name'], context=context)
+        result = self.read(cr, uid, ids, ['name', 'file_size'], context=context)
+        for tfile in result:
+            size = '%.2fMB' % (tfile['file_size'] / float(1024 * 1024)) \
+                if tfile['file_size'] / float(1024) > 1000 else '%.2fKB' % (tfile['file_size'] / float(1024))
+            tfile['file_size'] = size
+        return result
 
     def delete_temp_attachments(self, cr, uid, context=None):
         location = config.get('zip_temp_file', '')
