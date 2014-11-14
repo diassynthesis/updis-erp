@@ -91,7 +91,6 @@ class DocumentDirectoryInherit(osv.osv):
         'group_ids': fields.one2many('document.directory.access', 'directory_id', string='Access'),
         'related_action_id': fields.many2one('ir.actions.act_window', string='Related Menu Action', ondelete='cascade'),
         'index': fields.integer('Sequence'),
-        'is_encrypt': fields.boolean('Is Encrypt'),
     }
     _order = 'index asc'
 
@@ -186,18 +185,6 @@ class DocumentDirectoryInherit(osv.osv):
             if not directory.check_directory_privilege('perm_create_unlink', context=context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Write some of the directories.'))
 
-    def button_update_sub_encrypt(self, cr, uid, ids, context=None):
-        for directory in self.browse(cr, uid, ids, context):
-            sub_ids = self.search(cr, uid, [('id', 'child_of', directory.id)], context=context)
-            attachment_ids = self.pool['ir.attachment'].search(cr, uid, [('parent_id', 'in', sub_ids)], context=context)
-            if directory.is_encrypt:
-                self.pool['ir.attachment'].convert_encrypt_state(cr, uid, attachment_ids, is_encrypt=True, context=context)
-            else:
-                self.pool['ir.attachment'].convert_encrypt_state(cr, uid, attachment_ids, is_decrypt=True, context=context)
-            sub_ids.remove(directory.id)
-            self.write(cr, uid, sub_ids, {'is_encrypt': directory.is_encrypt}, context=context)
-        return True
-
     def create(self, cr, uid, vals, context=None):
         self._check_group_create_privilege(cr, uid, vals, context)
         return super(DocumentDirectoryInherit, self).create(cr, uid, vals, context)
@@ -208,7 +195,7 @@ class DocumentDirectoryInherit(osv.osv):
 
     def write(self, cr, uid, ids, vals, context=None):
         self._check_group_write_privilege(cr, uid, ids, context)
-        return super(osv.osv, self).write(cr, uid, ids, vals, context)
+        return super(DocumentDirectoryInherit, self).write(cr, uid, ids, vals, context)
 
     def get_directory_info(self, cr, uid, directory_id, res_id=None, res_model=None, context=None):
         if not context: context = {}

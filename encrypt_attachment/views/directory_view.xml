@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_document_directory_config_inherit" model="ir.ui.view">
+            <field name="name">document.directory.form.inherit.encrypt</field>
+            <field name="model">document.directory</field>
+            <field name="inherit_id" ref="up_document.view_document_directory_config_inherit"/>
+            <field name="arch" type="xml">
+                <field name="index" position="after">
+                    <newline/>
+                    <field name="is_encrypt"/>
+                    <button string="同步加密属性" type="object" name="button_update_sub_encrypt" groups="base.group_document_user"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

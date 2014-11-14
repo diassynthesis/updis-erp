@@ -3,7 +3,6 @@ import datetime
 import hashlib
 import os
 import random
-import re
 from openerp import tools
 import shutil
 from openerp.osv.orm import Model
@@ -56,38 +55,6 @@ document_file.write = monkey_write
 class IrAttachmentInherit(osv.osv):
     _inherit = 'ir.attachment'
 
-    def convert_encrypt_state(self, cr, uid, ids, is_encrypt=False, is_decrypt=False, context=None):
-        if not isinstance(ids, list):
-            ids = [ids]
-        location = self.pool.get('ir.config_parameter').get_param(cr, uid, 'ir_attachment.location')
-        attachments = self.browse(cr, uid, ids, context)
-        for attachment in attachments:
-            if is_encrypt:
-                old_path = self._full_path(cr, uid, location, attachment.store_fname)
-                new_path = self._full_path(cr, uid, location, attachment.store_fname, is_encrypted=True)
-            if is_decrypt:
-                old_path = self._full_path(cr, uid, location, attachment.store_fname, is_encrypted=True)
-                new_path = self._full_path(cr, uid, location, attachment.store_fname)
-            if os.path.exists(old_path):
-                dirname = os.path.dirname(new_path)
-                if not os.path.isdir(dirname):
-                    os.makedirs(dirname)
-                shutil.move(old_path, new_path)
-
-    def _full_path(self, cr, uid, location, path, is_encrypted=False):
-        # location = 'file:filestore'
-        assert location.startswith('file:'), "Unhandled filestore location %s" % location
-        location = location[5:]
-
-        # sanitize location name and path
-        location = re.sub('[.]', '', location)
-        location = location.strip('/\\')
-
-        path = re.sub('[.]', '', path)
-        path = path.strip('/\\')
-
-        return os.path.join(tools.config['root_path'], location, cr.dbname, 'encrypted' if is_encrypted else '', path)
-
     def _file_write(self, cr, uid, location, qqfile, is_encrypted=False):
         sha1 = hashlib.sha1()
         while True:
@@ -101,7 +68,7 @@ class IrAttachmentInherit(osv.osv):
         # scatter files across 1024 dirs
         # we use '/' in the db (even on windows)
         fname = fname[:3] + '/' + fname
-        full_path = self._full_path(cr, uid, location, fname, is_encrypted)
+        full_path = self._full_path(cr, uid, location, fname)
         file_size = 0
         try:
             qqfile.seek(0, 0)
@@ -134,11 +101,7 @@ class IrAttachmentInherit(osv.osv):
         bin_size = context.get('bin_size')
         for attach in self.browse(cr, uid, ids, context=context):
             if location and attach.store_fname:
-                is_encrypted = attach.parent_id.is_encrypt
-                if is_encrypted:
-                    result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size, is_encrypted)
-                else:
-                    result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size)
+                result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size)
             else:
                 result[attach.id] = attach.db_datas
         return result
@@ -156,7 +119,7 @@ class IrAttachmentInherit(osv.osv):
             attach = self.browse(cr, uid, id, context=context)
             if attach.store_fname:
                 self._file_delete(cr, uid, location, attach.store_fname)
-            file_name, file_size = self._file_write(cr, uid, location, qqfile, attach.parent_id.is_encrypt)
+            file_name, file_size = self._file_write(cr, uid, location, qqfile)
             super(Model, self).write(cr, uid, [id], {'store_fname': file_name, 'file_size': file_size}, context=context)
         else:
             super(Model, self).write(cr, uid, [id], {'db_datas': qqfile.read(), 'file_size': file_size}, context=context)
@@ -223,22 +186,11 @@ class IrAttachmentInherit(osv.osv):
                                                                                    'name': fields.datetime.now() + attachment.name},
                                                           context=context)
 
-    def _update_encrypted_state(self, cr, uid, ids, new_parent, context=None):
-        directory_obj = self.pool['document.directory']
-        new_dir = directory_obj.browse(cr, uid, new_parent, context)
-        if new_dir.is_encrypt:
-            self.convert_encrypt_state(cr, uid, ids, is_encrypt=True, context=context)
-        else:
-            self.convert_encrypt_state(cr, uid, ids, is_decrypt=True, context=context)
-
     def write(self, cr, uid, ids, vals, context=None):
         self._check_group_write_privilege(cr, uid, ids, context)
         if not ('is_deleted' in vals and vals['is_deleted'] is True):
             self.log_info(cr, uid, ids, _('update this file'), context=context)
-        result = super(IrAttachmentInherit, self).write(cr, uid, ids, vals, context)
-        if 'parent_id' in vals:
-            self._update_encrypted_state(cr, uid, ids, vals['parent_id'], context=None)
-        return result
+        return super(IrAttachmentInherit, self).write(cr, uid, ids, vals, context)
 
     def log_info(self, cr, uid, ids, message, context):
         for attachment_id in ids if isinstance(ids, list) else [ids]:
