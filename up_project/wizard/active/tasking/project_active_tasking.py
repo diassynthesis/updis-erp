@@ -18,10 +18,6 @@ class project_active_tasking(osv.osv):
 
     _rec_name = 'form_name'
 
-    _track = {
-        'state': {},
-    }
-
     def workflow_signal(self, cr, uid, ids, signal):
         return self._workflow_signal(cr, uid, ids, signal)
 

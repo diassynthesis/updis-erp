@@ -18,7 +18,7 @@ class ManagerForm(osv.Model):
 
         'state': fields.selection(
             [('draft', u'申请'), ('director', u'所长审批'), ('chief', u'主管总师审批'), ('yuanzhang', u'院长审批'), ('complete', u'完成'), ('cancel', u'取消')],
-            'State'),
+            'State', track_visibility='onchange'),
 
         'project_id': fields.many2one('project.project', 'Project', ondelete='cascade'),
 

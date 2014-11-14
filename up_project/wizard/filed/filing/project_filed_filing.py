@@ -15,10 +15,6 @@ class ProjectFiledFiling(osv.Model):
     FILING_STATE = [('apply_filing', u'提出申请'), ('manager_approve', u'负责人审批'), ('approve_filing', u'档案室审批'),
                     ('end_filing', u'归档完成')]
 
-    _track = {
-        'state': {},
-    }
-
     # noinspection PyUnusedLocal
     def _get_name(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, u'项目文件归档表')
