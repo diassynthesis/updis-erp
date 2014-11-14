@@ -56,18 +56,23 @@ document_file.write = monkey_write
 class IrAttachmentInherit(osv.osv):
     _inherit = 'ir.attachment'
 
-    def convert_to_encrypt(self, cr, uid, ids, context):
+    def convert_encrypt_state(self, cr, uid, ids, is_encrypt=False, is_decrypt=False, context=None):
+        if not isinstance(ids, list):
+            ids = [ids]
         location = self.pool.get('ir.config_parameter').get_param(cr, uid, 'ir_attachment.location')
-        result = self._data_get(cr, uid, ids, None, None, context=context)
-        for attachment in result.items():
-            if attachment[1]:
-                attachment_data = self.browse(cr, uid, attachment[0], context)
-                target_file_path = self._full_path(cr, uid, location, attachment_data.store_fname, is_encrypted=True)
-                dirname = os.path.dirname(target_file_path)
+        attachments = self.browse(cr, uid, ids, context)
+        for attachment in attachments:
+            if is_encrypt:
+                old_path = self._full_path(cr, uid, location, attachment.store_fname)
+                new_path = self._full_path(cr, uid, location, attachment.store_fname, is_encrypted=True)
+            if is_decrypt:
+                old_path = self._full_path(cr, uid, location, attachment.store_fname, is_encrypted=True)
+                new_path = self._full_path(cr, uid, location, attachment.store_fname)
+            if os.path.exists(old_path):
+                dirname = os.path.dirname(new_path)
                 if not os.path.isdir(dirname):
                     os.makedirs(dirname)
-                if attachment[1].name != target_file_path:
-                    shutil.copy(attachment[1].name, target_file_path)
+                shutil.move(old_path, new_path)
 
     def _full_path(self, cr, uid, location, path, is_encrypted=False):
         # location = 'file:filestore'
@@ -131,12 +136,7 @@ class IrAttachmentInherit(osv.osv):
             if location and attach.store_fname:
                 is_encrypted = attach.parent_id.is_encrypt
                 if is_encrypted:
-                    read_file = self._file_read(cr, uid, location, attach.store_fname, bin_size, is_encrypted)
-                    if read_file:
-                        result[attach.id] = read_file
-                    else:
-                        result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size)
-
+                    result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size, is_encrypted)
                 else:
                     result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size)
             else:
@@ -223,11 +223,22 @@ class IrAttachmentInherit(osv.osv):
                                                                                    'name': fields.datetime.now() + attachment.name},
                                                           context=context)
 
+    def _update_encrypted_state(self, cr, uid, ids, new_parent, context=None):
+        directory_obj = self.pool['document.directory']
+        new_dir = directory_obj.browse(cr, uid, new_parent, context)
+        if new_dir.is_encrypt:
+            self.convert_encrypt_state(cr, uid, ids, is_encrypt=True, context=context)
+        else:
+            self.convert_encrypt_state(cr, uid, ids, is_decrypt=True, context=context)
+
     def write(self, cr, uid, ids, vals, context=None):
         self._check_group_write_privilege(cr, uid, ids, context)
         if not ('is_deleted' in vals and vals['is_deleted'] is True):
             self.log_info(cr, uid, ids, _('update this file'), context=context)
-        return super(IrAttachmentInherit, self).write(cr, uid, ids, vals, context)
+        result = super(IrAttachmentInherit, self).write(cr, uid, ids, vals, context)
+        if 'parent_id' in vals:
+            self._update_encrypted_state(cr, uid, ids, vals['parent_id'], context=None)
+        return result
 
     def log_info(self, cr, uid, ids, message, context):
         for attachment_id in ids if isinstance(ids, list) else [ids]:

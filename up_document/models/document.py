@@ -191,7 +191,9 @@ class DocumentDirectoryInherit(osv.osv):
             sub_ids = self.search(cr, uid, [('id', 'child_of', directory.id)], context=context)
             attachment_ids = self.pool['ir.attachment'].search(cr, uid, [('parent_id', 'in', sub_ids)], context=context)
             if directory.is_encrypt:
-                self.pool['ir.attachment'].convert_to_encrypt(cr, uid, attachment_ids, context=context)
+                self.pool['ir.attachment'].convert_encrypt_state(cr, uid, attachment_ids, is_encrypt=True, context=context)
+            else:
+                self.pool['ir.attachment'].convert_encrypt_state(cr, uid, attachment_ids, is_decrypt=True, context=context)
             sub_ids.remove(directory.id)
             self.write(cr, uid, sub_ids, {'is_encrypt': directory.is_encrypt}, context=context)
         return True
