@@ -55,7 +55,7 @@ document_file.write = monkey_write
 class IrAttachmentInherit(osv.osv):
     _inherit = 'ir.attachment'
 
-    def _file_write(self, cr, uid, location, qqfile, is_encrypted=False):
+    def _file_write(self, cr, uid, location, qqfile):
         sha1 = hashlib.sha1()
         while True:
             # read 16MB
@@ -81,8 +81,8 @@ class IrAttachmentInherit(osv.osv):
             _logger.error("_file_write writing %s", full_path)
         return fname, file_size
 
-    def _file_read(self, cr, uid, location, fname, bin_size=False, is_encrypted=False):
-        full_path = self._full_path(cr, uid, location, fname, is_encrypted)
+    def _file_read(self, cr, uid, location, fname, bin_size=False):
+        full_path = self._full_path(cr, uid, location, fname)
         r = ''
         try:
             if bin_size:
