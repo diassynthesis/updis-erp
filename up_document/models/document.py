@@ -186,9 +186,12 @@ class DocumentDirectoryInherit(osv.osv):
             if not directory.check_directory_privilege('perm_create_unlink', context=context):
                 raise osv.except_osv(_('Warning!'), _('You have no privilege to Write some of the directories.'))
 
-    def button_update_sub_encript(self, cr, uid, ids, context=None):
+    def button_update_sub_encrypt(self, cr, uid, ids, context=None):
         for directory in self.browse(cr, uid, ids, context):
             sub_ids = self.search(cr, uid, [('id', 'child_of', directory.id)], context=context)
+            attachment_ids = self.pool['ir.attachment'].search(cr, uid, [('parent_id', 'in', sub_ids)], context=context)
+            if directory.is_encrypt:
+                self.pool['ir.attachment'].convert_to_encrypt(cr, uid, attachment_ids, context=context)
             sub_ids.remove(directory.id)
             self.write(cr, uid, sub_ids, {'is_encrypt': directory.is_encrypt}, context=context)
         return True

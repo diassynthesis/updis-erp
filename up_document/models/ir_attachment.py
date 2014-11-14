@@ -3,6 +3,7 @@ import datetime
 import hashlib
 import os
 import random
+import re
 from openerp import tools
 import shutil
 from openerp.osv.orm import Model
@@ -55,7 +56,34 @@ document_file.write = monkey_write
 class IrAttachmentInherit(osv.osv):
     _inherit = 'ir.attachment'
 
-    def _file_write(self, cr, uid, location, qqfile):
+    def convert_to_encrypt(self, cr, uid, ids, context):
+        location = self.pool.get('ir.config_parameter').get_param(cr, uid, 'ir_attachment.location')
+        result = self._data_get(cr, uid, ids, None, None, context=context)
+        for attachment in result.items():
+            if attachment[1]:
+                attachment_data = self.browse(cr, uid, attachment[0], context)
+                target_file_path = self._full_path(cr, uid, location, attachment_data.store_fname, is_encrypted=True)
+                dirname = os.path.dirname(target_file_path)
+                if not os.path.isdir(dirname):
+                    os.makedirs(dirname)
+                if attachment[1].name != target_file_path:
+                    shutil.copy(attachment[1].name, target_file_path)
+
+    def _full_path(self, cr, uid, location, path, is_encrypted=False):
+        # location = 'file:filestore'
+        assert location.startswith('file:'), "Unhandled filestore location %s" % location
+        location = location[5:]
+
+        # sanitize location name and path
+        location = re.sub('[.]', '', location)
+        location = location.strip('/\\')
+
+        path = re.sub('[.]', '', path)
+        path = path.strip('/\\')
+
+        return os.path.join(tools.config['root_path'], location, cr.dbname, 'encrypted' if is_encrypted else '', path)
+
+    def _file_write(self, cr, uid, location, qqfile, is_encrypted=False):
         sha1 = hashlib.sha1()
         while True:
             # read 16MB
@@ -68,7 +96,7 @@ class IrAttachmentInherit(osv.osv):
         # scatter files across 1024 dirs
         # we use '/' in the db (even on windows)
         fname = fname[:3] + '/' + fname
-        full_path = self._full_path(cr, uid, location, fname)
+        full_path = self._full_path(cr, uid, location, fname, is_encrypted)
         file_size = 0
         try:
             qqfile.seek(0, 0)
@@ -81,21 +109,8 @@ class IrAttachmentInherit(osv.osv):
             _logger.error("_file_write writing %s", full_path)
         return fname, file_size
 
-    def _data_get(self, cr, uid, ids, name, arg, context=None):
-        if context is None:
-            context = {}
-        result = {}
-        location = self.pool.get('ir.config_parameter').get_param(cr, uid, 'ir_attachment.location')
-        bin_size = context.get('bin_size')
-        for attach in self.browse(cr, uid, ids, context=context):
-            if location and attach.store_fname:
-                result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size)
-            else:
-                result[attach.id] = attach.db_datas
-        return result
-
-    def _file_read(self, cr, uid, location, fname, bin_size=False):
-        full_path = self._full_path(cr, uid, location, fname)
+    def _file_read(self, cr, uid, location, fname, bin_size=False, is_encrypted=False):
+        full_path = self._full_path(cr, uid, location, fname, is_encrypted)
         r = ''
         try:
             if bin_size:
@@ -105,6 +120,28 @@ class IrAttachmentInherit(osv.osv):
         except IOError:
             _logger.error("_read_file reading %s", full_path)
         return r
+
+    def _data_get(self, cr, uid, ids, name, arg, context=None):
+        if context is None:
+            context = {}
+        result = {}
+        location = self.pool.get('ir.config_parameter').get_param(cr, uid, 'ir_attachment.location')
+        bin_size = context.get('bin_size')
+        for attach in self.browse(cr, uid, ids, context=context):
+            if location and attach.store_fname:
+                is_encrypted = attach.parent_id.is_encrypt
+                if is_encrypted:
+                    read_file = self._file_read(cr, uid, location, attach.store_fname, bin_size, is_encrypted)
+                    if read_file:
+                        result[attach.id] = read_file
+                    else:
+                        result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size)
+
+                else:
+                    result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size)
+            else:
+                result[attach.id] = attach.db_datas
+        return result
 
     # noinspection PySuperArguments
     def _data_set(self, cr, uid, id, name, qqfile, arg, context=None):
@@ -119,7 +156,7 @@ class IrAttachmentInherit(osv.osv):
             attach = self.browse(cr, uid, id, context=context)
             if attach.store_fname:
                 self._file_delete(cr, uid, location, attach.store_fname)
-            file_name, file_size = self._file_write(cr, uid, location, qqfile)
+            file_name, file_size = self._file_write(cr, uid, location, qqfile, attach.parent_id.is_encrypt)
             super(Model, self).write(cr, uid, [id], {'store_fname': file_name, 'file_size': file_size}, context=context)
         else:
             super(Model, self).write(cr, uid, [id], {'db_datas': qqfile.read(), 'file_size': file_size}, context=context)

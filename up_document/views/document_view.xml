@@ -63,7 +63,7 @@
                     <field name="index"/>
                     <newline/>
                     <field name="is_encrypt"/>
-                    <button string="同步子文件夹加密属性" type="object" name="button_update_sub_encript" groups="base.group_document_user"/>
+                    <button string="同步加密属性" type="object" name="button_update_sub_encrypt" groups="base.group_document_user"/>
                 </xpath>
                 <xpath expr="//field[@name='parent_id']" position="replace">
                     <field name="parent_id" on_change="onchange_parent_id(parent_id)">
