@@ -1,6 +1,5 @@
 __author__ = 'cysnake4713'
 # coding=utf-8
-# -*- encoding: utf-8 -*-
 import hashlib
 import os
 import re
@@ -39,6 +38,46 @@ class DocumentDirectoryInherit(osv.osv):
 
 class IrAttachmentInherit(osv.osv):
     _inherit = 'ir.attachment'
+
+    def _data_get(self, cr, uid, ids, name, arg, context=None):
+        if context is None:
+            context = {}
+        result = {}
+        location = self.pool.get('ir.config_parameter').get_param(cr, uid, 'ir_attachment.location')
+        bin_size = context.get('bin_size')
+        for attach in self.browse(cr, uid, ids, context=context):
+            if location and attach.store_fname:
+                is_encrypted = attach.parent_id.is_encrypt
+                if is_encrypted:
+                    result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size, is_encrypted)
+                else:
+                    result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size)
+            else:
+                result[attach.id] = attach.db_datas
+        return result
+
+    def _data_set(self, cr, uid, id, name, qqfile, arg, context=None):
+        # We dont handle setting data to null
+        if not qqfile:
+            return True
+        if context is None:
+            context = {}
+        location = self.pool.get('ir.config_parameter').get_param(cr, uid, 'ir_attachment.location')
+        file_size = 0
+        if location:
+            attach = self.browse(cr, uid, id, context=context)
+            if attach.store_fname:
+                self._file_delete(cr, uid, location, attach.store_fname)
+            file_name, file_size = self._file_write(cr, uid, location, qqfile, attach.parent_id.is_encrypt)
+            super(Model, self).write(cr, uid, [id], {'store_fname': file_name, 'file_size': file_size}, context=context)
+        else:
+            super(Model, self).write(cr, uid, [id], {'db_datas': qqfile.read(), 'file_size': file_size}, context=context)
+        return True
+
+
+    _columns = {
+        'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="file", nodrop=True),
+    }
 
     def convert_encrypt_state(self, cr, uid, ids, is_encrypt=False, is_decrypt=False, context=None):
         if not isinstance(ids, list):
@@ -97,41 +136,6 @@ class IrAttachmentInherit(osv.osv):
         except IOError:
             _logger.error("_file_write writing %s", full_path)
         return fname, file_size
-
-    def _data_get(self, cr, uid, ids, name, arg, context=None):
-        if context is None:
-            context = {}
-        result = {}
-        location = self.pool.get('ir.config_parameter').get_param(cr, uid, 'ir_attachment.location')
-        bin_size = context.get('bin_size')
-        for attach in self.browse(cr, uid, ids, context=context):
-            if location and attach.store_fname:
-                is_encrypted = attach.parent_id.is_encrypt
-                if is_encrypted:
-                    result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size, is_encrypted)
-                else:
-                    result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size)
-            else:
-                result[attach.id] = attach.db_datas
-        return result
-
-    def _data_set(self, cr, uid, id, name, qqfile, arg, context=None):
-        # We dont handle setting data to null
-        if not qqfile:
-            return True
-        if context is None:
-            context = {}
-        location = self.pool.get('ir.config_parameter').get_param(cr, uid, 'ir_attachment.location')
-        file_size = 0
-        if location:
-            attach = self.browse(cr, uid, id, context=context)
-            if attach.store_fname:
-                self._file_delete(cr, uid, location, attach.store_fname)
-            file_name, file_size = self._file_write(cr, uid, location, qqfile, attach.parent_id.is_encrypt)
-            super(Model, self).write(cr, uid, [id], {'store_fname': file_name, 'file_size': file_size}, context=context)
-        else:
-            super(Model, self).write(cr, uid, [id], {'db_datas': qqfile.read(), 'file_size': file_size}, context=context)
-        return True
 
     def _update_encrypted_state(self, cr, uid, ids, new_parent, context=None):
         directory_obj = self.pool['document.directory']
