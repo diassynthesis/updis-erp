@@ -150,9 +150,9 @@
                                     <field name="manager_approver_date" readonly="1"/>
                                 </group>
                                 <group colspan="2" col="4" attrs="{'invisible':[('is_import','=',False)]}" string="导入记录">
-                                    <field name="import_paper_builder"/>
-                                    <field name="import_graph_type"/>
-                                    <field name="import_total_paper"/>
+                                    <field name="import_paper_builder" readonly="1"/>
+                                    <field name="import_graph_type" readonly="1"/>
+                                    <field name="import_total_paper" readonly="1"/>
                                 </group>
                             </page>
                             <page string="第二步:纸质文件归档填写">
