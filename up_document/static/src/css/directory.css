@@ -126,3 +126,8 @@
 .openerp .oe-document-tree .tree-directory-container .button-holder .file-upload {
     display: none !important;
 }
+
+.openerp .oe-document-tree .tree-directory-container .oe_other {
+    margin-left: 10px;
+    color: #808080;
+}

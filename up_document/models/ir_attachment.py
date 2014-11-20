@@ -359,7 +359,7 @@ class IrAttachmentInherit(osv.osv):
         if res_model:
             domain += [('res_model', '=', res_model)]
         ids = self.search(cr, uid, domain, context=context)
-        result = self.read(cr, uid, ids, ['name', 'file_size'], context=context)
+        result = self.read(cr, uid, ids, ['name', 'file_size', 'create_date'], context=context)
         for tfile in result:
             size = '%.2fMB' % (tfile['file_size'] / float(1024 * 1024)) \
                 if tfile['file_size'] / float(1024) > 1000 else '%.2fKB' % (tfile['file_size'] / float(1024))
