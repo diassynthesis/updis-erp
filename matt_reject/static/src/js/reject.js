@@ -30,7 +30,7 @@ openerp.matt_reject = function (instance) {
                             {text: _t("Ok"), click: function () {
                                 var self2 = this;
 
-                                $.when(self.on_confirmed()).always(function () {
+                                $.when(self.on_confirmed()).then(function (result) {
                                     var body = $(self2).find('textarea').val();
                                     if (body != '') {
                                         var values = {
