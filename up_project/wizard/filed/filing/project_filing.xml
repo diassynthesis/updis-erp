@@ -146,7 +146,7 @@
                                            context="{'parent_id':%(dir_up_project_going_brief_picture)d}"/>
                                 </group>
                                 <group colspan="2" col="4">
-                                    <field name="manager_approver_id" readonly="1"  widget="signature"/>
+                                    <field name="manager_approver_id" readonly="1" widget="signature"/>
                                     <field name="manager_approver_date" readonly="1"/>
                                 </group>
                                 <group colspan="2" col="4" attrs="{'invisible':[('is_import','=',False)]}" string="导入记录">
@@ -155,6 +155,8 @@
                                     <field name="import_total_paper" readonly="1"/>
                                 </group>
                             </page>
+                        </notebook>
+                        <notebook>
                             <page string="第二步:纸质文件归档填写">
                                 <group colspan="2" col="1">
                                     <label for="record_ids"/>
@@ -174,11 +176,13 @@
                                         </tree>
                                     </field>
                                     <group colspan="2" col="4">
-                                        <field name="paper_file_approver_id" readonly="1"   widget="signature"/>
+                                        <field name="paper_file_approver_id" readonly="1" widget="signature"/>
                                         <field name="paper_file_approver_date" readonly="1"/>
                                     </group>
                                 </group>
                             </page>
+                        </notebook>
+                        <notebook>
                             <page string="第三步:电子文件归档信息填写">
                                 <group string="Elec Document Filing Info" colspan="2" col="1">
                                     <div class="oe_edit_only">
@@ -196,7 +200,7 @@
                                             type="object"/>
                                 </group>
                                 <group colspan="2" col="4">
-                                    <field name="elec_file_approver_id" readonly="1"   widget="signature"/>
+                                    <field name="elec_file_approver_id" readonly="1" widget="signature"/>
                                     <field name="elec_file_approver_date" readonly="1"/>
                                 </group>
                             </page>
