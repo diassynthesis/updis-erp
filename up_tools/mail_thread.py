@@ -227,9 +227,11 @@ class MailThreadInherit(osv.osv_abstract):
         if 'partner_ids' in kwargs:
             partner_ids += kwargs.pop('partner_ids', [])
 
-        msg_id = super(MailThreadInherit, self).message_post(cr, uid, thread_id, body, subject, type,
-                                                             subtype, parent_id, attachments, context,
-                                                             content_subtype, partner_ids=partner_ids, **kwargs)
+        is_send_sys = kwargs.pop('is_send_sys', True)
+        if is_send_sys:
+            msg_id = super(MailThreadInherit, self).message_post(cr, uid, thread_id, body, subject, type,
+                                                                 subtype, parent_id, attachments, context,
+                                                                 content_subtype, partner_ids=partner_ids, **kwargs)
         is_send_ant = kwargs.pop('is_send_ant', True)
         # Send big ant message
         if type == 'comment' and is_send_ant:
