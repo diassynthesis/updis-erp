@@ -94,6 +94,13 @@ class ProjectFiledFiling(osv.Model):
         self.message_post(cr, uid, ids, body=content_sms, subject=u'项目归档审批通知', subtype='mail.mt_comment', type='comment', context=context,
                           user_ids=[u.id for u in filing.project_user], is_send_sms=True)
         filing.project_id.write({'status_code': 30104})
+        # 添加待归档文件到归档文件列表中
+        need_file_dir = self.pool['ir.model.data'].get_object(cr, uid, 'up_project', 'dir_up_project_going', context=context)
+        dir_ids = self.pool['document.directory'].search(cr, uid, [('id', 'child_of', need_file_dir.id)], context=context)
+        domain = [('parent_id', 'in', dir_ids), ('is_deleted', '=', False), ('res_id', '=', filing.project_id.id ),
+                  ('res_model', '=', 'project.project')]
+        need_file_attachments = self.pool['ir.attachment'].search(cr, uid, domain, context=context)
+        self.write(cr, uid, ids, {'attachment_ids': [(6, 0, need_file_attachments)]}, context=context)
         return self.write(cr, uid, ids, {'state': 'manager_approve'}, context)
 
     def button_manager_approve(self, cr, uid, ids, context):

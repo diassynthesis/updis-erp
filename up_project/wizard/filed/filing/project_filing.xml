@@ -186,14 +186,14 @@
                             <page string="第三步:电子文件归档信息填写">
                                 <group string="Elec Document Filing Info" colspan="2" col="1">
                                     <div class="oe_edit_only">
-                                        <p class="oe_tips">点击“上传待归档电子文件”按钮可以快速上传文件到项目文件夹，上传文件成功后点击"添加"按钮添加本次需要归档的文件</p>
+                                        <p class="oe_tips">点击“上传待归档电子文件”按钮可以快速上传文件到项目文件夹。</p>
                                         <p class="oe_tips">注：要求上传重要评审会议演示稿（总规类不少于2次，其它不少于1次）；建议上传策划书</p>
                                         <button name="%(button_show_filing_update_list)d" class="oe_left oe_highlight oe_edit_only"
                                                 string="上传待归档电子文件" states="apply_filing" type="action"
                                                 context="{'ctx':{'res_id':project_id,'res_model':'project.project'},'res_id':project_id,'res_model':'project.project'}"/>
                                     </div>
                                     <label for="attachment_ids" string="Need Filing Elec Attachments"/>
-                                    <field name="attachment_ids" nolabel="1"
+                                    <field name="attachment_ids" nolabel="1" readonly="1" attrs="{'invisible':[('state','=','apply_filing')]}"
                                            domain="[('res_model', '=', 'project.project'),('res_id', '=', project_id),('parent_id','child_of',%(up_project.dir_up_project_going)d)]"/>
                                     <button name="button_show_filing_attachment_analysis" class="oe_left oe_link"
                                             string="查看电子归档文件历史记录"
