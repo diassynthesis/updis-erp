@@ -33,7 +33,7 @@
         </tr>
         <tr>
             <td style="width: 20%">项目名称</td>
-            <td colspan="3" class="table-content">${object.project_id.name or ''|entity}</td>
+            <td colspan="3" class="table-content">${object.project_name or ''|entity}</td>
         </tr>
         <tr>
             <td>项目类别</td>
