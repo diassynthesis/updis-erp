@@ -41,29 +41,22 @@ class ProjectFiledFiling(osv.Model):
         'is_user_is_project_manager': fields.related('project_id', 'is_user_is_project_manager', type='boolean', string='Is user Project Manager',
                                                      readonly=True),
         'project_second_category': fields.many2many('project.project.filed.filling.secondcategory', 'rel_filing_second_category', 'filing_id',
-                                                    'second_category_id', string='Secondary Categories',
-                                                    states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
-        'project_end_date': fields.date('Project End Date', required=True,
-                                        states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
-        'tag_ids': fields.many2many('project.project.filed.tag', 'rel_project_filing_tag', 'filing_id', 'tag_id', string='Tags', required=True,
-                                    states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
+                                                    'second_category_id', string='Secondary Categories'),
+        'project_end_date': fields.date('Project End Date', required=True),
+        'tag_ids': fields.many2many('project.project.filed.tag', 'rel_project_filing_tag', 'filing_id', 'tag_id', string='Tags', required=True, ),
         # 概况
-        'description': fields.text('Description', states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}, required=True),
+        'description': fields.text('Description', required=True),
         # 借鉴主要案例
-        'note': fields.text('Note', states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
-        'record_ids': fields.one2many('project.project.filed.record', 'filing_id', 'Document Records',
-                                      states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
-        'show_images': fields.many2many('ir.attachment', 'project_filing_show_attachments', 'filing_id', 'attachment_id', string='Show Images',
-                                        states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
-        'end_stage': fields.selection([('cehua', u'策划'), ('qurenfangan', u'确认方案'), ('pingshenqian', u'评审前方案')], 'End Stage',
-                                      states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
+        'note': fields.text('Note', ),
+        'record_ids': fields.one2many('project.project.filed.record', 'filing_id', 'Document Records', ),
+        'show_images': fields.many2many('ir.attachment', 'project_filing_show_attachments', 'filing_id', 'attachment_id', string='Show Images', ),
+        'end_stage': fields.selection([('cehua', u'策划'), ('qurenfangan', u'确认方案'), ('pingshenqian', u'评审前方案')], 'End Stage', ),
         'create_date': fields.datetime('Created Date', readonly=True),
         'create_uid': fields.many2one('res.users', 'Owner', readonly=True),
         'write_date': fields.datetime('Modification date', select=True),
         'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
         'version': fields.integer('Filing Version'),
-        'attachment_ids': fields.many2many('ir.attachment', 'filing_form_ir_attach_rel', 'filing_id', 'attachment_id', 'Filing Attachments',
-                                           states={'end_filing': [('readonly', True)], 'approve_filing': [('readonly', True)]}),
+        'attachment_ids': fields.many2many('ir.attachment', 'filing_form_ir_attach_rel', 'filing_id', 'attachment_id', 'Filing Attachments', ),
 
         'elec_file_approver_id': fields.many2one('res.users', 'Elec File Approver'),
         'elec_file_approver_date': fields.datetime('Elec File Approve Datetime'),
@@ -366,9 +359,15 @@ class ProjectProjectInherit(osv.Model):
             # else if project is in project filed state
             elif project.state == 'project_finish':
                 raise exceptions.Warning(u'本项目没有归档表单！')
-        # if user is project member
-        if not self.is_project_member(cr, uid, project.id, context):
-            context['editable'] = False
+        context['editable'] = False
+        cur_filing = self.pool['project.project.filed.filing'].browse(cr, uid, filing_id, context=context)
+        # 如果是申请状态并且是成员，可以编辑
+        if cur_filing.state in ['apply_filing', 'manager_approve'] and self.is_project_member(cr, uid, project.id, context):
+            context['editable'] = True
+        # 如果是其它状态，是管理员，可以编辑
+        if self.user_has_groups(cr, uid, 'up_project.group_up_project_filed_elec_manager,up_project.group_up_project_filed_manager',
+                                context=context) and cur_filing.state != 'end_filing':
+            context['editable'] = True
         if filing_id:
             return {
                 'name': u'项目文件归档表',

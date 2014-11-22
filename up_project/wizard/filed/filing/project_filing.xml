@@ -60,7 +60,7 @@
             <field name="name">project.project.filed.filing.form</field>
             <field name="model">project.project.filed.filing</field>
             <field name="arch" type="xml">
-                <form string="Project Filing" version="7.0" create="false" delete="false" edit="context['editable']">
+                <form string="Project Filing" version="7.0" create="false" delete="false" edit="false" is_edit="context['editable']">
                     <header>
                         <button name="button_apply_filing" type="object" string="Apply Filing" class="oe_highlight" confirm="确定归档？"
                                 attrs="{'invisible':['|',('state','not in',['apply_filing']),('is_project_member','=',False)]}"/>

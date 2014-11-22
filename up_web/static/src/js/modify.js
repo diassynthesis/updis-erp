@@ -688,7 +688,11 @@ openerp.up_web = function (instance) {
         is_action_enabled: function (action) {
             var attrs = this.fields_view.arch.attrs;
             var context = this.dataset.context;
-            return (action in attrs) && eval(attrs[action]) != undefined ? JSON.parse(eval(attrs[action])) : true;
+            if ('is_edit' in attrs) {
+                return eval(attrs['is_edit']) != undefined ? JSON.parse(eval(attrs['is_edit'])) : false;
+            } else {
+                return this._super(action);
+            }
         }
     });
 
