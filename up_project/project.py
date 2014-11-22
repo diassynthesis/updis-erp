@@ -606,7 +606,9 @@ class updis_project(osv.osv):
 
     def all_filed_projects_action(self, cr, uid, context=None):
         context['search_default_filed-project'] = 1
-        return self.all_projects_action(cr, uid, context=context)
+        result = self.all_projects_action(cr, uid, context=context)
+        result['context'].update({'tree_view_ref': 'up_project.view_project_filed_tree'})
+        return result
 
     def workflow_signal(self, cr, uid, ids, signal):
         self._workflow_signal(cr, uid, ids, signal)

@@ -124,7 +124,6 @@ class ProjectFiledFiling(osv.Model):
         self.pool['project.project']._workflow_signal(cr, uid, [project_id], 's_filed_filing_finish', context=context)
         attachment_obj = self.pool['ir.attachment']
         attachment_obj.filing_project_attachments(cr, 1, [a.id for a in filing.attachment_ids], context)
-        filing.project_id.write({'status_code': 30102})
         # send filing success message
         content_sms = u'项目[%s]归档审批通过。' % filing.project_id.name
         context['mail_create_nosubscribe'] = True
@@ -134,8 +133,10 @@ class ProjectFiledFiling(osv.Model):
         self.message_post(cr, uid, ids, body=u'您提交的归档申请项目负责人已审批，请带齐归档资料到档案室归档', subject=u'项目归档审批通知', subtype='mail.mt_comment', type='comment',
                           context=context, user_ids=[filing.create_uid.id])
 
-        return self.write(cr, uid, ids, {'state': 'end_filing', 'paper_file_approver_id': uid, 'paper_file_approver_date': fields.datetime.now()},
-                          context)
+        result = self.write(cr, uid, ids, {'state': 'end_filing', 'paper_file_approver_id': uid, 'paper_file_approver_date': fields.datetime.now()},
+                            context)
+        filing.project_id.write({'status_code': 30102, 'filed_project_end_date': filing.project_end_date})
+        return result
 
     def button_disapprove_filing(self, cr, uid, ids, context):
         filing = self.browse(cr, uid, ids[0], context)
@@ -319,7 +320,7 @@ class ProjectProjectInherit(osv.Model):
         'is_multi_filing_allowed': fields.function(_filed_field_calc, type='boolean', string='Is Multi Filing Allowed', multi='filed'),
         'filed_times': fields.function(_filed_field_calc, type='integer', string='Is Multi Filing Allowed', multi='filed'),
         # 归档日期
-        'filed_project_end_date': fields.function(_filed_field_calc, type='date', string='Project End Date', multi='filed', readonly=True),
+        'filed_project_end_date': fields.function(_filed_field_calc, type='date', string='Project End Date', multi='filed', readonly=True, store=True),
         # 立卷人
         'filed_import_paper_builder': fields.function(_filed_field_calc, type='char', string='Filed Paper Builder', multi='filed', readonly=True),
         # 张数合计
