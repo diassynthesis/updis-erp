@@ -130,9 +130,6 @@ class ProjectFiledFiling(osv.Model):
         self.message_post(cr, uid, ids, body=content_sms, subject=u'项目归档审批通知', subtype='mail.mt_comment', type='comment', context=context,
                           user_ids=[u.id for u in filing.project_user], is_send_sms=True)
 
-        self.message_post(cr, uid, ids, body=u'您提交的归档申请项目负责人已审批，请带齐归档资料到档案室归档', subject=u'项目归档审批通知', subtype='mail.mt_comment', type='comment',
-                          context=context, user_ids=[filing.create_uid.id])
-
         result = self.write(cr, uid, ids, {'state': 'end_filing', 'paper_file_approver_id': uid, 'paper_file_approver_date': fields.datetime.now()},
                             context)
         filing.project_id.write({'status_code': 30102, 'filed_project_end_date': filing.project_end_date})
@@ -157,6 +154,8 @@ class ProjectFiledFiling(osv.Model):
         context['mail_create_nosubscribe'] = True
         self.message_post(cr, uid, ids, body=content_sms, subject=u'项目归档审批通知', subtype='mail.mt_comment', type='comment', context=context,
                           group_xml_ids='up_project.group_up_project_filed_manager', is_send_sms=True)
+        self.message_post(cr, uid, ids, body=u'您提交的归档申请项目电子文件审批通过，请带齐归档资料到档案室归档', subject=u'项目归档审批通知', subtype='mail.mt_comment', type='comment',
+                          context=context, user_ids=[filing.create_uid.id], is_send_sms=True)
         return True
 
     def button_show_filing_update_list(self, cr, uid, ids, context):
@@ -320,7 +319,8 @@ class ProjectProjectInherit(osv.Model):
         'is_multi_filing_allowed': fields.function(_filed_field_calc, type='boolean', string='Is Multi Filing Allowed', multi='filed'),
         'filed_times': fields.function(_filed_field_calc, type='integer', string='Is Multi Filing Allowed', multi='filed'),
         # 归档日期
-        'filed_project_end_date': fields.function(_filed_field_calc, type='date', string='Project End Date', multi='filed', readonly=True, store=True),
+        'filed_project_end_date': fields.function(_filed_field_calc, type='date', string='Project End Date', multi='filed', readonly=True,
+                                                  store=True),
         # 立卷人
         'filed_import_paper_builder': fields.function(_filed_field_calc, type='char', string='Filed Paper Builder', multi='filed', readonly=True),
         # 张数合计
@@ -365,7 +365,7 @@ class ProjectProjectInherit(osv.Model):
         # 如果是申请状态并且是成员，可以编辑
         if cur_filing.state in ['apply_filing', 'manager_approve'] and self.is_project_member(cr, uid, project.id, context):
             context['editable'] = True
-        # 如果是其它状态，是管理员，可以编辑
+            # 如果是其它状态，是管理员，可以编辑
         if self.user_has_groups(cr, uid, 'up_project.group_up_project_filed_elec_manager,up_project.group_up_project_filed_manager',
                                 context=context) and cur_filing.state != 'end_filing':
             context['editable'] = True
