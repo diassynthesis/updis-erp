@@ -193,7 +193,7 @@
                                                 context="{'ctx':{'res_id':project_id,'res_model':'project.project'},'res_id':project_id,'res_model':'project.project'}"/>
                                     </div>
                                     <label for="attachment_ids" string="Need Filing Elec Attachments"/>
-                                    <field name="attachment_ids" nolabel="1" attrs="{'invisible':[('state','=','apply_filing')],'readonly':[('state','!=','approve_filing')]}"
+                                    <field name="attachment_ids" nolabel="1" readonly="1" attrs="{'invisible':[('state','=','apply_filing')]}"
                                            domain="[('res_model', '=', 'project.project'),('res_id', '=', project_id),('parent_id','child_of',%(up_project.dir_up_project_going)d)]"/>
                                     <button name="button_show_filing_attachment_analysis" class="oe_left oe_link"
                                             string="查看电子归档文件历史记录"

@@ -87,14 +87,18 @@ class ProjectFiledFiling(osv.Model):
         self.message_post(cr, uid, ids, body=content_sms, subject=u'项目归档审批通知', subtype='mail.mt_comment', type='comment', context=context,
                           user_ids=[u.id for u in filing.project_user], is_send_sms=True)
         filing.project_id.write({'status_code': 30104})
-        # 添加待归档文件到归档文件列表中
+        self._add_file_to_need_file_list(cr, uid, ids, context)
+        return self.write(cr, uid, ids, {'state': 'manager_approve'}, context)
+
+    # 添加待归档文件到归档文件列表中
+    def _add_file_to_need_file_list(self, cr, uid, ids, context):
+        filing = self.browse(cr, uid, ids[0], context)
         need_file_dir = self.pool['ir.model.data'].get_object(cr, uid, 'up_project', 'dir_up_project_going', context=context)
         dir_ids = self.pool['document.directory'].search(cr, uid, [('id', 'child_of', need_file_dir.id)], context=context)
         domain = [('parent_id', 'in', dir_ids), ('is_deleted', '=', False), ('res_id', '=', filing.project_id.id ),
                   ('res_model', '=', 'project.project')]
         need_file_attachments = self.pool['ir.attachment'].search(cr, uid, domain, context=context)
         self.write(cr, uid, ids, {'attachment_ids': [(6, 0, need_file_attachments)]}, context=context)
-        return self.write(cr, uid, ids, {'state': 'manager_approve'}, context)
 
     def button_manager_approve(self, cr, uid, ids, context):
         filing = self.browse(cr, uid, ids[0], context)
@@ -121,6 +125,7 @@ class ProjectFiledFiling(osv.Model):
         if not filing.elec_file_approver_id:
             raise except_osv('Warnning', u'电子文件审批没有通过，请等待电子文件审批完成后再进行此操作')
         project_id = filing.project_id.id
+        self._add_file_to_need_file_list(cr, uid, ids, context)
         self.pool['project.project']._workflow_signal(cr, uid, [project_id], 's_filed_filing_finish', context=context)
         attachment_obj = self.pool['ir.attachment']
         attachment_obj.filing_project_attachments(cr, 1, [a.id for a in filing.attachment_ids], context)
@@ -157,6 +162,7 @@ class ProjectFiledFiling(osv.Model):
         context['mail_create_nosubscribe'] = True
         self.message_post(cr, uid, ids, body=content_sms, subject=u'项目归档审批通知', subtype='mail.mt_comment', type='comment', context=context,
                           group_xml_ids='up_project.group_up_project_filed_manager', is_send_sms=True)
+        self._add_file_to_need_file_list(cr, uid, ids, context)
         return True
 
     def button_show_filing_update_list(self, cr, uid, ids, context):
@@ -320,7 +326,8 @@ class ProjectProjectInherit(osv.Model):
         'is_multi_filing_allowed': fields.function(_filed_field_calc, type='boolean', string='Is Multi Filing Allowed', multi='filed'),
         'filed_times': fields.function(_filed_field_calc, type='integer', string='Is Multi Filing Allowed', multi='filed'),
         # 归档日期
-        'filed_project_end_date': fields.function(_filed_field_calc, type='date', string='Project End Date', multi='filed', readonly=True, store=True),
+        'filed_project_end_date': fields.function(_filed_field_calc, type='date', string='Project End Date', multi='filed', readonly=True,
+                                                  store=True),
         # 立卷人
         'filed_import_paper_builder': fields.function(_filed_field_calc, type='char', string='Filed Paper Builder', multi='filed', readonly=True),
         # 张数合计
