@@ -351,7 +351,6 @@ class IrAttachmentInherit(osv.osv):
                 apply_files += [tfile.id]
         return list(set(apply_files))
 
-
     def get_directory_documents(self, cr, uid, directory_id, res_id, res_model, context):
         domain = [('parent_id', '=', directory_id), ('is_deleted', '=', False)]
         if res_id:
@@ -364,6 +363,10 @@ class IrAttachmentInherit(osv.osv):
             size = '%.2fMB' % (tfile['file_size'] / float(1024 * 1024)) \
                 if tfile['file_size'] / float(1024) > 1000 else '%.2fKB' % (tfile['file_size'] / float(1024))
             tfile['file_size'] = size
+            tfile['create_date'] = fields.datetime.context_timestamp(cr, uid,
+                                                                     datetime.datetime.strptime(tfile['create_date'],
+                                                                                                tools.DEFAULT_SERVER_DATETIME_FORMAT),
+                                                                     context=context).strftime(tools.DEFAULT_SERVER_DATETIME_FORMAT)
         return result
 
     def delete_temp_attachments(self, cr, uid, context=None):
