@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <openerp>
     <data>
+        <record id="action_project_filing_history_list" model="ir.actions.act_window">
+            <field name="name">项目归档历史记录</field>
+            <field name="res_model">project.project.filed.filing</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+            <field name="domain">[('project_id','=',active_id)]</field>
+        </record>
+
         <record id="edit_project_inherit" model="ir.ui.view">
             <field name="name">project.project.form.replace</field>
             <field name="model">project.project</field>
@@ -169,8 +178,8 @@
                                                         <td>
                                                         </td>
                                                         <td>
-                                                            <button name="button_filed_filing_form_history" icon="gtk-justify-fill"
-                                                                    type="object"/>
+                                                            <button name="%(action_project_filing_history_list)d" icon="gtk-justify-fill"
+                                                                    type="action"/>
                                                         </td>
                                                         <td>
                                                             <button name="button_multi_filing_form" string="多次项目归档申请"

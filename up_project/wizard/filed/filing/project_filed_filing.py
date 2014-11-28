@@ -415,18 +415,6 @@ class ProjectProjectInherit(osv.Model):
             filing_obj.message_unsubscribe_users(cr, uid, [new_filing_id], [uid], context=context)
             return True
 
-    # noinspection PyUnusedLocal
-    def button_filed_filing_form_history(self, cr, uid, ids, context):
-        return {
-            'name': u'项目文件归档表',
-            'type': 'ir.actions.act_window',
-            'view_mode': 'tree,form',
-            'res_model': 'project.project.filed.filing',
-            'target': 'current',
-            'context': context,
-            'domain': [('project_id', 'in', ids)],
-        }
-
 
 class FilingElecAttachmentsAnalysis(osv.Model):
     _name = "project.project.filed.filing.attachment.analysis"
