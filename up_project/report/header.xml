@@ -52,10 +52,15 @@
             </field>
             <field name="html">
                 <![CDATA[
-            <html>
-                <body>
-                </body>
-            </html>]]>
+<html>
+    <head>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+        <style type="text/css">
+            ${css}
+        </style>
+    </head>
+</html>
+]]>
             </field>
             <field name="footer_html"><![CDATA[
             <html>
