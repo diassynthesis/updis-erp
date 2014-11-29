@@ -97,6 +97,9 @@ class ManagerForm(osv.Model):
 
     def apply(self, cr, uid, ids, context):
         change_file = self.browse(cr, uid, ids[0], context)
+        if set([om.id for om in change_file.origin_manager]) == set([tm.id for tm in change_file.target_manager]) and \
+                        set([oc.id for oc in change_file.origin_chief]) == set([tc.id for tc in change_file.target_chief]):
+            raise osv.except_osv(u'没有修改', u'您还未填写人员调整表单，请返回点击左上角“编辑”按钮编辑表单后再提交申请！')
         values = {
             'user_field': 'apply_id',
             'date_field': 'apply_date',
