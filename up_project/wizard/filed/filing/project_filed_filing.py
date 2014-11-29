@@ -100,6 +100,11 @@ class ProjectFiledFiling(osv.Model):
         need_file_attachments = self.pool['ir.attachment'].search(cr, uid, domain, context=context)
         self.write(cr, uid, ids, {'attachment_ids': [(6, 0, need_file_attachments)]}, context=context)
 
+    def _clear_paper_list(self, cr, uid, ids, context):
+        filing = self.browse(cr, uid, ids[0], context)
+        need_clear_ids = [(2, r.id) for r in filing.record_ids if r.page_count == 0 and r.copy_count == 0]
+        filing.write({'record_ids': need_clear_ids}, context=context)
+
     def button_manager_approve(self, cr, uid, ids, context):
         filing = self.browse(cr, uid, ids[0], context)
         content_sms = u'项目[%s]需要您处理,请及时处理项目和跟进项目进度。' % filing.project_id.name
@@ -107,6 +112,7 @@ class ProjectFiledFiling(osv.Model):
         self.message_post(cr, uid, ids, body=content_sms, subject=u'项目归档审批通知', subtype='mail.mt_comment', type='comment', context=context,
                           group_xml_ids='up_project.group_up_project_filed_elec_manager', is_send_sms=True)
         filing.project_id.write({'status_code': 30103})
+        self._clear_paper_list(cr, uid, ids, context)
         return self.write(cr, uid, ids, {'state': 'approve_filing', 'manager_approver_id': uid, 'manager_approver_date': fields.datetime.now()},
                           context)
 
