@@ -87,34 +87,34 @@
                         <div class="sheet-title">
                             <h1>项目文件归档表</h1>
                         </div>
-                        <notebook>
-                            <page string="第一步:项目基本信息填写">
                                 <group string="Project Info">
                                     <group colspan="2">
-                                        <field name="project_id" readonly="1"/>
-                                        <field name="project_name"/>
+                                        <field name="project_id" readonly="1" colspan="2"/>
+                                        <group col="4" colspan="2">
+                                            <field name="project_user" widget="many2many_tags" readonly="1"/>
+                                            <field name="project_category_id"/>
+                                            <field name="project_serial_number"/>
+                                            <field name="project_scale"/>
+                                        </group>
+                                        <group colspan="2">
+                                            <label string="Project Location" for="country_id"/>
+                                            <div class="address_format">
+                                                <field name="project_country_id" class="oe_no_button" nolabel="1" style="width: 20%%"/>
+                                                <field name="project_state_id" widget="selection" options="{'no_open':True}"
+                                                       placeholder="State" nolabel="1" style="width: 20%%"/>
+                                                <field name="project_city" nolabel="1" style="width: 20%%"/>
+                                            </div>
+                                        </group>
                                     </group>
-                                    <group>
-                                        <field name="project_user" widget="many2many_tags" readonly="1"/>
-                                        <field name="project_category_id"/>
+                                    <group colspan="2" col="4">
+                                        <field name="project_name" colspan="4"/>
                                         <field name="project_second_category" widget="many2many_tags"
                                                domain="[('category_id.id','=',project_category_id)]"
                                                help="项目二级分类的填写请参考文档 QW4.2.3-2技术文件和资料归档规定--二级分类.doc"/>
                                         <field name="end_stage"/>
                                     </group>
-                                    <group>
-                                        <field name="project_serial_number"/>
-                                        <field name="project_scale"/>
-                                        <label string="Project Location" for="country_id"/>
-                                        <div class="address_format">
-                                            <field name="project_country_id" class="oe_no_button" nolabel="1" style="width: 20%%"/>
-                                            <field name="project_state_id" widget="selection" options="{'no_open':True}"
-                                                   placeholder="State" nolabel="1" style="width: 20%%"/>
-                                            <field name="project_city" nolabel="1" style="width: 20%%"/>
-                                        </div>
-                                    </group>
                                 </group>
-                                <group string="Paper Filing Info" colspan="2" col="4">
+                                <group colspan="2" col="4">
                                     <label for="project_begin_date" string="Project Period"/>
                                     <div>
                                         <field name="project_begin_date" nolabel="1" style="width: 20%%"/>
@@ -122,7 +122,7 @@
                                         <field name="project_end_date" nolabel="1" style="width: 20%%"/>
                                     </div>
                                     <newline/>
-                                    <field name="tag_ids" domain="[('parent_id','!=',None)]">
+                                    <field name="tag_ids" domain="[('parent_id','!=',None)]" widget="many2many_tags">
                                         <tree>
                                             <field name="name"/>
                                             <field name="parent_id"/>
@@ -151,11 +151,7 @@
                                 <group colspan="2" col="4" attrs="{'invisible':[('is_import','=',False)]}" string="导入记录">
                                     <field name="import_paper_builder" readonly="1"/>
                                 </group>
-                            </page>
-                        </notebook>
-                        <notebook>
-                            <page string="第二步:纸质文件归档填写">
-                                <group colspan="2" col="1">
+                                <group colspan="2" col="1" string="Paper Filing Info" >
                                     <label for="record_ids"/>
                                     <div class="oe_edit_only oe_tips">
                                         <p>点击“添加一个项目”按钮可以添加一条纸质文件记录.</p>
@@ -179,10 +175,6 @@
                                         <field name="paper_file_approver_date" readonly="1"/>
                                     </group>
                                 </group>
-                            </page>
-                        </notebook>
-                        <notebook>
-                            <page string="第三步:电子文件归档信息填写">
                                 <group string="Elec Document Filing Info" colspan="2" col="1">
                                     <div class="oe_edit_only">
                                         <p class="oe_tips">点击“上传待归档电子文件”按钮可以快速上传文件到项目文件夹。</p>
@@ -202,8 +194,6 @@
                                     <field name="elec_file_approver_id" readonly="1" widget="signature"/>
                                     <field name="elec_file_approver_date" readonly="1"/>
                                 </group>
-                            </page>
-                        </notebook>
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers"
