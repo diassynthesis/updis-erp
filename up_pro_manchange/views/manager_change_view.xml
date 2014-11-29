@@ -66,7 +66,7 @@
             <field name="arch" type="xml">
                 <field name="member_ids" position="before">
                     <button name="button_change_project_manager" type="object" string="项目负责人或主管总师变更" class="oe_button"
-                                attrs="{'invisible':[('is_user_is_project_manager','=',False),('is_user_in_engineer_group','=',False)]}"/>
+                                attrs="{'invisible':['|',('is_user_is_project_manager','=',False),('is_user_in_engineer_group','=',False),('state','!=','project_processing')]}"/>
                 </field>
             </field>
         </record>
