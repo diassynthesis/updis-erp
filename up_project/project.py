@@ -635,6 +635,14 @@ class updis_project(osv.osv):
                                                  'log_info': log_info})]}, context=context)
         return True
 
+    def cms_search(self, cr, uid, domain=None, offset=0, limit=None, order=None, context=None):
+        context = {'lang': 'zh_CN', 'tz': 'Asia/Shanghai', 'uid': 1}
+        ids = self.search(cr, 1, domain, offset=offset, limit=limit, order=order, context=None)
+        results = self.read(cr, 1, ids, ['name', 'state', 'begin_date', 'filed_project_end_date'], context=context)
+        for project in results:
+            project['state'] = dict(self.fields_get(cr, uid, ['state'], context=context)['state']['selection'])[project['state']]
+        return results
+
 
 class project_profession(osv.Model):
     """Profession"""
