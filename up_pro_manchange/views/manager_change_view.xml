@@ -11,18 +11,20 @@
 
                         <button name="director_apply" type="object" string="审批通过" states="director" groups="up_project.group_up_project_suozhang"
                                 class="oe_highlight" log="1"/>
-                        <button name="director_reject" type="object" string="打回申请" states="director" groups="up_project.group_up_project_suozhang" log="1"/>
+                        <button name="director_reject" type="object" string="打回申请" states="director" groups="up_project.group_up_project_suozhang"
+                                log="1"/>
 
                         <button name="chief_apply" type="object" string="审批通过" states="chief" groups="up_pro_manchange.manager_change_chief"
                                 class="oe_highlight" log="1"/>
-                        <button name="chief_reject" type="object" string="打回申请" states="chief" groups="up_pro_manchange.manager_change_chief" log="1"/>
+                        <button name="chief_reject" type="object" string="打回申请" states="chief" groups="up_pro_manchange.manager_change_chief"
+                                log="1"/>
 
                         <button name="yuanzhang_apply" type="object" string="审批通过" states="yuanzhang" class="oe_highlight" log="1"
                                 groups="up_pro_manchange.manager_change_yuanzhang"/>
                         <button name="yuanzhang_reject" type="object" string="打回申请" states="yuanzhang" log="1"
                                 groups="up_pro_manchange.manager_change_yuanzhang"/>
 
-                        <button name="cancel" type="object" string="取消" states="draft,director,chief,yuanzhang" />
+                        <button name="cancel" type="object" string="取消" states="draft,director,chief,yuanzhang"/>
 
                         <field name="state" widget="statusbar" readonly="1" statusbar_visible="draft,director,chief,yuanzhang,complete"/>
                     </header>
@@ -41,13 +43,13 @@
                                        domain="[('id','in',context.get('chief_engineer_domain',[]))]"/>
                             </group>
                             <group string="审批记录" colspan="2" col="4">
-                                <field name="apply_id" readonly="1"   widget="signature"/>
+                                <field name="apply_id" readonly="1" widget="signature"/>
                                 <field name="apply_date" readonly="1"/>
-                                <field name="director_id" readonly="1"   widget="signature"/>
+                                <field name="director_id" readonly="1" widget="signature"/>
                                 <field name="director_date" readonly="1"/>
-                                <field name="chief_id" readonly="1"   widget="signature"/>
+                                <field name="chief_id" readonly="1" widget="signature"/>
                                 <field name="chief_date" readonly="1"/>
-                                <field name="yuanzhang_id" readonly="1"   widget="signature"/>
+                                <field name="yuanzhang_id" readonly="1" widget="signature"/>
                                 <field name="yuanzhang_date" readonly="1"/>
                             </group>
                         </group>
@@ -66,9 +68,30 @@
             <field name="arch" type="xml">
                 <field name="member_ids" position="before">
                     <button name="button_change_project_manager" type="object" string="项目负责人或主管总师变更" class="oe_button"
-                                attrs="{'invisible':['|',('is_user_is_project_manager','=',False),('is_user_in_engineer_group','=',False),('state','!=','project_processing')]}"/>
+                            attrs="{'invisible':['|',('is_user_is_project_manager','=',False),('is_user_in_engineer_group','=',False),('state','!=','project_processing')]}"/>
                 </field>
             </field>
         </record>
+
+        <record id="tree_project_man_change_tree" model="ir.ui.view">
+            <field name="name">project.project.manager.change.tree</field>
+            <field name="model">project.project.manager.change</field>
+            <field name="arch" type="xml">
+                <tree string="任务下达表">
+                    <field name="project_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_project_man_change_form_list" model="ir.actions.act_window">
+            <field name="name">负责人主管总师变更</field>
+            <field name="res_model">project.project.manager.change</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+        </record>
+        <menuitem name="负责人主管总师变更表" id="menuitem_project_man_change_form" parent="up_project.menuitem_project_all_form_record"
+                  action="action_project_man_change_form_list" groups="up_project.group_up_project_admin" sequence="15"/>
+
     </data>
 </openerp>
