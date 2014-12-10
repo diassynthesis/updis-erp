@@ -76,6 +76,7 @@
                                 <field name="guimo"/>
                                 <field name="waibao"/>
                                 <field name="shizhenpeitao"/>
+                                <field name="state"/>
                             </group>
                         </group>
                     </sheet>

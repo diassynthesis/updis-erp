@@ -62,12 +62,13 @@ class project_project_wizard(osv.osv_memory):
             res['waibao'] = project.waibao
         if 'shizhenpeitao' in fields:
             res['shizhenpeitao'] = project.shizhenpeitao
-
+        if 'state' in fields:
+            res['state'] = project.state
         return res
 
     _columns = {
         "user_id": fields.many2many('res.users', 'wizard_project_user_id_res_user', 'project_user_id', 'res_user_id',
-                                    string="Project Manager"),
+                                    string="Project Manager", domain=['|', ("active", "=", True), ("active", "=", False)]),
         "name": fields.char(size=256, string="Project Name"),
         "xiangmubianhao": fields.char(size=256, string="Project Num"),
         'country_id': fields.many2one('res.country', 'Country'),
@@ -95,6 +96,14 @@ class project_project_wizard(osv.osv_memory):
         "guimo": fields.char(u"Scale", size=64),
         "waibao": fields.boolean("Is Outsourcing"),
         "shizhenpeitao": fields.boolean("Is City"),
+        "state": fields.selection([("project_active", u"Project Active"),
+                                   ("project_cancelled", u"Project Cancelled"),
+                                   ("project_processing", u"Project Processing"),
+                                   ("project_stop", u"Project Stop"),
+                                   ("project_pause", u"Project Pause"),
+                                   ("project_filed", u"Project Filing"),
+                                   ("project_finish", u"Project Filed"),
+                                  ], string="State"),
     }
 
     def project_admin_change_accept(self, cr, uid, ids, context=None):
@@ -126,6 +135,7 @@ class project_project_wizard(osv.osv_memory):
             'guimo': self_record.guimo,
             'waibao': self_record.waibao,
             'shizhenpeitao': self_record.shizhenpeitao,
+            'state': self_record.state,
         })
         tasking_obj.write(cr, uid, tasking_id, {'tender_category': self_record.toubiaoleibie, }, context=context)
 
