@@ -383,6 +383,19 @@ class IrAttachmentInherit(osv.osv):
         }
         self.unlink(cr, uid, ids, context=context)
 
+    def cms_search(self, cr, uid, domain=None, offset=0, limit=None, order=None, context=None):
+        parent_id = self.pool['ir.model.data'].get_object_reference(cr, uid, 'up_document', 'doc_direct_000001')[1]
+        context = {'lang': 'zh_CN', 'tz': 'Asia/Shanghai', 'uid': 1}
+        ids = self.search(cr, 1, domain + [('parent_id', 'child_of', parent_id)], offset=offset, limit=limit, order=order, context=None)
+        results = self.read(cr, 1, ids, ['name', 'parent_id', 'create_date'], context=context)
+        for tfile in results:
+            tfile['parent_id'] = tfile['parent_id'][1] if tfile['parent_id'] else ''
+            tfile['create_date'] = fields.datetime.context_timestamp(cr, uid,
+                                                                     datetime.datetime.strptime(tfile['create_date'],
+                                                                                                tools.DEFAULT_SERVER_DATETIME_FORMAT),
+                                                                     context=context).strftime(tools.DEFAULT_SERVER_DATETIME_FORMAT)
+        return results
+
 
 class IrAttachmentDownloadWizard(osv.osv_memory):
     _name = "ir.attachment.download.wizard"
