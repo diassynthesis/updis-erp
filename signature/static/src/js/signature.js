@@ -38,7 +38,7 @@ openerp.signature = function (instance) {
                         });
                         //如果没有签名图片，则显示用户名称。
                     } else {
-                        self.$el.prepend(user[1]);
+                        self.$el.html(user[1]);
                     }
                 });
             }
