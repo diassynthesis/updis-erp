@@ -36,6 +36,8 @@ UPDIS Project Module.""",
 
         'wizard/filed/project_filed_view.xml',
         'wizard/filed/project_filed_workflow.xml',
+
+        'wizard/filed/filing/project_filing_admin.xml',
         'wizard/filed/filing/project_filing.xml',
 
 

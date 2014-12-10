@@ -218,6 +218,18 @@ class ProjectFiledFiling(osv.Model):
     def _message_get_auto_subscribe_fields(self, cr, uid, updated_fields, auto_follow_fields=['user_id'], context=None):
         return []
 
+    def button_admin_change(self, cr, uid, ids, context):
+        return {
+            'name': u'归档文件后台字段修改',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'project.project.filed.filing',
+            'view_id': self.pool['ir.model.data'].get_object_reference(cr, uid, 'up_project', 'view_project_filed_filing_admin_form')[1],
+            'target': 'current',
+            'res_id': ids[0],
+            # 'context': context.update({'form_view_ref': 'up_project.view_project_filed_filing_admin_form'})
+        }
+
 
 class ProjectFiledFilingTag(osv.Model):
     _name = 'project.project.filed.tag'

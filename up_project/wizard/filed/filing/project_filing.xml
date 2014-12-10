@@ -75,13 +75,13 @@
                         <button name="button_elec_approve" type="object" string="Elec Files Approve" log="1"
                                 attrs="{'invisible':['|',('state','not in',['approve_filing']),('elec_file_approver_id','!=',False)]}"
                                 groups="up_project.group_up_project_filed_elec_manager" class="oe_highlight"/>
+                        <button name="button_admin_change" type="object" string="后台字段修改" groups="base.group_system"/>
                         <field name="state" widget="statusbar" readonly="1"/>
                     </header>
                     <sheet>
                         <group invisible="1">
                             <field name="is_project_member"/>
                             <field name="is_user_is_project_manager"/>
-                            <field name="project_id" readonly="1"/>
                             <field name="is_import"/>
                         </group>
                         <div class="sheet-title">
