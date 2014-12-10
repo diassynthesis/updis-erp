@@ -50,7 +50,7 @@ class updis_contract_invoice(osv.osv):
                                                 selection=[('WT200508180001', u'深圳规划局'), ('WT200508180002', u"深圳市其他"),
                                                            ('WT200508180003', u"市外"),
                                                            ('WT200509020001', u"其他")]
-            , readonly=1, string="Entrust Type"),
+                                                , readonly=1, string="Entrust Type"),
         'contract_sign_date': fields.date(string="Sign Date"),
 
         'project_id': fields.related('contract_id', 'project_id', type="many2one", relation='project.project',
@@ -147,7 +147,7 @@ class updis_contract_income(osv.osv):
                                                 selection=[('WT200508180001', u'深圳规划局'), ('WT200508180002', u"深圳市其他"),
                                                            ('WT200508180003', u"市外"),
                                                            ('WT200509020001', u"其他")]
-            , readonly=1, string="Entrust Type"),
+                                                , readonly=1, string="Entrust Type"),
         'contract_sign_date': fields.date(string="Sign Date"),
 
         'project_id': fields.related('contract_id', 'project_id', type="many2one", relation='project.project',
@@ -224,6 +224,7 @@ class updis_contract_income(osv.osv):
 
 class updis_contract_contract(osv.osv):
     _name = 'project.contract.contract'
+    _inherit = ['mail.thread', 'ir.needaction_mixin']
     _order = 'id desc'
     _log_access = True
     _rec_name = "name"
@@ -242,7 +243,7 @@ class updis_contract_contract(osv.osv):
         'write_date': fields.datetime('Modification date', select=True),
         'write_uid': fields.many2one('res.users', 'Last Contributor', select=True),
 
-        'name': fields.char(size=128, string="Contract Name", required=True),
+        'name': fields.char(size=128, string="Contract Name", required=True, track_visibility='onchange'),
         'type': fields.selection(
             [('common', u'Common Contract'), ('third_party', u'Third Party'), ('tender', 'Tender')], required=True,
             string='Contract Type'),
@@ -261,8 +262,8 @@ class updis_contract_contract(osv.osv):
         'third_party_company_contact': fields.many2many('res.partner', 'contract_contact_third_party_company_rel',
                                                         'contract_contact_id',
                                                         'partner_id', string="Third Party Company Contacts"),
-        'price': fields.float(string='Contract Price', digits=(16, 6)),
-        'number': fields.char(string='Contract No.', size=128),
+        'price': fields.float(string='Contract Price', digits=(16, 6), track_visibility='onchange'),
+        'number': fields.char(string='Contract No.', size=128, track_visibility='onchange'),
         'city_level_number': fields.char(string='City Contract No.', size=128),
         'city_comment': fields.char(size=128, string="City Comment"),
         'comment': fields.text(string="Comment"),
@@ -457,7 +458,7 @@ class updis_contract_contract(osv.osv):
 
     def all_contract_action(self, cr, uid, context=None):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
-        #context['search_default_is-common-contract'] = 1
+        # context['search_default_is-common-contract'] = 1
         context.update({
             'show_sign_date': 0,
             'show_name': 0,
@@ -480,7 +481,7 @@ class updis_contract_contract(osv.osv):
 
     def third_party_contract_action(self, cr, uid, context=None):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
-        #context['search_default_is-third-party-contract'] = 1
+        # context['search_default_is-third-party-contract'] = 1
         context.update({
             'show_project_id': 0,
             'show_third_party_company': 0,
@@ -501,7 +502,7 @@ class updis_contract_contract(osv.osv):
 
     def tender_contract_action(self, cr, uid, context=None):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
-        #context['search_default_is-tender-contract'] = 1
+        # context['search_default_is-tender-contract'] = 1
         context['default_type'] = 'tender'
         context.update({
             'show_name': 0,
