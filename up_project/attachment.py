@@ -13,7 +13,6 @@ FILING_DIR_MAP = {
     'dir_up_project_going_processing_report': 'dir_up_project_filed_processing_report',
     'dir_up_project_going_iso': 'dir_up_project_filed_iso',
     'dir_up_project_going_iso_workflow': 'dir_up_project_filed_iso_workflow',
-    'dir_up_project_activing': 'dir_up_project_active',
     'dir_up_project_man_change': 'dir_up_project_filed_man_change',
     'dir_up_project_going_iso_contract': 'dir_up_project_filed_iso_contract',
     'dir_up_project_going_iso_memo': 'dir_up_project_filed_iso_memo',
