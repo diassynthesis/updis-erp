@@ -16,6 +16,8 @@ class ManagerForm(osv.Model):
         'target_manager': fields.many2many('res.users', 'target_manager_change_res_user_rel', 'file_id', 'user_id', 'Target Manager'),
         'target_chief': fields.many2many('res.users', 'target_chief_change_res_user_rel', 'file_id', 'user_id', 'Target Chief'),
 
+        'attachment_ids': fields.many2many('ir.attachment', 'manager_change_attachment_rel', 'change_id', 'attachment_id', 'Documents'),
+
         'state': fields.selection(
             [('draft', u'申请'), ('director', u'所长审批'), ('chief', u'主管总师审批'), ('yuanzhang', u'院长审批'), ('complete', u'完成'), ('cancel', u'取消')],
             'State', track_visibility='onchange'),
