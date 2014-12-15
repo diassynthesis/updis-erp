@@ -80,9 +80,11 @@
             <field name="name">project.project.manager.change.tree</field>
             <field name="model">project.project.manager.change</field>
             <field name="arch" type="xml">
-                <tree string="任务下达表">
+                <tree string="负责人主管总师变更">
                     <field name="project_id"/>
                     <field name="state"/>
+                    <field name="apply_date"/>
+                    <field name="write_date"/>
                 </tree>
             </field>
         </record>
@@ -92,6 +94,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="target">current</field>
+            <field name="domain">[('state','!=','cancel')]</field>
         </record>
         <menuitem name="负责人主管总师变更表" id="menuitem_project_man_change_form" parent="up_project.menuitem_project_all_form_record"
                   action="action_project_man_change_form_list" groups="up_project.group_up_project_admin" sequence="15"/>

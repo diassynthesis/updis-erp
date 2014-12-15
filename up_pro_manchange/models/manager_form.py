@@ -7,6 +7,7 @@ from openerp.osv import osv, fields
 class ManagerForm(osv.Model):
     _name = 'project.project.manager.change'
     _inherit = ['mail.thread', 'ir.needaction_mixin']
+    _order = 'id desc'
 
     _columns = {
         'name': fields.char('Project Manager & Chief Change', size=64),
@@ -35,6 +36,7 @@ class ManagerForm(osv.Model):
 
         'yuanzhang_id': fields.many2one('res.users', 'Yuanzhang Approver'),
         'yuanzhang_date': fields.datetime('Yuanzhang Date'),
+        'write_date': fields.datetime('Last Update Date'),
 
     }
 
