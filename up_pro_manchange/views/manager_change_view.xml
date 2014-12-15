@@ -43,6 +43,9 @@
                                        domain="[('id','in',context.get('chief_engineer_domain',[]))]"/>
                             </group>
                             <group colspan="2">
+                                <div class="oe_edit_only oe_tips" colspan="2">
+                                    <p>请上传需变更人员的“技术岗位资格申报审批表”扫描件</p>
+                                </div>
                                 <field name="attachment_ids" widget="many2many_binary" attrs="{'readonly':[('state','!=','draft')]}"/>
                             </group>
                             <group string="审批记录" colspan="2" col="4">
