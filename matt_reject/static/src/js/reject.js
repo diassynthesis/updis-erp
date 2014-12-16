@@ -5,6 +5,13 @@ openerp.matt_reject = function (instance) {
     var _t = instance.web._t,
         QWeb = instance.web.qweb;
 
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp( name + "=([^&#]*)"),
+            results = regex.exec(location.hash);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
     instance.web.form.WidgetButton.include({
         execute_action: function () {
             var self = this;
@@ -23,11 +30,13 @@ openerp.matt_reject = function (instance) {
                         dialogClass: 'oe_act_window',
                         width: 500,
                         buttons: [
-                            {text: _t("Cancel"), click: function () {
+                            {
+                                text: _t("Cancel"), click: function () {
                                 $(this).dialog("close");
                             }
                             },
-                            {text: _t("Ok"), click: function () {
+                            {
+                                text: _t("Ok"), click: function () {
                                 var self2 = this;
 
                                 $.when(self.on_confirmed()).then(function (result) {
@@ -40,7 +49,13 @@ openerp.matt_reject = function (instance) {
                                             }),
                                             'content_subtype': 'plaintext',
                                         };
-                                        new instance.web.Model(parent_dataset.model).call('message_post', parent_dataset.ids, values).done(function (message_id) {
+                                        var active_id = 0;
+                                        if (parent_dataset.ids.length>1) {
+                                            active_id = [parseInt(getParameterByName('id'))];
+                                        }else {
+                                            active_id = parent_dataset.ids;
+                                        }
+                                        new instance.web.Model(parent_dataset.model).call('message_post', active_id, values).done(function (message_id) {
                                             $(self2).dialog("close");
                                         });
                                     } else {
@@ -62,11 +77,13 @@ openerp.matt_reject = function (instance) {
                         title: _t('Confirm'),
                         modal: true,
                         buttons: [
-                            {text: _t("Cancel"), click: function () {
+                            {
+                                text: _t("Cancel"), click: function () {
                                 $(this).dialog("close");
                             }
                             },
-                            {text: _t("Ok"), click: function () {
+                            {
+                                text: _t("Ok"), click: function () {
                                 var self2 = this;
                                 self.on_confirmed().always(function () {
                                     $(self2).dialog("close");

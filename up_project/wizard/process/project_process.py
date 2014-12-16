@@ -35,6 +35,10 @@ class project_project_inherit(osv.osv):
         self.write(cr, uid, ids, {'state': 'project_processing', 'status_code': 20101}, context=context)
         return True
 
+    def action_process_cancel(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'state': 'project_process_cancel', 'status_code': 50101}, context=context)
+        return True
+
     def button_process_finish(self, cr, uid, ids, context=None):
         # 如果没有项目负责人，或者项目负责人都离院，则不能归档
         project_users = self.read(cr, uid, ids[0], ['user_id'], context)['user_id']
