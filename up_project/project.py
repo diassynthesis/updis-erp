@@ -335,7 +335,9 @@ class updis_project(osv.osv):
     def _is_project_member(self, cr, uid, ids, field_name, args, context=None):
         result = dict.fromkeys(ids, False)
         for obj in self.browse(cr, uid, ids, context=context):
-            if self.is_project_member(cr, context.get('uid', 1), obj.id, context=context):
+            #TODO: temp remove
+            # if self.is_project_member(cr, context.get('uid', 1), obj.id, context=context):
+            if True:
                 result[obj.id] = True
             else:
                 result[obj.id] = False
