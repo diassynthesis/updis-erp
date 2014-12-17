@@ -7,11 +7,11 @@
             <field name="name">hr.department.search</field>
             <field name="model">hr.department</field>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='manager_id']" position="after">
+                <field name="manager_id" position="after">
                     <group expand="1" string="Group by...">
                         <filter name="by-removed" string="Is Removed" domain="[]" context="{'group_by':'deleted'}"/>
                     </group>
-                </xpath>
+                </field>
             </field>
         </record>
 

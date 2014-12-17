@@ -1,5 +1,6 @@
 from openerp.osv import osv, fields
 from lxml import etree
+
 __author__ = 'cysnake4713'
 
 
@@ -17,15 +18,16 @@ class IrUiViewInherit(osv.osv):
         return result
 
     _columns = {
-        'type': fields.function(_type_field, type='selection', selection=[
-            ('tree', 'Tree'),
-            ('form', 'Form'),
-            ('mdx', 'mdx'),
-            ('graph', 'Graph'),
-            ('calendar', 'Calendar'),
-            ('diagram', 'Diagram'),
-            ('gantt', 'Gantt'),
-            ('kanban', 'Kanban'),
-            ('search', 'Search'),
-            ('dir', 'Dir')], string='View Type', required=True, select=True, store=True),
+        'type': fields.selection([
+                                     ('tree', 'Tree'),
+                                     ('form', 'Form'),
+                                     ('graph', 'Graph'),
+                                     ('calendar', 'Calendar'),
+                                     ('diagram', 'Diagram'),
+                                     ('gantt', 'Gantt'),
+                                     ('kanban', 'Kanban'),
+                                     ('search', 'Search'),
+                                     ('qweb', 'QWeb'),
+                                     ('dir', 'Dir'),
+                                 ], string='View Type'),
     }
