@@ -1,11 +1,11 @@
 # coding=utf-8
 from functools import partial
-from up_tools.bigantlib import BigAntClient
+from openerp.addons.up_tools.bigantlib import BigAntClient
 
 from openerp import SUPERUSER_ID
 
 from openerp.osv import osv, fields
-from up_tools import docguarder
+from openerp.addons.up_tools import docguarder
 
 
 class user_device(osv.osv):

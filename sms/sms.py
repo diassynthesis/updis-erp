@@ -2,11 +2,11 @@
 import logging
 import time
 import urllib2
-from up_tools.bigantlib import BigAntClient
+from openerp.addons.up_tools.bigantlib import BigAntClient
 from urllib import urlencode
 
 from openerp.osv import osv, fields
-from up_tools.rtxlib import RtxClient
+from openerp.addons.up_tools.rtxlib import RtxClient
 
 
 class sms(osv.Model):

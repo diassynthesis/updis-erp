@@ -2,7 +2,7 @@ __author__ = 'cysnake4713'
 # -*- encoding:utf-8 -*-
 from openerp.osv import fields
 from openerp.osv import osv
-from up_tools import tools
+from openerp.addons.up_tools import tools
 
 
 class project_active_tasking_reject_log(osv.osv):

@@ -47,6 +47,7 @@ class InternalHomeExtend(InternalHome):
 
 
 class BinaryExtend(Binary):
+    _cp_path = '/web/binary/'
     def attachment_saveas(self, req, model, field, id=None, filename_field=None, **kw):
         Model = req.session.model(model)
         fields = ['datas']

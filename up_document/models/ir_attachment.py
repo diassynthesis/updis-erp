@@ -213,7 +213,7 @@ class IrAttachmentInherit(osv.osv):
         'application_ids': fields.many2many('ir.attachment.application', 'apply_ir_attachment_rel', 'attachment_id', 'apply_id', 'Applications'),
         'log_ids': fields.one2many('ir.attachment.log', 'attachment_id', 'Logs'),
         'is_deleted': fields.boolean('Is Deleted'),
-        'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="file", nodrop=True),
+        'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="binary", nodrop=True),
     }
 
     # _sql_constraints = [

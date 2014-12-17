@@ -4,7 +4,7 @@ from operator import itemgetter
 from openerp import SUPERUSER_ID
 from openerp.osv import osv, fields
 from openerp.osv.orm import browse_record, browse_null
-from up_tools import tools
+from openerp.addons.up_tools import tools
 
 
 class project_project_wizard(osv.osv_memory):

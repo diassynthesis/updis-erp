@@ -1,4 +1,4 @@
-from openerp.osv.orm import browse_record, _logger, browse_null
+from openerp.osv.orm import browse_record, browse_null
 
 __author__ = 'cysnake4713'
 
@@ -187,7 +187,6 @@ class MailThreadInherit(osv.osv_abstract):
                 try:
                     subtype_rec = self.pool.get('ir.model.data').get_object(cr, uid, subtype.split('.')[0], subtype.split('.')[1], context=context)
                 except ValueError, e:
-                    _logger.debug('subtype %s not found, giving error "%s"' % (subtype, e))
                     continue
                 message = format_message(subtype_rec.description if subtype_rec.description else subtype_rec.name, tracked_values)
                 self.message_post(cr, uid, record['id'], body=message, subtype=subtype, context=context)

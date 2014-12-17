@@ -3,7 +3,7 @@ import datetime
 from openerp import SUPERUSER_ID
 from openerp.osv import fields
 from openerp.osv import osv
-from up_tools import tools
+from openerp.addons.up_tools import tools
 
 __author__ = 'cysnake4713'
 

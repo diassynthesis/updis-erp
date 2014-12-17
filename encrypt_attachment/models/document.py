@@ -76,7 +76,7 @@ class IrAttachmentInherit(osv.osv):
 
 
     _columns = {
-        'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="file", nodrop=True),
+        'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="binary", nodrop=True),
     }
 
     def convert_encrypt_state(self, cr, uid, ids, is_encrypt=False, is_decrypt=False, context=None):

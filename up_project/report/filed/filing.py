@@ -1,6 +1,6 @@
 # coding=utf-8
 from collections import OrderedDict
-from report import report_sxw
+from openerp.report import report_sxw
 
 
 class ProjectFiledFilingPDF(report_sxw.rml_parse):

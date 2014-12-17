@@ -1,7 +1,7 @@
 import os
 import time
 import datetime
-from report import report_sxw
+from openerp.report import report_sxw
 
 
 class renwuxiada(report_sxw.rml_parse):

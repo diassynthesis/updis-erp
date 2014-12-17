@@ -2,8 +2,9 @@
 from openerp import exceptions
 from openerp.osv import fields
 from openerp.osv import osv
-from openerp.osv.osv import except_osv, openerp
+from openerp.osv.osv import except_osv
 from openerp.tools.translate import _
+import openerp
 
 
 class ProjectFiledFiling(osv.Model):
