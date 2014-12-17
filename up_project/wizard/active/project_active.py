@@ -1,5 +1,5 @@
 # -*- encoding:utf-8 -*-
-from osv import osv, fields
+from openerp.osv import osv, fields
 
 
 class project_project_inherit(osv.osv):

@@ -1,4 +1,4 @@
-from osv import fields, osv, orm
+from openerp.osv import fields, osv, orm
 from openerp.addons.web.controllers.main import Export
 from openerp.addons.web import http
 

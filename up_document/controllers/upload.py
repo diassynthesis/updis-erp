@@ -1,14 +1,16 @@
 # coding=utf-8
 import base64
 import xmlrpclib
+from openerp.addons.web.controllers.main import content_disposition
 from openerp.tools import config
 import simplejson
 from xmlrpclib import Fault
 from openerp.osv import osv
-from web_clupload.controllers.main import InternalHome
-from openerp.addons.web.controllers.main import Binary, openerpweb, content_disposition
+from openerp.addons.web_clupload.controllers.main import InternalHome
+from openerp.addons.web.controllers.main import Binary
 import openerp
 from  openerp.tools.translate import _
+from openerp import http
 
 __author__ = 'cysnake4713'
 
@@ -65,7 +67,7 @@ class BinaryExtend(Binary):
                                      [('Content-Type', 'application/octet-stream'),
                                       ('Content-Disposition', content_disposition(filename, req))])
 
-    @openerpweb.httprequest
+    @http.httprequest
     def saveas(self, req, model, field, id=None, filename_field=None, **kw):
         if model == 'ir.attachment':
             attachment_obj = req.session.model(model)
@@ -117,7 +119,7 @@ class BinaryExtend(Binary):
                                               ('Content-Disposition', content_disposition(filename, req))],
                                      cookies={'fileToken': token})
 
-    @openerpweb.httprequest
+    @http.httprequest
     def saveas_ajax(self, req, data, token):
         jdata = simplejson.loads(data)
         model = jdata['model']
@@ -140,7 +142,7 @@ class BinaryExtend(Binary):
             return super(BinaryExtend, self).saveas_ajax(req, data, token)
 
 
-    @openerpweb.httprequest
+    @http.httprequest
     def upload_attachment(self, req, callback, model, id, ufile, res_id=None, res_model=None, res_context="{}"):
         Model = req.session.model('ir.attachment')
         out = """<script language="javascript" type="text/javascript">
@@ -193,7 +195,7 @@ class BinaryExtend(Binary):
                                "error": e.message}]}
         return req.make_response(simplejson.dumps(args))
 
-    @openerpweb.httprequest
+    @http.httprequest
     def download_temp_file(self, req, filename, token):
         location = config.get('zip_temp_file', '$HOME')
         file_out = file(location + '/' + filename, 'r')

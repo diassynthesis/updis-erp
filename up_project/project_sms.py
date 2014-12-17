@@ -1,7 +1,7 @@
 from openerp.osv import fields
 
 __author__ = 'cysnake4713'
-from osv import osv
+from openerp.osv import osv
 
 
 class project_sms(osv.osv):

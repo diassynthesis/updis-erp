@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #__author__ = jeff@openerp.cn, joshua@openerp.cn
 
-from osv import fields, osv
+from openerp.osv import fields, osv
 from reportlab.lib.fontfinder import FontFinder
 import openerp.report.render.rml2pdf.customfonts as cfonts
 from reportlab.lib.styles import ParagraphStyle

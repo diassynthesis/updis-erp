@@ -2,7 +2,7 @@ __author__ = 'cysnake4713'
 
 from openerp.osv import fields
 
-from osv import osv
+from openerp.osv import osv
 
 
 class hr_employee_inheirt(osv.osv):

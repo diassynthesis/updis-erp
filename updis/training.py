@@ -1,6 +1,6 @@
 #encoding:UTF-8
 __author__ = 'cysnake4713'
-from osv import fields, osv
+from openerp.osv import fields, osv
 
 
 class updis_hr_training(osv.osv):

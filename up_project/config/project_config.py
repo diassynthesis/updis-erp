@@ -1,5 +1,5 @@
 __author__ = 'cysnake4713'
-from osv import osv, fields
+from openerp.osv import osv, fields
 
 
 class project_engineer_room_config_wizard(osv.osv_memory):
