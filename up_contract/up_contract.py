@@ -479,6 +479,22 @@ class updis_contract_contract(osv.osv):
             'context': context,
         }
 
+    def action_department_viewer(self, cr, uid, context=None):
+        domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
+        # context['search_default_is-common-contract'] = 1
+
+        return {
+            'name': u'本所外协合同',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree',
+            'view_type': 'form',
+            'res_model': 'project.contract.contract',
+            'view_id': self.pool['ir.model.data'].get_object_reference(cr, uid, 'up_contract', 'view_project_contract_dep_tree')[1],
+            'target': 'current',
+            'domain': domain + [('type', '=', 'third_party')],
+            'context': context,
+        }
+
     def third_party_contract_action(self, cr, uid, context=None):
         domain, context['temp_contract_domain'] = self._get_domain_by_group(cr, uid, context)
         # context['search_default_is-third-party-contract'] = 1

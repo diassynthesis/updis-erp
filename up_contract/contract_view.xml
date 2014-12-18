@@ -285,6 +285,20 @@
                 </tree>
             </field>
         </record>
+        <record id="view_project_contract_dep_tree" model="ir.ui.view">
+            <field name="name">project.contract.department.tree</field>
+            <field name="model">project.contract.contract</field>
+            <field name="arch" type="xml">
+                <tree string="Project Contract" version="7.0" create="false" edit="false" delete="false">
+                    <field name="number"/>
+                    <field name="design_department"/>
+                    <field name="project_id"/>
+                    <field name="third_party_company"/>
+                    <field name="name" string="外协合同名称"/>
+                    <field name="sign_date"/>
+                </tree>
+            </field>
+        </record>
         <record id="project_contract_third_party_tree" model="ir.ui.view">
             <field name="name">project.contract.third.tree</field>
             <field name="model">project.contract.contract</field>
@@ -601,8 +615,18 @@
             </field>
         </record>
 
+        <record id="action_contract_department_viewer" model="ir.actions.server">
+            <field name="name">本所外协合同</field>
+            <field name="state">code</field>
+            <field name="condition" eval="True"/>
+            <field name="model_id" ref="up_contract.model_project_contract_contract"/>
+            <field name="code">
+                action = self.action_department_viewer(cr,uid,context=context)
+            </field>
+        </record>
+
         <menuitem name="Contract" id="up_contract.project_contract" parent="base.menu_main_pm" sequence="50"
-                  groups="up_contract.group_up_contract_partial_user,up_contract.group_up_contract_user"/>
+                  groups="up_contract.group_up_contract_partial_user,up_contract.group_up_contract_user,up_contract.group_department_viewer"/>
 
         <menuitem name="Contract Need Process" id="up_contract.project_need_process_management"
                   parent="up_contract.project_contract"
@@ -640,5 +664,9 @@
                   action="action_project_contract_incomes_analysis"
                   groups="up_contract.group_up_contract_partial_user,up_contract.group_up_contract_user"
                   sequence="25"/>
+
+        <menuitem name="本所外协合同" id="menuitem_department_waixie_contract" parent="up_contract.project_contract" sequence="28"
+                  action="action_contract_department_viewer"
+                  groups="up_contract.group_department_viewer"/>
     </data>
 </openerp>
