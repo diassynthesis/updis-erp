@@ -162,3 +162,16 @@ class EmployeeBirthdayWish(osv.osv):
             "r.active is true and h.resource_id = r.id")
         employees = self.pool.get('hr.employee').browse(cr, uid, map(itemgetter(0), cr.fetchall()))
         return [e.name for e in employees], wishes
+
+    def cron_birthday_notify(self, cr, uid, context=None):
+        system_notify = self.pool['ir.config_parameter'].get_param(cr, uid, 'birthday.nofity', context)
+        cr.execute("""
+            select DISTINCT h.id as id from hr_employee as h , resource_resource as r
+            Where date_part('day', h.birthday) = date_part('day', CURRENT_DATE + interval '1' day) And
+            date_part('MONTH', h.birthday) = date_part('MONTH', CURRENT_DATE + interval '1' day) AND
+            r.active is true and h.resource_id = r.id
+            """)
+        employees = self.pool.get('hr.employee').browse(cr, uid, map(itemgetter(0), cr.fetchall()))
+        for employee in employees:
+            notify = u'%s,深规院祝您生日快乐！%s' % (employee.name, system_notify)
+            self.pool['sms.sms'].send_sms_to_users(cr, uid, 'hr.birthday.wish', notify, 'hr.birthday.wish', '', employee.user_id.id, context=context)

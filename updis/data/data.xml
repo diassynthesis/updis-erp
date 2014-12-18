@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="param_birthday_nofity" model="ir.config_parameter">
+            <field name="key">birthday.nofity</field>
+            <field name="value" eval="''"/>
+        </record>
+        <record model="ir.cron" id="birthday_cron">
+            <field name="name">Birthday reminder</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'hr.birthday.wish'"/>
+            <field name="function" eval="'cron_birthday_notify'"/>
+            <field name="args" eval="'()'" />
+        </record>
+    </data>
+</openerp>
