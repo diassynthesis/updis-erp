@@ -20,5 +20,6 @@ status_code = {
     'project_cancel': 40101,
     'project_stop': 50101,
     'project_pause': 60101,
+    'project_process_cancel': 70101,
 
 }

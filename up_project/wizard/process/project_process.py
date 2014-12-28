@@ -46,5 +46,5 @@ class project_project_inherit(osv.osv):
         if not len(project_users):
             raise exceptions.Warning(u'本项目没有项目负责人,或者当前项目负责人已经离院。请在项目成员标签卡下，填写项目负责人或主管总师变更变更申请后再进行归档！')
         self._workflow_signal(cr, uid, ids, 'process_finish', context=context)
-        self.write(cr, uid, ids, {'state': 'project_filed'}, context=context)
+        self.write(cr, uid, ids, {'state': 'project_filed', 'status_code': 70101}, context=context)
         return self.button_filed_filing_form(cr, uid, ids, context)
