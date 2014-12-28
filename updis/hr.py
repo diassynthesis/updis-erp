@@ -11,7 +11,9 @@ def monkey_create(self, cr, uid, data, context=None):
     employee_id = super(osv.Model, self).create(cr, uid, data, context=context)
     return employee_id
 
+
 from openerp.addons.hr import hr
+
 hr.hr_employee.create = monkey_create
 
 
@@ -173,5 +175,5 @@ class EmployeeBirthdayWish(osv.osv):
             """)
         employees = self.pool.get('hr.employee').browse(cr, uid, map(itemgetter(0), cr.fetchall()))
         for employee in employees:
-            notify = u'%s,深规院祝您生日快乐！%s' % (employee.name, system_notify)
+            notify = system_notify.format(name=employee.name)
             self.pool['sms.sms'].send_sms_to_users(cr, uid, 'hr.birthday.wish', notify, 'hr.birthday.wish', '', employee.user_id.id, context=context)
