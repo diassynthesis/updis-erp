@@ -7,7 +7,7 @@ openerp.matt_reject = function (instance) {
 
     function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        var regex = new RegExp( name + "=([^&#]*)"),
+        var regex = new RegExp(name + "=([^&#]*)"),
             results = regex.exec(location.hash);
         return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
@@ -24,8 +24,12 @@ openerp.matt_reject = function (instance) {
                     if (self.node.attrs.confirm) {
                         confirm = self.node.attrs.confirm
                     }
-                    var dialog = instance.web.dialog($(QWeb.render("WorkflowDialog", {'confirm': confirm})), {
-                        title: "审批确认",
+                    var prompt = "审批意见";
+                    if (self.node.attrs.prompt) {
+                        prompt = self.node.attrs.prompt;
+                    }
+                    var dialog = instance.web.dialog($(QWeb.render("WorkflowDialog", {'confirm': confirm, 'prompt': prompt})), {
+                        title: prompt,
                         modal: true,
                         dialogClass: 'oe_act_window',
                         width: 500,
@@ -43,16 +47,16 @@ openerp.matt_reject = function (instance) {
                                     var body = $(self2).find('textarea').val();
                                     if (body != '') {
                                         var values = {
-                                            'body': '审批意见：' + body,
+                                            'body': prompt + ':' + body,
                                             'context': _.extend({}, {
                                                 'mail_post_autofollow': false,
                                             }),
                                             'content_subtype': 'plaintext',
                                         };
                                         var active_id = 0;
-                                        if (parent_dataset.ids.length>1) {
+                                        if (parent_dataset.ids.length > 1) {
                                             active_id = [parseInt(getParameterByName('id'))];
-                                        }else {
+                                        } else {
                                             active_id = parent_dataset.ids;
                                         }
                                         new instance.web.Model(parent_dataset.model).call('message_post', active_id, values).done(function (message_id) {

@@ -22,14 +22,14 @@
                             confirm="确定项目停滞?"
                             attrs="{'invisible':['|',('state','!=','project_processing'),('is_user_is_project_manager','=',False)]}"
                             groups="project.group_project_user"/>
-                    <button name="action_process_cancel" type="object" log="1"
+                    <button name="action_process_cancel" type="object" log="1" prompt="项目取消原因"
                             string="项目取消"
                             confirm="确定取消项目？"
                             attrs="{'invisible':['|',('state','!=','project_processing'),('is_user_is_project_manager','=',False)]}"
                             groups="project.group_project_user"/>
                     <button name="action_process_pause_back" type="object"
                             string="恢复项目"
-                            confirm="确定恢复项目到进行状态?" log="1"
+                            confirm="确定恢复项目到进行状态?" log="1" prompt="项目恢复原因"
                             attrs="{'invisible':['|',('state','not in',['project_pause', 'project_process_cancel']),('is_user_is_project_manager','=',False)]}"
                             groups="project.group_project_user"/>
                     <button name="button_process_finish" type="object"
