@@ -320,7 +320,7 @@ class updis_contract_contract(osv.osv):
                                         ],
                                         string="Project State", readonly=1),
 
-
+        'special_group': fields.many2many('res.users', 'rel_contract_special_users', 'contract_id', 'user_id', 'Special Users'),
     }
     _sql_constraints = [('contract_num_unique', 'unique(number)', 'number must be unique !')]
 
@@ -430,7 +430,7 @@ class updis_contract_contract(osv.osv):
             temp_domain = []
         else:
             user_department_id = contract_tools.get_user_department(self, cr, uid, context)
-            domain = [('design_department.id', '=', user_department_id)]
+            domain = ['|', ('design_department.id', '=', user_department_id), ('special_group', '=', uid)]
             temp_domain = [('chenjiebumen_id.id', '=', user_department_id)]
         return domain, temp_domain
 

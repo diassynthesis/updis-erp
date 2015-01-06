@@ -175,6 +175,7 @@
                                 <field name="attachments" widget="many2many_binary"
                                        res_model="project.contract.contract" res_id="id" context="{'parent_id':%(dir_contract_root)d}"
                                        groups="up_contract.group_up_contract_file_user"/>
+                                <field name="special_group" widget="many2many_tags"/>
                             </group>
                             <group string="Project Info">
                                 <field name="project_id" class="oe_no_button"
