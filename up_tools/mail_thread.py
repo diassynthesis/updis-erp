@@ -258,7 +258,10 @@ class MailThreadInherit(osv.osv_abstract):
             self.pool['sms.sms'].send_sms_to_users(cr, uid, from_rec=name,
                                                    content=sms_body,
                                                    model=thread._table_name, res_id=thread.id, user_ids=user_ids, context=context)
-        return msg_id
+        if msg_id:
+            return msg_id
+        else:
+            return None
 
     def message_subscribe_groups(self, cr, uid, ids, group_xml_ids=None, subtype_ids=None, context=None):
         """ Wrapper on message_subscribe, using users. If user_ids is not
