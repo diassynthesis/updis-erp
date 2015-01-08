@@ -228,6 +228,7 @@ class MailThreadInherit(osv.osv_abstract):
             partner_ids += kwargs.pop('partner_ids', [])
 
         is_send_sys = kwargs.pop('is_send_sys', True)
+        msg_id = 0
         if is_send_sys:
             msg_id = super(MailThreadInherit, self).message_post(cr, uid, thread_id, body, subject, type,
                                                                  subtype, parent_id, attachments, context,
