@@ -1,14 +1,15 @@
-#encoding:UTF-8
+# encoding:UTF-8
 import time
 import datetime
 import urllib2
 from openerp import SUPERUSER_ID
 from openerp.tools import config
 from openerp.osv import osv, fields
-from  openerp import tools
+from openerp import tools
 import openerp.pooler as pooler
 from openerp.tools.safe_eval import safe_eval as eval
 import threading
+from up_tools.oalib import client as oa_client
 
 
 class Env(dict):
@@ -45,8 +46,8 @@ class MessageCategory(osv.Model):
                                                    size=1024),
         'sequence': fields.integer("Display Sequence"),
         'is_anonymous_allowed': fields.boolean('Allow publish messages anonymously?'),
-        #'is_display_fbbm':fields.boolean('Display fbbm?'),
-        #'is_display_read_times':fields.boolean('Display read times?'),
+        # 'is_display_fbbm':fields.boolean('Display fbbm?'),
+        # 'is_display_read_times':fields.boolean('Display read times?'),
         'display_position': fields.selection(
             [("shortcut", "Shortcuts"), ("content_left", "Content Left"), ("content_right", "Content Right")]
             , "Display Position"),
@@ -70,13 +71,13 @@ class MessageCategory(osv.Model):
                                                  size=1024),
     }
     _defaults = {
-        #'is_display_fbbm':True,
+        # 'is_display_fbbm':True,
         'is_anonymous_allowed': False,
         'category_message_title_size': 10,
         'is_in_use': False,
         'is_public': False,
         'is_allowed_edit_sms_text': True,
-        #'is_display_read_times':True,
+        # 'is_display_read_times':True,
     }
 
     def onchange_is_allow_send_sms(self, cr, uid, ids, is_allow_send_sms, context=None):
@@ -87,7 +88,7 @@ class MessageCategory(osv.Model):
 
 
 class Message(osv.Model):
-    #TODO: turn off for data import only
+    # TODO: turn off for data import only
     _log_access = True
     _name = "message.message"
     _order = "write_date desc,sequence"
@@ -285,7 +286,7 @@ class Message(osv.Model):
             ret['value'].update(sms_vals)
         return ret
 
-    #abandon
+    # abandon
     def onchange_name(self, cr, uid, ids, name, sms, context=None):
         ret = {'value': {}}
         if not sms:
@@ -295,6 +296,33 @@ class Message(osv.Model):
             if not len(ids):
                 ret['value'].update(name_vals)
         return ret
+
+    def oa_create(self, cr, uid, message_id, context=None):
+        message = self.browse(cr, 1, message_id, context)
+        value = {
+            "msgid": message.id,
+            "class_code": message.category_id.id or '',
+            "title": message.name,
+            "author": message.create_uid.name or '',
+            "display": 1 if message.is_display_name else 0,
+            "deptname": message.department_id.name or '',
+            "deptcode": message.department_id.id,
+            "content": message.content,
+            "readcount": message.read_times,
+            "createdate": message.create_date.replace(' ', 'T'),
+            "overduedate": message.expire_date + 'T00:00:00' if message.expire_date else '',  # TODO: not required
+            "lastmodidate": message.write_date.replace(' ', 'T'),
+        }
+        oa_client.CreateMessage(json=value)
+
+    def oa_write(self, cr, uid, ids, context=None):
+        self.oa_unlink(cr, uid, ids, context)
+        for id in ids:
+            self.oa_create(cr, uid, id, context)
+
+    def oa_unlink(self, cr, uid, ids, context):
+        for id in ids:
+            oa_client.DeleteMessage(msgid=id, hashcode=oa_client.HASH_CODE)
 
     def create(self, cr, uid, vals, context=None):
         if context is None:
@@ -316,10 +344,11 @@ class Message(osv.Model):
                                      context=context)
         else:
             mid = super(Message, self).create(cr, uid, vals, context)
+        self.oa_create(cr, uid, mid, context)
         return mid
 
     def write(self, cr, uid, ids, vals, context=None):
-        #get message old position
+        # get message old position
         if self._log_access is True:
             TYPE = []
             if not (len(vals) == 1 and 'read_times' in vals.keys()):
@@ -335,9 +364,9 @@ class Message(osv.Model):
 
             super(Message, self).write(cr, uid, ids, vals, context=context)
             NEW_TYPE = []
-            #refresh cms page
+            # refresh cms page
             if not (len(vals) == 1 and 'read_times' in vals.keys()):
-                #get message new position
+                # get message new position
                 messages = self.pool.get('message.message').browse(cr, 1, ids, context=context)
                 for message in messages:
                     if message.category_id.display_position == 'shortcut':
@@ -348,18 +377,18 @@ class Message(osv.Model):
                         NEW_TYPE.append('2')
                 NEW_TYPE = set(NEW_TYPE)
 
-                #if old and new position is different refresh both.
+                # if old and new position is different refresh both.
                 for v in (TYPE | NEW_TYPE):
                     fresh_old = CMSFresh(v)
                     fresh_old.start()
         else:
             super(Message, self).write(cr, uid, ids, vals, context=context)
-
+        self.oa_write(cr, uid, ids, context)
         return True
 
-
     def unlink(self, cr, uid, ids, context=None):
-        #get old position
+        # get old position
+        self.oa_unlink(cr, uid, ids, context)
         TYPE = []
         messages_old = self.pool.get('message.message').browse(cr, 1, ids, context=context)
         for message_old in messages_old:
@@ -371,7 +400,7 @@ class Message(osv.Model):
                 TYPE.append('2')
         super(Message, self).unlink(cr, uid, ids, context=None)
         TYPE = set(TYPE)
-        #refresh
+        # refresh
         for v in TYPE:
             fresh_old = CMSFresh(v)
             fresh_old.start()

@@ -1,7 +1,7 @@
 # coding=utf-8
 from functools import partial
 from up_tools.bigantlib import BigAntClient
-
+from up_tools.oalib import client as oa_client
 from openerp import SUPERUSER_ID
 
 from openerp.osv import osv, fields
@@ -97,13 +97,55 @@ class res_users(osv.osv):
                 if id in self._uid_cache[db]:
                     del self._uid_cache[db][id]
         self.context_get.clear_cache(self)
+        self.write_oa(cr, uid, ids, context)
         return res
 
     def create(self, cr, uid, vals, context=None):
         if self.user_has_groups(cr, uid, 'updis.group_res_user_manager'):
-            return super(res_users, self).create(cr, 1, vals, context)
+            create_id = super(res_users, self).create(cr, 1, vals, context)
         else:
-            return super(res_users, self).create(cr, uid, vals, context)
+            create_id = super(res_users, self).create(cr, uid, vals, context)
+        self.create_oa(cr, uid, create_id, context=context)
+        return create_id
+
+    def create_oa(self, cr, uid, user_id, context=None):
+        user = self.browse(cr, 1, user_id, context=context)
+        json_params = {
+            "iUserID": user.id,
+            "iUserCode": 999,  # TODO:iUserCode 不是必填
+            "sUserName": user.name,
+            "sLogonName": user.login,
+            "sBigAntName": user.big_ant_login_name,
+            "sUserPwdMd5": user.password_crypt,
+        }
+        oa_client.CreateUser(json=json_params)
+
+    def unlink_oa(self, cr, uid, ids, context=None):
+        for user_id in ids:
+            oa_client.DeleteUser(iUserID=user_id, hashcode=oa_client.HASH_CODE)
+
+    def change_password_oa(self, cr, uid, user_ids, new_password, context=None):
+        if not isinstance(user_ids, list):
+            user_ids = [user_ids]
+        for user_id in user_ids:
+            oa_client.ChangeUserPwd(iUserID=user_id, sNewPwd=new_password, hashcode=oa_client.HASH_CODE)
+
+    def write_oa(self, cr, uid, ids, context=None):
+        users = self.browse(cr, 1, ids, context=context)
+        for user in users:
+            json_params = {
+                "iUserID": user.id,
+                "iUserCode": 999,  # TODO:iUserCode 不是必填
+                "sUserName": user.name,
+                "sLogonName": user.login,
+                "sBigAntName": user.big_ant_login_name,
+                "sUserPwdMd5": user.password_crypt,
+            }
+            oa_client.UpdateUser(json=json_params)
+
+    def unlink(self, cr, uid, ids, context=None):
+        self.unlink_oa(cr, uid, ids, context)
+        super(res_users, self).unlink(cr, uid, ids, context)
 
     # noinspection PyUnusedLocal
     def on_change_login(self, cr, uid, ids, login, big_ant_name, context=None):
@@ -149,6 +191,7 @@ class res_users(osv.osv):
             self._bigAntClient.Employee___asmx.SetPassword2.post(**params)
         if self.pool.get('ir.config_parameter').get_param(cr, 1, 'docguarder.password_sync') == 'True':
             docguarder.change_password(user.big_ant_login_name, new_passwd)
+        self.change_password_oa(cr, uid, user.id, new_passwd, context=context)
         return result
 
 
@@ -168,3 +211,4 @@ class ChangePasswordUser(osv.TransientModel):
                 self._bigAntClient.Employee___asmx.SetPassword2.post(**params)
             if self.pool.get('ir.config_parameter').get_param(cr, 1, 'docguarder.password_sync') == 'True':
                 docguarder.change_password(user.user_id.big_ant_login_name, user.new_passwd)
+            user.change_password_oa(user.new_passwd)
