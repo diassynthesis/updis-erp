@@ -97,7 +97,8 @@ class res_users(osv.osv):
                 if id in self._uid_cache[db]:
                     del self._uid_cache[db][id]
         self.context_get.clear_cache(self)
-        self.write_oa(cr, uid, ids, context)
+        if not ('groups_id' in values and len(values) == 1):
+            self.write_oa(cr, uid, ids, context)
         return res
 
     def create(self, cr, uid, vals, context=None):
@@ -111,18 +112,17 @@ class res_users(osv.osv):
     def create_oa(self, cr, uid, user_id, context=None):
         user = self.browse(cr, 1, user_id, context=context)
         json_params = {
-            "iUserID": user.id,
-            "iUserCode": 999,  # TODO:iUserCode 不是必填
+            "iUserID": int(user.id),
             "sUserName": user.name,
             "sLogonName": user.login,
-            "sBigAntName": user.big_ant_login_name,
-            "sUserPwdMd5": user.password_crypt,
+            "sBigAntName": user.big_ant_login_name or '',
+            "sUserPwdMd5": user.password_crypt or '',
         }
         oa_client.CreateUser(json=json_params)
 
     def unlink_oa(self, cr, uid, ids, context=None):
         for user_id in ids:
-            oa_client.DeleteUser(iUserID=user_id, hashcode=oa_client.HASH_CODE)
+            oa_client.DeleteUser(iUserID=int(user_id), hashcode=oa_client.HASH_CODE)
 
     def change_password_oa(self, cr, uid, user_ids, new_password, context=None):
         if not isinstance(user_ids, list):
@@ -134,12 +134,11 @@ class res_users(osv.osv):
         users = self.browse(cr, 1, ids, context=context)
         for user in users:
             json_params = {
-                "iUserID": user.id,
-                "iUserCode": 999,  # TODO:iUserCode 不是必填
+                "iUserID": int(user.id),
                 "sUserName": user.name,
                 "sLogonName": user.login,
-                "sBigAntName": user.big_ant_login_name,
-                "sUserPwdMd5": user.password_crypt,
+                "sBigAntName": user.big_ant_login_name or '',
+                "sUserPwdMd5": user.password_crypt or '',
             }
             oa_client.UpdateUser(json=json_params)
 
@@ -211,4 +210,4 @@ class ChangePasswordUser(osv.TransientModel):
                 self._bigAntClient.Employee___asmx.SetPassword2.post(**params)
             if self.pool.get('ir.config_parameter').get_param(cr, 1, 'docguarder.password_sync') == 'True':
                 docguarder.change_password(user.user_id.big_ant_login_name, user.new_passwd)
-            user.change_password_oa(user.new_passwd)
+            self.pool.get('res.users').change_password_oa(cr, uid, user.user_id.id, user.new_passwd, context=context)
