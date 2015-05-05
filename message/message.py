@@ -301,12 +301,13 @@ class Message(osv.Model):
         message = self.browse(cr, 1, message_id, context)
         value = {
             "msgid": message.id,
-            "class_code": message.category_id.id or '',
+            "class_code": message.category_id.id,
             "title": message.name,
-            "author": message.create_uid.name or '',
+            "author": message.create_uid.name,
             "display": 1 if message.is_display_name else 0,
-            "deptname": message.department_id.name or '',
+            "deptname": message.department_id.name,
             "deptcode": message.department_id.id,
+            # "deptcode": 99,
             "content": message.content,
             "readcount": message.read_times,
             "createdate": message.create_date.replace(' ', 'T'),
