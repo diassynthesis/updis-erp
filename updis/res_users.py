@@ -115,8 +115,8 @@ class res_users(osv.osv):
             "iUserID": int(user.id),
             "sUserName": user.name,
             "sLogonName": user.login,
-            "sBigAntName": user.big_ant_login_name or '',
-            "sUserPwdMd5": user.password_crypt or '',
+            "sBigAntName": user.big_ant_login_name,
+            "sUserPwdMd5": user.password_crypt,
         }
         oa_client.CreateUser(json=json_params)
 
@@ -137,8 +137,8 @@ class res_users(osv.osv):
                 "iUserID": int(user.id),
                 "sUserName": user.name,
                 "sLogonName": user.login,
-                "sBigAntName": user.big_ant_login_name or '',
-                "sUserPwdMd5": user.password_crypt or '',
+                "sBigAntName": user.big_ant_login_name,
+                "sUserPwdMd5": user.password_crypt,
             }
             oa_client.UpdateUser(json=json_params)
 
