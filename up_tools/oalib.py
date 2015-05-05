@@ -29,6 +29,11 @@ class _Executable(object):
         function = getattr(oa_client, self.method)
         json_value = kw.pop('json', None)
         if json_value:
+            for (key, value) in json_value.items():
+                if not value:
+                    json_value.pop(key)
+                if isinstance(value, long):
+                    json_value[key] = int(value)
             result = function(json=json.JSONEncoder().encode(json_value))
         else:
             result = function(**kw)

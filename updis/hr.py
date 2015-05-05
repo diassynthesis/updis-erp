@@ -118,6 +118,7 @@ class hr_employee_updis(osv.osv):
         json_params = {
             "iUserCode": employee.id,
             "sStaffDpt": employee.department_id.id or '',
+            # "sStaffDpt": 99,
             "sStaffName": employee.name or '',
             "dStaffBirthday": employee.birthday or '',
             "sStaffIdentity": employee.identification_id or '',
@@ -157,7 +158,7 @@ class hr_employee_updis(osv.osv):
             "sStaffWorkType": ','.join([t.name for t in employee.category_ids]) or '',
             "sPostName": employee.reg_tax or '',
             "sGetCertificate": employee.reg_tax_no or '',
-            "dRegisterDate": employee.reg_tax or '',
+            "dRegisterDate": employee.reg_tax_date or '',
         }
         oa_client.CreateEmployee(json=json_params)
 
@@ -167,6 +168,7 @@ class hr_employee_updis(osv.osv):
             json_params = {
                 "iUserCode": employee.id,
                 "sStaffDpt": employee.department_id.id or '',
+                # "sStaffDpt": 99,
                 "sStaffName": employee.name or '',
                 "dStaffBirthday": employee.birthday or '',
                 "sStaffIdentity": employee.identification_id or '',
@@ -207,7 +209,7 @@ class hr_employee_updis(osv.osv):
                 "sStaffWorkType": ','.join([t.name for t in employee.category_ids]) or '',
                 "sPostName": employee.reg_tax or '',
                 "sGetCertificate": employee.reg_tax_no or '',
-                "dRegisterDate": employee.reg_tax or '',
+                "dRegisterDate": employee.reg_tax_date or '',
             }
             oa_client.UpdateEmployee(json=json_params)
 
