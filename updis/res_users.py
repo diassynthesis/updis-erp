@@ -115,6 +115,7 @@ class res_users(osv.osv):
             "iUserID": int(user.id),
             "sUserName": user.name,
             "sLogonName": user.login,
+            'sUserPwd': '123456',
             "sBigAntName": user.big_ant_login_name,
             "sUserPwdMd5": user.password_crypt,
         }
