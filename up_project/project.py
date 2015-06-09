@@ -64,6 +64,8 @@ class project_project_wizard(osv.osv_memory):
             res['shizhenpeitao'] = project.shizhenpeitao
         if 'state' in fields:
             res['state'] = project.state
+        if 'begin_date' in fields:
+            res['begin_date'] = project.begin_date
         return res
 
     _columns = {
@@ -104,7 +106,8 @@ class project_project_wizard(osv.osv_memory):
                                    ("project_filed", u"Project Filing"),
                                    ("project_finish", u"Project Filed"),
                                    ("project_process_cancel", u"Project Cancelled in Processing"),
-                                  ], string="State"),
+                                   ], string="State"),
+        'begin_date': fields.date('Begin Date'),
     }
 
     def project_admin_change_accept(self, cr, uid, ids, context=None):
@@ -137,6 +140,7 @@ class project_project_wizard(osv.osv_memory):
             'waibao': self_record.waibao,
             'shizhenpeitao': self_record.shizhenpeitao,
             'state': self_record.state,
+            'begin_date': self_record.begin_date,
         })
         tasking_obj.write(cr, uid, tasking_id, {'tender_category': self_record.toubiaoleibie, }, context=context)
 
@@ -372,7 +376,7 @@ class updis_project(osv.osv):
                                    ("project_filed", u"Project Filing"),
                                    ("project_finish", u"Project Filed"),
                                    ("project_process_cancel", u"Project Cancelled in Processing"),
-                                  ], string="State", track_visibility='onchange'),
+                                   ], string="State", track_visibility='onchange'),
         'project_log': fields.html(u"Project Log Info", readonly=True),
         "xiangmubianhao": fields.char(u"Project Num", select=True, size=128, ),
         "chenjiebumen_id": fields.many2one("hr.department", u"In Charge Department"),
