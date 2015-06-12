@@ -285,7 +285,7 @@ class updis_contract_contract(osv.osv):
         "import_number": fields.char(size=128, string="Import Number"),
         "is_import": fields.boolean(string="Is Import"),
 
-        'project_id': fields.many2one('project.project', string="Project", ondelete="cascade"),
+        'project_id': fields.many2one('project.project', string="Project"),
         'project_number': fields.related('project_id', 'xiangmubianhao', type='char', string="Project Number"),
         'project_category': fields.related('project_id', 'categories_id', type="many2one",
                                            relation="project.upcategory", string="Project Category"),
