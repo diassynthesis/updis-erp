@@ -207,8 +207,8 @@ class Message(osv.Model):
         result = dict.fromkeys(ids, False)
         message_vote_obj = self.pool.get('message.vote')
         for message in self.browse(cr, uid, ids, context=context):
-            vote_like_count = len(message_vote_obj.search(cr, SUPERUSER_ID, [('message_id', '=', message.id), ('up', '=', True)], context))
-            vote_unlike_count = len(message_vote_obj.search(cr, SUPERUSER_ID, [('message_id', '=', message.id), ('up', '=', False)], context))
+            vote_like_count = len(message_vote_obj.search(cr, SUPERUSER_ID, [('message_id', '=', message.id), ('up', '=', True)], context=context))
+            vote_unlike_count = len(message_vote_obj.search(cr, SUPERUSER_ID, [('message_id', '=', message.id), ('up', '=', False)], context=context))
             result[message.id] = {
                 'vote_like': vote_like_count,
                 'vote_unlike': vote_unlike_count,
