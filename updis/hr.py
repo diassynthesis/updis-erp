@@ -5,6 +5,7 @@ import random
 import math
 from openerp import SUPERUSER_ID
 from openerp.osv import fields, osv
+from up_tools.oalib import client as oa_client
 
 
 def monkey_create(self, cr, uid, data, context=None):
@@ -111,6 +112,126 @@ class hr_employee_updis(osv.osv):
 
     def onchange_address_id(self, cr, uid, ids, address, context=None):
         return {'value': {}}
+
+    def create_oa(self, cr, uid, employee_id, context=None):
+        employee = self.browse(cr, 1, employee_id, context=context)
+        json_params = {
+            "iUserCode": employee.id,
+            "sStaffDpt": employee.department_id.id or '',
+            # "sStaffDpt": 99,
+            "iMainUser": employee.user_id.id or '',
+            "sStaffName": employee.name or '',
+            "dStaffBirthday": employee.birthday or '',
+            "sStaffIdentity": employee.identification_id or '',
+            "sStaffSex": employee.gender or '',
+            "sStaffProfession": employee.major or '',
+            "sExp5": ','.join([s.name for s in employee.speciality_id]) or '',
+            "sExp7": employee.person_resume or '',
+            "sExp2": employee.practice or '',
+            "dDutyTime": employee.duty_date or '',
+            "dPostLevelTime": employee.business_date or '',
+            "sStaffWageCard2": employee.otherid or '',
+            "sStaffJobLocation": employee.work_location or '',
+            "sStaffOfficePhone": employee.work_phone or '',
+            "sStaffMobilePhone": employee.mobile_phone or '',
+            "sStaffEmail": employee.work_email or '',
+            "sExp1": employee.insurance or '',
+            "dBargainEndTime": employee.contract_date or '',
+            "sExp4": employee.go_abroad_list or '',
+            "sExp6": employee.study_list or '',
+            # "sStaffMarriage": "婚姻状况",
+            "sStaffDegree": employee.degree or '',
+            "sStaffPiploma": employee.diploma or '',
+            "sStaffHomePhone": employee.home_phone or '',
+            "iPayBand": employee.year_vac_days or '',
+            "dStaffJoinWorkTime": employee.begin_work_date or '',
+            "sPassportCode": employee.passport_id or '',
+            "sStaffGraduateSchool": employee.academy or '',
+            "dStaffGraduateTime": employee.gra_date or '',
+            "sStaffNation": employee.folk or '',
+            "dOffPostDate": employee.out_date or '',
+            "sStaffNativePlace": employee.native_place or '',
+            "sDuty": employee.duty or '',
+            "sHonor": employee.job_id.name or '',
+            "sPost": employee.title or '',
+            "dPostTime": employee.title_date or '',
+            "sPostLevel": employee.business or '',
+            "sStaffWorkType": ','.join([t.name for t in employee.category_ids]) or '',
+            "sPostName": employee.reg_tax or '',
+            "sGetCertificate": employee.reg_tax_no or '',
+            "dRegisterDate": employee.reg_tax_date or '',
+        }
+        oa_client.CreateEmployee(json=json_params)
+
+    def write_oa(self, cr, uid, ids, context):
+        employees = self.browse(cr, 1, ids, context=context)
+        for employee in employees:
+            json_params = {
+                "iUserCode": employee.id,
+                "sStaffDpt": employee.department_id.id or '',
+                # "sStaffDpt": 99,
+                "iMainUser": employee.user_id.id or '',
+                "sStaffName": employee.name or '',
+                "dStaffBirthday": employee.birthday or '',
+                "sStaffIdentity": employee.identification_id or '',
+                "sStaffSex": employee.gender or '',
+                "sStaffProfession": employee.major or '',
+                "sExp5": ','.join([s.name for s in employee.speciality_id]) or '',
+                "sExp7": employee.person_resume or '',
+                "sExp2": employee.practice or '',
+                "dDutyTime": employee.duty_date or '',
+                "dPostLevelTime": employee.business_date or '',
+                "sStaffWageCard2": employee.otherid or '',
+                "sStaffJobLocation": employee.work_location or '',
+                "sStaffOfficePhone": employee.work_phone or '',
+                "sStaffMobilePhone": employee.mobile_phone or '',
+                "sStaffEmail": employee.work_email or '',
+                "sExp1": employee.insurance or '',
+                "dBargainEndTime": employee.contract_date or '',
+                "sExp4": employee.go_abroad_list or '',
+                "sExp6": employee.study_list or '',
+                # "mRemark": "备注",
+                # "sStaffMarriage": "婚姻状况",
+                "sStaffDegree": employee.degree or '',
+                "sStaffPiploma": employee.diploma or '',
+                "sStaffHomePhone": employee.home_phone or '',
+                "iPayBand": employee.year_vac_days or '',
+                "dStaffJoinWorkTime": employee.begin_work_date or '',
+                "sPassportCode": employee.passport_id or '',
+                "sStaffGraduateSchool": employee.academy or '',
+                "dStaffGraduateTime": employee.gra_date or '',
+                "sStaffNation": employee.folk or '',
+                "dOffPostDate": employee.out_date or '',
+                "sStaffNativePlace": employee.native_place or '',
+                "sDuty": employee.duty or '',
+                "sHonor": employee.job_id.name or '',
+                "sPost": employee.title or '',
+                "dPostTime": employee.title_date or '',
+                "sPostLevel": employee.business or '',
+                "sStaffWorkType": ','.join([t.name for t in employee.category_ids]) or '',
+                "sPostName": employee.reg_tax or '',
+                "sGetCertificate": employee.reg_tax_no or '',
+                "dRegisterDate": employee.reg_tax_date or '',
+            }
+            oa_client.UpdateEmployee(json=json_params)
+
+    def unlink_oa(self, cr, uid, ids, context):
+        for employee_id in ids:
+            oa_client.DeleteEmployee(iUserCode=employee_id, hashcode=oa_client.HASH_CODE)
+
+    def unlink(self, cr, uid, ids, context=None):
+        self.unlink_oa(cr, uid, ids, context)
+        return super(hr_employee_updis, self).unlink(cr, uid, ids, context)
+
+    def create(self, cr, uid, vals, context=None):
+        employee_id = super(hr_employee_updis, self).create(cr, uid, vals, context)
+        self.create_oa(cr, uid, employee_id, context)
+        return employee_id
+
+    def write(self, cr, user, ids, vals, context=None):
+        result = super(hr_employee_updis, self).write(cr, user, ids, vals, context=None)
+        self.write_oa(cr, user, ids, context)
+        return result
 
 
 class EmployeeSpeciality(osv.osv):
