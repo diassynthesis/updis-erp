@@ -117,6 +117,15 @@ class res_users(osv.osv):
             "sLogonName": user.login,
             "sBigAntName": user.big_ant_login_name,
             "sUserPwdMd5": user.password_crypt,
+            # "address": user.address,
+            "work_location": user.work_location,
+            "work_phone": user.work_phone,
+            "mobile_phone": user.mobile_phone,
+            "work_email": user.work_email,
+            "home_phone": user.home_phone,
+            "practice": user.practice,
+            "interest": user.interest,
+            "person_resume": user.person_resume,
         }
         oa_client.CreateUser(json=json_params)
 
@@ -139,6 +148,15 @@ class res_users(osv.osv):
                 "sLogonName": user.login,
                 "sBigAntName": user.big_ant_login_name,
                 "sUserPwdMd5": user.password_crypt,
+                # "address": user.address,
+                "work_location": user.work_location,
+                "work_phone": user.work_phone,
+                "mobile_phone": user.mobile_phone,
+                "work_email": user.work_email,
+                "home_phone": user.home_phone,
+                "practice": user.practice,
+                "person_resume": user.person_resume,
+                "interest": user.interest,
             }
             oa_client.UpdateUser(json=json_params)
 
