@@ -271,7 +271,7 @@ msgstr "unknown"
 
 #. module: message
 #: view:message.category:0
-msgid "部门"
+msgid "department"
 msgstr "department"
 
 #. module: message
@@ -346,7 +346,7 @@ msgstr "Shortcuts"
 #. module: message
 #: view:message.category:0
 #: view:message.message:0
-msgid "人员"
+msgid "personnel"
 msgstr "members"
 
 #. module: message
@@ -356,7 +356,7 @@ msgstr "Modification date"
 
 #. module: message
 #: view:message.message:0
-msgid "消息标题"
+msgid "Message title"
 msgstr "Message Title"
 
 #. module: message
@@ -371,7 +371,7 @@ msgstr "Is public category?"
 
 #. module: message
 #: view:message.category:0
-msgid "消息分类名称"
+msgid "Message classification name"
 msgstr "message category name"
 
 #. module: message
