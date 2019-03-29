@@ -22,7 +22,7 @@ if __name__ == '__main__':
     params = {
         'userName': 'matt',
         # 'userPwd': '1',
-        'DeptName': u'规划设计一所',
+        'DeptName': u'Planning and design',
         # 'ChsName': '',
         'IGender': 1,
         # 'Cell': '',
