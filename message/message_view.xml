@@ -58,14 +58,14 @@
                                       attrs="{'invisible':[('is_allow_send_sms','=',False)]}">
                                     <field name="default_sms_receiver_ids" nolabel="1">
                                         <tree string="SMS Receivers">
-                                            <field name="name" string="人员"/>
+                                            <field name="name" string="personnel"/>
                                             <field name="mobile_phone"/>
                                         </tree>
                                     </field>
                                 </page>
                                 <page string="Display In Department">
                                     <field name="display_in_departments">
-                                        <tree string="部门">
+                                        <tree string="department">
                                             <field name="name"/>
                                         </tree>
                                     </field>
