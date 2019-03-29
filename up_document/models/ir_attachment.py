@@ -297,8 +297,8 @@ class IrAttachmentInherit(osv.osv):
                                                'apply_date': fields.datetime.now(),
                                                'apply_user_id': uid}, context=context)
                 from_rec = uid
-                subject = u"有新的文件下载请求需要处理"
-                content = u"有用户请求下载文件：%s, 请登陆系统处理" % attachment.name
+                subject = u"There are new file download requests that need to be processed"
+                content = u"A user requested to download the file: %s, please log in to the system for processing." % attachment.name
                 model = 'ir.attachment'
                 res_id = attachment.id
                 group_id = 'up_document.group_attachment_download_manager'
@@ -441,7 +441,7 @@ class IrAttachmentDownloadWizard(osv.osv_memory):
                     else:
                         zip_obj.write(file_data.name, str(i) + '.' + file_name.encode('GBK'))
 
-            filename = u"附件.zip"
+            filename = u"annex.zip"
             self.write(cr, uid, ids, {'state': 'get',
                                       'data': temp_file_name,
                                       'name': filename}, context=context)
@@ -514,10 +514,10 @@ class IrAttachmentApplication(osv.osv):
             'apply_date': fields.datetime.now(),
             'state': 'director_process',
         }, context=context)
-        sms_msg = u"有用户发起文件下载审批， 请登陆系统处理"
+        sms_msg = u"Some users initiate file download approval, please log in to the system for processing."
         http_address = self.pool['ir.config_parameter'].get_param(cr, 1, 'web.base.static.url', context=context)
-        big_ant_msg = (u"文件下载审批请求",
-                       u"您有需要处理的文件下载<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>审批请求</a>，请处理" % (
+        big_ant_msg = (u"File download approval request",
+                       u"You have to download the file you need to process<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>Approval request</a>，Please handle" % (
                            http_address, ids[0]))
         model = 'ir.attachment.application'
         res_id = ids[0]
@@ -545,16 +545,16 @@ class IrAttachmentApplication(osv.osv):
 
     def director_approve(self, cr, uid, ids, context):
         if not self._is_same_department(cr, uid, ids, context):
-            raise osv.except_osv(_(u'没有权限'), _(u'必须是申请人所在部门所长或主任工才能审批'))
+            raise osv.except_osv(_(u'Permission denied'), _(u'Must be the director or the chief of the department where the applicant is located to approve'))
         self.write(cr, uid, ids, {
             'director_user_id': uid,
             'director_approve_date': fields.datetime.now(),
             'state': 'manager_process',
         }, context=context)
-        sms_msg = u"有用户发起文件下载审批， 请登陆系统处理"
+        sms_msg = u"Some users initiate file download approval, please log in to the system for processing."
         http_address = self.pool['ir.config_parameter'].get_param(cr, 1, 'web.base.static.url', context=context)
-        big_ant_msg = (u"文件下载审批请求",
-                       u"您有需要处理的文件下载<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>审批请求</a>，请处理" % (
+        big_ant_msg = (u"File download approval request",
+                       u"You have to download the file you need to process<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>Approval request</a>，Please handle" % (
                        http_address, ids[0]))
         model = 'ir.attachment.application'
         res_id = ids[0]
@@ -565,17 +565,17 @@ class IrAttachmentApplication(osv.osv):
 
     def director_disapprove(self, cr, uid, ids, context):
         if not self._is_same_department(cr, uid, ids, context):
-            raise osv.except_osv(_(u'没有权限'), _(u'必须是申请人所在部门所长才能审批'))
+            raise osv.except_osv(_(u'Permission denied'), _(u'Must be the director of the applicant''s department to approve'))
         self.write(cr, uid, ids, {
             'director_user_id': None,
             'director_approve_date': None,
             'state': 'disapprove',
         }, context=context)
 
-        sms_msg = u"文件下载申请被拒绝，请登陆查看"
+        sms_msg = u"The file download application was rejected. Please login to view"
         http_address = self.pool['ir.config_parameter'].get_param(cr, 1, 'web.base.static.url', context=context)
-        big_ant_msg = (u"文件下载申请被拒绝",
-                       u"您有文件<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>下载申请</a>被拒绝，请登陆处理" % (
+        big_ant_msg = (u"File download request rejected",
+                       u"You have a file<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>Download application</a>Rejected, please log in" % (
                        http_address, ids[0]))
         model = 'ir.attachment.application'
         res_id = ids[0]
@@ -590,10 +590,10 @@ class IrAttachmentApplication(osv.osv):
             'approve_date': fields.datetime.now(),
             'state': 'approve',
         }, context=context)
-        sms_msg = u"文件下载申请已通过，请登陆查看"
+        sms_msg = u"The file download application has been approved. Please log in to view"
         http_address = self.pool['ir.config_parameter'].get_param(cr, 1, 'web.base.static.url', context=context)
-        big_ant_msg = (u"文件下载申请通过",
-                       u"您有文件<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>下载申请</a>通过，请登陆处理" % (
+        big_ant_msg = (u"File download application",
+                       u"You have a file<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>Download application</a>Pass, please log in to handle" % (
                        http_address, ids[0]))
         model = 'ir.attachment.application'
         res_id = ids[0]
@@ -608,10 +608,10 @@ class IrAttachmentApplication(osv.osv):
             'approve_date': None,
             'state': 'disapprove',
         }, context=context)
-        sms_msg = u"文件下载申请被拒绝，请登陆查看"
+        sms_msg = u"The file download application was rejected. Please login to view"
         http_address = self.pool['ir.config_parameter'].get_param(cr, 1, 'web.base.static.url', context=context)
-        big_ant_msg = (u"文件下载申请被拒绝",
-                       u"您有文件<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>下载申请</a>被拒绝，请登陆处理" % (
+        big_ant_msg = (u"File download request rejected",
+                       u"You have a file<a target='_blank' href='%s/#id=%s&view_type=form&model=ir.attachment.application'>Download application</a>Rejected, please log in" % (
                        http_address, ids[0]))
         model = 'ir.attachment.application'
         res_id = ids[0]
