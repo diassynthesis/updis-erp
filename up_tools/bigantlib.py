@@ -160,16 +160,16 @@ if __name__ == "__main__":
     #                                                   passwordType=0,
     #                                                   sendPassword="xinxi", contentType='Text/Html', sendUserName="",
     #                                                   msgId="",
-    #                                                   recvLoginNames="caiyang", subject=u"测试",
+    #                                                   recvLoginNames="caiyang", subject=u"test",
     #                                                   content=u"<a href='#'>asdfasdf</a>")
 
 
     values = {
-        'userName': "蔡测试",
+        'userName': "Cai test",
         'loginName': 'testcaiyang1',
         'password': 'test',
         'entype': '0',
-        'Path': u"深圳规划院@@@其他",
+        'Path': u"Shenzhen Planning Institute@@@other",
         'sex': '1',
         'email': '',
         'jobTitle':'',
