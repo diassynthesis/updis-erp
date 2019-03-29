@@ -136,7 +136,7 @@
             </field>
         </record>
         <record id="action_download_apply_attachments_wiz" model="ir.actions.act_window">
-            <field name="name">下载</field>
+            <field name="name">download</field>
             <field name="res_model">ir.attachment.download.wizard</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
@@ -148,11 +148,11 @@
             <field name="arch" type="xml">
                 <form string="Attachment Download Management" version="7.0" create="false">
                     <header>
-                        <button name="apply" type="object" string="发起申请" class="oe_highlight" states="apply"/>
+                        <button name="apply" type="object" string="Initiate an application" class="oe_highlight" states="apply"/>
 
-                        <button name="director_approve" type="object" string="审批通过" class="oe_highlight"
+                        <button name="director_approve" type="object" string="Approved" class="oe_highlight"
                                 groups="up_project.group_up_project_suozhang,up_project.group_up_project_zhurengong" states="director_process"/>
-                        <button name="director_disapprove" type="object" string="不通过" class="oe_highlight"
+                        <button name="director_disapprove" type="object" string="Fail" class="oe_highlight"
                                 groups="up_project.group_up_project_suozhang,up_project.group_up_project_zhurengong" states="director_process"/>
 
                         <button name="approve" type="object" string="Approve" class="oe_highlight" states="manager_process"
@@ -163,7 +163,7 @@
                     </header>
                     <sheet>
                         <group colspan="2" col="1">
-                            <button string="批量下载" name="%(action_download_apply_attachments_wiz)d" type="action" context="{'temp_active_ids':attachment_ids}"
+                            <button string="Batch download" name="%(action_download_apply_attachments_wiz)d" type="action" context="{'temp_active_ids':attachment_ids}"
                                 states="approve"/>
                             <field name="attachment_ids" readonly="1"/>
                         </group>
@@ -171,15 +171,15 @@
                             <field name="expire_date" readonly="1"/>
                             <field name="is_expired"/>
                         </group>
-                        <group string="发起人">
+                        <group string="sponsor">
                             <field name="apply_user_id" readonly="1"/>
                             <field name="apply_date" readonly="1"/>
                         </group>
-                        <group string="所长">
+                        <group string="Director">
                             <field name="director_user_id" readonly="1"/>
                             <field name="director_approve_date" readonly="1"/>
                         </group>
-                        <group string="文档管理员">
+                        <group string="Document administrator">
                             <field name="approve_user_id" readonly="1"/>
                             <field name="approve_date" readonly="1"/>
                         </group>
