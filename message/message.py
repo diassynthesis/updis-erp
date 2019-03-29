@@ -34,6 +34,7 @@ class MessageCategory(osv.Model):
     _order = "name"
     _columns = {
         'name': fields.char("Title", size=128),
+        'mobile_phone': fields.Char('phone Number'),
         'default_message_count': fields.integer('Default message count',
                                                 help="How many messages should be displayed in front door for this category?"),
         'message_meta': fields.char('Meta',
