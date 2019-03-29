@@ -300,7 +300,7 @@
                                 <field name="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
                                     <tree string="SMS Receivers">
-                                        <field name="name" string="人员"/>
+                                        <field name="name" string="personnel"/>
                                         <field name="mobile_phone"/>
                                     </tree>
                                 </field>
