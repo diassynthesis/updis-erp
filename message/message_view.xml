@@ -20,7 +20,7 @@
             <field name="arch" type="xml">
                 <form string="Message Category" version="7.0">
                     <h1>
-                        <field name="name" placeholder="消息分类名称"/>
+                        <field name="name" placeholder="Message classification name"/>
                     </h1>
                     <group col="8">
                         <field name="is_in_use"/>
@@ -133,7 +133,7 @@
             <field name="arch" type="xml">
                 <form string="Message" version="7.0">
                     <h1>
-                        <field name="name" placeholder="消息标题"/>
+                        <field name="name" placeholder="Message title"/>
                     </h1>
 
                     <group col="6" colspan="4" class="oe_edit_only" string="Message Detail Config">
@@ -142,10 +142,10 @@
                                    domain="[('is_public','=',True)]" on_change="onchange_category(category_id)"/>
                         </group>
                         <group col="2" colspan="4">
-                            <field name="source" attrs="{'invisible':[('category_id_name','=',u'通知')]}"/>
+                            <field name="source" attrs="{'invisible':[('category_id_name','=',u'Notice')]}"/>
                             <field name="fbbm"
-                                   attrs="{'invisible':['!',('category_id_name','=',u'通知')],'required':[('category_id_name','=',u'通知')]}"/>
-                            <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
+                                   attrs="{'invisible':['!',('category_id_name','=',u'Notice')],'required':[('category_id_name','=',u'通知')]}"/>
+                            <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'Bidding information')]}"/>
                             <field name="is_display_name"
                                    attrs="{'invisible':['!',('category_id_is_anonymous_allowed','=',True)]}"/>
                             <field name="category_id_name" invisible="1"/>
@@ -160,12 +160,12 @@
                             <div>
                                 <label for="sms"
                                        attrs="{'invisible':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
-                                <field name="sms" placeholder="如果不填则自动发送消息标题"
+                                <field name="sms" placeholder="If not filled, the message title is automatically sent."
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
                                 <p attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}" style="color:red;">
-                                    注意：同时发送不能超过50人
+                                    note：Cannot send more than 50 people at the same time
                                 </p>
                                 <field name="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
@@ -198,7 +198,7 @@
             <field name="arch" type="xml">
                 <form string="Message" version="7.0">
                     <h1>
-                        <field name="name" placeholder="消息标题"/>
+                        <field name="name" placeholder="Message title"/>
                     </h1>
 
                     <group col="6" colspan="4" class="oe_edit_only" string="Message CMS Detail Config">
@@ -208,10 +208,10 @@
                                    on_change="onchange_category(category_id)"/>
                         </group>
                         <group col="2" colspan="4">
-                            <field name="source" attrs="{'invisible':[('category_id_name','=',u'通知')]}"/>
+                            <field name="source" attrs="{'invisible':[('category_id_name','=',u'Notice')]}"/>
                             <field name="fbbm"
-                                   attrs="{'invisible':['!',('category_id_name','=',u'通知')],'required':[('category_id_name','=',u'通知')]}"/>
-                            <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
+                                   attrs="{'invisible':['!',('category_id_name','=',u'Notice')],'required':[('category_id_name','=',u'通知')]}"/>
+                            <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'Bidding information')]}"/>
                             <field name="is_display_name"
                                    attrs="{'invisible':['!',('category_id_is_anonymous_allowed','=',True)]}"/>
                             <field name="category_id_name" invisible="1"/>
@@ -226,12 +226,12 @@
                             <div>
                                 <label for="sms"
                                        attrs="{'invisible':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
-                                <field name="sms" placeholder="如果不填则自动发送消息标题"
+                                <field name="sms" placeholder="If not filled, the message title is automatically sent."
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
                                 <p style="color:red;" attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
-                                    注意：同时发送不能超过50人
+                                    Note: Cannot send more than 50 people at the same time
                                 </p>
                                 <field name="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
@@ -264,7 +264,7 @@
             <field name="arch" type="xml">
                 <form string="Message" version="7.0">
                     <h1>
-                        <field name="name" placeholder="消息标题"/>
+                        <field name="name" placeholder="Message title"/>
                     </h1>
 
                     <group col="6" colspan="4" class="oe_edit_only" string="Message Detail Config">
@@ -272,10 +272,10 @@
                             <field name="category_id" on_change="onchange_category(category_id)"/>
                         </group>
                         <group col="2" colspan="4">
-                            <field name="source" attrs="{'invisible':[('category_id_name','=',u'通知')]}"/>
+                            <field name="source" attrs="{'invisible':[('category_id_name','=',u'Notice')]}"/>
                             <field name="fbbm"
-                                   attrs="{'invisible':['!',('category_id_name','=',u'通知')],'required':[('category_id_name','=',u'通知')]}"/>
-                            <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'招投标信息')]}"/>
+                                   attrs="{'invisible':['!',('category_id_name','=',u'Notice')],'required':[('category_id_name','=',u'通知')]}"/>
+                            <field name="expire_date" attrs="{'invisible':['!',('category_id_name','=',u'Bidding information')]}"/>
                             <field name="is_display_name"
                                    attrs="{'invisible':['!',('category_id_is_anonymous_allowed','=',True)]}"/>
                             <field name="category_id_name" invisible="1"/>
@@ -290,12 +290,12 @@
                             <div>
                                 <label for="sms"
                                        attrs="{'invisible':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
-                                <field name="sms" placeholder="如果不填则自动发送消息标题"
+                                <field name="sms" placeholder="If not filled, the message title is automatically sent."
                                        attrs="{'readonly':[('category_id_is_allowed_edit_sms_text','=',False)]}"/>
                                 <label for="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}"/>
                                 <p attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}" style="color:red;">
-                                    注意：同时发送不能超过50人
+                                    Note: Cannot send more than 50 people at the same time
                                 </p>
                                 <field name="sms_receiver_ids"
                                        attrs="{'invisible':[('is_allow_sms_receiver','=',False)]}">
