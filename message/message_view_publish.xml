@@ -171,7 +171,7 @@
             <field name="res_model">message.message</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('create_uid','=',uid),('category_id.name','=',u'在谈项目')]</field>
+            <field name="domain">[('create_uid','=',uid),('category_id.name','=',u'Talking about the project')]</field>
             <field name="context">{'search_default_by-category':1,'default_category_id':297}</field>
             <field name="search_view_id" ref="search_message_message"/>
         </record>
