@@ -96,21 +96,21 @@ class sms(osv.Model):
                     self.write(cr, uid, [sms.id], {
                         'state': 'error',
                         'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
-                        'sms_server_id': u"网络链接失败",
+                        'sms_server_id': u"Network link failed",
                     })
                 elif resp.text == "205":
                     logging.getLogger('sms.sms').warning("SENDING Big Ant Message failed!")
                     self.write(cr, uid, [sms.id], {
                         'state': 'error',
                         'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
-                        'sms_server_id': u"帐号或密码错误",
+                        'sms_server_id': u"account or password incorrect",
                     })
                 else:
                     logging.getLogger('sms.sms').warning("SENDING Big Ant Message failed!")
                     self.write(cr, uid, [sms.id], {
                         'state': 'error',
                         'sent_date': time.strftime('%Y-%m-%d %H:%M:%S'),
-                        'sms_server_id': u"未知原因出错%s" % resp.text,
+                        'sms_server_id': u"Unknown reason error %s" % resp.text,
                     })
 
             except UnicodeEncodeError, e:
